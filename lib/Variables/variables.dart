@@ -6,6 +6,8 @@ import 'package:flutterkeysaac/Variables/settings_variable.dart';
 import 'package:flutterkeysaac/Variables/search_variables.dart';
 import 'package:flutterkeysaac/Variables/boardset_settings_variables.dart';
 import 'package:flutterkeysaac/Variables/more_font_variables.dart';
+import 'package:flutterkeysaac/Variables/export_variables.dart';
+import 'package:path/path.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,8 @@ import 'package:path/path.dart' as p;
 
 class V4rs {
 
-//dimenssion, onboarding, message window, storage chest, 
+//dimenssion, onboarding, message window, search, boardset variables
+//storage chest, 
 //interface font, language stuff, navigation variables, sub folders, functions for saving, 
 //speak functions, showOr helper, button type map, special gestures, 
 //json, loading saved values
@@ -129,6 +132,27 @@ class V4rs {
       V4rs.searchPathUUIDS.value = List.from(map);
     }
   }
+
+//
+//boardset variables
+//
+
+static File? currentFile;
+static final String _currentFile = "currentFile";
+
+static Future<void> saveCurrentFileSelection (File currentFile) async {
+    final prefs = await SharedPreferences.getInstance();
+    final fileName = p.basename(currentFile.path);
+    await prefs.setString(_currentFile, fileName);
+  } 
+
+static List<File> myBoardsets = [];
+static final String _myBoardsets = "myBoardsets";
+
+static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setStringList(_myBoardsets, myBoardsets.map((f) => basename(f.path)).toList());
+}
 
 //
 //storage chest 
@@ -603,22 +627,80 @@ static String typeToLabel(int type) {
 // json
 //
 static Future<Root> loadRootData() async {
+  if (currentFile != null) { 
+    final file = currentFile;
+
+    final jsonString = await file!.readAsString();
+    final jsonMap = jsonDecode(jsonString);
+
+    print(myBoardsets);
+    print(currentFile);
+    print(ExV4rs.fileToExport);
+    print('currentFile != null');
+    
+    return Root.fromJson(jsonMap);
+
+  } else {
   // Path for local copy
   final dir = await getApplicationDocumentsDirectory();
   final file = File('${dir.path}/magma_vocab.json');
 
   if (await file.exists()) {
-    // load from local copy
+    // load from local copy if it exists
     final jsonString = await file.readAsString();
     final jsonMap = jsonDecode(jsonString);
+
+    currentFile = file;
+    saveCurrentFileSelection(currentFile!);
+
+    if (!myBoardsets.contains(file)){
+      myBoardsets.add(file);
+      saveMyBoardsets(myBoardsets);
+    }
+
+    print(myBoardsets);
     return Root.fromJson(jsonMap);
   } else {
-    // load from bundled asset
+    // load from bundled asset if it doesnt
     final jsonString = await rootBundle.loadString('lib/Json/magma_vocab.json');
     final jsonMap = jsonDecode(jsonString);
 
     // save local copy
     await file.writeAsString(jsonString);
+
+    currentFile = file;
+    saveCurrentFileSelection(currentFile!);
+
+    if (!myBoardsets.contains(file)){
+      myBoardsets.add(file);
+      saveMyBoardsets(myBoardsets);
+    }
+
+    print(myBoardsets);
+    return Root.fromJson(jsonMap);
+  }
+}
+}
+
+static Future<Root> simpleLoadRootData() async {
+  // Path for local copy
+  final dir = await getApplicationDocumentsDirectory();
+  final file = File('${dir.path}/magma_vocab.json');
+
+  if (await file.exists()) {
+    // load from local copy if it exists
+    final jsonString = await file.readAsString();
+    final jsonMap = jsonDecode(jsonString);
+    
+    return Root.fromJson(jsonMap);
+  } else {
+    // load from bundled asset if it doesnt
+    final jsonString = await rootBundle.loadString('lib/Json/magma_vocab.json');
+    final jsonMap = jsonDecode(jsonString);
+
+    // save local copy
+    await file.writeAsString(jsonString);
+
     return Root.fromJson(jsonMap);
   }
 }
@@ -650,6 +732,12 @@ static Future<void> deleteLocalCopy() async {
 
   if (await file.exists()) {
     await file.delete();
+    currentFile = null;
+    myBoardsets.clear();
+    saveMyBoardsets(myBoardsets);
+    
+    loadRootData();
+    ExV4rs.fileToExport = currentFile;
   } 
 }
 
@@ -678,7 +766,7 @@ static Future<File> resolveImageFile(String relativePath) async {
   static Future<void> loadSavedValues() async {
     final prefs = await SharedPreferences.getInstance();
     // how to clear a value from shared prefs:  
-    await prefs.remove('useSubFolders');
+    //await prefs.remove('myBoardsets');
 
     //reset Json on load
     //deleteLocalCopy(); 
@@ -687,7 +775,23 @@ static Future<File> resolveImageFile(String relativePath) async {
     Fv4rs.loadSavedFontValues(); 
     Cv4rs.loadSavedColorValues();
     Bv4rs.loadSavedBoardsetValues();
+    ExV4rs.loadSavedExportValues();
 
+    //load the boardsets
+    final myBoardsetNames = prefs.getStringList(_myBoardsets);
+    if (myBoardsetNames != null) {
+      final dir = await getApplicationDocumentsDirectory();
+       myBoardsets = prefs.getStringList(_myBoardsets)?.map((file) => File('${dir.path}/$file')).toList() ?? [];
+    }
+
+    final filename = prefs.getString(_currentFile);
+    if (filename != null) {
+      final dir = await getApplicationDocumentsDirectory();
+      currentFile = File('${dir.path}/$filename');
+    }
+
+    //all the other variables to load
+    
     showScrollButtons = prefs.getBool(_showScrollButtons) ?? true;
     showLanguageSelectorSlider = prefs.getBool(_showLanguageSelectorSlider) ?? true;
 
@@ -701,7 +805,7 @@ static Future<File> resolveImageFile(String relativePath) async {
 
     interfaceLanguage = prefs.getString(_interfaceLanguage) ?? 'English';
     selectedLanguage.value = prefs.getString(_selectedLanguage) ?? interfaceLanguage;
-    
+
     interfaceFont = prefs.getString(_interfaceFont) ?? 'Default';
     interfaceFontSize = prefs.getDouble(_interfaceFontSize) ?? interfaceFontSize;
     interfaceFontWeight = prefs.getInt(_interfaceFontWeight) ?? interfaceFontWeight;

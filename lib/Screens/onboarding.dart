@@ -412,7 +412,7 @@ void _showPopUp() {
                 Padding(
                   padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, 5),
                   child: Text(
-                    'Before typing, turn your device how you will use your AAC', 
+                    'Before typing, turn your device to landcape mode', 
                     style: TextStyle(color: Cv4rs.themeColor1, fontSize: 16),
                   ),
                  ),

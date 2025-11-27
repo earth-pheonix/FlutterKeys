@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutterkeysaac/Screens/editor.dart';
 import 'package:flutterkeysaac/Screens/onboarding.dart'; 
 import 'package:flutterkeysaac/Screens/home.dart';
-import 'package:flutterkeysaac/Screens/settings.dart';
 import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:flutterkeysaac/Variables/ui_shortcuts.dart';
 import 'package:flutterkeysaac/Variables/variables.dart'; 
@@ -121,12 +120,6 @@ class _MyApp extends State<MyApp> {
                   synth: synth!
                 );
               }
-            //=====: settings :====
-              else if (V4rs.showSettings.value) {
-                return Settings(
-                  synth: synth!,
-                );
-              } 
              //=====: home :====
               else {
                 return GestureDetector( 

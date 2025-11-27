@@ -5,22 +5,26 @@ import 'package:flutterkeysaac/Variables/ui_shortcuts.dart';
 import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:flutterkeysaac/Variables/color_variables.dart';
+import 'package:flutterkeysaac/Variables/export_variables.dart';
 import 'package:flutterkeysaac/Variables/more_font_variables.dart';
 import 'package:flutterkeysaac/Variables/boardset_settings_variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:io' show Platform;
-
+import 'package:flutterkeysaac/Variables/editing/save_indicator.dart';
+import 'package:share_plus/share_plus.dart'; 
+import 'dart:io';
 
 
 class Settings extends StatefulWidget {
   final TTSInterface synth;
+  final Future<List<Uint8List?>> Function() captureAllForPrint;
 
   const Settings({
     super.key, 
-    required this.synth
+    required this.synth,
+    required this.captureAllForPrint,
     });
 
   @override
@@ -72,6 +76,8 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
 
  @override
   Widget build(BuildContext context) {
+
+
     return FutureBuilder<Root>(
       future: rootFuture,
       builder: (context, snapshot) {
@@ -84,6 +90,11 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
         }
 
         _root = snapshot.data!;
+
+        final RenderBox box = context.findRenderObject() as RenderBox;
+        final Offset position = box.localToGlobal(Offset.zero);
+        final Size size = box.size;
+
     return LayoutBuilder(
        builder: (context, constraints) {
               var totalWidth = constraints.maxWidth;
@@ -125,7 +136,9 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                           if (Sv4rs.speakInterfaceButtonsOnSelect) {
                           V4rs.speakOnSelect('edit', V4rs.selectedLanguage.value, widget.synth);
                           }
-                        Ev4rs.updateJsonHistory(_root!);
+                          if (_root != null) {
+                            Ev4rs.updateJsonHistory(_root!);
+                          }
                         V4rs.showSettings.value = false;
                         Ev4rs.showEditor.value = true;
                       },
@@ -1833,6 +1846,98 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         V4rs.speakOnSelect('Boardset Settings', V4rs.selectedLanguage.value, widget.synth);
                       }},
                   children: [
+                    //share boardset
+                    ExpansionTile(
+                      title: Text('Export Boardset:', style: Sv4rs.settingslabelStyle),
+                      collapsedBackgroundColor: Cv4rs.themeColor4,
+                      backgroundColor: Cv4rs.themeColor4,
+                      childrenPadding: EdgeInsets.symmetric(horizontal: 40),
+                      children: [ 
+                        Row(
+                        children: [
+                          Text('Boardset: ', style: Sv4rs.settingslabelStyle),
+                          Spacer(),
+                          if (ExV4rs.fileToExport != null)
+                          DropdownButton<String>(
+                            value: ExV4rs.fileToExport!.path, 
+                            dropdownColor: Cv4rs.themeColor4,
+                            hint: Text(ExV4rs.getFileName(ExV4rs.fileToExport!)),
+                            items: V4rs.myBoardsets.map((file) {
+                              return DropdownMenuItem<String>(
+                                value: file.path,
+                                child: Text(ExV4rs.getFileName(file), style: Sv4rs.settingslabelStyle),
+                                );
+                              }).toList(),
+                            onChanged: (value) {
+                              if (value != null) {
+                                setState(() {
+                                  ExV4rs.fileToExport = File(value);
+                                  });
+                                }
+                              },
+                            ),
+                          ]
+                        ),
+                        Row (children: [
+                          Spacer(),
+                          Expanded(child: 
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                alignment: Alignment.center,
+                                backgroundColor: Cv4rs.themeColor2,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsGeometry.symmetric(horizontal: 10), 
+                                    child: Text('Export File', style: Fv4rs.mwLabelStyle.copyWith(
+                                      color: Cv4rs.themeColor4,
+                                    )),
+                                  ),
+                                LoadingIndicator(notifier: ExV4rs.loading),
+                                ]),
+                              onPressed: () async {
+                                final zipFile = await ExV4rs.createBoardsetZip();
+                                  await Share.shareXFiles(
+                                    [XFile(zipFile.path, mimeType: 'application/zip')],
+                                    sharePositionOrigin: Rect.fromLTWH(position.dx, position.dy, size.width, size.height),
+                                  );
+                              }, 
+                            ),
+                          ),
+                          Spacer(),
+                          Expanded(child:
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                alignment: Alignment.center,
+                                backgroundColor: Cv4rs.themeColor2,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsGeometry.symmetric(horizontal: 10), 
+                                    child: Text('Print', style: Fv4rs.mwLabelStyle.copyWith(
+                                      color: Cv4rs.themeColor4,
+                                    )),
+                                  ),
+                                ]),
+                              onPressed: () {
+                                setState(() {
+                                  showPrintPop(context, widget.captureAllForPrint);
+                                });
+                              }, 
+                            ),
+                          ),
+                          Spacer(),
+                        ]
+                        ),
+                      ]),
+
+
+                    //new boardset
+
                     //POS colors
                     ExpansionTile(
                       title: Text('Part of Speech Colors:', style: Sv4rs.settingslabelStyle),
@@ -2673,7 +2778,8 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                           }, 
                           tts: widget.synth)
 
-                      ]),
+                      ]
+                      ),
 
                     //sub folder Row settings
                     ExpansionTile(
@@ -3315,7 +3421,11 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         tts: widget.synth
                         ),
                       
-                    ])
+                    ]
+                    )
+                      
+                    //per boardset settings
+
                       ],
                     ),
 

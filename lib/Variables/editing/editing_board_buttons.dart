@@ -465,7 +465,7 @@ import 'dart:async';
                                       onPressed: () async {
                                         Ev4rs.pickImage(widget.saveField, root, _picker);
                                           if (everyImage.isNotEmpty) {
-                                            await Ev4rs.cleanupUnusedImages(everyImage);
+                                           // await Ev4rs.cleanupUnusedImages(everyImage);
                                           } 
                                       }, 
                                       label: 'App Lib'
@@ -2207,7 +2207,7 @@ import 'dart:async';
                                       onPressed: () async {
                                         Ev4rs.multiPickImage(widget.saveField, root, _picker);
                                         if (everyImage.isNotEmpty) {
-                                        await Ev4rs.cleanupUnusedImages(everyImage);
+                                       // await Ev4rs.cleanupUnusedImages(everyImage);
                                         } 
                                       }, 
                                       label: 'Photo Lib'
@@ -2227,7 +2227,7 @@ import 'dart:async';
                                 onPressed: () async {
                                   Ev4rs.multiPickImage(widget.saveField, root, _picker);
                                     if (everyImage.isNotEmpty) {
-                                      await Ev4rs.cleanupUnusedImages(everyImage);
+                                     // await Ev4rs.cleanupUnusedImages(everyImage);
                                     } 
                                 }, 
                                 label: 'App Lib'
@@ -3996,7 +3996,7 @@ import 'dart:async';
                                             onPressed: () async {
                                               Ev4rs.pickSubFolderImage(widget.saveField, root, _picker);
                                               if (everyImage.isNotEmpty) {
-                                              await Ev4rs.cleanupUnusedImages(everyImage);
+                                              //await Ev4rs.cleanupUnusedImages(everyImage);
                                               } 
                                             }, 
                                             label: 'Photo Lib'
@@ -4016,7 +4016,7 @@ import 'dart:async';
                                       onPressed: () async {
                                         Ev4rs.pickImage(widget.saveField, root, _picker);
                                           if (everyImage.isNotEmpty) {
-                                            await Ev4rs.cleanupUnusedImages(everyImage);
+                                            //await Ev4rs.cleanupUnusedImages(everyImage);
                                           } 
                                       }, 
                                       label: 'App Lib'
@@ -5550,7 +5550,7 @@ import 'dart:async';
                                             onPressed: () async {
                                               Ev4rs.multiSubFolderPickImage(widget.saveField, root, _picker);
                                               if (everyImage.isNotEmpty) {
-                                              await Ev4rs.cleanupUnusedImages(everyImage);
+                                             // await Ev4rs.cleanupUnusedImages(everyImage);
                                               } 
                                             }, 
                                             label: 'Photo Lib'
@@ -5570,7 +5570,7 @@ import 'dart:async';
                                       onPressed: () async {
                                         Ev4rs.multiPickImage(widget.saveField, root, _picker);
                                           if (everyImage.isNotEmpty) {
-                                            await Ev4rs.cleanupUnusedImages(everyImage);
+                                           // await Ev4rs.cleanupUnusedImages(everyImage);
                                           } 
                                       }, 
                                       label: 'App Lib'

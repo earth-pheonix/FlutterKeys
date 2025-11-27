@@ -2863,10 +2863,9 @@ class Ev4rs {
       //save json
         static Future<void> saveJson(Root root) async {
           isSaving.value = true;
-          final dir = await getApplicationDocumentsDirectory();
-          final file = File('${dir.path}/magma_vocab.json');
+          final file = V4rs.currentFile;
           final jsonString = jsonEncode(root.toJson());
-          await file.writeAsString(jsonString);
+          await file!.writeAsString(jsonString);
           updateJsonHistory(root);
           Future.delayed(const Duration(milliseconds: 500), () {
             isSaving.value = false;
@@ -2875,11 +2874,9 @@ class Ev4rs {
 
       //undo save (used for redo and undo)
         static Future<void> undoSave(Root root) async {
-          isSaving.value = true;
-          final dir = await getApplicationDocumentsDirectory();
-          final file = File('${dir.path}/magma_vocab.json');
+          isSaving.value = true;final file = V4rs.currentFile;
           final jsonString = jsonEncode(root.toJson());
-          await file.writeAsString(jsonString);
+          await file!.writeAsString(jsonString);
           reloadJson.value = !reloadJson.value;
           Future.delayed(const Duration(milliseconds: 500), () {
             isSaving.value = false;

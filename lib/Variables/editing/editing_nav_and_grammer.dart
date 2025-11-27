@@ -138,7 +138,7 @@ import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
                                             onPressed: () async {
                                               Ev4rs.grammerPickImage(widget.saveField, root, _picker);
                                               if (everyImage.isNotEmpty) {
-                                              await Ev4rs.cleanupUnusedImages(everyImage);
+                                             // await Ev4rs.cleanupUnusedImages(everyImage);
                                               } 
                                             }, 
                                             label: 'Photo Lib'
@@ -158,7 +158,7 @@ import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
                                       onPressed: () async {
                                         Ev4rs.grammerPickImage(widget.saveField, root, _picker);
                                           if (everyImage.isNotEmpty) {
-                                            await Ev4rs.cleanupUnusedImages(everyImage);
+                                          //  await Ev4rs.cleanupUnusedImages(everyImage);
                                           } 
                                       }, 
                                       label: 'App Lib'
@@ -1437,7 +1437,7 @@ import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
                                             onPressed: () async {
                                               Ev4rs.multiPickImage(widget.saveField, root, _picker);
                                               if (everyImage.isNotEmpty) {
-                                              await Ev4rs.cleanupUnusedImages(everyImage);
+                                              //await Ev4rs.cleanupUnusedImages(everyImage);
                                               } 
                                             }, 
                                             label: 'Photo Lib'
@@ -1457,7 +1457,7 @@ import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
                                       onPressed: () async {
                                         Ev4rs.multiPickImage(widget.saveField, root, _picker);
                                           if (everyImage.isNotEmpty) {
-                                            await Ev4rs.cleanupUnusedImages(everyImage);
+                                            //await Ev4rs.cleanupUnusedImages(everyImage);
                                           } 
                                       }, 
                                       label: 'App Lib'
@@ -2735,7 +2735,7 @@ import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
                                             onPressed: () async {
                                               Ev4rs.navPickImage(widget.saveField, root, _picker);
                                               if (everyImage.isNotEmpty) {
-                                              await Ev4rs.cleanupUnusedImages(everyImage);
+                                              //await Ev4rs.cleanupUnusedImages(everyImage);
                                               } 
                                             }, 
                                             label: 'Photo Lib'
@@ -2755,7 +2755,7 @@ import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
                                       onPressed: () async {
                                         Ev4rs.navPickImage(widget.saveField, root, _picker);
                                         if (everyImage.isNotEmpty) {
-                                          await Ev4rs.cleanupUnusedImages(everyImage);
+                                         // await Ev4rs.cleanupUnusedImages(everyImage);
                                         } 
                                       }, 
                                       label: 'App Lib'
@@ -4229,7 +4229,7 @@ import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
                                             onPressed: () async {
                                               Ev4rs.multiNavPickImage(widget.saveField, root, _picker);
                                               if (everyImage.isNotEmpty) {
-                                              await Ev4rs.cleanupUnusedImages(everyImage);
+                                             // await Ev4rs.cleanupUnusedImages(everyImage);
                                               } 
                                             }, 
                                             label: 'Photo Lib'
@@ -4249,7 +4249,7 @@ import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
                                       onPressed: () async {
                                         Ev4rs.multiNavPickImage(widget.saveField, root, _picker);
                                           if (everyImage.isNotEmpty) {
-                                            await Ev4rs.cleanupUnusedImages(everyImage);
+                                           // await Ev4rs.cleanupUnusedImages(everyImage);
                                           } 
                                       }, 
                                       label: 'App Lib'
