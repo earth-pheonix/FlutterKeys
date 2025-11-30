@@ -10,7 +10,7 @@ class Fontsy {
     static int writingSystemNumber = languageToWritSysNumber(V4rs.interfaceLanguage);
 
     static int languageToWritSysNumber(String language) {
-    // AR = 1, CY = 2, DE = 3, GR = 4, HA = 5, HE = 6, JA = 7, KO = 8, LA = 9, TH = 10
+    // AR = 1, CY = 2, DE = 3, GR = 4, HA = 5, HE = 6, JA = 7, KO = 8, LA = 9, TH = 10,
       switch (language.toLowerCase()) {
         case 'english':
           return 9;
@@ -28,7 +28,7 @@ class Fontsy {
   static List<String> getFontsForWritSystem(int systemNumber) {
     switch (systemNumber) {
       case 1: return arabicFonts;
-      case 2: return [...cyrillicFonts, ...cyrillicRoundedFonts];
+      case 2: return []; // cyrillic placholder
       case 3: return devanagariFonts;
       case 4: return greekFonts;
       case 5: return []; // hanzi placeholder
@@ -39,6 +39,22 @@ class Fontsy {
       default: return thaiFonts;
     }
   }
+
+   static String getSampleForWritSystem(int systemNumber) {
+    switch (systemNumber) {
+      case 1: return 'السلام';
+      case 2: return ''; //placholder
+      case 3: return 'अआइई';
+      case 4: return 'Αβγδ';
+      case 5: return ''; // hanzi placeholder
+      case 6: return 'אבגד';
+      case 7: return 'ひらカン漢';
+      case 8: return '한글테스트';
+      case 9: return ''; //placeholder
+      default: return 'กขคง';
+    }
+  }
+
   //Font information
     static List <String> supportedWritSys = [
       'Arabic', 
@@ -58,6 +74,7 @@ class Fontsy {
     'Noto Sans (for Arabic)',
     'Noto Kufi (for Arabic)',
     'Noto Naskh (for Arabic)',
+    'Fairfax HD',
     ];
 
     //Cyrillic
@@ -65,6 +82,7 @@ class Fontsy {
     'Noto Sans (for Latin, Greek, and Cyrillic)',
     'Noto Serif (for Latin, Greek, and Cyrillic)',
     'Noto Sans Mono',
+    'Fairfax HD'
     ];
 
     static List <String> cyrillicRoundedFonts = [
@@ -77,6 +95,7 @@ class Fontsy {
     static List <String> devanagariFonts= [
     'Noto Sans (for Devanagari)',
     'Noto Serif (for Devanagari)',
+    'Fairfax HD'
     ];
 
     //Greek
@@ -86,6 +105,7 @@ class Fontsy {
     'Comic Relief',
     'Noto Serif (for Latin, Greek, and Cyrillic)',
     'Noto Sans Mono',
+    'Fairfax HD'
     ];
 
     //Hanzi
@@ -94,12 +114,14 @@ class Fontsy {
     'Noto Serif (for Simplified Hanzi)',
     'ZCOOL XiaoWei',
     'Ma Shan Zheng',
+    'Fairfax HD',
     ];
 
     static List <String> traditionalHanFonts= [
     'Noto Sans (for Traditional Hanzi)',
     'M PLUS Rounded 1c',
     'Noto Serif (for Traditional Hanzi)',
+    'Fairfax HD',
     ];
 
     static List <String> hongKongHanziFonts= [
@@ -112,6 +134,7 @@ class Fontsy {
     'Noto Sans (for Hebrew)',
     'M PLUS Rounded 1c',
     'Noto Serif (for Hebrew)',
+    'Fairfax HD',
     ];
 
     //japanese
@@ -119,6 +142,7 @@ class Fontsy {
     'Noto Sans (for Japanese)',
     'M PLUS Rounded 1c',
     'Noto Serif (for Japanese)',
+    'Fairfax HD',
     ];
 
     //korean
@@ -133,6 +157,7 @@ class Fontsy {
     'Noto Sans Thai Looped',
     'Itim',
     'Noto Serif (for Thai)',
+    'Fairfax HD',
     ];
 
     //latin 
@@ -166,6 +191,7 @@ class Fontsy {
     'Noto Sans Mono',
     'Atkinson Hyperlegible Mono',
     'Courier Prime',
+    'Fairfax HD',
     ];
 
     static List <String> latinHandwritFonts = [
@@ -223,6 +249,7 @@ class Fontsy {
       'Noto Sans (for Thai)' : 'TH',
       'Noto Serif (for Thai)' : 'TH',
       'Telex' : 'LA',
+      'Fairfax HD': 'AR, CY, DE, GR, HA, HE, JA, LA, TH',
     };
 
     //convert from display name to pubspec yaml name
@@ -267,6 +294,52 @@ class Fontsy {
       'Noto Serif (for Simplified Hanzi)' : 'notoSerifSimplified',
       'Gamja Flower' : 'gamjaFlower',
       'Telex' : 'telex',
+      'Fairfax HD': 'fairfaxHD'
+    };
+
+    //convert from  pubspec yaml name to display name
+    static Map<String, String> familyToFont = {
+      'openDyslexic': 'Open Dyslexic',
+      'openDyslexicAlta': 'Open Dyslexic Alta',
+      'openDyslexicMono': 'Open Dyslexic Mono',
+      'notoSansLCG': 'Noto Sans (for Latin, Greek, and Cyrillic)',
+      'notoSerifLCG': 'Noto Serif (for Latin, Greek, and Cyrillic)',
+      'lexend': 'Lexend',
+      'atkinsonHyperlegible': 'Atkinson Hyperlegible',
+      'mPLUSRounded1c': 'M PLUS Rounded 1c',
+      'shantellSans': 'Shantell Sans',
+      'comicRelief': 'Comic Relief',
+      'itim': 'Itim',
+      'arvo': 'Arvo',
+      'notoSansMono': 'Noto Sans Mono',
+      'atkinsonHyperlegibleMono': 'Atkinson Hyperlegible Mono',
+      'courierPrime': 'Courier Prime',
+      'maShanZheng': 'Ma Shan Zheng',
+      'zCOOLXiaoWei': 'ZCOOL XiaoWei',
+      'manufacturingConsent': 'Manufacturing Consent',
+      'metalMania': 'Metal Mania',
+      'rye': 'Rye',
+      'notoSansThaiLooped': 'Noto Sans Thai Looped',
+      'notoSansArabic': 'Noto Sans (for Arabic)',
+      'notoKufiArabic': 'Noto Kufi (for Arabic)',
+      'notoNaskhArabic': 'Noto Naskh (for Arabic)',
+      'notoSansHebrew': 'Noto Sans (for Hebrew)',
+      'notoSerifHebrew': 'Noto Serif (for Hebrew)',
+      'notoSansDevanagari': 'Noto Sans (for Devanagari)',
+      'notoSerifDevanagari': 'Noto Serif (for Devangari)',
+      'notoSansJP': 'Noto Sans (for Japanese)',
+      'notoSerifJapanese': 'Noto Serif (for Japanese)',
+      'notoSansKorean': 'Noto Sans (for Korean)',
+      'notoSerifKorean': 'Noto Serif (for Korean)',
+      'notoSansHK': 'Noto Sans (for Hong Kong)',
+      'notoSerifHK': 'Noto Serif (for Hong Kong)',
+      'notoSansSimplified': 'Noto Sans (for Simplified Hanzi)',
+      'notoSerifTraditional': 'Noto Serif (for Traditional Hanzi)',
+      'notoSansTraditional': 'Noto Sans (for Traditional Hanzi)',
+      'notoSerifSimplified': 'Noto Serif (for Simplified Hanzi)',
+      'gamjaFlower': 'Gamja Flower',
+      'telex': 'Telex',
+      'fairfaxHD': 'Fairfax HD',
     };
 
 }

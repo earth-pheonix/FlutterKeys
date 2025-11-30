@@ -8,9 +8,6 @@ import 'package:flutterkeysaac/Variables/tts/tts_interface.dart';
 import 'package:flutterkeysaac/Variables/tts/tts_factory.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
 
-
-
-
 class ExpandPage extends StatefulWidget {
   const ExpandPage({super.key});
 

@@ -7,9 +7,34 @@ import 'package:flutter/material.dart';
 class Fv4rs {
 
 //
+//Fallback Fonts
+//
+
+  static String fallbackFont1 = 'Default';
+  static final String _fallbackFont1 = "fallbackFont1";
+
+   static Future<void> savefallbackFont1 (String fallbackFont1) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_fallbackFont1, fallbackFont1);
+  } 
+
+  static String fallbackFont2 = 'Default';
+  static final String _fallbackFont2 = "fallbackFont2";
+
+   static Future<void> savefallbackFont2 (String fallbackFont2) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_fallbackFont2, fallbackFont2);
+  } 
+
+//
 //interface font settings 
 //
-  static TextStyle get interfacelabelStyle =>  TextStyle(color: interfaceFontColor, fontSize: 16, fontFamily: '');
+  static TextStyle get interfacelabelStyle =>  
+    TextStyle(
+      color: interfaceFontColor, 
+      fontSize: 16, 
+      fontFamily: interfaceFont,
+      fontFamilyFallback: [fallbackFont1, fallbackFont2]);
 
   //font family
   static String interfaceFont = 'Default';
@@ -67,6 +92,7 @@ class Fv4rs {
       fontFamily: Fontsy.fontToFamily[expandedFont], 
       fontWeight: FontWeight.values[((expandedFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: expandedFontItalics ? FontStyle.italic : FontStyle.normal,
+      fontFamilyFallback: [fallbackFont1, fallbackFont2]
     );
 
     //font family
@@ -125,7 +151,8 @@ class Fv4rs {
       fontFamily: Fontsy.fontToFamily[mwFont], 
       fontWeight: FontWeight.values[((mwFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: mwFontItalics ? FontStyle.italic : FontStyle.normal,
-      height: 1.5
+      height: 1.5,
+      fontFamilyFallback: [fallbackFont1, fallbackFont2]
     );
 
      //hint text style 
@@ -136,7 +163,8 @@ class Fv4rs {
       fontFamily: Fontsy.fontToFamily[mwFont], 
       fontWeight: FontWeight.values[((mwFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: mwFontItalics ? FontStyle.italic : FontStyle.normal,
-      height: 1.5
+      height: 1.5,
+      fontFamilyFallback: [fallbackFont1, fallbackFont2]
     );
 
     //font family
@@ -198,6 +226,7 @@ class Fv4rs {
       fontStyle: uniquehighlightFontItalics
           ? (highlightFontItalics ? FontStyle.italic : FontStyle.normal)
           : mwLabelStyle.fontStyle,
+      fontFamilyFallback: [fallbackFont1, fallbackFont2]
     );
     //weight
     static bool uniquehighlightFontWeight = false;
@@ -290,6 +319,7 @@ class Fv4rs {
       fontWeight: FontWeight.values[((navRowFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: navRowFontItalics ? FontStyle.italic : FontStyle.normal,
       decoration: navRowFontUnderline ? TextDecoration.underline : TextDecoration.none,
+      fontFamilyFallback: [fallbackFont1, fallbackFont2],
     );
 
     //font family
@@ -358,6 +388,7 @@ class Fv4rs {
       fontWeight: FontWeight.values[((subFolderFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: subFolderFontItalics ? FontStyle.italic : FontStyle.normal,
       decoration: subFolderFontUnderline ? TextDecoration.underline : TextDecoration.none,
+      fontFamilyFallback: [fallbackFont1, fallbackFont2],
     );
 
     //font family
@@ -426,6 +457,7 @@ class Fv4rs {
       fontWeight: FontWeight.values[((buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: buttonFontItalics ? FontStyle.italic : FontStyle.normal,
       decoration: buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
+      fontFamilyFallback: [fallbackFont1, fallbackFont2],
     );
 
     //font family
@@ -493,6 +525,7 @@ class Fv4rs {
       fontWeight: FontWeight.values[((grammerFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: grammerFontItalics ? FontStyle.italic : FontStyle.normal,
       decoration: grammerFontUnderline ? TextDecoration.underline : TextDecoration.none,
+      fontFamilyFallback: [fallbackFont1, fallbackFont2]
     );
 
     //font family
@@ -553,6 +586,9 @@ class Fv4rs {
     final prefs = await SharedPreferences.getInstance();
 
     interfaceFont = prefs.getString(_interfaceFont) ?? 'Default';
+    fallbackFont1 = prefs.getString(_fallbackFont1) ?? 'Default';
+    fallbackFont2 = prefs.getString(_fallbackFont2) ?? 'Default';
+
     interfaceFontSize = prefs.getDouble(_interfaceFontSize) ?? interfaceFontSize;
     interfaceFontWeight = prefs.getInt(_interfaceFontWeight) ?? interfaceFontWeight;
     interfaceFontItalics = prefs.getBool(_interfaceFontItalics) ?? interfaceFontItalics;

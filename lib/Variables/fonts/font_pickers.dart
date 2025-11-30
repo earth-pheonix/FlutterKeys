@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
+import 'package:flutterkeysaac/Variables/fonts/font_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
 import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_options.dart';
@@ -198,424 +199,8 @@ class _FontPickerState1 extends State<FontPicker1> {
         ),
 
         //font picker
-        ExpansionTile(
-          title: Text('Font:', style: Sv4rs.settingslabelStyle,),
-          collapsedBackgroundColor: Cv4rs.themeColor4,
-          backgroundColor: Cv4rs.themeColor4,
-          
-          children: [
-            ExpansionTile(
-          title: Row ( children: [
-            Spacer(),
-            Text('Language Writing System: ${
-              Fontsy.writingSystemNumber == 1 ? 'Arabic'
-            : Fontsy.writingSystemNumber == 2 ? 'Cyrillic'
-            : Fontsy.writingSystemNumber == 3 ? 'Devanagari' 
-            : Fontsy.writingSystemNumber == 4 ? 'Greek'
-            : Fontsy.writingSystemNumber == 5 ? 'Hanzi'
-            : Fontsy.writingSystemNumber == 6 ? 'Hebrew'
-            : Fontsy.writingSystemNumber == 7 ? 'Japanese'
-            : Fontsy.writingSystemNumber == 8 ? 'Korean'
-            : Fontsy.writingSystemNumber == 9 ? 'Latin'
-            : Text('Thai')
-          }', style: Sv4rs.settingslabelStyle,
-          ), 
-          Spacer(), ]),
-          childrenPadding: EdgeInsets.symmetric(horizontal: 40), 
-          children: [
-            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 60), child:
-            Row(
-              children: [
-            Text('Writing System:', style: Sv4rs.settingslabelStyle,),
-            Expanded(
-              child: Slider(
-                value: Fontsy.writingSystemNumber.toDouble(), 
-                min: 1.0,
-                max: 10.0,
-                divisions: 11,
-                activeColor: Cv4rs.themeColor1,
-                inactiveColor: Cv4rs.themeColor3,
-                thumbColor: Cv4rs.themeColor1,
-                onChanged: (value) async {
-                    setState(() {
-                      Fontsy.writingSystemNumber = value.round();
-                    });
-                  },
-                ),
-            ),
-            Fontsy.writingSystemNumber == 1 ? Text('Arabic', style: Sv4rs.settingslabelStyle,) 
-            : Fontsy.writingSystemNumber == 2 ? Text('Cyrillic', style: Sv4rs.settingslabelStyle,) 
-            : Fontsy.writingSystemNumber == 3 ? Text('Devanagari', style: Sv4rs.settingslabelStyle,) 
-            : Fontsy.writingSystemNumber == 4 ? Text('Greek', style: Sv4rs.settingslabelStyle,)
-            : Fontsy.writingSystemNumber == 5 ? Text('Hanzi', style: Sv4rs.settingslabelStyle,) 
-            : Fontsy.writingSystemNumber == 6 ? Text('Hebrew', style: Sv4rs.settingslabelStyle,) 
-            : Fontsy.writingSystemNumber == 7 ? Text('Japanese', style: Sv4rs.settingslabelStyle,) 
-            : Fontsy.writingSystemNumber == 8 ? Text('Korean', style: Sv4rs.settingslabelStyle,) 
-            : Fontsy.writingSystemNumber == 9 ? Text('Latin', style: Sv4rs.settingslabelStyle,) 
-            : Text('Thai', style: Sv4rs.settingslabelStyle,),
-          ],
-        ),
-            ),
-            ],
-            ),
-        
-            RadioGroup<String>(
-              groupValue: _font,
-              onChanged: (val) {
-                  if (val != null) {
-                    setState(() => _font = val);
-                    widget.onFontChanged(val);
-                  }
-              },
-              child: Column(
-                children: [
-                  RadioListTile<String>(
-                    title: Text('Default', style: Sv4rs.settingslabelStyle,),
-                    value: 'Default',
-                  ),
-                  if (Fontsy.writingSystemNumber == 2) ...[
-              ...Fontsy.cyrillicFonts.map((font) {
-              return RadioListTile<String>(
-                title: Row(
-                  children: [
-                    Expanded(flex: 3, child: 
-                    Text(font, style: Sv4rs.settingslabelStyle,),
-                    ),
-                    Spacer(flex: 1),
-                    Expanded(flex: 2, child: 
-                    Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                    ),
-                    Spacer(flex: 1),
-                    Expanded(flex: 3, child: 
-                    Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                    ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-        ExpansionTile(
-          title: Text('Rounded fonts:', style: Sv4rs.settingslabelStyle,),
-          children: [
-            ...Fontsy.cyrillicRoundedFonts.map((font) {
-              return RadioListTile<String>(
-                title: Row(
-                  children: [
-                    Expanded(flex: 3, child: 
-                    Text(font, style: Sv4rs.settingslabelStyle,),
-                    ),
-                    Spacer(flex: 1),
-                    Expanded(flex: 2, child: 
-                    Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                    ),
-                    Spacer(flex: 1),
-                    Expanded(flex: 3, child: 
-                    Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                    ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-          ] else if (Fontsy.writingSystemNumber == 5) ...[
-       
-            ExpansionTile(
-              title: Text('Simplified Hanzi', style: Sv4rs.settingslabelStyle,),
-              children: [
-                ...Fontsy.simplifiedHanFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text('Traditional Hanzi', style: Sv4rs.settingslabelStyle,),
-              children: [
-                ...Fontsy.traditionalHanFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text('Hong Kong Hanzi', style: Sv4rs.settingslabelStyle,),
-              children: [
-                ...Fontsy.hongKongHanziFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-              
-              ] else if (Fontsy.writingSystemNumber == 9) ...[
-            ExpansionTile(
-              title: Text('OpenDyslexic', style: Sv4rs.settingslabelStyle,),
-              children: [
-                ...Fontsy.latinOpenDyslexicFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text('Sans-Serif', style: Sv4rs.settingslabelStyle,),
-              children: [
-                ...Fontsy.latinSansSerifFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text('Rounded', style: Sv4rs.settingslabelStyle,),
-              children: [
-                ...Fontsy.latinRoundedFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-              ExpansionTile(
-              title: Text('Serif', style: Sv4rs.settingslabelStyle),
-              children: [
-                ...Fontsy.latinSerifFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text('Monospaced', style: Sv4rs.settingslabelStyle),
-              children: [
-                ...Fontsy.latinMonoFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text('Handwriting', style: Sv4rs.settingslabelStyle),
-              children: [
-                ...Fontsy.latinHandwritFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-                ExpansionTile(
-              title: Text('Stylized', style: Sv4rs.settingslabelStyle),
-              children: [
-                ...Fontsy.latinStylizedFonts.map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-            ),
-              ],
-            ),
-              
-              ] else ...[
-                ...Fontsy.getFontsForWritSystem(Fontsy.writingSystemNumber).map((font) {
-                  return RadioListTile<String>(
-                    title: Row(
-                      children: [
-                        Expanded(flex: 3, child: 
-                        Text(font, style: Sv4rs.settingslabelStyle,),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 2, child: 
-                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(flex: 3, child: 
-                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
-                        ),
-                      ],
-                    ),
-                    value: font,
-                  );
-                }
-              ),
-              ]
-                ]
-              )
-            ),
-            
-          ]
-        ),
-      
+        FontFamilyPicker(font: _font, onFontChanged: widget.onFontChanged, tts: _tts, label: 'Font Family: ${Fontsy.familyToFont[_font]}'),
+
         //color font 
         ExpansionTile(
             title: Row(
@@ -891,457 +476,8 @@ class _FontPickerState2 extends State<FontPicker2> {
         ),
         ),
         //font picker
-        ExpansionTile(
-          tilePadding: EdgeInsets.all(0),
-          title: Text('Font:', style: Sv4rs.settingslabelStyle,),
-          collapsedBackgroundColor: Cv4rs.themeColor4,
-          backgroundColor: Cv4rs.themeColor4,
-          children: [
-            ExpansionTile(
-              tilePadding: EdgeInsets.all(0),
-              title: Row ( 
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(child: 
-                    Text('Writing System: ${
-                      Fontsy.writingSystemNumber == 1 ? 'Arabic'
-                    : Fontsy.writingSystemNumber == 2 ? 'Cyrillic'
-                    : Fontsy.writingSystemNumber == 3 ? 'Devanagari' 
-                    : Fontsy.writingSystemNumber == 4 ? 'Greek'
-                    : Fontsy.writingSystemNumber == 5 ? 'Hanzi'
-                    : Fontsy.writingSystemNumber == 6 ? 'Hebrew'
-                    : Fontsy.writingSystemNumber == 7 ? 'Japanese'
-                    : Fontsy.writingSystemNumber == 8 ? 'Korean'
-                    : Fontsy.writingSystemNumber == 9 ? 'Latin'
-                    : 'Thai'
-                   }', style: Sv4rs.settingslabelStyle,
-                  ), 
-                 ),
-                ]
-              ),
-              children: [
-                Column(
-                  children: [
-                    Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0), child:
-                    Text('Writing System:', style: Sv4rs.settingslabelStyle,),
-                    ),
-                Slider(
-                    value: Fontsy.writingSystemNumber.toDouble(), 
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    min: 1.0,
-                    max: 10.0,
-                    divisions: 11,
-                    activeColor: Cv4rs.themeColor1,
-                    inactiveColor: Cv4rs.themeColor3,
-                    thumbColor: Cv4rs.themeColor1,
-                    onChanged: (value) async {
-                        setState(() {
-                          Fontsy.writingSystemNumber = value.round();
-                        });
-                      },
-                    ),
-              ],
-            ),
-            
-            ],
-            ),
-        RadioGroup(
-          groupValue: _font,
-          onChanged: (val) {
-            if (val != null) {
-              setState(() => _font = val);
-              widget.onFontChanged(val);
-            }
-          }, 
-          child: Column(children: [
-            RadioListTile<String>(
-              contentPadding: EdgeInsets.all(0),
-              title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily["Default"]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      'Default', 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-              value: 'Default',
-            ),
-            if (Fontsy.writingSystemNumber == 2) ...[
-              ...Fontsy.cyrillicFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-        ExpansionTile(
-          title: Text('Rounded fonts:', style: Sv4rs.settingslabelStyle,),
-          children: [
-            ...Fontsy.cyrillicRoundedFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-          ] else if (Fontsy.writingSystemNumber == 5) ...[
-        ExpansionTile(
-          title: Text('Simplified Hanzi', style: Sv4rs.settingslabelStyle,),
-          children: [
-            ...Fontsy.simplifiedHanFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-               
-              );
-            }
-        ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text('Traditional Hanzi', style: Sv4rs.settingslabelStyle,),
-          children: [
-            ...Fontsy.traditionalHanFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title:Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text('Hong Kong Hanzi', style: Sv4rs.settingslabelStyle,),
-          children: [
-            ...Fontsy.hongKongHanziFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-          
-          ] else if (Fontsy.writingSystemNumber == 9) ...[
-        ExpansionTile(
-          title: Text('OpenDyslexic', style: Sv4rs.settingslabelStyle,),
-          children: [
-            ...Fontsy.latinOpenDyslexicFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                   Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text('Sans-Serif', style: Sv4rs.settingslabelStyle,),
-          children: [
-            ...Fontsy.latinSansSerifFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text('Rounded', style: Sv4rs.settingslabelStyle,),
-          children: [
-            ...Fontsy.latinRoundedFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                   Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-          ExpansionTile(
-          title: Text('Serif', style: Sv4rs.settingslabelStyle),
-          children: [
-            ...Fontsy.latinSerifFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text('Monospaced', style: Sv4rs.settingslabelStyle),
-          children: [
-            ...Fontsy.latinMonoFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-        ExpansionTile(
-          title: Text('Handwrit', style: Sv4rs.settingslabelStyle),
-          children: [
-            ...Fontsy.latinHandwritFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-            ExpansionTile(
-          title: Text('Stylized', style: Sv4rs.settingslabelStyle),
-          children: [
-            ...Fontsy.latinStylizedFonts.map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                      ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-        ),
-          ],
-        ),
-          
-          ] else ...[
-            ...Fontsy.getFontsForWritSystem(Fontsy.writingSystemNumber).map((font) {
-              return RadioListTile<String>(
-                contentPadding: EdgeInsets.all(0),
-                title: Column(
-                  children: [
-                    Text(
-                      'Abcde', 
-                      style: TextStyle(fontFamily: Fontsy.fontToFamily[font]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      ),
-                    Text(
-                      font, 
-                      style: Sv4rs.settingslabelStyle,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-                value: font,
-              );
-            }
-          ),
-          ]
-          ]
-          ),
-          ),
-          ]
-        ),
-      
+        FontFamilyPicker(font: _font, onFontChanged: widget.onFontChanged, label: 'Font Family:'),
+        
         //color font 
         ExpansionTile(
           tilePadding: EdgeInsets.all(0),
@@ -1421,6 +557,512 @@ class _FontPickerState2 extends State<FontPicker2> {
         widget.widgety,
       ]
      ),
+    );
+  }
+}
+
+class FontFamilyPicker extends StatefulWidget {
+  final String font;
+  final ValueChanged<String> onFontChanged;
+  final TTSInterface? tts;
+  final String label;
+
+  const FontFamilyPicker({
+    super.key,
+    required this.font,
+    required this.onFontChanged,
+    required this.label,
+    this.tts,
+  });
+
+  @override
+  State<FontFamilyPicker> createState() => _FontFamilyPicker();
+}
+
+class _FontFamilyPicker extends State<FontFamilyPicker> {
+  late String _font;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _font = widget.font;
+  }
+
+  TextStyle get labelStyle =>  
+  TextStyle(
+    color: Fv4rs.interfaceFontColor, 
+    fontSize: Fv4rs.interfaceFontSize, 
+    fontFamily: Fontsy.fontToFamily[_font] ?? _font, 
+    fontWeight: FontWeight.values[((Fv4rs.interfaceFontWeight ~/ 100) - 1 ).clamp(0, 8)],
+    fontStyle: Fv4rs.interfaceFontItalics ? FontStyle.italic : FontStyle.normal,
+    );
+
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: Text(widget.label,  style: Sv4rs.settingslabelStyle,),
+      collapsedBackgroundColor: Cv4rs.themeColor4,
+      backgroundColor: Cv4rs.themeColor4,
+      childrenPadding: EdgeInsets.symmetric(horizontal: 20),
+      onExpansionChanged: (bool expanded) {  
+        if (Sv4rs.speakInterfaceButtonsOnSelect && widget.tts != null) {
+            V4rs.speakOnSelect(widget.label, V4rs.selectedLanguage.value, widget.tts!);
+          }},
+      children: [
+        // Sample text
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded( child: Center( child: 
+            Text(
+              'Sample Text: ${Fontsy.getSampleForWritSystem(Fontsy.writingSystemNumber)}',
+              style: labelStyle,
+            ),
+            ),
+            ),
+          ],
+        ),
+        
+        //font picker
+        ExpansionTile(
+          title: Text('Font:', style: Sv4rs.settingslabelStyle,),
+          collapsedBackgroundColor: Cv4rs.themeColor4,
+          backgroundColor: Cv4rs.themeColor4,
+          
+          children: [
+            ExpansionTile(
+          title: Row ( children: [
+            Spacer(),
+            Text('Language Writing System: ${
+              Fontsy.writingSystemNumber == 1 ? 'Arabic'
+            : Fontsy.writingSystemNumber == 2 ? 'Cyrillic'
+            : Fontsy.writingSystemNumber == 3 ? 'Devanagari' 
+            : Fontsy.writingSystemNumber == 4 ? 'Greek'
+            : Fontsy.writingSystemNumber == 5 ? 'Hanzi'
+            : Fontsy.writingSystemNumber == 6 ? 'Hebrew'
+            : Fontsy.writingSystemNumber == 7 ? 'Japanese'
+            : Fontsy.writingSystemNumber == 8 ? 'Korean'
+            : Fontsy.writingSystemNumber == 9 ? 'Latin'
+            : Text('Thai')
+          }', style: Sv4rs.settingslabelStyle,
+          ), 
+          Spacer(), ]),
+          childrenPadding: EdgeInsets.symmetric(horizontal: 40), 
+          children: [
+            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: 60), child:
+            Row(
+              children: [
+            Text('Writing System:', style: Sv4rs.settingslabelStyle,),
+            Expanded(
+              child: Slider(
+                value: Fontsy.writingSystemNumber.toDouble(), 
+                min: 1.0,
+                max: 10.0,
+                divisions: 11,
+                activeColor: Cv4rs.themeColor1,
+                inactiveColor: Cv4rs.themeColor3,
+                thumbColor: Cv4rs.themeColor1,
+                onChanged: (value) async {
+                    setState(() {
+                      Fontsy.writingSystemNumber = value.round();
+                    });
+                  },
+                ),
+            ),
+            Fontsy.writingSystemNumber == 1 ? Text('Arabic', style: Sv4rs.settingslabelStyle,) 
+            : Fontsy.writingSystemNumber == 2 ? Text('Cyrillic', style: Sv4rs.settingslabelStyle,) 
+            : Fontsy.writingSystemNumber == 3 ? Text('Devanagari', style: Sv4rs.settingslabelStyle,) 
+            : Fontsy.writingSystemNumber == 4 ? Text('Greek', style: Sv4rs.settingslabelStyle,)
+            : Fontsy.writingSystemNumber == 5 ? Text('Hanzi', style: Sv4rs.settingslabelStyle,) 
+            : Fontsy.writingSystemNumber == 6 ? Text('Hebrew', style: Sv4rs.settingslabelStyle,) 
+            : Fontsy.writingSystemNumber == 7 ? Text('Japanese', style: Sv4rs.settingslabelStyle,) 
+            : Fontsy.writingSystemNumber == 8 ? Text('Korean', style: Sv4rs.settingslabelStyle,) 
+            : Fontsy.writingSystemNumber == 9 ? Text('Latin', style: Sv4rs.settingslabelStyle,) 
+            : Text('Thai', style: Sv4rs.settingslabelStyle,),
+          ],
+        ),
+            ),
+            ],
+            ),
+        
+            RadioGroup<String>(
+              groupValue: _font,
+              onChanged: (val) {
+                  if (val != null) {
+                    setState(() => _font = val);
+                    widget.onFontChanged(val);
+                  }
+              },
+              child: Column(
+                children: [
+                  RadioListTile<String>(
+                    title: Text('Default', style: Sv4rs.settingslabelStyle,),
+                    value: 'Default',
+                  ),
+
+              //
+              //Cyrillic
+              //
+
+              if (Fontsy.writingSystemNumber == 2) ...[
+              ...Fontsy.cyrillicFonts.map((font) {
+              return RadioListTile<String>(
+                title: Row(
+                  children: [
+                    Expanded(flex: 3, child: 
+                      Text(font, style: Sv4rs.settingslabelStyle,),
+                    ),
+                    Spacer(flex: 1),
+                    Expanded(flex: 2, child: 
+                      Text('Абвг', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                    ),
+                    Spacer(flex: 1),
+                      Expanded(flex: 3, child: 
+                    Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                    ),
+                  ],
+                ),
+                value: font,
+              );
+            }
+        ),
+        ExpansionTile(
+          title: Text('Rounded fonts:', style: Sv4rs.settingslabelStyle,),
+          children: [
+            ...Fontsy.cyrillicRoundedFonts.map((font) {
+              return RadioListTile<String>(
+                title: Row(
+                  children: [
+                    Expanded(flex: 3, child: 
+                    Text(font, style: Sv4rs.settingslabelStyle,),
+                    ),
+                    Spacer(flex: 1),
+                    Expanded(flex: 2, child: 
+                      Text('Абвг', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                    ),
+                    Spacer(flex: 1),
+                    Expanded(flex: 3, child: 
+                      Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                    ),
+                  ],
+                ),
+                value: font,
+              );
+            }
+        ),
+          ],
+        ),
+          ] 
+          
+              //
+              //Chinese
+              //
+
+              else if (Fontsy.writingSystemNumber == 5) ...[
+                ExpansionTile(
+                  title: Text('Simplified Hanzi', style: Sv4rs.settingslabelStyle,),
+                  children: [
+                    ...Fontsy.simplifiedHanFonts.map((font) {
+                      return RadioListTile<String>(
+                        title: Row(
+                          children: [
+                            Expanded(flex: 3, child: 
+                            Text(font, style: Sv4rs.settingslabelStyle,),
+                            ),
+                            Spacer(flex: 1),
+                            Expanded(flex: 2, child: 
+                            Text('的一是学国', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                            ),
+                            Spacer(flex: 1),
+                            Expanded(flex: 3, child: 
+                            Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                            ),
+                          ],
+                        ),
+                        value: font,
+                      );
+                    }
+                ),
+                  ],
+                ),
+                ExpansionTile(
+                  title: Text('Traditional Hanzi', style: Sv4rs.settingslabelStyle,),
+                  children: [
+                    ...Fontsy.traditionalHanFonts.map((font) {
+                      return RadioListTile<String>(
+                        title: Row(
+                          children: [
+                            Expanded(flex: 3, child: 
+                            Text(font, style: Sv4rs.settingslabelStyle,),
+                            ),
+                            Spacer(flex: 1),
+                            Expanded(flex: 2, child: 
+                            Text('的一是學國', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                            ),
+                            Spacer(flex: 1),
+                            Expanded(flex: 3, child: 
+                            Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                            ),
+                          ],
+                        ),
+                        value: font,
+                      );
+                    }
+                ),
+                  ],
+                ),
+                ExpansionTile(
+                  title: Text('Hong Kong Hanzi', style: Sv4rs.settingslabelStyle,),
+                  children: [
+                    ...Fontsy.hongKongHanziFonts.map((font) {
+                      return RadioListTile<String>(
+                        title: Row(
+                          children: [
+                            Expanded(flex: 3, child: 
+                            Text(font, style: Sv4rs.settingslabelStyle,),
+                            ),
+                            Spacer(flex: 1),
+                            Expanded(flex: 2, child: 
+                            Text('的一是學國', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                            ),
+                            Spacer(flex: 1),
+                            Expanded(flex: 3, child: 
+                            Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                            ),
+                          ],
+                        ),
+                        value: font,
+                      );
+                    }
+                ),
+                  ],
+                ),
+                  
+              ] 
+
+              //
+              //Latin
+              //
+
+              else if (Fontsy.writingSystemNumber == 9) ...[
+            ExpansionTile(
+              title: Text('OpenDyslexic', style: Sv4rs.settingslabelStyle,),
+              children: [
+                ...Fontsy.latinOpenDyslexicFonts.map((font) {
+                  return RadioListTile<String>(
+                    title: Row(
+                      children: [
+                        Expanded(flex: 3, child: 
+                        Text(font, style: Sv4rs.settingslabelStyle,),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 2, child: 
+                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 3, child: 
+                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                        ),
+                      ],
+                    ),
+                    value: font,
+                  );
+                }
+            ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Sans-Serif', style: Sv4rs.settingslabelStyle,),
+              children: [
+                ...Fontsy.latinSansSerifFonts.map((font) {
+                  return RadioListTile<String>(
+                    title: Row(
+                      children: [
+                        Expanded(flex: 3, child: 
+                        Text(font, style: Sv4rs.settingslabelStyle,),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 2, child: 
+                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 3, child: 
+                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                        ),
+                      ],
+                    ),
+                    value: font,
+                  );
+                }
+            ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Rounded', style: Sv4rs.settingslabelStyle,),
+              children: [
+                ...Fontsy.latinRoundedFonts.map((font) {
+                  return RadioListTile<String>(
+                    title: Row(
+                      children: [
+                        Expanded(flex: 3, child: 
+                        Text(font, style: Sv4rs.settingslabelStyle,),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 2, child: 
+                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 3, child: 
+                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                        ),
+                      ],
+                    ),
+                    value: font,
+                  );
+                }
+            ),
+              ],
+            ),
+              ExpansionTile(
+              title: Text('Serif', style: Sv4rs.settingslabelStyle),
+              children: [
+                ...Fontsy.latinSerifFonts.map((font) {
+                  return RadioListTile<String>(
+                    title: Row(
+                      children: [
+                        Expanded(flex: 3, child: 
+                        Text(font, style: Sv4rs.settingslabelStyle,),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 2, child: 
+                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 3, child: 
+                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                        ),
+                      ],
+                    ),
+                    value: font,
+                  );
+                }
+            ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Monospaced', style: Sv4rs.settingslabelStyle),
+              children: [
+                ...Fontsy.latinMonoFonts.map((font) {
+                  return RadioListTile<String>(
+                    title: Row(
+                      children: [
+                        Expanded(flex: 3, child: 
+                        Text(font, style: Sv4rs.settingslabelStyle,),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 2, child: 
+                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 3, child: 
+                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                        ),
+                      ],
+                    ),
+                    value: font,
+                  );
+                }
+            ),
+              ],
+            ),
+            ExpansionTile(
+              title: Text('Handwriting', style: Sv4rs.settingslabelStyle),
+              children: [
+                ...Fontsy.latinHandwritFonts.map((font) {
+                  return RadioListTile<String>(
+                    title: Row(
+                      children: [
+                        Expanded(flex: 3, child: 
+                        Text(font, style: Sv4rs.settingslabelStyle,),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 2, child: 
+                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 3, child: 
+                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                        ),
+                      ],
+                    ),
+                    value: font,
+                  );
+                }
+            ),
+              ],
+            ),
+                ExpansionTile(
+              title: Text('Stylized', style: Sv4rs.settingslabelStyle),
+              children: [
+                ...Fontsy.latinStylizedFonts.map((font) {
+                  return RadioListTile<String>(
+                    title: Row(
+                      children: [
+                        Expanded(flex: 3, child: 
+                        Text(font, style: Sv4rs.settingslabelStyle,),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 2, child: 
+                        Text('Abcde', style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 3, child: 
+                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                        ),
+                      ],
+                    ),
+                    value: font,
+                  );
+                }
+            ),
+              ],
+            ),
+              
+              ] else ...[
+                ...Fontsy.getFontsForWritSystem(Fontsy.writingSystemNumber).map((font) {
+                  return RadioListTile<String>(
+                    title: Row(
+                      children: [
+                        Expanded(flex: 3, child: 
+                        Text(font, style: Sv4rs.settingslabelStyle,),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 2, child: 
+                        Text(
+                          Fontsy.getSampleForWritSystem(Fontsy.writingSystemNumber), 
+                          style: TextStyle(fontFamily: Fontsy.fontToFamily[font])),
+                        ),
+                        Spacer(flex: 1),
+                        Expanded(flex: 3, child: 
+                        Text('${Fontsy.fontLanguages[font]}', style: Sv4rs.settingslabelStyle,),
+                        ),
+                      ],
+                    ),
+                    value: font,
+                  );
+                }
+              ),
+              ]
+                ]
+              )
+            ),
+            
+          ]
+        ),
+      
+      ],
     );
   }
 }

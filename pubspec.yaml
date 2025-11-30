@@ -139,24 +139,18 @@ flutter:
         - asset: assets/fonts/assorted_fonts/Itim/Itim-Regular.ttf
       - family: lexend
         fonts:
-        - asset: assets/fonts/assorted_fonts/Lexend/static/Lexend-Thin.ttf
         - asset: assets/fonts/assorted_fonts/Lexend/static/Lexend-SemiBold.ttf
         - asset: assets/fonts/assorted_fonts/Lexend/static/Lexend-Regular.ttf
-        - asset: assets/fonts/assorted_fonts/Lexend/static/Lexend-Medium.ttf
         - asset: assets/fonts/assorted_fonts/Lexend/static/Lexend-Light.ttf
-        - asset: assets/fonts/assorted_fonts/Lexend/static/Lexend-ExtraLight.ttf
         - asset: assets/fonts/assorted_fonts/Lexend/static/Lexend-ExtraBold.ttf
         - asset: assets/fonts/assorted_fonts/Lexend/static/Lexend-Bold.ttf
-        - asset: assets/fonts/assorted_fonts/Lexend/static/Lexend-Black.ttf
       - family: mPLUSRounded1c
         fonts:
         - asset: assets/fonts/assorted_fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Black.ttf
-        - asset: assets/fonts/assorted_fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Bold.ttf
         - asset: assets/fonts/assorted_fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-ExtraBold.ttf
         - asset: assets/fonts/assorted_fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Light.ttf
         - asset: assets/fonts/assorted_fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Medium.ttf
         - asset: assets/fonts/assorted_fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Regular.ttf
-        - asset: assets/fonts/assorted_fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Thin.ttf
       - family: maShanZheng
         fonts:
         - asset: assets/fonts/assorted_fonts/Ma_Shan_Zheng/MaShanZheng-Regular.ttf
@@ -212,10 +206,6 @@ flutter:
 
       - family: notoSerifLCG
         fonts:
-        - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-ThinItalic.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-Thin.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-SemiBoldItalic.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-SemiBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-Regular.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-MediumItalic.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-Medium.ttf
@@ -224,8 +214,6 @@ flutter:
         - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-Italic.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-ExtraLightItalic.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-ExtraLight.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-ExtraBoldItalic.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-ExtraBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-BoldItalic.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-Bold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif/static/NotoSerif-Black.ttf
@@ -234,85 +222,66 @@ flutter:
         fonts:
         - asset: assets/fonts/noto_serif/Noto_Serif_Devanagari/static/NotoSerifDevanagari-Black.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Devanagari/static/NotoSerifDevanagari-Bold.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_Devanagari/static/NotoSerifDevanagari-ExtraBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Devanagari/static/NotoSerifDevanagari-ExtraLight.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Devanagari/static/NotoSerifDevanagari-Medium.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Devanagari/static/NotoSerifDevanagari-Regular.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_Devanagari/static/NotoSerifDevanagari-SemiBold.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_Devanagari/static/NotoSerifDevanagari-Thin.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Devanagari/static/NotoSerifDevanagari-Light.ttf
       - family: notoSerifHebrew
         fonts:
-        - asset: assets/fonts/noto_serif/Noto_Serif_Hebrew/static/NotoSerifHebrew-Thin.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_Hebrew/static/NotoSerifHebrew-SemiBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Hebrew/static/NotoSerifHebrew-Regular.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Hebrew/static/NotoSerifHebrew-Medium.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Hebrew/static/NotoSerifHebrew-Light.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Hebrew/static/NotoSerifHebrew-ExtraLight.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_Hebrew/static/NotoSerifHebrew-ExtraBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Hebrew/static/NotoSerifHebrew-Bold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Hebrew/static/NotoSerifHebrew-Black.ttf
       - family: notoSerifHK
         fonts:
         - asset: assets/fonts/noto_serif/Noto_Serif_HK/static/NotoSerifHK-Black.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_HK/static/NotoSerifHK-Bold.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_HK/static/NotoSerifHK-ExtraBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_HK/static/NotoSerifHK-ExtraLight.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_HK/static/NotoSerifHK-Light.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_HK/static/NotoSerifHK-Medium.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_HK/static/NotoSerifHK-Regular.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_HK/static/NotoSerifHK-SemiBold.ttf
       - family: notoSerifJapanese
         fonts:
         - asset: assets/fonts/noto_serif/Noto_Serif_JP/static/NotoSerifJP-Black.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_JP/static/NotoSerifJP-Bold.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_JP/static/NotoSerifJP-ExtraBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_JP/static/NotoSerifJP-ExtraLight.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_JP/static/NotoSerifJP-Light.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_JP/static/NotoSerifJP-Medium.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_JP/static/NotoSerifJP-Regular.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_JP/static/NotoSerifJP-SemiBold.ttf
       - family: notoSerifKorean
         fonts:
         - asset: assets/fonts/noto_serif/Noto_Serif_KR/static/NotoSerifKR-Black.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_KR/static/NotoSerifKR-Bold.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_KR/static/NotoSerifKR-ExtraBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_KR/static/NotoSerifKR-ExtraLight.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_KR/static/NotoSerifKR-Light.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_KR/static/NotoSerifKR-Medium.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_KR/static/NotoSerifKR-Regular.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_KR/static/NotoSerifKR-SemiBold.ttf
       - family: notoSerifSimplified
         fonts:
         - asset: assets/fonts/noto_serif/Noto_Serif_SC/static/NotoSerifSC-Black.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_SC/static/NotoSerifSC-Bold.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_SC/static/NotoSerifSC-ExtraBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_SC/static/NotoSerifSC-ExtraLight.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_SC/static/NotoSerifSC-Light.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_SC/static/NotoSerifSC-Medium.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_SC/static/NotoSerifSC-Regular.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_SC/static/NotoSerifSC-SemiBold.ttf
       - family: notoSerifTraditional
         fonts:
         - asset: assets/fonts/noto_serif/Noto_Serif_TC/static/NotoSerifTC-Black.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_TC/static/NotoSerifTC-Bold.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_TC/static/NotoSerifTC-ExtraBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_TC/static/NotoSerifTC-ExtraLight.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_TC/static/NotoSerifTC-Light.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_TC/static/NotoSerifTC-Medium.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_TC/static/NotoSerifTC-Regular.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_TC/static/NotoSerifTC-SemiBold.ttf
       - family: notoSerifThai
         fonts:
         - asset: assets/fonts/noto_serif/Noto_Serif_Thai/static/NotoSerifThai-Black.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Thai/static/NotoSerifThai-Bold.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_Thai/static/NotoSerifThai-ExtraBold.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Thai/static/NotoSerifThai-ExtraLight.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Thai/static/NotoSerifThai-Light.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Thai/static/NotoSerifThai-Medium.ttf
         - asset: assets/fonts/noto_serif/Noto_Serif_Thai/static/NotoSerifThai-Regular.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_Thai/static/NotoSerifThai-SemiBold.ttf
-        - asset: assets/fonts/noto_serif/Noto_Serif_Thai/static/NotoSerifThai-Thin.ttf
 
 
       - family: notoSansLCG
@@ -321,8 +290,6 @@ flutter:
         - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-Black.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-Bold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-BoldItalic.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-ExtraBold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-ExtraBoldItalic.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-ExtraLight.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-ExtraLightItalic.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-Italic.ttf
@@ -331,148 +298,107 @@ flutter:
         - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-MediumItalic.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-Regular.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-SemiBold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-SemiBoldItalic.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-Thin.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans/static/NotoSans-ThinItalic.ttf
       - family: notoSansArabic
         fonts:
         - asset: assets/fonts/noto_sans/Noto_Sans_Arabic/static/NotoSansArabic-Black.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Arabic/static/NotoSansArabic-Bold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Arabic/static/NotoSansArabic-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Arabic/static/NotoSansArabic-ExtraLight.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Arabic/static/NotoSansArabic-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Arabic/static/NotoSansArabic-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Arabic/static/NotoSansArabic-Regular.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Arabic/static/NotoSansArabic-SemiBold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Arabic/static/NotoSansArabic-Thin.ttf
       - family: notoSansDevanagari
         fonts:
-        - asset: assets/fonts/noto_sans/Noto_Sans_Devanagari/static/NotoSansDevanagari-Thin.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Devanagari/static/NotoSansDevanagari-SemiBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Devanagari/static/NotoSansDevanagari-Regular.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Devanagari/static/NotoSansDevanagari-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Devanagari/static/NotoSansDevanagari-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Devanagari/static/NotoSansDevanagari-ExtraLight.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Devanagari/static/NotoSansDevanagari-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Devanagari/static/NotoSansDevanagari-Bold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Devanagari/static/NotoSansDevanagari-Black.ttf
       - family: notoSansHebrew
         fonts:
-        - asset: assets/fonts/noto_sans/Noto_Sans_Hebrew/static/NotoSansHebrew-Thin.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Hebrew/static/NotoSansHebrew-SemiBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Hebrew/static/NotoSansHebrew-Regular.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Hebrew/static/NotoSansHebrew-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Hebrew/static/NotoSansHebrew-Light.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Hebrew/static/NotoSansHebrew-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Hebrew/static/NotoSansHebrew-ExtraLight.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Hebrew/static/NotoSansHebrew-Bold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Hebrew/static/NotoSansHebrew-Black.ttf
       - family: notoSansHK
         fonts:
-        - asset: assets/fonts/noto_sans/Noto_Sans_HK/static/NotoSansHK-Thin.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_HK/static/NotoSansHK-SemiBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_HK/static/NotoSansHK-Regular.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_HK/static/NotoSansHK-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_HK/static/NotoSansHK-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_HK/static/NotoSansHK-ExtraLight.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_HK/static/NotoSansHK-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_HK/static/NotoSansHK-Bold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_HK/static/NotoSansHK-Black.ttf
       - family: notoSansJP
         fonts:
         - asset: assets/fonts/noto_sans/Noto_Sans_JP/static/NotoSansJP-Black.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_JP/static/NotoSansJP-Bold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_JP/static/NotoSansJP-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_JP/static/NotoSansJP-ExtraLight.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_JP/static/NotoSansJP-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_JP/static/NotoSansJP-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_JP/static/NotoSansJP-Regular.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_JP/static/NotoSansJP-SemiBold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_JP/static/NotoSansJP-Thin.ttf
       - family: notoSansKorean
         fonts:
         - asset: assets/fonts/noto_sans/Noto_Sans_KR/static/NotoSansKR-Black.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_KR/static/NotoSansKR-Bold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_KR/static/NotoSansKR-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_KR/static/NotoSansKR-ExtraLight.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_KR/static/NotoSansKR-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_KR/static/NotoSansKR-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_KR/static/NotoSansKR-Regular.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_KR/static/NotoSansKR-SemiBold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_KR/static/NotoSansKR-Thin.ttf
       - family: notoSansSimplified
         fonts:
-        - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Thin.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-SemiBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Regular.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-ExtraLight.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Black.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Bold.ttf
       - family: notoSansTraditional
         fonts:
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Black.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Bold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-ExtraLight.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Regular.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-SemiBold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_SC/static/NotoSansSC-Thin.ttf
       - family: notoSansThai
         fonts:
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai/static/NotoSansThai-Black.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai/static/NotoSansThai-Bold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Thai/static/NotoSansThai-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai/static/NotoSansThai-ExtraLight.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai/static/NotoSansThai-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai/static/NotoSansThai-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai/static/NotoSansThai-Regular.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Thai/static/NotoSansThai-SemiBold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Thai/static/NotoSansThai-Thin.ttf
       - family: notoSansThaiLooped
         fonts:
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai_Looped/static/NotoSansThaiLooped-Black.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Thai_Looped/static/NotoSansThaiLooped-Thin.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Thai_Looped/static/NotoSansThaiLooped-SemiBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai_Looped/static/NotoSansThaiLooped-Regular.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai_Looped/static/NotoSansThaiLooped-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai_Looped/static/NotoSansThaiLooped-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai_Looped/static/NotoSansThaiLooped-ExtraLight.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Thai_Looped/static/NotoSansThaiLooped-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Thai_Looped/static/NotoSansThaiLooped-Bold.ttf
       - family: notoSansMono
         fonts:
         - asset: assets/fonts/noto_sans/Noto_Sans_Mono/static/NotoSansMono-Black.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Mono/static/NotoSansMono-Bold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Mono/static/NotoSansMono-ExtraBold.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Mono/static/NotoSansMono-ExtraLight.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Mono/static/NotoSansMono-Light.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Mono/static/NotoSansMono-Medium.ttf
         - asset: assets/fonts/noto_sans/Noto_Sans_Mono/static/NotoSansMono-Regular.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Mono/static/NotoSansMono-SemiBold.ttf
-        - asset: assets/fonts/noto_sans/Noto_Sans_Mono/static/NotoSansMono-Thin.ttf
       - family: notoKufiArabic
         fonts:
         - asset: assets/fonts/noto_two_arabic/Noto_Kufi_Arabic/static/NotoKufiArabic-Black.ttf
         - asset: assets/fonts/noto_two_arabic/Noto_Kufi_Arabic/static/NotoKufiArabic-Bold.ttf
-        - asset: assets/fonts/noto_two_arabic/Noto_Kufi_Arabic/static/NotoKufiArabic-ExtraBold.ttf
         - asset: assets/fonts/noto_two_arabic/Noto_Kufi_Arabic/static/NotoKufiArabic-ExtraLight.ttf
         - asset: assets/fonts/noto_two_arabic/Noto_Kufi_Arabic/static/NotoKufiArabic-Light.ttf
         - asset: assets/fonts/noto_two_arabic/Noto_Kufi_Arabic/static/NotoKufiArabic-Medium.ttf
         - asset: assets/fonts/noto_two_arabic/Noto_Kufi_Arabic/static/NotoKufiArabic-Regular.ttf
-        - asset: assets/fonts/noto_two_arabic/Noto_Kufi_Arabic/static/NotoKufiArabic-SemiBold.ttf
-        - asset: assets/fonts/noto_two_arabic/Noto_Kufi_Arabic/static/NotoKufiArabic-Thin.ttf
       - family: notoNaskhArabic
         fonts:
         - asset: assets/fonts/noto_two_arabic/Noto_Naskh_Arabic/static/NotoNaskhArabic-Bold.ttf
         - asset: assets/fonts/noto_two_arabic/Noto_Naskh_Arabic/static/NotoNaskhArabic-Medium.ttf
         - asset: assets/fonts/noto_two_arabic/Noto_Naskh_Arabic/static/NotoNaskhArabic-Regular.ttf
-        - asset: assets/fonts/noto_two_arabic/Noto_Naskh_Arabic/static/NotoNaskhArabic-SemiBold.ttf
 
       - family: openDyslexicAlta
         fonts: 
@@ -489,6 +415,9 @@ flutter:
           - asset: assets/fonts/open_dyslexic/OpenDyslexic-BoldItalic.otf
           - asset: assets/fonts/open_dyslexic/OpenDyslexic-Italic.otf
           - asset: assets/fonts/open_dyslexic/OpenDyslexic-Regular.otf
+      - family: fairfaxHD
+        fonts: 
+          - asset: assets/fonts/fairfaxhd/FairfaxHD.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

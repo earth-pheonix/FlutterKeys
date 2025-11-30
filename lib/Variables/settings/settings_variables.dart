@@ -16,7 +16,8 @@ class Sv4rs {
   fontSize: Fv4rs.interfaceFontSize, 
   fontFamily: Fontsy.fontToFamily[Fv4rs.interfaceFont], 
   fontWeight: FontWeight.values[((Fv4rs.interfaceFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-  fontStyle: Fv4rs.interfaceFontItalics ? FontStyle.italic : FontStyle.normal
+  fontStyle: Fv4rs.interfaceFontItalics ? FontStyle.italic : FontStyle.normal,
+  fontFamilyFallback: [Fv4rs.fallbackFont1, Fv4rs.fallbackFont2]
   );
 
  static TextStyle get settingsSecondaryLabelStyle =>  
@@ -25,6 +26,7 @@ class Sv4rs {
   fontSize: Fv4rs.interfaceFontSize, 
   fontFamily: Fontsy.fontToFamily[Fv4rs.interfaceFont], 
   fontWeight: FontWeight.w500,
+  fontFamilyFallback: [Fv4rs.fallbackFont1, Fv4rs.fallbackFont2]
   );
 
 // Language settings

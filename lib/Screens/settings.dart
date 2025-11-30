@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
 import 'package:flutterkeysaac/Variables/tts/tts_interface.dart';
 import 'package:flutterkeysaac/Variables/settings/ui_settings.dart';
-import 'package:flutterkeysaac/Variables/assorted_ui/ui_shortcuts.dart';
+import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
 import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
 import 'package:flutterkeysaac/Variables/export_variables.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/boardset_settings_variables.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter/foundation.dart';
@@ -16,6 +15,7 @@ import 'package:flutterkeysaac/Variables/editing/save_indicator.dart';
 import 'package:flutterkeysaac/Variables/assorted_ui/ui_pops.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_pickers.dart';
 import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
+import 'package:flutterkeysaac/Variables/fonts/font_options.dart';
 import 'package:share_plus/share_plus.dart'; 
 import 'dart:io';
 
@@ -39,44 +39,18 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
   late Future<Root> rootFuture;
   Root? _root;
 
-  double pitchValue = 1.0;
-  double rateValue = 0.5;
   int alertCountValue = 3;
 
-  List<Map<String, dynamic>> voices = [];
   String? selectedVoice;
 
   @override
   void initState() {
     super.initState();
-    loadVoices();
+    Vv4rs.loadVoices(widget.synth);
     rootFuture = V4rs.loadRootData();
   }
 
- Future<void> loadVoices() async {
-  List<Map<String, dynamic>> allVoices = [];
-
-  for (String lang in Sv4rs.myLanguages) {
-    await widget.synth.setLanguage(lang);
-    final voiceList = await widget.synth.getVoices();
-
-    for (var v in voiceList) {
-      final vm = Map<String, dynamic>.from(v as Map);
-
-      allVoices.add({
-        "name": vm["name"] ?? "",
-        "identifier": vm["identifier"] ?? vm["voiceIdentifier"] ?? vm["name"],
-        "language": vm["language"] ?? vm["locale"] ?? vm["lang"] ?? "",
-        "locale": vm["locale"] ?? vm["language"] ?? vm["lang"] ?? "",
-      });
-    }
-  }
-
-  setState(() {
-    voices = allVoices;
-  });
-}
-
+ 
  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Root>(
@@ -175,12 +149,12 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                             setState(() {
                               if (selected == true) {
                                   Sv4rs.myLanguages.add(language);
-                                  loadVoices();
+                                  Vv4rs.loadVoices(widget.synth);
                                   Sv4rs.setMyLanguages(Sv4rs.myLanguages);
                               } else {
                                 if (Sv4rs.myLanguages.length > 1) {
                                 Sv4rs.myLanguages.remove(language);
-                                loadVoices();
+                                Vv4rs.loadVoices(widget.synth);
                                 Sv4rs.setMyLanguages(Sv4rs.myLanguages);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -204,368 +178,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                 //voice settings
                 //
 
-                ExpansionTile(
-                  title: Text('Voice:', style: Sv4rs.settingslabelStyle),
-                  collapsedBackgroundColor: Cv4rs.themeColor4,
-                  backgroundColor: Cv4rs.themeColor4,
-                  childrenPadding: EdgeInsets.symmetric(horizontal: 20),
-                  onExpansionChanged: (bool expanded) {  
-                    if (Sv4rs.speakInterfaceButtonsOnSelect) {
-                        V4rs.speakOnSelect('voice', V4rs.selectedLanguage.value, widget.synth);
-                      }},
-                  children: [
-                    Row( 
-                      children: [ 
-                        Expanded(
-                        child: Padding( 
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 15),
-                        child: Text('Multilingual users should not rely on default voices- please manually select a voice for each language.', 
-                          style: Sv4rs.settingsSecondaryLabelStyle)
-                           ),
-                      ),
-                          ]
-                        ),
-                 
-                  ...Sv4rs.myLanguages.map((language){
-                    
-                  final localePrefix = V4rs.languageToLocalePrefix_(language);
-                  final filteredVoices = voices.where((voice) {
-                    final voiceLang = (voice['language'] ?? '').toString().toLowerCase();
-                    return voiceLang.startsWith(localePrefix.toLowerCase());
-                  }).toList();
-
-                    final seenVoices = <String>{};
-                    final uniqueFilteredVoices = filteredVoices.where((voice) {
-                      final key = '${voice['name']}|${voice['language']}';
-                      if (seenVoices.contains(key)) {
-                        return false; // Skip duplicates
-                      } else {
-                        seenVoices.add(key);
-                        return true; // Keep unique voices
-                      }
-                    }).toList();
-
-                    final currentValue = Sv4rs.getLangVoice(language);
-                    final validVoiceValues = [
-                      'default',
-                      ...uniqueFilteredVoices.map((voice) => voice['identifier']!)
-                    ];
-
-                    final dropdownValue = validVoiceValues.contains(currentValue) ? currentValue : 'default';
-
-                    //voice selection  settings
-                    
-                    return ExpansionTile(
-                      title: Text(language, style: Sv4rs.settingslabelStyle),
-                      collapsedBackgroundColor: Cv4rs.themeColor4,
-                      backgroundColor: Cv4rs.themeColor4,
-                      childrenPadding: EdgeInsets.symmetric(horizontal: 20),
-                    children: [
-                      //voice options 
-                      if (voices.isEmpty)
-                        CircularProgressIndicator()
-                      else
-                      ListTile(
-                        title: Text('Voice', style: Sv4rs.settingslabelStyle),
-                        trailing: DropdownButton<String>(
-                        value: dropdownValue,
-                        items: [
-                          DropdownMenuItem<String>(
-                            value: 'default',
-                            child: Text('default', style: Sv4rs.settingslabelStyle),
-                          ),
-                          ...uniqueFilteredVoices.map((voice) {
-                            final identifier = voice['identifier']!.toString(); // <-- cast to String
-                            return DropdownMenuItem<String>(
-                              value: identifier,
-                              child: Text(_cleanVoiceLabel(voice), style: Sv4rs.settingslabelStyle),
-                            );
-                          }),
-                        ],
-                        onChanged: (value) async {
-                          setState(() {
-                            if (value != null) {
-                              Sv4rs.languageVoice[language] = value;
-                              Sv4rs.setlanguageVoice(language, value);
-                            }
-                          });
-                          final prefs = await SharedPreferences.getInstance();
-                          if (value != null) {
-                            await prefs.setString('tts_voice_$language', value);
-                          }
-                        },
-                      ),
-                         ),
-                      //rate 
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 15),
-                        child: Row(
-                          children: [
-                            Text('Rate: ${Sv4rs.getLangRate(language)}', style: Sv4rs.settingslabelStyle,),
-                            Expanded(child: SizedBox(width: totalWidth * 1,
-                            child: Slider(
-                              value: Sv4rs.getLangRate(language),
-                              min: 0.0,
-                              max: 1.0,
-                              divisions: 20,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Voice Rate: ${Sv4rs.getLangRate(language)}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  rateValue = double.parse(value.toStringAsFixed(10));
-                                  Sv4rs.languageRates[language] = rateValue;
-                                });
-                                final prefs = await SharedPreferences.getInstance();
-                                await prefs.setDouble('tts_rate_$language', value);
-                              },
-                            ),
-                            ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      //pitch 
-                        Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 15),
-                        child: Row(
-                          children: [
-                            Text('Pitch: ${Sv4rs.getLangPitch(language)}', style: Sv4rs.settingslabelStyle,),
-                            Expanded(
-                            child: Slider(
-                              value: Sv4rs.getLangPitch(language),
-                              min: 0.5,
-                              max: 2.0,
-                              divisions: 15,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Voice Pitch: ${Sv4rs.getLangPitch(language)}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  pitchValue = double.parse(value.toStringAsFixed(1));
-                                  Sv4rs.languagePitch[language] = pitchValue;
-                                });
-                                final prefs = await SharedPreferences.getInstance();
-                                await prefs.setDouble('tts_pitch_$language', value);
-                              },
-                            ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      //testVoice button
-                        Padding(
-                        padding: EdgeInsets.fromLTRB(20, 0, 0, 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Test Voice', style: Sv4rs.settingslabelStyle,),
-                            SizedBox(height: 40, width: totalWidth * 0.1, child:
-                            ButtonStyle1(
-                              imagePath: 'assets/interface_icons/interface_icons/iPlay.png',
-                              onPressed: () async {
-                                final voiceID = Sv4rs.getLangVoice(language);
-                                await widget.synth.setVoice({
-                                  'identifier': voiceID ?? 'default',
-                                });
-                                await widget.synth.setRate(Sv4rs.getLangRate(language));
-                                await widget.synth.setPitch(Sv4rs.getLangPitch(language));
-                                await widget.synth.speak(Sv4rs.testPhrases[language] ?? 'This is a test phrase.');
-
-                              },
-                            ),
-                            ),
-                          ],
-                        )
-                      ),
-                    ],
-                    );
-                  }),
-                  
-                   ExpansionTile(
-                    title: Text('Voice for Speak on Select:', style: Sv4rs.settingslabelStyle),
-                    backgroundColor: Cv4rs.themeColor4,
-                    childrenPadding: EdgeInsets.symmetric(horizontal: 40),
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child:
-                          Row(
-                            children: [
-                              Text('Use unique voice for Speak on Select', style: Sv4rs.settingslabelStyle),
-                              Spacer(),
-                              Switch(value: Sv4rs.useDifferentVoiceforSS, onChanged: (value) {
-                                setState(() {
-                                  Sv4rs.useDifferentVoiceforSS = value;
-                                  Sv4rs.saveUseDiffVoiceSS(value);
-                                });
-                              }),
-                            ]
-                          ),
-                          ),
-                          if (Sv4rs.useDifferentVoiceforSS) 
-                           ...Sv4rs.myLanguages.map((language){
-                           final filteredVoices = voices.where((voice) {
-                            final voiceLang = (voice['language'] ?? '').toString().toLowerCase();
-                            final langPrefix = language.toLowerCase();
-                            return voiceLang.startsWith(langPrefix);
-                          }).toList();
-
-                              final seenVoices = <String>{};
-                              final uniqueFilteredVoices = filteredVoices.where((voice) {
-                                final key = '${voice['name']}|${voice['locale']}';
-                                if (seenVoices.contains(key)) {
-                                  return false; // Skip duplicates
-                                } else {
-                                  seenVoices.add(key);
-                                  return true; // Keep unique voices
-                                }
-                              }).toList();
-                              final currentValue = Sv4rs.getSSLangVoice(language);
-                              final validVoiceValues = [
-                                'default',
-                                ...uniqueFilteredVoices.map((voice) => voice['identifier']!)
-                              ];
-                              
-                              final dropdownValue = validVoiceValues.contains(currentValue) ? currentValue : 'default';
-
-                            //voice selection  settings
-                            return ExpansionTile(
-                              title: Text(language, style: Sv4rs.settingslabelStyle),
-                              collapsedBackgroundColor: Cv4rs.themeColor4,
-                              backgroundColor: Cv4rs.themeColor4,
-                              childrenPadding: EdgeInsets.symmetric(horizontal: 20),
-                            children: [
-                              //voice options 
-                              ListTile(
-                                title: Text('Voice', style: Sv4rs.settingslabelStyle),
-                                trailing: DropdownButton<String>(
-                                  value: dropdownValue,
-                                  items: [
-                                    DropdownMenuItem(value: 'default', child: Text('default', style: Sv4rs.settingslabelStyle,)),
-                                    ...uniqueFilteredVoices
-                                    .where((voice) => voice['identifier'] != null)
-                                    .map((voice) {
-                                      final identifier = voice['identifier'];
-                                      if (identifier == null) {
-                                        return DropdownMenuItem(value: 'default', child: Text('default', style: Sv4rs.settingslabelStyle,),);
-                                      }
-                                    return DropdownMenuItem(
-                                      value: identifier,
-                                      child: Text(_cleanVoiceLabel(voice), style: Sv4rs.settingslabelStyle,),
-                                      );
-                                      })
-                                  ],
-                                  onChanged: (value) async {
-                                    setState(() {
-                                      if (value != null) {
-                                        Sv4rs.speakSelectLanguageVoice[language] = value;
-                                        Sv4rs.setSSlanguageVoice(language, value);
-                                        }
-                                      });
-                                    final prefs = await SharedPreferences.getInstance();
-                                    if (value != null) {
-                                    await prefs.setString('tts_forSS_voice_$language', value);
-                                    }
-                                  },
-                                  ),
-                              ),
-                              //rate 
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(20, 0, 0, 15),
-                                child: Row(
-                                  children: [
-                                    Text('Rate: ${Sv4rs.getSSLangRate(language)}', style: Sv4rs.settingslabelStyle,),
-                                    Expanded(child: SizedBox(width: totalWidth * 1,
-                                    child: Slider(
-                                      value: Sv4rs.getSSLangRate(language),
-                                      min: 0.0,
-                                      max: 1.0,
-                                      divisions: 10,
-                                      activeColor: Cv4rs.themeColor1,
-                                      inactiveColor: Cv4rs.themeColor3,
-                                      thumbColor: Cv4rs.themeColor1,
-                                      label: 'Voice Rate: ${Sv4rs.getSSLangRate(language)}',
-                                      onChanged: (value) async {
-                                        setState(() {
-                                          rateValue = double.parse(value.toStringAsFixed(1));
-                                          Sv4rs.sslanguageRates[language] = rateValue;
-                                        });
-                                        final prefs = await SharedPreferences.getInstance();
-                                        await prefs.setDouble('tts_forSS_rate_$language', value);
-                                      },
-                                    ),
-                                    ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              //pitch 
-                                Padding(
-                                padding: EdgeInsets.fromLTRB(20, 0, 0, 15),
-                                child: Row(
-                                  children: [
-                                    Text('Pitch: ${Sv4rs.getssLangPitch(language)}', style: Sv4rs.settingslabelStyle,),
-                                    Expanded(
-                                    child: Slider(
-                                      value: Sv4rs.getssLangPitch(language),
-                                      min: 0.5,
-                                      max: 2.0,
-                                      divisions: 15,
-                                      activeColor: Cv4rs.themeColor1,
-                                      inactiveColor: Cv4rs.themeColor3,
-                                      thumbColor: Cv4rs.themeColor1,
-                                      label: 'Voice Pitch: ${Sv4rs.getssLangPitch(language)}',
-                                      onChanged: (value) async {
-                                        setState(() {
-                                          pitchValue = double.parse(value.toStringAsFixed(1));
-                                          Sv4rs.sslanguagePitch[language] = pitchValue;
-                                        });
-                                        final prefs = await SharedPreferences.getInstance();
-                                        await prefs.setDouble('tts_forSS_pitch_$language', value);
-                                      },
-                                    ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              //testVoice button
-                                Padding(
-                                padding: EdgeInsets.fromLTRB(20, 0, 0, 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Test Voice', style: Sv4rs.settingslabelStyle,),
-                                    SizedBox(height: 40, width: totalWidth * 0.1, child:
-                                    ButtonStyle1(
-                                      imagePath: 'assets/interface_icons/interface_icons/iPlay.png',
-                                      onPressed: () async {
-                                        final voiceID = Sv4rs.getSSLangVoice(language);
-                                        await widget.synth.setVoice({
-                                          'identifier': voiceID ?? 'default',
-                                        });
-                                        await widget.synth.setRate(Sv4rs.getSSLangRate(language));
-                                        await widget.synth.setPitch(Sv4rs.getssLangPitch(language));
-                                        await widget.synth.speak(Sv4rs.testPhrases[language] ?? 'This is a test phrase.');
-
-                                      },
-                                    ),
-                                    ),
-                                  ],
-                                )
-                              ),
-                            ],
-                            );
-                          })
-                        
-                      
-                    ],
-
-                    ),
-                  ]
-                  ),
+                VoicePicker(synth: widget.synth, totalWidth: totalWidth), //I live in the ui_settings file
 
                 //
                 //interfece settings
@@ -900,6 +513,29 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                               },
                   tts: widget.synth,
                 ),
+                //font picker
+              FontFamilyPicker(
+                font: Fv4rs.fallbackFont1, 
+                onFontChanged: (value) async {
+                    setState(() {
+                        Fv4rs.fallbackFont1 = value;
+                        Fv4rs.savefallbackFont1(value);
+                    });
+                  },
+                tts: widget.synth, 
+                label: 'First Fallback Font: ${Fontsy.familyToFont[Fv4rs.fallbackFont2]}'
+               ),
+               FontFamilyPicker(
+                font: Fv4rs.fallbackFont1, 
+                onFontChanged: (value) async {
+                    setState(() {
+                        Fv4rs.fallbackFont1 = value;
+                        Fv4rs.savefallbackFont1(value);
+                    });
+                  },
+                tts: widget.synth, 
+                label: 'Second Fallback Font: ${Fontsy.familyToFont[Fv4rs.fallbackFont2]}'
+               ),
 
                 //speak on select: interface icons
                 Row(children: [
@@ -3490,11 +3126,5 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
     );
   }
   );
-  }
-  
-  String _cleanVoiceLabel(Map voice) {
-    final name = voice['name'] ?? 'Unknown';
-    final locale = voice['locale'] ?? '';
-    return '$name ($locale)';
   }
 }
