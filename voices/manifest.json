@@ -1,0 +1,14 @@
+{
+  "version": "2025-12-01",
+  "voices": [
+    {
+      "id": "en_US-hfc_male-medium",
+      "displayName": "hfc Male",
+      "engine": "piper",
+      "language": "en-us",
+      "sample_path": ,
+      "download_url": ,
+      
+    }
+  ]
+}
