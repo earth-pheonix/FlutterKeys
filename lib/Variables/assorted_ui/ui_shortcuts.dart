@@ -341,14 +341,15 @@ class ExpandButtonStyle extends StatelessWidget {
   //constructs the button 
   const ExpandButtonStyle ({
     super.key,
-    required this.imagePath,
-    required this.onPressed,
+    required this.imagePath, //when i call this buttton I will tell it the image path to use 
+    required this.onPressed, //I will also tell it what to do when pressed
   });
 
   //defines the button 
   @override
   Widget build(BuildContext context) {
     
+    //the image that will be on the button
     Widget image = Image.asset(
       imagePath,
       fit: BoxFit.contain,
@@ -365,7 +366,7 @@ class ExpandButtonStyle extends StatelessWidget {
           shadowColor: Cv4rs.themeColor4,  //shadow color
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5), // Padding around pictures 
         ),
-        child: ColorFiltered(
+        child: ColorFiltered( //the image on the button, I have it wraped in a color filter, thats optional
           colorFilter: ColorFilter.mode(Cv4rs.expandIconColor, BlendMode.srcIn
           ),
           child: image,

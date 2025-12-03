@@ -1,0 +1,35 @@
+{
+  "version": "2025-12-01",
+  "voices": [
+    {
+      "id": "en_US-hfc_male-medium",
+      "displayName": "hfc Male",
+      "engine": "piper",
+      "language": "en-us",
+      "sample_path": "en_us-hfc_male-medium-flutterkeys_sample.mp3",
+      "download_url": "https://archive.org/download/en_US-hfc_male-medium/en_US-hfc_male-medium.zip",
+      "license": "CC BY-NC-SA 4.0"
+    },
+
+    {
+      "id": "en_US-ryan-low",
+      "displayName": "Ryan",
+      "engine": "piper",
+      "language": "en-us",
+      "sample_path": "en_us-ryan-low-flutterkeys_sample.mp3",
+      "download_url": "https://archive.org/download/en_us-ryan-low/en_us-ryan-low.zip",
+      "license": "CC BY-NC-SA 4.0"
+    }, 
+
+    {
+      "id": "en_US-bryce-medium",
+      "displayName": "Bryce",
+      "engine": "piper",
+      "language": "en-us",
+      "sample_path": "en_us-bryce-medium-flutterkeys_sample.mp3",
+      "download_url": "https://archive.org/download/en_US-bryce-medium/en_US-bryce-medium.zip",
+      "license": "public domain"
+    }
+
+  ]
+}

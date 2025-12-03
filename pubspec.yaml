@@ -92,6 +92,7 @@ flutter:
     - assets/magma_vocab_symbols/grammer_buttons/
 
     - assets/sounds/
+    - assets/voices/samples/
 
     - lib/Json/magma_vocab.json
     - lib/Json/templates.json
