@@ -17,7 +17,7 @@ import 'package:flutterkeysaac/Models/json_model_boards.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:path/path.dart' as p;
-
+import 'package:http/http.dart' as http;   
 
 class V4rs {
 
@@ -701,7 +701,15 @@ static Future<File> resolveImageFile(String relativePath) async {
 
 
 
+//
+// Load Voice Manifest
+//
 
+static Future<void> fetchVoiceManifest() async{
+  final url = "https://raw.githubusercontent.com/<yourname>/<repo>/main/voices/manifest.json";
+  final response = await http.get(Uri.parse(url));
+  final manifest = json.decode(response.body);
+}
 
   //
   //LOADING SAVED VALUES
