@@ -3,6 +3,7 @@ import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
+import 'dart:async';
 
 
 
@@ -15,11 +16,20 @@ class Onboarding extends StatefulWidget {
 
 class OnboardingState extends State<Onboarding> with WidgetsBindingObserver {
 
+final List<String> languageWords = ['Language', 'langue', 'Idioma', '语言'];
+int _index = 0;
+
  @override
 //says we want to start observing
 void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    Timer.periodic(Duration(seconds: 2), (timer) {
+      setState(() {
+        _index = (_index + 1) % languageWords.length;
+       });
+      }
+    );
   }
 
 @override
@@ -44,7 +54,10 @@ void _showPopUp() {
           child: Text('Yes', style: TextStyle(color: Cv4rs.themeColor1, fontSize: 16),), 
           onPressed: () async {
             Navigator.of(context).pop();
-            V4rs.doOnboarding.value = false; // Set onboarding as completed
+            setState(() {
+              V4rs.doOnboarding.value = false; // Set onboarding as completed
+              V4rs.showSettings.value = false;
+            });
             await V4rs.setOnboardingCompleteStatus(V4rs.doOnboarding.value);
            } 
           ),
@@ -57,6 +70,40 @@ void _showPopUp() {
    );
   }
 
+Widget textField() {
+  return Padding( 
+    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(20)),
+    child: TextField(
+      style: TextStyle(color: Cv4rs.themeColor1, fontSize: 16),
+      textAlign: TextAlign.center,
+      decoration: InputDecoration( 
+        hintText: 'Tap Here to show keyboard',
+        hintStyle: TextStyle(color: Cv4rs.themeColor2, fontSize: 16),
+      ),
+    ),
+  );
+} 
+
+Widget continueButton(){
+  return Padding( 
+    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(30)),
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(backgroundColor: Cv4rs.themeColor2),
+      child: Text('Continue to App!', style: TextStyle(color: Cv4rs.themeColor4, fontSize: 16),),
+      onPressed: () async {
+        final mediaQuery = MediaQuery.of(context);
+        final keyboardHeight = mediaQuery.viewInsets.bottom;
+
+        V4rs.keyboardheight = keyboardHeight > 0 ? keyboardHeight : 250.0; //  default keyboard height?
+
+        //save to shared preferences
+        await V4rs.savekeyboardheight(keyboardHeight);
+        _showPopUp();
+      },
+    ),
+  );
+}
+
 @override
   Widget build (BuildContext context) {
     return Scaffold (
@@ -68,9 +115,13 @@ void _showPopUp() {
           children: [
             //welcome to flutter keys
             Padding( 
-             padding: EdgeInsetsGeometry.all(V4rs.paddingValue(16)),
+             padding: EdgeInsetsGeometry.symmetric(
+              horizontal: V4rs.paddingValue(15), 
+              vertical: V4rs.paddingValue(30)
+            ),
              child: Text(
               'Welcome to Flutterkeys!',
+              textAlign: TextAlign.center,
               style: TextStyle( 
                 color: Cv4rs.themeColor1,
                 fontSize: 24,
@@ -79,43 +130,47 @@ void _showPopUp() {
             ),
             ),
             //language
-            Padding (
-              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(16)),
-              child: Row(
-                children: [
-                  Text('Language / langue / Idioma / 语言 ',
-                  style: TextStyle( 
-                    color: Cv4rs.themeColor1,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
-                  DropdownButton<String>(
-                    value: V4rs.interfaceLanguage, 
-                    dropdownColor: Cv4rs.themeColor4,
-                    hint: const Text('Language / langue / Idioma / 语言 '),
-                    items: V4rs.allInterfaceLanguages.map((language) {
-                      return DropdownMenuItem<String>(
-                        value: language,
-                        child: Text(language, style: TextStyle(color: Cv4rs.themeColor1, fontSize: 16),),
-                        );
-                      }).toList(),
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          V4rs.interfaceLanguage = value;
-                          V4rs.saveInterfaceLang(value);
-                          });
-                        }
-                      },
-                    ),
-                ]
+            AnimatedSwitcher(
+              duration: Duration(milliseconds: 500),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(opacity: animation, child: child,);
+              },
+              child: Text(
+                textAlign: TextAlign.center,
+                languageWords[_index],
+                key: ValueKey<int>(_index), 
+                style: TextStyle(
+                  color: Cv4rs.themeColor1,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600
+                ),
               ),
-              ),
+            ),
+
+            DropdownButton<String>(
+                value: V4rs.interfaceLanguage, 
+                dropdownColor: Cv4rs.themeColor4,
+                hint: Text('Language dropdown'),
+                items: V4rs.allInterfaceLanguages.map((language) {
+                  return DropdownMenuItem<String>(
+                    value: language,
+                    child: Text(language, style: TextStyle(color: Cv4rs.themeColor1, fontSize: 16),),
+                    );
+                  }).toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      V4rs.interfaceLanguage = value;
+                      V4rs.saveInterfaceLang(value);
+                      });
+                    }
+                  },
+                ),
+            
+              
             //theme colors
             Padding(
-              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(16)),
+              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(20)),
               child: ExpansionTile(
                 collapsedIconColor: Cv4rs.themeColor2,
                 title: Text('Theme Colors:', style: TextStyle( 
@@ -437,7 +492,7 @@ void _showPopUp() {
                   ]),
 
             ),
-            
+
             Padding( 
              padding: EdgeInsetsGeometry.all( V4rs.paddingValue(16)),
              child: Column(
@@ -446,55 +501,35 @@ void _showPopUp() {
                   padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(5)),
                   child: Text(
                     'Before typing, turn your device to landcape mode', 
-                    style: TextStyle(color: Cv4rs.themeColor1, fontSize: 16),
+                    style: TextStyle(color: Cv4rs.themeColor1, fontSize: V4rs.fontValue(16)),
                   ),
                  ),
                 Text(
-                  'With your keyboard shown, continue to app',
-                  style: TextStyle(color: Cv4rs.themeColor1, fontSize: 16),
+                  'With your keyboard shown, continue to the app',
+                  style: TextStyle(color: Cv4rs.themeColor1, fontSize: V4rs.fontValue(16)),
                 ),
               ]
              ),
             ),
-            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(30)), child:
-            Row(children: [
-              Expanded(child: 
-            Padding( 
-             padding: EdgeInsetsGeometry.all(V4rs.paddingValue(20)),
-             child: TextField(
-                style: TextStyle(color: Cv4rs.themeColor1, fontSize: 16),
-                textAlign: TextAlign.center,
-                decoration: InputDecoration( 
-                  hintText: 'Tap Here to show keyboard',
-                  hintStyle: TextStyle(color: Cv4rs.themeColor2, fontSize: 16),
+            
+            (!V4rs.xSmallModeWidth) 
+            ? Padding(
+              padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(30)), 
+              child: Row(children: [
+                Expanded(child: 
+                  textField(),
                 ),
-               ),
-            ),
-              ),
-            Padding( 
-             padding: EdgeInsetsGeometry.all(V4rs.paddingValue(30)),
-             child: ElevatedButton(
-               style: ElevatedButton.styleFrom(backgroundColor: Cv4rs.themeColor2),
-               child: Text('Continue to App!', style: TextStyle(color: Cv4rs.themeColor4, fontSize: 16),),
-               onPressed: () async {
-                 final mediaQuery = MediaQuery.of(context);
-                 final keyboardHeight = mediaQuery.viewInsets.bottom;
-
-                 V4rs.keyboardheight = keyboardHeight > 0 ? keyboardHeight : 250.0; //  default keyboard height?
-
-                 
-
-                  //save to shared preferences
-                  await V4rs.savekeyboardheight(keyboardHeight);
-                  _showPopUp();
-                },
-              ),
-            ),
+                continueButton(),
+              ]
+             )
+            )
+           : Column(children: [
+              textField(),
+              continueButton(),
             ]
-            ),
-            ),
-        ], //children
-        ),
+           )
+          ], //children
+         ),
         ),
       ),
     );

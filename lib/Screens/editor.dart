@@ -15,7 +15,6 @@ import 'package:flutterkeysaac/Variables/editing/save_indicator.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 
-
 class Editor extends StatefulWidget {
   final TTSInterface synth;
   final int? highlightStart;
@@ -23,6 +22,11 @@ class Editor extends StatefulWidget {
   final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
   final Future<void> Function() initForSS;
   final AudioPlayer playerForSS;
+  final double mwHeight;
+  final double navHeight;
+  final double grammerHeight;
+  final double totalBoardHeight;
+  final Size screenSize;
 
   const Editor({
     super.key,
@@ -31,7 +35,12 @@ class Editor extends StatefulWidget {
     this.highlightLength,
     required this.speakSelectSherpaOnnxSynth,
     required this.initForSS,
-    required this.playerForSS
+    required this.playerForSS,
+    required this.mwHeight,
+    required this.navHeight,
+    required this.grammerHeight,
+    required this.totalBoardHeight,
+    required this.screenSize,
   });
 
   @override
@@ -115,7 +124,6 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
 
   final List<int> _boardHistory = [];
 
-
   void saveField(Root root, String objUUID, String field, dynamic value) {
     if (_root == null) return;
     Ev4rs.updateBoardField(root, objUUID, field, value);
@@ -131,8 +139,6 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
     Ev4rs.updateGrammerField(root, objUUID, field, value);
     setState(() {});
   }
-
-
 
   void multiSaveField(Root root, List<String> objUUIDs, String field, dynamic value) {
     if (_root == null) return;
@@ -152,15 +158,12 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
     setState(() {});
   }
 
-
-
   @override
   void initState() {
     super.initState();
     rootFuture = V4rs.loadRootData();
-
     Ev4rs.reloadJson.addListener(_handleReload);
-}
+  }
 
   @override
   void dispose(){
@@ -225,7 +228,6 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-
     Widget navListener(Widget returning) {
       return ValueListenableBuilder(
         valueListenable: CombinedValueNotifier(
@@ -245,36 +247,6 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
       );
     }
     
-    final media = MediaQuery.of(context);
-    final screenSize = MediaQuery.of(context).size;
-    final double defaultBoardHeight = screenSize.height * (4 / 6);
-    final isLandscape = screenSize.width > screenSize.height;
-    final safeScreenHeight = screenSize.height - media.padding.top;
-
-    final double boardHeight = isLandscape && V4rs.keyboardheight > 0
-        ? V4rs.keyboardheight
-        : defaultBoardHeight;
-    
-    double availableFlex = safeScreenHeight - boardHeight;
-    if (availableFlex < 0) availableFlex = 0;
-
-    final double flexForMW = 10;
-    final double flexNav = 8;
-    final double flexGrammer = 4;
-    final double totalFlex = flexGrammer + flexNav + flexForMW;
-
-    final double mwHeight = availableFlex * (flexForMW / totalFlex);
-    final double navHeight = (Bv4rs.showNavRow == 3) ? 0 : availableFlex * (flexNav / totalFlex);
-    final double grammerHeight = (Bv4rs.showGrammerRow == 3) ? 0 : availableFlex * (flexGrammer / totalFlex);
-    final double boardFlex = ((Bv4rs.showGrammerRow == 3) 
-      ? availableFlex * (flexGrammer / totalFlex) 
-      : 0) 
-      + ((Bv4rs.showNavRow == 3) 
-      ? availableFlex * (flexNav / totalFlex) 
-      : 0);
-
-    final double totalBoardHeight = boardHeight + boardFlex;
-
     return FutureBuilder<Root>(
       future: rootFuture,
       builder: (context, snapshot) {
@@ -292,7 +264,9 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
           }
         }
 
-        Widget lastEditor = BaseEditor(root: _root!,);
+        Widget lastEditor = SingleChildScrollView( 
+          child: BaseEditor(root: _root!,)
+        );
 
         Widget buildEditor(){
           Widget editor;
@@ -302,7 +276,6 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
             editor = SingleChildScrollView( 
               child: BoardEditor(saveField: saveField, openBoard: _openBoard, root: _root!, goBack: _goBackBoard,)
             );
-            
           }
 
           //edit a button
@@ -371,7 +344,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                         Stack(
                           children: [
                             SizedBox(
-                              height: mwHeight,
+                              height: widget.mwHeight,
                               child: Container(
                                 color: Cv4rs.themeColor2,
                                 child: ValueListenableBuilder(
@@ -402,7 +375,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                         ),
                         // Navigation row
                         SizedBox(
-                              height: navHeight,
+                              height: widget.navHeight,
                               child: Container(
                                 color: Cv4rs.themeColor3,
                                 child: (Bv4rs.showNavRow == 2) 
@@ -448,7 +421,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                                         Ev4rs.secondGrammerSelectedUUID, null, null ),
                                         builder: (context, values, _) {
                         return SizedBox(
-                          height: grammerHeight,
+                          height: widget.grammerHeight,
                           child: Container(
                             color: Cv4rs.themeColor4,
                             child: (Bv4rs.showGrammerRow == 2) 
@@ -505,7 +478,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                         builder: (context, values, _) {
                           return (!Ev4rs.dragSelectMultiple.value) ?
                             SizedBox(
-                              height: totalBoardHeight,
+                              height: widget.totalBoardHeight,
                               child: Container(
                                 color: Cv4rs.themeColor4,
                                   child: Stack(
@@ -547,7 +520,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                               ),
                             )
                             : SizedBox(
-                              height: totalBoardHeight,
+                              height: widget.totalBoardHeight,
                               child: Container(
                                 color: Cv4rs.themeColor4,
                                 child: GestureDetector(
@@ -610,8 +583,8 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                 //
                 else {
                   return Container(
-                    height: screenSize.height,
-                    width: screenSize.width,
+                    height: widget.screenSize.height,
+                    width: widget.screenSize.width,
                       color: Cv4rs.themeColor2,
                       child:
                         ValueListenableBuilder<bool>(

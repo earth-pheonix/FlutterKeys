@@ -13,7 +13,7 @@ class Sv4rs {
  static TextStyle get settingslabelStyle =>  
  TextStyle(
   color: Fv4rs.interfaceFontColor,
-  fontSize: Fv4rs.interfaceFontSize, 
+  fontSize: V4rs.fontValue(Fv4rs.interfaceFontSize), 
   fontFamily: Fontsy.fontToFamily[Fv4rs.interfaceFont], 
   fontWeight: FontWeight.values[((Fv4rs.interfaceFontWeight ~/ 100) - 1 ).clamp(0, 8)],
   fontStyle: Fv4rs.interfaceFontItalics ? FontStyle.italic : FontStyle.normal,
@@ -23,7 +23,7 @@ class Sv4rs {
  static TextStyle get settingsSecondaryLabelStyle =>  
  TextStyle(
   color: Cv4rs.themeColor2, 
-  fontSize: Fv4rs.interfaceFontSize, 
+  fontSize: V4rs.fontValue(Fv4rs.interfaceFontSize), 
   fontFamily: Fontsy.fontToFamily[Fv4rs.interfaceFont], 
   fontWeight: FontWeight.w500,
   fontFamilyFallback: [Fv4rs.fallbackFont1, Fv4rs.fallbackFont2]

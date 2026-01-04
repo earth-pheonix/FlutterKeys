@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterkeysaac/Screens/editor.dart';
-import 'package:flutterkeysaac/Screens/onboarding.dart'; 
 import 'package:flutterkeysaac/Screens/home.dart';
 import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:flutterkeysaac/Variables/assorted_ui/ui_pops.dart';
@@ -11,7 +9,6 @@ import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/boardset_settings_variables.dart';
 import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 import 'package:flutterkeysaac/Variables/sherpa_onnx_tts.dart';
@@ -172,27 +169,13 @@ class _MyApp extends State<MyApp> {
           
           return AnimatedBuilder(
             animation: Listenable.merge([
-              V4rs.doOnboarding,
               V4rs.showExpandPage,
               V4rs.showSettings,
               Ev4rs.showEditor,
+              V4rs.doOnboarding,
             ]), 
             builder: (context, _) {
-            //=====: onboarding :====
-              if (V4rs.doOnboarding.value) {
-                return Onboarding();
-            //=====: editor :====
-              } else if (Ev4rs.showEditor.value) {
-                return Editor(
-                  synth: synth!,
-                  speakSelectSherpaOnnxSynth: speakSelectSherpaOnnxSynth,
-                    initForSS: initSpeakSelectSherpaOnnx,
-                    playerForSS: openTtsPlayerSpeakSelectSherpaOnnx,
-                );
-              }
-             //=====: home :====
-              else {
-                return GestureDetector( 
+             return GestureDetector( 
                   behavior: HitTestBehavior.translucent,
                   onVerticalDragEnd: (details) {
                     if (details.primaryVelocity != null && details.primaryVelocity! < 0) {
@@ -255,7 +238,6 @@ class _MyApp extends State<MyApp> {
                     reloadSherpaOnnx: reloadSherpaOnnx,
                   )
                 );
-              }
             }
           );
         }

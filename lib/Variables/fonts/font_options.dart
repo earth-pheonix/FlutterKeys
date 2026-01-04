@@ -43,14 +43,14 @@ class Fontsy {
    static String getSampleForWritSystem(int systemNumber) {
     switch (systemNumber) {
       case 1: return 'السلام';
-      case 2: return ''; //placholder
+      case 2: return 'Абвг'; 
       case 3: return 'अआइई';
       case 4: return 'Αβγδ';
-      case 5: return ''; // hanzi placeholder
+      case 5: return '的一是'; 
       case 6: return 'אבגד';
       case 7: return 'ひらカン漢';
       case 8: return '한글테스트';
-      case 9: return ''; //placeholder
+      case 9: return 'Abcd';
       default: return 'กขคง';
     }
   }

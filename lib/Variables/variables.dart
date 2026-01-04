@@ -37,6 +37,7 @@ class V4rs {
   static bool xSmallModeWidth = false;
   static bool xSmallModeHeight = false;
   static bool xSmallMode = false;
+  static bool smallEditorMode = false;
   static bool isLandscape = true;
 
   static double keyboardheight = 0.0;
@@ -44,6 +45,13 @@ class V4rs {
 
   static double paddingValue(double padding){
     if (xSmallModeWidth || xSmallModeHeight){
+      return (padding / 3).roundToDouble();
+    } else {
+      return padding;
+    }
+  }
+  static double editorPaddingValue(double padding){
+    if (smallEditorMode){
       return (padding / 3).roundToDouble();
     } else {
       return padding;

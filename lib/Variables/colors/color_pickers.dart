@@ -79,7 +79,7 @@ class _ColorPickerWithHex extends State<ColorPickerWithHex> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(V4rs.paddingValue(40), 0, V4rs.paddingValue(10), V4rs.paddingValue(10),),
+          padding: EdgeInsets.fromLTRB(V4rs.paddingValue(30), 0, V4rs.paddingValue(10), V4rs.paddingValue(10),),
           child: ColorPicker(
             pickerColor: _color,
             enableAlpha: true,
@@ -319,7 +319,7 @@ class _SymbolColorCustomizer extends State<SymbolColorCustomizer> {
         ]
         )
         ),
-        Flexible(flex: 1, child:
+        Flexible(flex: V4rs.smallEditorMode ? 3 : 1, child:
         ImageStyle1(
                 image: image,
                 defaultSymbolColorOverlay: _overlay,
@@ -561,9 +561,43 @@ class _SymbolColorCustomizer2 extends State<SymbolColorCustomizer2> {
   late ValueChanged<bool> _onMatchContrastChanged;
 
   Widget image = Image.asset(
-         'assets/interface_icons/interface_icons/iSymbol_sample.png',
-          fit: BoxFit.fitWidth,
-        );
+    'assets/interface_icons/interface_icons/iSymbol_sample.png',
+    fit: BoxFit.fitWidth,
+  );
+
+  List<Widget> textAndSwitch(String text, bool value, void Function(bool)? onChanged){
+    return [
+      Text(
+        text, 
+        style: Sv4rs.settingslabelStyle,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+      Switch(
+        value: value,
+        onChanged: onChanged
+      ),
+    ];
+  }
+
+  List <Widget> colorTitleWidget() {
+    return [ 
+      Text('Overlay Color:', style: Sv4rs.settingslabelStyle, textAlign: TextAlign.center),
+      CircleAvatar(
+        backgroundColor: Cv4rs.themeColor3,
+        radius: 20,
+        child: Icon(
+          Icons.circle, color: _overlay, size: 40, 
+          shadows: [
+            Shadow(
+              color: Cv4rs.themeColor4,
+              blurRadius: 4,
+            ),
+          ],
+        ),
+      ),
+    ];
+  }
 
   @override
   void initState() {
@@ -596,85 +630,119 @@ class _SymbolColorCustomizer2 extends State<SymbolColorCustomizer2> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-          Container(
-            width: _width,
-            padding: EdgeInsets.all(V4rs.paddingValue(10)),
-            decoration: BoxDecoration(
-              color: Cv4rs.themeColor4,
-              borderRadius: BorderRadius.circular(10)
-              ),
-            child: Column(children: [ 
+    return Container(
+      width: _width,
+      padding: EdgeInsets.all(V4rs.paddingValue(10)),
+      decoration: BoxDecoration(
+        color: Cv4rs.themeColor4,
+        borderRadius: BorderRadius.circular(10)
+        ),
+      child: Column(children: [ 
 
         if (widget.specialLabel) 
           Text("--Not all match--", style: Sv4rs.settingslabelStyle),
 
         // invert
-        Row(
-          children: [
-            Expanded(child: 
-            Text(
+        (!V4rs.smallEditorMode) 
+        ? Row(children: [
+          Expanded(
+            child: textAndSwitch(
               'Match Invert:', 
-              style: Sv4rs.settingslabelStyle,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            ),
-            Switch(
-              value: _matchInvert,
-              onChanged: (val) {
+              _matchInvert, 
+              (val) {
                 setState(() => _matchInvert = val);
                 _onMatchInvertChanged(val);
-              },
-            ),
-          ],
-        ),
-        
-       
-        Row(
-          children: [
-            Expanded(child: 
-            Text(
+              }, 
+            )[0]
+          ),
+          textAndSwitch(
+            'Match Invert', 
+            _matchInvert, 
+            (val) {
+              setState(() => _matchInvert = val);
+              _onMatchInvertChanged(val);
+            }, 
+          )[1],
+         ]
+        ) 
+        : Column(children: 
+            textAndSwitch(
+              'Match Invert:', 
+              _matchInvert, 
+              (val) {
+                setState(() => _matchInvert = val);
+                _onMatchInvertChanged(val);
+              }, 
+            )
+          ),
+              
+        (!V4rs.smallEditorMode) 
+        ? Row(children: [
+          Expanded(
+            child: textAndSwitch(
               'Invert Colors:', 
-              style: Sv4rs.settingslabelStyle,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Switch(
-              value: _invert,
-              onChanged: (val) {
+              _invert, 
+              (val) {
                 setState(() => _invert = val);
                 _onInvertChanged(val);
-              },
-            ),
-          ],
-        ),
-        
-
+              }, 
+            )[0]
+          ),
+          textAndSwitch(
+            'Invert Colors:', 
+            _invert, 
+            (val) {
+              setState(() => _invert = val);
+              _onInvertChanged(val);
+            }, 
+          )[1],
+         ]
+        ) 
+        : Column(children: 
+            textAndSwitch(
+              'Invert Colors:', 
+              _invert, 
+              (val) {
+                setState(() => _invert = val);
+                _onInvertChanged(val);
+              }, 
+            )
+          ),
+              
         // Symbol Saturation
-      
-        Row(
-          children: [
-            Expanded(child:
-            Text(
-              'Match Saturation:',
-              style: Sv4rs.settingslabelStyle,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Switch(
-              value: _matchSaturation,
-              onChanged: (val) {
+        (!V4rs.smallEditorMode) 
+        ? Row(children: [
+          Expanded(
+            child: textAndSwitch(
+              'Match Saturation:', 
+              _matchSaturation, 
+              (val) {
                 setState(() => _matchSaturation = val);
                 _onMatchSaturationChanged(val);
-              },
-            ),
-          ],
-        ),
-        
-        
+              }, 
+            )[0]
+          ),
+         textAndSwitch(
+            'Match Saturation:', 
+            _matchSaturation, 
+            (val) {
+              setState(() => _matchSaturation = val);
+              _onMatchSaturationChanged(val);
+            }, 
+          )[1],
+         ]
+        ) 
+        : Column(children: 
+            textAndSwitch(
+              'Match Saturation:', 
+              _matchSaturation, 
+              (val) {
+                setState(() => _matchSaturation = val);
+                _onMatchSaturationChanged(val);
+              }, 
+            )
+          ),
+              
         Column(
           children: [
             Padding(padding: EdgeInsetsGeometry.fromLTRB(0, V4rs.paddingValue(10), 0, 0), child:
@@ -708,28 +776,39 @@ class _SymbolColorCustomizer2 extends State<SymbolColorCustomizer2> {
         
 
         //symbol contrast
-       
-        Row(
-          children: [
-            Expanded(child: 
-            Text(
+        (!V4rs.smallEditorMode) 
+        ? Row(children: [
+          Expanded(
+            child: textAndSwitch(
               'Match Contrast:', 
-              style: Sv4rs.settingslabelStyle,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Switch(
-              value: _matchContrast,
-              onChanged: (val) {
+              _matchContrast, 
+              (val) {
                 setState(() => _matchContrast = val);
                 _onMatchContrastChanged(val);
               },
-            ),
-          ],
-        ),
-        
-       
+            )[0]
+          ),
+         textAndSwitch(
+            'Match Contrast:', 
+            _matchContrast, 
+            (val) {
+              setState(() => _matchContrast = val);
+              _onMatchContrastChanged(val);
+            },
+          )[1],
+         ]
+        ) 
+        : Column(children: 
+            textAndSwitch(
+              'Match Contrast:', 
+              _matchContrast, 
+              (val) {
+                setState(() => _matchContrast = val);
+                _onMatchContrastChanged(val);
+              },
+            )
+          ),
+          
         Column(
           children: [
             Padding(padding: EdgeInsetsGeometry.fromLTRB(0, V4rs.paddingValue(10), 0, 0), child:
@@ -763,50 +842,52 @@ class _SymbolColorCustomizer2 extends State<SymbolColorCustomizer2> {
         ),
         
         //overlay
-      
-        Row(
-          children: [
-            Expanded(child:
-            Text(
+        (!V4rs.smallEditorMode) 
+        ? Row(children: [
+          Expanded(
+            child: textAndSwitch(
               'Match Overlay Color:', 
-              style: Sv4rs.settingslabelStyle,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              ),
-              ),
-            Switch(
-              value: _matchOverlay,
-              onChanged: (val) {
+              _matchOverlay, 
+              (val) {
                 setState(() => _matchOverlay = val);
                 _onMatchOverlayChanged(val);
               },
-            ),
-          ],
-        ),
+            )[0]
+          ),
+         textAndSwitch(
+            'Match Overlay Color:', 
+            _matchOverlay, 
+            (val) {
+              setState(() => _matchOverlay = val);
+              _onMatchOverlayChanged(val);
+            },
+          )[1],
+         ]
+        ) 
+        : Column(children: 
+            textAndSwitch(
+              'Match Overlay Color:', 
+              _matchOverlay, 
+              (val) {
+                setState(() => _matchOverlay = val);
+                _onMatchOverlayChanged(val);
+              },
+            )
+          ),
         
          ExpansionTile(
           tilePadding: EdgeInsets.all(V4rs.paddingValue(2)),
-          title: Row(
-              children: [
-                Expanded(child:
-                Text('Overlay Color:', 
-                  style: Sv4rs.settingslabelStyle,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  ),
+          title: (!V4rs.smallEditorMode) 
+            ? Row(children: [
+                Expanded(
+                  child: colorTitleWidget()[0]
                 ),
-                CircleAvatar(
-                  backgroundColor: Cv4rs.themeColor3,
-                  radius: 20,
-                  child: Icon(Icons.circle, color: _overlay, size: 40, shadows: [
-                    Shadow(
-                      color: Cv4rs.themeColor4,
-                      blurRadius: 4,
-                    ),
-                  ],),
-                ),
-              ]
-            ),
+                colorTitleWidget()[1],
+                ]
+              )
+            : Column(
+                children: colorTitleWidget()
+              ),
           children: [
               //hexcode input
               Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(10)), child: 

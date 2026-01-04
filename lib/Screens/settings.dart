@@ -116,14 +116,14 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                 //
                  
                 ExpansionTile(
-                  title: Text('Language:', style: Sv4rs.settingslabelStyle),
+                  title: Text('Languages:', style: Sv4rs.settingslabelStyle),
                   collapsedBackgroundColor: Cv4rs.themeColor4,
                   backgroundColor: Cv4rs.themeColor4,
                   childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
                   onExpansionChanged: (bool expanded) {  
                     if (Sv4rs.speakInterfaceButtonsOnSelect) {
                         V4rs.speakOnSelect(
-                          'language', 
+                          'languages', 
                           V4rs.selectedLanguage.value, 
                           widget.synth,
                           widget.speakSelectSherpaOnnxSynth,
@@ -134,18 +134,19 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                   children: [
                     Padding(
                       padding: EdgeInsets.fromLTRB(
-                        V4rs.paddingValue(20), 
+                        20, 
                         V4rs.paddingValue(10), 
-                        V4rs.paddingValue(20), 
-                        0), 
+                        20, 
+                        0
+                      ), 
                       child: Row(
                         children: [
-                          Text('Interface language', style: Sv4rs.settingslabelStyle),
+                          Text('Interface language:', style: Sv4rs.settingslabelStyle),
                           Spacer(),
                           DropdownButton<String>(
                             value: V4rs.interfaceLanguage, 
                             dropdownColor: Cv4rs.themeColor4,
-                            hint: const Text('interface language'),
+                            hint: Text('interface language', style: Sv4rs.settingslabelStyle),
                             items: V4rs.allInterfaceLanguages.map((language) {
                               return DropdownMenuItem<String>(
                                 value: language,
@@ -161,17 +162,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                                 }
                               },
                             ),
-                          ]
-                        ),
+                        ]
+                       ),
                     ),
                   ...Sv4rs.allLanguages.map((language) {
                     final isSelected = Sv4rs.myLanguages.contains(language);
                     return Column(
                       children: [
-                        Divider(
-                          indent: 20,
-                          endIndent: 20,
-                        ),
                         CheckboxListTile (
                           title: Text(language, style: Sv4rs.settingslabelStyle),
                           value: isSelected,
@@ -729,7 +726,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                                 },
                                 decoration: InputDecoration(
                                   hintText: Sv4rs.firstAlert,
-                                  hintStyle: TextStyle(color: Cv4rs.themeColor3),
+                                  hintStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: V4rs.fontValue(Fv4rs.interfaceFontSize)),
                                 ),
                               ),
                             ),
@@ -1189,35 +1186,22 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                     
                       ExpansionTile(
                         title: Row (children: [
-                          Text.rich( 
-                          TextSpan (
-                            children: [ 
-                              TextSpan(
-                                text: 'Highlight Text as Spoken', 
-                                style: Sv4rs.settingslabelStyle
-                                ), 
-                                TextSpan(
-                                  text: ' (iOS only)',
-                                  style: Sv4rs.settingslabelStyle.copyWith(
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ), 
-                                TextSpan(
-                                  text: ':',
-                                  style: Sv4rs.settingslabelStyle,
-                                ),
-                                ])
-                                ), 
-                                Spacer(),
-                                 Switch(
-                                  value: HV4rs.highlightAsSpoken,
-                                  onChanged: (val) { setState(() {
-                                      HV4rs.highlightAsSpoken = val;
-                                      HV4rs.saveHighlightAsSpoken(val);
-                                  });
-                                  },
-                                ),
-                                ]),
+                          Text(
+                            'Highlight Text as Spoken', 
+                            style: Sv4rs.settingslabelStyle
+                          ), 
+                          Spacer(),
+                          Switch(
+                          value: HV4rs.highlightAsSpoken,
+                          onChanged: (val) { 
+                            setState(() {
+                              HV4rs.highlightAsSpoken = val;
+                              HV4rs.saveHighlightAsSpoken(val);
+                            });
+                           },
+                          ),
+                         ]
+                        ),
                         collapsedBackgroundColor: Cv4rs.themeColor4,
                         backgroundColor: Cv4rs.themeColor4,
                         childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
@@ -1595,9 +1579,12 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         Row(
                         children: [
                           Text('Boardset: ', style: Sv4rs.settingslabelStyle),
-                          Spacer(),
+                          Spacer(flex: V4rs.xSmallModeWidth ? 1 : 2),
                           if (ExV4rs.fileToExport != null)
-                          DropdownButton<String>(
+                          Expanded(
+                            child: 
+                           DropdownButton<String>(
+                            isExpanded: true,
                             value: ExV4rs.fileToExport!.path, 
                             dropdownColor: Cv4rs.themeColor4,
                             hint: Text(ExV4rs.getFileName(ExV4rs.fileToExport!)),
@@ -1615,9 +1602,11 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                                 }
                               },
                             ),
+                          ),
                           ]
                         ),
                         Row (children: [
+                          if (!V4rs.xSmallModeWidth)
                           Spacer(),
                           Expanded(child: 
                             TextButton(
@@ -1627,12 +1616,19 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(V4rs.paddingValue(10)),), 
-                                    child: Text('Export File', style: Fv4rs.mwLabelStyle.copyWith(
-                                      color: Cv4rs.themeColor4,
-                                    )),
+                                children: [ 
+                                  Expanded(child: 
+                                    Padding(
+                                      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(V4rs.paddingValue(10)),), 
+                                      child: Text(
+                                        'Export File', 
+                                        maxLines: 2, 
+                                        textAlign: TextAlign.center, 
+                                        style: Fv4rs.mwLabelStyle.copyWith(
+                                          color: Cv4rs.themeColor4, 
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 LoadingIndicator(notifier: ExV4rs.loading),
                                 ]),
@@ -1655,12 +1651,17 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Expanded(child: 
                                   Padding(
                                     padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10),), 
-                                    child: Text('Print', style: Fv4rs.mwLabelStyle.copyWith(
+                                    child: Text('Print', 
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    style: Fv4rs.mwLabelStyle.copyWith(
                                       color: Cv4rs.themeColor4,
                                     )),
                                   ),
+                                  )
                                 ]),
                               onPressed: () {
                                 setState(() {
@@ -1669,6 +1670,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                               }, 
                             ),
                           ),
+                          if (!V4rs.xSmallModeWidth)
                           Spacer(),
                         ]
                         ),
@@ -2209,13 +2211,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Off', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Label', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Alternate Label', style: Sv4rs.settingslabelStyle),),
                               ],
                             )
@@ -2435,13 +2437,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Off', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Label', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Change', style: Sv4rs.settingslabelStyle),),
                               ],
                             )
@@ -2666,13 +2668,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Off', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded( flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Label', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded( flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Alternate Label', style: Sv4rs.settingslabelStyle),),
                               ],
                             )
@@ -2887,13 +2889,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Expanded(flex: 1, child:
+                                      Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                       Text('Off', style: Sv4rs.settingslabelStyle),),
                                       Spacer(flex: 3),
-                                      Expanded( flex: 1, child:
+                                      Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                       Text('Speak Label', style: Sv4rs.settingslabelStyle),),
                                       Spacer(flex: 3),
-                                      Expanded( flex: 1, child:
+                                      Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                       Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
                                     ],
                                   )
@@ -2934,13 +2936,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Off', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Label', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
                               ],
                             )
@@ -2981,13 +2983,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Off', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Label', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
                               ],
                             )
@@ -3028,13 +3030,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Off', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Label', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
                               ],
                             )
@@ -3075,13 +3077,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Off', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Label', style: Sv4rs.settingslabelStyle),),
                                 Spacer(flex: 3),
-                                Expanded( flex: 1, child:
+                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
                                 Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
                               ],
                             )
@@ -3243,10 +3245,15 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                           ),
                         ]
                       ),
-                     Row(
-                      children: [
-                        Text('Long Tap Duration: ${(V4rs.longTapDuration / 1000).toDouble()}', style: Sv4rs.settingslabelStyle, ),
-                          Expanded(
+                     Row(children: [
+                        Expanded(child: 
+                          Text(
+                            'Long Tap Duration: ${(V4rs.longTapDuration / 1000).toDouble()}', 
+                            style: Sv4rs.settingslabelStyle, 
+                            maxLines: 3,
+                          ),
+                        ),
+                        Expanded(
                             child: Slider(
                               value: (V4rs.longTapDuration / 1000).toDouble(),
                               min: 0.0,
@@ -3264,30 +3271,35 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                               },
                             ),
                             ),
-                        ]
+                       ]
                       ),
-                      Row(
-                      children: [
-                        Text('Double Tap Click Speed ${V4rs.doubleTapClickSpeed / 1000}', style: Sv4rs.settingslabelStyle, ),
-                          Expanded(
-                            child: Slider(
-                              value: (V4rs.doubleTapClickSpeed / 1000).toDouble(),
-                              min: 0.0,
-                              max: 1.0,
-                              divisions: 10,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'double tap click speed ${V4rs.doubleTapClickSpeed / 1000}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  V4rs.doubleTapClickSpeed = (value * 1000).toInt();
-                                  V4rs.savedoubleTapClickSpeed((value * 1000).toInt());
-                                });
-                              },
-                            ),
-                            ),
-                        ]
+                      Row(children: [
+                        Expanded(child: 
+                          Text(
+                            'Double Tap Click Speed ${V4rs.doubleTapClickSpeed / 1000}', 
+                            style: Sv4rs.settingslabelStyle, 
+                            maxLines: 3,
+                          ),
+                        ),
+                        Expanded(
+                          child: Slider(
+                            value: (V4rs.doubleTapClickSpeed / 1000).toDouble(),
+                            min: 0.0,
+                            max: 1.0,
+                            divisions: 10,
+                            activeColor: Cv4rs.themeColor1,
+                            inactiveColor: Cv4rs.themeColor3,
+                            thumbColor: Cv4rs.themeColor1,
+                            label: 'double tap click speed ${V4rs.doubleTapClickSpeed / 1000}',
+                            onChanged: (value) async {
+                              setState(() {
+                                V4rs.doubleTapClickSpeed = (value * 1000).toInt();
+                                V4rs.savedoubleTapClickSpeed((value * 1000).toInt());
+                              });
+                            },
+                          ),
+                        ),
+                       ]
                       ),
                          
                     ]

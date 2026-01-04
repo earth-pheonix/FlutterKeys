@@ -16,6 +16,7 @@ import 'package:flutterkeysaac/Variables/grammer_variables.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 import 'dart:async';
+import 'package:flutterkeysaac/Variables/assorted_ui/ui_boards.dart';
 
 //
 //for boards
@@ -24,7 +25,6 @@ import 'dart:async';
   //
   //main buttons
   //
-
     class BuildEditableButton extends StatefulWidget{
       final BoardObjects obj;
       final TTSInterface synth;
@@ -43,156 +43,26 @@ import 'dart:async';
 
         final obj = widget.obj;
 
-        //font settings
-            TextStyle uniqueStyle =  
-            TextStyle(
-              color: obj.fontColor ?? Colors.black,
-              fontSize: obj.fontSize ?? 16,
-              fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-              fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-              fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-              decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-            );
-
-            TextStyle matchStyle =  
-            TextStyle(
-              color: Fv4rs.buttonFontColor,
-              fontSize: Fv4rs.buttonFontSize,
-              fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-              fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-              fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-              decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-            );
-
-          //label
-            Text theLabel = 
-            Text(obj.label ?? "", 
-              style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              );
-            Text theLabel2 = 
-            Text(obj.label ?? "", 
-              style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              );
-          
-          //image
-            Widget image = LoadImage.fromSymbol(obj.symbol);
-
-          //symbol
-            Widget theSymbol = 
-              ImageStyle1(
-                image: image, 
-                symbolSaturation: obj.symbolSaturation ?? 1.0, 
-                symbolContrast: obj.symbolContrast ?? 1.0, 
-                invertSymbolColors: obj.invertSymbol ?? false, 
-                overlayColor: obj.overlayColor ?? Colors.white,
-
-                matchOverlayColor: obj.matchOverlayColor ?? true, 
-                defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-                matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-                matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-                matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-                defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-                defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-                defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-                );
           //
           //button
           //
           return ValueListenableBuilder(
             valueListenable: Ev4rs.selectedUUIDs, 
             builder: (context, selected, _){
-          return Opacity(
-            opacity: (obj.show ?? true) ? 1.0 : 0.4, 
-            child:
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  elevation: 2,
-                  backgroundColor: 
-                    (Ev4rs.firstSelectedUUID.value == obj.id || Ev4rs.secondSelectedUUID.value == obj.id
-                    || Ev4rs.selectedUUIDs.value.contains(obj.id) || Ev4rs.selectedUUIDs.value.contains(obj.id)) 
-                    ? (obj.matchPOS ?? true) 
-                      ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                      : obj.borderColor ?? Colors.blueGrey
-                    : (obj.matchPOS ?? true) 
-                      ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                      : obj.backgroundColor ?? Colors.blueGrey,
-                  shadowColor: Cv4rs.themeColor4, 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(
-                      color: (obj.matchBorder ?? true) 
-                        ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                        : obj.borderColor ?? Colors.white,
-                      width: (obj.matchBorder ?? true) 
-                        ? Bv4rs.buttonBorderWeight
-                        : obj.borderWeight ?? 2.5
-                    )
-                  ),
-                ),
-            onPressed: ()  {
-              setState(() {
-              Ev4rs.selectingAction2(obj, widget.root);
-              });
-            },
-            child: () {
-              switch((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-                case 1: 
-                  return Column(children: [
-                    Flexible(child: 
-                    Padding(padding: EdgeInsets.fromLTRB(
-                      V4rs.paddingValue(obj.padding ?? 2.0), 
-                      V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                      V4rs.paddingValue(obj.padding ?? 2.0), 
-                      V4rs.paddingValue(obj.padding ?? 2.0)
-                    ), 
-                    child:
-                    theSymbol,
-                    ),
-                    ),
-                    Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                    theLabel,
-                    ),
-                  ],
-                );
-                case 2: 
-                  return Column(children: [
-                    Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                    theLabel,
-                    ),
-                    Flexible(child: 
-                    Padding(padding: EdgeInsets.fromLTRB(
-                      V4rs.paddingValue(obj.padding ?? 2.0), 
-                      V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                      V4rs.paddingValue(obj.padding ?? 2.0), 
-                      V4rs.paddingValue(obj.padding ?? 2.0)), 
-                    child:
-                      theSymbol,
-                    ),
-                    ),
-                ],
-                );
-                case 3: 
-                  return Padding(
-                    padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                    theSymbol,
-                  );
-                case 4:
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel2);
-              }
-            } (),
-            )
+              return Opacity(
+                opacity: (obj.show ?? true) ? 1.0 : 0.4, 
+                child: BoardButtonStyle(
+                  obj: obj,
+                  editable: true,
+                  onPressed: () {
+                    setState(() {
+                      Ev4rs.selectingAction2(obj, widget.root);
+                    });
+                  },
+                )
+              );
+            }
           );
-        }
-        );
         }
       }
 
@@ -243,62 +113,7 @@ import 'dart:async';
         final synth = widget.synth;
         String linkTo = obj.linkToUUID ?? '';
 
-        //font settings
-        TextStyle uniqueStyle =  
-        TextStyle(
-          color: obj.fontColor ?? Colors.black,
-          fontSize: obj.fontSize ?? 16,
-          fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-          fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-          decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-        );
 
-        TextStyle matchStyle =  
-        TextStyle(
-          color: Fv4rs.buttonFontColor,
-          fontSize: Fv4rs.buttonFontSize,
-          fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-          fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-          decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        //label
-          Text theLabel = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            );
-          Text theLabel2 = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            );
-      
-        //image
-          Widget image = LoadImage.fromSymbol(obj.symbol);
-          
-
-        //symbol
-          Widget theSymbol = 
-            ImageStyle1(
-              image: image, 
-              symbolSaturation: obj.symbolSaturation ?? 1.0, 
-              symbolContrast: obj.symbolContrast ?? 1.0, 
-              invertSymbolColors: obj.invertSymbol ?? false, 
-              matchOverlayColor: obj.matchOverlayColor ?? true, 
-              overlayColor: obj.overlayColor ?? Colors.white,
-              defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-              matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-              matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-              matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-              defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-              defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-              defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-            );
 
             //tap action
               Future<void> doTapAction(BoardObjects obj) async {
@@ -396,100 +211,17 @@ import 'dart:async';
 
             }
           },
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-            elevation: 2,
-            backgroundColor: 
-              (Ev4rs.firstSelectedUUID.value == obj.id || Ev4rs.secondSelectedUUID.value == obj.id
-                    || Ev4rs.selectedUUIDs.value.contains(obj.id) || Ev4rs.selectedUUIDs.value.contains(obj.id))
-                ? (obj.matchPOS ?? true) 
-                  ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                  : obj.borderColor ?? Colors.blueGrey
-                : (obj.matchPOS ?? true) 
-                  ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                  : obj.backgroundColor ?? Colors.blueGrey,
-            shadowColor: Cv4rs.themeColor4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: (obj.matchBorder ?? true)
-                    ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-                    : obj.borderColor ?? Colors.white,
-                width: (obj.matchBorder ?? true)
-                    ? Bv4rs.buttonBorderWeight
-                    : obj.borderWeight ?? 2.5,
-              ),
-            ),
-          ),
+        child: BoardButtonStyle(
+          obj: obj,
+          editable: true,
           onPressed: () async {
             if (altAccessActive) {
               await doTapAction(obj);
             }
           }, 
-          child: () {
-            switch ((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-              case 1:
-                return Stack(children: [
-                  Column(children: [
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          V4rs.paddingValue(obj.padding ?? 2.0), 
-                          V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                          V4rs.paddingValue(obj.padding ?? 2.0), 
-                          V4rs.paddingValue(obj.padding ?? 2.0)
-                        ),
-                        child: theSymbol,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                      child: theLabel,
-                    ),
-                  ]),
-                ]);
-              case 2:
-                return Stack(children: [
-                  Column(children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                      child: theLabel,
-                    ), 
-                    Flexible(child: 
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0)
-                      ),
-                      child: theSymbol,
-                    ),
-                    ),
-                  ]),
-                ]);
-              case 3:
-                return Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)),
-                    child: theSymbol,
-                  ),
-                ]);
-              case 4:
-                return Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                    child: theLabel2,
-                  ),
-                ]);
-              default:
-                return SizedBox.shrink();
-                }
-              }(),
-              ),
-            )),
-            ),
+        ),
+        )),
+        ),
 
 
             //
@@ -563,62 +295,6 @@ import 'dart:async';
         
         final obj = widget.obj;
         final synth = widget.synth;
-
-        //font settings
-        TextStyle uniqueStyle =  
-        TextStyle(
-          color: obj.fontColor ?? Colors.black,
-          fontSize: obj.fontSize ?? 16,
-          fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-          fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-          decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        TextStyle matchStyle =  
-        TextStyle(
-          color: Fv4rs.buttonFontColor,
-          fontSize: Fv4rs.buttonFontSize,
-          fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-          fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-          decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        //label
-          Text theLabel = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            );
-          Text theLabel2 = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            );
-      
-        //image
-          Widget image = LoadImage.fromSymbol(obj.symbol);
-
-        //symbol
-          Widget theSymbol = 
-            ImageStyle1(
-              image: image, 
-              symbolSaturation: obj.symbolSaturation ?? 1.0, 
-              symbolContrast: obj.symbolContrast ?? 1.0, 
-              invertSymbolColors: obj.invertSymbol ?? false, 
-              matchOverlayColor: obj.matchOverlayColor ?? true, 
-              overlayColor: obj.overlayColor ?? Colors.white,
-              defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-              matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-              matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-              matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-              defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-              defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-              defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-            );
 
             //tap action
               Future<void> doTapAction(
@@ -722,107 +398,15 @@ import 'dart:async';
               }
             }
           },
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-            elevation: 2,
-            backgroundColor: 
-              (Ev4rs.firstSelectedUUID.value == obj.id || Ev4rs.secondSelectedUUID.value == obj.id
-                    || Ev4rs.selectedUUIDs.value.contains(obj.id) || Ev4rs.selectedUUIDs.value.contains(obj.id))
-                  ? (obj.matchPOS ?? true) 
-                    ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                    : obj.borderColor ?? Colors.blueGrey
-                  : (obj.matchPOS ?? true) 
-                    ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                    : obj.backgroundColor ?? Colors.blueGrey,
-            shadowColor: Cv4rs.themeColor4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: (obj.matchBorder ?? true)
-                    ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-                    : obj.borderColor ?? Colors.white,
-                width: (obj.matchBorder ?? true)
-                    ? Bv4rs.buttonBorderWeight
-                    : obj.borderWeight ?? 2.5,
-              ),
-            ),
-          ),
+        child: BoardButtonStyle(
+          obj: obj,
+          editable: true,
           onPressed: () async {
             if (altAccessActive) {
               await doTapAction(obj, synth);
             }
           },
-          child: () {
-            switch ((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-              case 1:
-                //text below
-                return Stack(children: [
-                  Column(children: [
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          V4rs.paddingValue(obj.padding ?? 2.0), 
-                          V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                          V4rs.paddingValue(obj.padding ?? 2.0), 
-                          V4rs.paddingValue(obj.padding ?? 2.0)
-                        ),
-                        child: theSymbol,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                      child: theLabel,
-                    ),
-                  ]),
-                ]);
-
-              //text above 
-              case 2:
-                return Stack(children: [
-                  Column(children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                      child: theLabel,
-                    ), 
-                    Flexible(child: 
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0)
-                      ),
-                      child: theSymbol,
-                    ),
-                    ),
-                  ]),
-                ]);
-              
-              //symbol only 
-              case 3:
-                return Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)),
-                    child: theSymbol,
-                  ),
-                ]);
-
-              //label only
-              case 4:
-                return Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                    child: theLabel2,
-                  ),
-                ]);
-              
-              //fallback
-              default:
-                return SizedBox.shrink();
-                }
-              }(),
-              ),
+        ),
             )),
             ),
             //
@@ -890,62 +474,6 @@ import 'dart:async';
         
         final obj = widget.obj;
         final synth = widget.synth;
-
-        //font settings
-        TextStyle uniqueStyle =  
-        TextStyle(
-          color: obj.fontColor ?? Colors.black,
-          fontSize: obj.fontSize ?? 16,
-          fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-          fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-          decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        TextStyle matchStyle =  
-        TextStyle(
-          color: Fv4rs.buttonFontColor,
-          fontSize: Fv4rs.buttonFontSize,
-          fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-          fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-          decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        //label
-          Text theLabel = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            );
-          Text theLabel2 = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            );
-      
-        //image
-        Widget image = LoadImage.fromSymbol(obj.symbol);
-
-        //symbol
-          Widget theSymbol = 
-            ImageStyle1(
-              image: image, 
-              symbolSaturation: obj.symbolSaturation ?? 1.0, 
-              symbolContrast: obj.symbolContrast ?? 1.0, 
-              invertSymbolColors: obj.invertSymbol ?? false, 
-              matchOverlayColor: obj.matchOverlayColor ?? true, 
-              overlayColor: obj.overlayColor ?? Colors.white,
-              defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-              matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-              matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-              matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-              defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-              defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-              defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-            );
 
             //tap action
               Future<void> doTapAction(
@@ -1015,107 +543,15 @@ import 'dart:async';
               }
             }
           },
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-            elevation: 2,
-            backgroundColor: 
-              (Ev4rs.firstSelectedUUID.value == obj.id || Ev4rs.secondSelectedUUID.value == obj.id
-                    || Ev4rs.selectedUUIDs.value.contains(obj.id) || Ev4rs.selectedUUIDs.value.contains(obj.id))
-                ? (obj.matchPOS ?? true) 
-                  ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                  : obj.borderColor ?? Colors.blueGrey
-                : (obj.matchPOS ?? true) 
-                  ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                  : obj.backgroundColor ?? Colors.blueGrey,
-            shadowColor: Cv4rs.themeColor4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: (obj.matchBorder ?? true)
-                    ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-                    : obj.borderColor ?? Colors.white,
-                width: (obj.matchBorder ?? true)
-                    ? Bv4rs.buttonBorderWeight
-                    : obj.borderWeight ?? 2.5,
-              ),
-            ),
-          ),
+        child: BoardButtonStyle(
+          obj: obj,
+          editable: true,
           onPressed: () async {
             if (altAccessActive) {
               await doTapAction(obj, synth);
             }
           },
-          child: () {
-            switch ((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-              case 1:
-                //text below
-                return Stack(children: [
-                  Column(children: [
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          V4rs.paddingValue(obj.padding ?? 2.0), 
-                          V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                          V4rs.paddingValue(obj.padding ?? 2.0), 
-                          V4rs.paddingValue(obj.padding ?? 2.0)
-                        ),
-                        child: theSymbol,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                      child: theLabel,
-                    ),
-                  ]),
-                ]);
-
-              //text above 
-              case 2:
-                return Stack(children: [
-                  Column(children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                      child: theLabel,
-                    ), 
-                    Flexible(child: 
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0)
-                      ),
-                      child: theSymbol,
-                    ),
-                    ),
-                  ]),
-                ]);
-              
-              //symbol only 
-              case 3:
-                return Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)),
-                    child: theSymbol,
-                  ),
-                ]);
-
-              //label only
-              case 4:
-                return Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                    child: theLabel2,
-                  ),
-                ]);
-              
-              //fallback
-              default:
-                return SizedBox.shrink();
-                }
-              }(),
-              ),
+        ),
             )),
             ),
             //
@@ -1200,62 +636,6 @@ import 'dart:async';
         final openBoard = widget.openBoard;
         final synth = widget.synth;
         String linkTo = obj.linkToUUID ?? '';
-
-        //font settings
-        TextStyle uniqueStyle =  
-        TextStyle(
-          color: obj.fontColor ?? Colors.black,
-          fontSize: obj.fontSize ?? 16,
-          fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-          fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-          decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        TextStyle matchStyle =  
-        TextStyle(
-          color: Fv4rs.buttonFontColor,
-          fontSize: Fv4rs.buttonFontSize,
-          fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-          fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-          decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        //label
-          Text theLabel = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            );
-          Text theLabel2 = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            );
-      
-        //image
-          Widget image = LoadImage.fromSymbol(obj.symbol);
-
-        //symbol
-          Widget theSymbol = 
-            ImageStyle1(
-              image: image, 
-              symbolSaturation: obj.symbolSaturation ?? 1.0, 
-              symbolContrast: obj.symbolContrast ?? 1.0, 
-              invertSymbolColors: obj.invertSymbol ?? false, 
-              matchOverlayColor: obj.matchOverlayColor ?? true, 
-              overlayColor: obj.overlayColor ?? Colors.white,
-              defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-              matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-              matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-              matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-              defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-              defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-              defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-            );
           
           //tap action
               Future<void> doTapAction(
@@ -1353,107 +733,15 @@ import 'dart:async';
               }
             }
           },
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-            elevation: 2,
-            backgroundColor: 
-              (Ev4rs.firstSelectedUUID.value == obj.id || Ev4rs.secondSelectedUUID.value == obj.id
-                    || Ev4rs.selectedUUIDs.value.contains(obj.id) || Ev4rs.selectedUUIDs.value.contains(obj.id))
-                ? (obj.matchPOS ?? true) 
-                  ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                  : obj.borderColor ?? Colors.blueGrey
-                : (obj.matchPOS ?? true) 
-                  ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                  : obj.backgroundColor ?? Colors.blueGrey,
-            shadowColor: Cv4rs.themeColor4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: (obj.matchBorder ?? true)
-                    ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-                    : obj.borderColor ?? Colors.white,
-                width: (obj.matchBorder ?? true)
-                    ? Bv4rs.buttonBorderWeight
-                    : obj.borderWeight ?? 2.5,
-              ),
-            ),
-          ),
+        child: BoardButtonStyle(
+          obj: obj,
+          editable: true,
           onPressed: () async {
             if (altAccessActive) {
               await doTapAction(obj, synth);
-              }
-            }, 
-          child: () {
-            switch ((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-              case 1:
-                //text below
-                return Stack(children: [
-                  Column(children: [
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          V4rs.paddingValue(obj.padding ?? 2.0), 
-                          V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                          V4rs.paddingValue(obj.padding ?? 2.0), 
-                          V4rs.paddingValue(obj.padding ?? 2.0)
-                        ),
-                        child: theSymbol,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                      child: theLabel,
-                    ),
-                  ]),
-                ]);
-
-              //text above
-              case 2:
-                return Stack(children: [
-                  Column(children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                      child: theLabel,
-                    ), 
-                    Flexible(child: 
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0)
-                      ),
-                      child: theSymbol,
-                    ),
-                    ),
-                  ]),
-                ]);
-
-              //image only
-              case 3:
-                return Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)),
-                    child: theSymbol,
-                  ),
-                ]);
-
-              //label only  
-              case 4:
-                return Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                    child: theLabel2,
-                  ),
-                ]);
-
-              //fallback 
-              default:
-                return SizedBox.shrink();
             }
-          }(),
-          ),
+          }, 
+        ),
         )),
             ),
             //
@@ -1522,97 +810,18 @@ import 'dart:async';
           final obj = widget.obj;
           final synth = widget.synth;
 
-        //font settings
-            TextStyle uniqueStyle =  
-            TextStyle(
-              color: obj.fontColor ?? Colors.black,
-              fontSize: obj.fontSize ?? 16,
-              fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-              fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-              fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-              decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-            );
-
-            TextStyle matchStyle =  
-            TextStyle(
-              color: Fv4rs.buttonFontColor,
-              fontSize: Fv4rs.buttonFontSize,
-              fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-              fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-              fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-              decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-            );
-
-          //label
-            Text theLabel = 
-            Text(obj.label ?? "", 
-              style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              );
-            Text theLabel2 = 
-            Text(obj.label ?? "", 
-              style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              );
-          
-          //image
-            Widget image = LoadImage.fromSymbol(obj.symbol);
-
-          //symbol
-            Widget theSymbol = 
-              ImageStyle1(
-                image: image, 
-                symbolSaturation: obj.symbolSaturation ?? 1.0, 
-                symbolContrast: obj.symbolContrast ?? 1.0, 
-                invertSymbolColors: obj.invertSymbol ?? false, 
-                matchOverlayColor: obj.matchOverlayColor ?? true, 
-                overlayColor: obj.overlayColor ?? Colors.white,
-                defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-                matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-                matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-                matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-                defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-                defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-                defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-                );
-                return LayoutBuilder(builder: (context, constraints) {
+          return LayoutBuilder(builder: (context, constraints) {
           double side = constraints.maxHeight * 0.2;
           double top = constraints.maxWidth * 0.2;
 
           //
           //button
           //
-          return 
-          
-          Stack(children: [ 
+          return Stack(children: [ 
           Positioned.fill(child: 
-          Visibility(
-            visible: (obj.show ?? true), 
-            maintainSize: true, 
-            maintainAnimation: true,
-            maintainState: true, child:
-            ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                elevation: 2,
-                backgroundColor: (obj.matchPOS ?? true) 
-                  ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                  : obj.backgroundColor ?? Colors.blueGrey,
-                shadowColor: Cv4rs.themeColor4, 
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(
-                    color: (obj.matchBorder ?? true) 
-                      ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                      : obj.borderColor ?? Colors.white,
-                    width: (obj.matchBorder ?? true) 
-                      ? Bv4rs.buttonBorderWeight
-                      : obj.borderWeight ?? 2.5
-                  )
-                ),
-              ),
+          BoardButtonStyle(
+            obj: obj,
+            editable: true,
             onPressed: () async {
               setState(() async {
               switch ((obj.matchSpeakOS ?? true) ? Bv4rs.grammerRowSpeakOnSelect : obj.speakOS) {
@@ -1644,59 +853,7 @@ import 'dart:async';
               }
               });
             },
-            child: () {
-              switch((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-                case 1: 
-                  return Column(children: [
-                    Flexible(child: 
-                    Padding(padding: EdgeInsets.fromLTRB(
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0)), 
-                    child:
-                    theSymbol,
-                    ),
-                    ),
-                    Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                    theLabel,
-                    ),
-                  ],
-                );
-                case 2: 
-                  return Column(children: [
-                    Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                    theLabel,
-                    ),
-                    Flexible(child: 
-                    Padding(padding: EdgeInsets.fromLTRB(
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0)), 
-                    child:
-                      theSymbol,
-                    ),
-                    ),
-                ],
-                );
-                case 3: 
-                  return Padding(
-                    padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                    theSymbol,
-                  );
-                case 4:
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel2);
-              }
-            } (),
-            )
-          
           )
-          
         ),
 
         //
@@ -1817,56 +974,6 @@ import 'dart:async';
           final boards = widget.boards;
           final findBoardById = widget.findBoardById;
 
-          //font settings
-            TextStyle uniqueStyle =  
-            TextStyle(
-              color: obj.fontColor ?? Colors.black,
-              fontSize: obj.fontSize ?? 16,
-              fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-              fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-              fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-              decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-            );
-
-            TextStyle matchStyle =  
-            TextStyle(
-              color: Fv4rs.subFolderFontColor,
-              fontSize: Fv4rs.subFolderFontSize,
-              fontFamily: Fontsy.fontToFamily[Fv4rs.subFolderFont], 
-              fontWeight: FontWeight.values[((Fv4rs.subFolderFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-              fontStyle: Fv4rs.subFolderFontItalics ? FontStyle.italic : FontStyle.normal,
-              decoration: Fv4rs.subFolderFontUnderline ? TextDecoration.underline : TextDecoration.none,
-            );
-
-          //label
-            Text theLabel = 
-            Text(obj.label ?? "", 
-              style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle, 
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis
-            );
-          
-          //image
-            Widget image = LoadImage.fromSymbol(obj.symbol);
-
-          //symbol
-            Widget theSymbol = 
-              ImageStyle1(
-                image: image, 
-                symbolSaturation: obj.symbolSaturation ?? 1.0, 
-                symbolContrast: obj.symbolContrast ?? 1.0, 
-                invertSymbolColors: obj.invertSymbol ?? false, 
-                matchOverlayColor: obj.matchOverlayColor ?? true, 
-                overlayColor: obj.overlayColor ?? Colors.white,
-                defaultSymbolColorOverlay: Bv4rs.subFolderSymbolColorOverlay, 
-                matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-                matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-                matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-                defaultSymbolInvert: Bv4rs.subFolderSymbolInvert, 
-                defaultSymbolContrast: Bv4rs.subFolderSymbolContrast, 
-                defaultSymbolSaturation: Bv4rs.subFolderSymbolSaturation
-                );
-
           //navigation  
           String linkTo = obj.linkToUUID ?? '';
 
@@ -1874,221 +981,64 @@ import 'dart:async';
           //back button
           //
           if (obj.type1 == 'backButton'){
-            return Opacity(
-            opacity: (obj.show ?? true) ? 1.0 : 0.5,
-            child:
-            ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5), vertical: V4rs.paddingValue(2)),
-                elevation: 2,
-                backgroundColor: (Ev4rs.firstSubFolderSelectedUUID.value == obj.id || Ev4rs.secondSubFolderSelectedUUID.value == obj.id
-                    || Ev4rs.subFolderSelectedUUIDs.value.contains(obj.id) || Ev4rs.subFolderSelectedUUIDs.value.contains(obj.id)) 
-                    ? (obj.matchPOS ?? true) 
-                      ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                      : obj.borderColor ?? Colors.blueGrey
-                    : (obj.matchPOS ?? true) 
-                      ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                      : obj.backgroundColor ?? Colors.blueGrey,
-                shadowColor: Cv4rs.themeColor4, 
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(
-                    color: (obj.matchBorder ?? true) 
-                      ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                      : obj.borderColor ?? Colors.white,
-                    width: (obj.matchBorder ?? true) 
-                      ? Bv4rs.subFolderBorderWeight
-                      : obj.borderWeight ?? 2.5
-                  )
-                ),
-              ),
-            onPressed: () async {
-              if (Ev4rs.subFolderSelectingAction1(obj)){
-                Ev4rs.subFolderSelectingAction1(obj);
-              } else {
-              switch ((obj.matchSpeakOS ?? true) ? Bv4rs.subFolderSpeakOnSelect : obj.speakOS) {
-              case 1:
-                goBack();
-                break;
-              case 2:
-                goBack();
-                await V4rs.speakOnSelect(
-                  obj.label ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  widget.speakSelectSherpaOnnxSynth,
-                  widget.initForSS,
-                  widget.playerForSS,
-                );
-                break;
-              case 3:
-              goBack();
-                await V4rs.speakOnSelect(
-                  obj.alternateLabel ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  widget.speakSelectSherpaOnnxSynth,
-                  widget.initForSS,
-                  widget.playerForSS,
-                );
-                break;
-              }
-              }
+            return BoardButtonStyle(
+              editable: true,
+              isSubFolder: true,
+              editSubFolderPress: (){ 
+              setState(() {
+                Ev4rs.subFolderSelectingAction2(obj, widget.root);
+              });
             },
-            child: () {
-              switch((obj.matchFormat ?? true) ? Bv4rs.subFolderFormat : obj.format) {
-                case 1: 
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                    Padding(padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 5.0)), child:
-                    theSymbol,
-                    ),
-                    Flexible(child: 
-                    Padding(padding: EdgeInsetsGeometry.symmetric(
-                      horizontal: V4rs.paddingValue(5)), child:
-                    theLabel,
-                    ),
-                  
-                    ),
-                    
-                    Flexible(
-                    fit: FlexFit.tight,
-                    child:
-                    Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child: 
-                    ButtonStyle1(
-                        glow: true,
-                        imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
-                          onPressed: (){
-                            setState(() {
-                              Ev4rs.subFolderSelectingAction2(obj, widget.root);
-                            });
-                          }, 
-                          ),  
-                        ),
-                    ),
-                  ],
-                );
-                case 2: 
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(child: 
-                      Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                    theLabel,
-                      ),
-                      ),
-                    Padding(padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 5.0)), child:
-                      theSymbol,
-                    ),
-                    
-                    Flexible(
-                    fit: FlexFit.tight,
-                    child:
-                    Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child: 
-                    ButtonStyle1(
-                        glow: true,
-                        imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
-                          onPressed: (){
-                            setState(() {
-                              Ev4rs.subFolderSelectingAction2(obj, widget.root);
-                            });
-                          }, 
-                          ),  
-                        ),
-                    ),
-                ],
-                );
-                case 3: 
-                  return Row(children: [
-                  Padding(
-                    padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 5.0)), child:
-                    theSymbol,
-                  ),
-                  
-                    Flexible(
-                    fit: FlexFit.tight,
-                    child:
-                    Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child: 
-                    ButtonStyle1(
-                        glow: true,
-                        imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
-                          onPressed: (){
-                            setState(() {
-                              Ev4rs.subFolderSelectingAction2(obj, widget.root);
-                            });
-                          }, 
-                          ),    
-                        ),
-                    ),
-                  ]
+              obj: obj,
+              onPressed: () async {
+                if (Ev4rs.subFolderSelectingAction1(obj)){
+                  Ev4rs.subFolderSelectingAction1(obj);
+                } else {
+                switch ((obj.matchSpeakOS ?? true) ? Bv4rs.subFolderSpeakOnSelect : obj.speakOS) {
+                case 1:
+                  goBack();
+                  break;
+                case 2:
+                  goBack();
+                  await V4rs.speakOnSelect(
+                    obj.label ?? '', 
+                    V4rs.selectedLanguage.value, 
+                    synth,
+                    widget.speakSelectSherpaOnnxSynth,
+                    widget.initForSS,
+                    widget.playerForSS,
                   );
-                case 4:
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                  Flexible(child: 
-                  Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel,
-                  )
-                  ),
-                  
-                    Flexible(
-                    fit: FlexFit.tight,
-                    child:
-                    Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child: 
-                    ButtonStyle1(
-                        glow: true,
-                        imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
-                          onPressed: (){
-                            setState(() {
-                              Ev4rs.subFolderSelectingAction2(obj, widget.root);
-                            });
-                          }, 
-                          ),    
-                          ),
-                    ),
-                  ]
+                  break;
+                case 3:
+                goBack();
+                  await V4rs.speakOnSelect(
+                    obj.alternateLabel ?? '', 
+                    V4rs.selectedLanguage.value, 
+                    synth,
+                    widget.speakSelectSherpaOnnxSynth,
+                    widget.initForSS,
+                    widget.playerForSS,
                   );
-              }
-            } (),
-            )
-          );
+                  break;
+                }
+                }
+              },  
+            );
           } 
 
           //
           //sub folders + more
           //
-          return Opacity(
-            opacity: (obj.show ?? true) ? 1.0 : 0.4, 
-            child:
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5), vertical: V4rs.paddingValue(2)),
-                elevation: 2,
-                backgroundColor: (Ev4rs.firstSubFolderSelectedUUID.value == obj.id || Ev4rs.secondSubFolderSelectedUUID.value == obj.id
-                    || Ev4rs.subFolderSelectedUUIDs.value.contains(obj.id) || Ev4rs.subFolderSelectedUUIDs.value.contains(obj.id)) 
-                    ? (obj.matchPOS ?? true) 
-                      ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                      : obj.borderColor ?? Colors.blueGrey
-                    : (obj.matchPOS ?? true) 
-                      ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                      : obj.backgroundColor ?? Colors.blueGrey,
-                shadowColor: Cv4rs.themeColor4, 
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(
-                    color: (obj.matchBorder ?? true) 
-                      ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                      : obj.borderColor ?? Colors.white,
-                    width: (obj.matchBorder ?? true) 
-                      ? Bv4rs.subFolderBorderWeight
-                      : obj.borderWeight ?? 2.5
-                  )
-                ),
-              ),
-              onPressed: () async {
+          return BoardButtonStyle(
+            editable: true,
+            isSubFolder: true,
+            obj: obj,
+            editSubFolderPress: (){ 
+              setState(() {
+                Ev4rs.subFolderSelectingAction2(obj, widget.root);
+              });
+            }, 
+            onPressed: () async {
                 if (Ev4rs.subFolderSelectingAction1(obj)){
                   Ev4rs.subFolderSelectingAction1(obj);
                 } else{
@@ -2141,123 +1091,8 @@ import 'dart:async';
                   break;
                 }
                 }
-              },
-              child: () {
-              switch((obj.matchFormat ?? true) ? Bv4rs.subFolderFormat : obj.format) {
-                case 1: 
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                    Padding(padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                    theSymbol,
-                    ),
-                  Flexible(child: 
-                  Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel
-                  )
-                    ),
-                    
-                    Flexible(
-                    fit: FlexFit.tight,
-                    child:
-                    Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child: 
-                    ButtonStyle1(
-                        glow: true,
-                        imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
-                          onPressed: (){
-                            setState(() {
-                              Ev4rs.subFolderSelectingAction2(obj, widget.root);
-                            });
-                          }, 
-                          ),    
-                          ),
-                    ),
-                  ],
-                );
-                case 2: 
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                    Flexible(child: 
-                  Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel
-                  )
-                      ),
-                    Padding(padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                      theSymbol,
-                    ),
-                    
-                    Flexible(
-                    fit: FlexFit.tight,
-                    child:
-                    Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child: 
-                    ButtonStyle1(
-                        glow: true,
-                        imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
-                          onPressed: (){
-                            setState(() {
-                              Ev4rs.subFolderSelectingAction2(obj, widget.root);
-                            });
-                          }, 
-                          ),    
-                        ),
-                    ),
-                ],
-                );
-                case 3: 
-                  return Row(children: [
-                  Padding(
-                    padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                    theSymbol,
-                  ),
-                  
-                    Flexible(
-                    fit: FlexFit.tight,
-                    child:
-                    Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child: 
-                    ButtonStyle1(
-                        glow: true,
-                        imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
-                          onPressed: (){
-                            setState(() {
-                              Ev4rs.subFolderSelectingAction2(obj, widget.root);
-                            });
-                          }, 
-                          ),   
-                        ),
-                    ),
-                  ]
-                  );
-                case 4:
-                  return Row( children: [
-                    Flexible(child: 
-                  Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel
-                  )
-                    ),
-                    
-                    Flexible(
-                    fit: FlexFit.tight,
-                    child:
-                    Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child: 
-                    ButtonStyle1(
-                        glow: true,
-                        imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
-                          onPressed: (){
-                            setState(() {
-                              Ev4rs.subFolderSelectingAction2(obj, widget.root);
-                            });
-                          }, 
-                          ),    
-                        ),
-                    ),
-                  ]);
-              }
-            } (),
-          ),
-        );
+              },    
+          );
         }
     }
 
@@ -2286,81 +1121,12 @@ import 'dart:async';
       @override
       Widget build(BuildContext context) {
 
-      //font settings
-          TextStyle uniqueStyle =  
-          TextStyle(
-            color: obj.fontColor ?? Colors.black,
-            fontSize: obj.fontSize ?? 16,
-            fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-            fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-            fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-            decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-          );
-
-          TextStyle matchStyle =  
-          TextStyle(
-            color: Fv4rs.grammerFontColor,
-            fontSize: Fv4rs.grammerFontSize,
-            fontFamily: Fontsy.fontToFamily[Fv4rs.grammerFont], 
-            fontWeight: FontWeight.values[((Fv4rs.grammerFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-            fontStyle: Fv4rs.grammerFontItalics ? FontStyle.italic : FontStyle.normal,
-            decoration: Fv4rs.grammerFontUnderline ? TextDecoration.underline : TextDecoration.none,
-          );
-
-        //label
-          Widget theLabel = 
-          Text(obj.label ?? "", 
-            textAlign: TextAlign.center,
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-            );
-          Text theLabel2 = 
-          Text(obj.label ?? "", 
-            textAlign: TextAlign.center,
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-            );
-        
-        //image
-          Widget image = LoadImage.fromSymbol(obj.symbol);
-
-        //symbol
-          Widget theSymbol = 
-            ImageStyle1(
-              image: image, 
-              symbolSaturation: obj.symbolSaturation ?? 1.0, 
-              symbolContrast: obj.symbolContrast ?? 1.0, 
-              invertSymbolColors: obj.invertSymbol ?? false, 
-              matchOverlayColor: obj.matchOverlayColor ?? true, 
-              overlayColor: obj.overlayColor ?? Colors.white,
-              defaultSymbolColorOverlay: Bv4rs.grammerRowSymbolColorOverlay, 
-              matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-              matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-              matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-              defaultSymbolInvert: Bv4rs.grammerRowSymbolInvert, 
-              defaultSymbolContrast: Bv4rs.grammerRowSymbolContrast, 
-              defaultSymbolSaturation: Bv4rs.grammerRowSymbolSaturation
-              );
         //
         //button
         //
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-              elevation: 0,
-              backgroundColor: 
-                  (Ev4rs.firstGrammerSelectedUUID.value == obj.id || Ev4rs.secondGrammerSelectedUUID.value == obj.id
-                  || Ev4rs.grammerSelectedUUIDs.value.contains(obj.id)) 
-                  ? Cv4rs.themeColor3
-                  : obj.backgroundColor ?? Colors.transparent,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero, 
-              )
-            ),
+        return GrammerButtonStyle(
+          obj: obj,
+          editable: true,
           onPressed: () async {
             switch ((obj.matchSpeakOS ?? true) ? Bv4rs.grammerRowSpeakOnSelect : obj.speakOS) {
             case 1:
@@ -2382,75 +1148,7 @@ import 'dart:async';
               break;
             }
           },
-          child: () {
-            switch((obj.matchFormat ?? true) ? Bv4rs.grammerRowFormat : obj.format) {
-              case 1: 
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  (obj.symbol != null) ?
-                  Flexible(flex: 4, child: 
-                  Padding(padding: EdgeInsets.fromLTRB(
-                      V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0), 
-                        V4rs.paddingValue(obj.padding ?? 2.0)), 
-                  child:
-                  theSymbol,
-                  ),
-                  ) : SizedBox.shrink(),
-                  Expanded(flex: 7,
-                    child: 
-                  Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel,
-                  ),
-                  ),
-                ],
-              );
-              case 2: 
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  Expanded(flex: 7, child: 
-                  Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel,
-                  ),
-                  ),
-                  (obj.symbol != null) ?
-                  Flexible(flex: 4, child: 
-                  Padding(padding: EdgeInsets.fromLTRB(
-                    V4rs.paddingValue(obj.padding ?? 2.0), 
-                    V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                    V4rs.paddingValue(obj.padding ?? 2.0), 
-                    V4rs.paddingValue(obj.padding ?? 2.0)), 
-                  child:
-                    theSymbol,
-                  ),
-                  ) : SizedBox.shrink(),
-              ],
-              );
-              case 3: 
-                return (obj.symbol != null) ? Padding(
-                  padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                  theSymbol,
-                ) : SizedBox.shrink();
-              case 4:
-                return Column(children: [
-                  Expanded(child: 
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel2
-                )
-                  )
-                ]
-                );
-            }
-          } (),
-          );
+        );
       }
     }
 
@@ -2488,8 +1186,6 @@ import 'dart:async';
  }
 
   class _BuildEditableGrammerFolder extends State<BuildEditableGrammerFolder> {
-
-
       @override
       Widget build(BuildContext context) {
 
@@ -2501,80 +1197,12 @@ import 'dart:async';
       final BoardObjects? Function(String uuid, List<BoardObjects> boards) findBoardById = widget.findBoardById;  
       final Root root = widget.root;
 
-      //font settings
-          TextStyle uniqueStyle =  
-          TextStyle(
-            color: obj.fontColor ?? Colors.black,
-            fontSize: obj.fontSize ?? 16,
-            fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-            fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-            fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-            decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-          );
-
-          TextStyle matchStyle =  
-          TextStyle(
-            color: Fv4rs.grammerFontColor,
-            fontSize: Fv4rs.grammerFontSize,
-            fontFamily: Fontsy.fontToFamily[Fv4rs.grammerFont], 
-            fontWeight: FontWeight.values[((Fv4rs.grammerFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-            fontStyle: Fv4rs.grammerFontItalics ? FontStyle.italic : FontStyle.normal,
-            decoration: Fv4rs.grammerFontUnderline ? TextDecoration.underline : TextDecoration.none,
-          );
-
-        //label
-          Text theLabel = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-            );
-          Text theLabel2 = 
-          Text(obj.label ?? "", 
-            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-            );
-        
-        //image
-          Widget image = LoadImage.fromSymbol(obj.symbol);
-
-        //symbol
-          Widget theSymbol = 
-            ImageStyle1(
-              image: image, 
-              symbolSaturation: obj.symbolSaturation ?? 1.0, 
-              symbolContrast: obj.symbolContrast ?? 1.0, 
-              invertSymbolColors: obj.invertSymbol ?? false, 
-              matchOverlayColor: obj.matchOverlayColor ?? true, 
-              overlayColor: obj.overlayColor ?? Colors.white,
-              defaultSymbolColorOverlay: Bv4rs.grammerRowSymbolColorOverlay, 
-              matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-              matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-              matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-              defaultSymbolInvert: Bv4rs.grammerRowSymbolInvert, 
-              defaultSymbolContrast: Bv4rs.grammerRowSymbolContrast, 
-              defaultSymbolSaturation: Bv4rs.grammerRowSymbolSaturation
-              );
-
-          
         //
         //button
         //
-        return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-              elevation: 0,
-              backgroundColor: (Ev4rs.firstGrammerSelectedUUID.value == obj.id || Ev4rs.secondGrammerSelectedUUID.value == obj.id
-                  || Ev4rs.grammerSelectedUUIDs.value.contains(obj.id)) 
-                  ? Cv4rs.themeColor3
-                  : obj.backgroundColor ?? Colors.transparent,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero, 
-              )
-            ),
+        return GrammerButtonStyle(
+          obj: obj,
+          editable: true,
           onPressed: () async {
             switch ((obj.matchSpeakOS ?? true) ? Bv4rs.grammerRowSpeakOnSelect : obj.speakOS) {
             case 1: 
@@ -2624,75 +1252,7 @@ import 'dart:async';
               break;
             }
           },
-          child: () {
-            switch((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-              case 1: 
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  (obj.symbol != null) ?
-                  Flexible(flex: 4, child: 
-                  Padding(padding: EdgeInsets.fromLTRB(
-                    V4rs.paddingValue(obj.padding ?? 2.0), 
-                    V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                    V4rs.paddingValue(obj.padding ?? 2.0), 
-                    V4rs.paddingValue(obj.padding ?? 2.0)
-                  ), 
-                  child:
-                  theSymbol,
-                  ),
-                  ) : SizedBox.shrink(),
-                  Expanded(flex: 7, child: 
-                  Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel,
-                  ),
-                  ),
-                ],
-              );
-              case 2: 
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  Expanded(flex: 7, child: 
-                  Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                  theLabel,
-                  ),),
-                  (obj.symbol != null) ?
-                  Flexible(flex: 4, child: 
-                  Padding(padding: EdgeInsets.fromLTRB(
-                    V4rs.paddingValue(obj.padding ?? 2.0), 
-                    V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                    V4rs.paddingValue(obj.padding ?? 2.0), 
-                    V4rs.paddingValue(obj.padding ?? 2.0)
-                  ), 
-                  child:
-                    theSymbol,
-                  ),
-                  ) : SizedBox.shrink(),
-              ],
-              );
-              case 3: 
-                return (obj.symbol != null) ? Padding(
-                  padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                  theSymbol,
-                ) : SizedBox.shrink();
-              case 4:
-                return Column( children: [
-                  Expanded(child: 
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel2
-                )
-                  )
-                ]
-                );
-            }
-          } (),
-          );
+        );
       }
     }
 
@@ -2884,7 +1444,17 @@ class EditableNavButton extends StatefulWidget {
 }
 
 class _EditableNavButton extends State<EditableNavButton> {
-  
+  Widget navEditButton(void Function() onPressed) {
+        return Padding(
+            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), 
+            child: ButtonStyle1(
+              glow: true,
+              padding: 2,
+              imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
+              onPressed: onPressed,
+            ),  
+        );
+      }
 
 
   //defines the button 
@@ -2944,7 +1514,6 @@ class _EditableNavButton extends State<EditableNavButton> {
         onPressed: () {setState(() {
         switch (matchSpeakOS ? Bv4rs.navRowSpeakOnSelect : speakOS) {
           case 1:
-              Ev4rs.navSelectingAction2(obj, widget.root);
               final board = findBoardById(linkToUUID, boards);
               if (board != null) {
                 openBoard(board);
@@ -2952,7 +1521,6 @@ class _EditableNavButton extends State<EditableNavButton> {
               
             break;
           case 2:
-              Ev4rs.navSelectingAction2(obj, widget.root);
              final board = findBoardById(linkToUUID, boards);
               if (board != null) {
                 openBoard(board);
@@ -2968,7 +1536,6 @@ class _EditableNavButton extends State<EditableNavButton> {
             );
             break;
           case 3:
-           Ev4rs.navSelectingAction2(obj, widget.root);
            final board = findBoardById(linkToUUID, boards);
               if (board != null) {
                 openBoard(board);
@@ -2991,7 +1558,7 @@ class _EditableNavButton extends State<EditableNavButton> {
           backgroundColor: (Ev4rs.firstNavSelectedUUID.value == obj.id 
                   || Ev4rs.secondNavSelectedUUID.value == obj.id
                   || Ev4rs.navSelectedUUIDs.value.contains(obj.id) 
-                  || (Ev4rs.selectedBoardUUID.value == obj.linkToUUID && Ev4rs.boardEditor.value == true)) 
+                ) 
           ? matchBorder ? Cv4rs.posToBorderColor(pos) : borderColor
           : matchPOS ? Cv4rs.posToColor(pos) : backgroundColor, 
           elevation: 2,
@@ -3014,12 +1581,18 @@ class _EditableNavButton extends State<EditableNavButton> {
           case 1: 
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
                 //image
-                Expanded( child:
-                Padding(
-                  padding: EdgeInsets.all(V4rs.paddingValue(padding)),
+                Flexible( 
+                  flex: 3,
+                  child: Padding(
+                    padding: EdgeInsets.all(
+                      (V4rs.paddingValue(padding)-2 > 0)
+                      ? V4rs.paddingValue(padding)-2
+                      : V4rs.paddingValue(padding)
+                    ),
                   child: ImageStyle1(
                     image: image, 
                     matchSymbolSaturation: matchSymbolSaturation,
@@ -3038,6 +1611,9 @@ class _EditableNavButton extends State<EditableNavButton> {
                 ),
 
                 //label
+                Flexible(
+                  flex: 3,
+                  child: 
                 Text(
                   label, 
                   maxLines: 1, 
@@ -3045,6 +1621,15 @@ class _EditableNavButton extends State<EditableNavButton> {
                   style: matchFont ? Fv4rs.navRowLabelStyle : labelStyle, 
                   textAlign: TextAlign.center, 
                 ),
+                ),
+                Flexible(
+                  flex: 4,
+                  child: navEditButton(() {
+                    setState(() {
+                      Ev4rs.navSelectingAction2(obj, widget.root);
+                    });
+                  })
+                )
               ]
             );
 
@@ -3055,15 +1640,18 @@ class _EditableNavButton extends State<EditableNavButton> {
           case 2: 
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
 
                 //label 
-                Text(
-                  label, 
-                  maxLines: 1,  
-                  style: matchFont ? Fv4rs.navRowLabelStyle : labelStyle, 
-                  overflow: TextOverflow.ellipsis, 
-                  textAlign: TextAlign.center, 
+                Expanded(child:
+                  Text(
+                    label, 
+                    maxLines: 1,  
+                    style: matchFont ? Fv4rs.navRowLabelStyle : labelStyle, 
+                    overflow: TextOverflow.ellipsis, 
+                    textAlign: TextAlign.center, 
+                  ),
                 ),
 
                 //image
@@ -3086,6 +1674,13 @@ class _EditableNavButton extends State<EditableNavButton> {
                     defaultSymbolColorOverlay: Bv4rs.navRowSymbolColorOverlay)
                 ),
                  ),
+                 Expanded(
+                  child: navEditButton(() {
+                    setState(() {
+                      Ev4rs.navSelectingAction2(obj, widget.root);
+                    });
+                  })
+                )
               ]
             );
           
@@ -3094,9 +1689,8 @@ class _EditableNavButton extends State<EditableNavButton> {
           //
 
           case 3:
-            return SizedBox.expand(
-              child: Center( child:
-            Padding(
+            return Column(children: [
+              Expanded(child: Padding(
                   padding: EdgeInsets.all(V4rs.paddingValue(padding)),
                   child: ImageStyle1(
                     image: image, 
@@ -3112,20 +1706,37 @@ class _EditableNavButton extends State<EditableNavButton> {
                     defaultSymbolSaturation: Bv4rs.navRowSymbolSaturation,
                     defaultSymbolContrast: Bv4rs.navRowSymbolContrast,
                     defaultSymbolColorOverlay: Bv4rs.navRowSymbolColorOverlay)
-            )
-              )
-                );
+            )),
+              Expanded(
+                  child: navEditButton(() {
+                    setState(() {
+                      Ev4rs.navSelectingAction2(obj, widget.root);
+                    });
+                  })
+                )
+           ],
+          );
+
          
           //
           //text only
           //
           
           case 4:
-            return SizedBox.expand(child: Center( child:
+            return Column(children: [ Expanded( child:
             Text(
                   label, maxLines: 3,  style: matchFont ? Fv4rs.navRowLabelStyle : labelStyle, textAlign: TextAlign.center,   overflow: TextOverflow.ellipsis, 
             ),
             ),
+
+            Expanded(
+                  child: navEditButton(() {
+                    setState(() {
+                      Ev4rs.navSelectingAction2(obj, widget.root);
+                    });
+                  })
+                )
+            ]
             );
           
           //

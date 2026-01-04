@@ -11,12 +11,370 @@ import 'package:flutterkeysaac/Models/json_model_boards.dart';
 import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
 import 'package:flutterkeysaac/Models/json_model_grammer.dart';
 import 'package:flutterkeysaac/Variables/assorted_ui/ui_shortcuts.dart';
+import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 import 'dart:async';
 import 'dart:io';
 
+// 
 // buttons
+//
+
+
+class BoardButtonStyle extends StatelessWidget{
+      final BoardObjects obj;
+      final void Function()? onPressed;
+      final bool editable;
+      final bool isSubFolder;
+      final void Function()? editSubFolderPress;
+      
+      const BoardButtonStyle({
+        super.key, 
+        required this.obj, 
+        required this.onPressed,
+        required this.editable,
+        this.isSubFolder = false,
+        this.editSubFolderPress,
+      });
+
+      Widget subFolderEditButton() {
+        return Padding(
+            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), 
+            child: ButtonStyle1(
+              glow: true,
+              imagePath: 'assets/interface_icons/interface_icons/iEdit.png', 
+              onPressed: editSubFolderPress!
+            ),  
+        );
+      }
+
+      @override
+      Widget build(BuildContext context) {
+        //font settings
+        TextStyle uniqueStyle =  
+        TextStyle(
+          color: obj.fontColor ?? Colors.black,
+          fontSize: V4rs.fontValue(obj.fontSize ?? 16),
+          fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
+          fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
+          fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
+          decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
+        );
+
+        TextStyle matchStyle =  
+        (isSubFolder) 
+        ? TextStyle(
+          color: Fv4rs.subFolderFontColor,
+          fontSize: V4rs.fontValue(Fv4rs.subFolderFontSize),
+          fontFamily: Fontsy.fontToFamily[Fv4rs.subFolderFont], 
+          fontWeight: FontWeight.values[((Fv4rs.subFolderFontWeight ~/ 100) - 1 ).clamp(0, 8)],
+          fontStyle: Fv4rs.subFolderFontItalics ? FontStyle.italic : FontStyle.normal,
+          decoration: Fv4rs.subFolderFontUnderline ? TextDecoration.underline : TextDecoration.none,
+         ) 
+        : TextStyle(
+          color: Fv4rs.buttonFontColor,
+          fontSize: V4rs.fontValue(Fv4rs.buttonFontSize),
+          fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
+          fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
+          fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
+          decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
+        );
+
+      //label
+        Text theLabel = 
+        Text(obj.label ?? "", 
+          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          );
+        Text theLabel2 = 
+        Text(obj.label ?? "", 
+          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          );
+      
+      //image
+        Widget image = LoadImage.fromSymbol(obj.symbol);
+
+      //symbol
+        Widget theSymbol = 
+          ImageStyle1(
+            image: image, 
+            symbolSaturation: obj.symbolSaturation ?? 1.0, 
+            symbolContrast: obj.symbolContrast ?? 1.0, 
+            invertSymbolColors: obj.invertSymbol ?? false, 
+            matchOverlayColor: obj.matchOverlayColor ?? true, 
+            overlayColor: obj.overlayColor ?? Colors.white,
+            defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
+            matchSymbolContrast: obj.matchSymbolContrast ?? true, 
+            matchSymbolInvert: obj.matchInvertSymbol ?? true, 
+            matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
+            defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
+            defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
+            defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
+            );
+
+        var case1Contents = <Widget> [
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                V4rs.paddingValue(obj.padding ?? 2.0),
+                V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
+                V4rs.paddingValue(obj.padding ?? 2.0),
+                V4rs.paddingValue(obj.padding ?? 2.0),
+              ), 
+              child: theSymbol,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), 
+            child: theLabel,
+          ),
+          if (editable && editSubFolderPress != null)
+            subFolderEditButton()
+        ];
+
+        var case2Contents = <Widget> [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
+            theLabel,
+          ),
+          Flexible(
+            child: 
+          Padding(padding: EdgeInsets.fromLTRB(
+            V4rs.paddingValue(obj.padding ?? 2.0),
+            V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
+            V4rs.paddingValue(obj.padding ?? 2.0),
+            V4rs.paddingValue(obj.padding ?? 2.0),), 
+          child:
+            theSymbol,
+          ),
+          ),
+          if (editable && editSubFolderPress != null)
+           subFolderEditButton()
+        ];
+
+        Widget case3Contents = 
+          Padding(
+            padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
+            theSymbol,
+          );
+        
+        Widget case4Contents = 
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), 
+            child: theLabel2
+          );
+        
+        Widget button() {
+          return ValueListenableBuilder(valueListenable: V4rs.searchPathUUIDS, builder: (context, search, _) {
+            return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                elevation: 2,
+                backgroundColor: 
+                (editable) 
+                ? (Ev4rs.firstSelectedUUID.value == obj.id || Ev4rs.secondSelectedUUID.value == obj.id
+                    || Ev4rs.selectedUUIDs.value.contains(obj.id) || Ev4rs.selectedUUIDs.value.contains(obj.id)) 
+                    ? (obj.matchPOS ?? true) 
+                      ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
+                      : obj.borderColor ?? Colors.blueGrey
+                    : (obj.matchPOS ?? true) 
+                      ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
+                      : obj.backgroundColor ?? Colors.blueGrey
+                : (V4rs.isSearchPath(V4rs.searchPathUUIDS.value, obj))
+                  ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
+                  : (obj.matchPOS ?? true) 
+                    ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
+                    : obj.backgroundColor ?? Cv4rs.themeColor2,
+                shadowColor: Cv4rs.themeColor4, 
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(
+                    color: (obj.matchBorder ?? true) 
+                      ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
+                      : obj.borderColor ?? Colors.white,
+                    width: (obj.matchBorder ?? true) 
+                      ? Bv4rs.buttonBorderWeight
+                      : obj.borderWeight ?? 2.5
+                  )
+                ),
+              ),
+            onPressed: onPressed,
+            child: () {
+              switch((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
+                case 1: 
+                  if (!isSubFolder){
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: case1Contents,
+                    );
+                  } 
+                  else {
+                     if (V4rs.xSmallModeWidth && editable){
+                      return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Row(children: [
+                            case1Contents[0],
+                            Expanded(
+                              flex: 3,
+                              child: case1Contents[1],
+                            ),
+                           ],
+                          )
+                        ),
+                        Expanded(
+                          child: case1Contents[2],
+                        ),
+                      ],
+                    );
+                     } else {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        case1Contents[0],
+                        Expanded(
+                          flex: 4,
+                          child: case1Contents[1],
+                        ),
+                        if (editable)
+                        Expanded(
+                          flex: 4,
+                          child: case1Contents[2],
+                        ),
+                      ],
+                    );
+                     }
+                  }
+                case 2: 
+                  if (!isSubFolder){
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: case2Contents,
+                    );
+                  } 
+                  else {
+                     if (V4rs.xSmallModeWidth && editable){
+                      return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Row(children: [
+                            Expanded(
+                              flex: 3,
+                              child: case2Contents[0],
+                            ),
+                            case2Contents[1],
+                           ],
+                          )
+                        ),
+                        Expanded(
+                          child: case1Contents[2],
+                        ),
+                      ],
+                    );
+                     } else {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: case2Contents[0],
+                        ),
+                         case2Contents[1],
+                        if (editable)
+                        Expanded(
+                          flex: 4,
+                          child: case1Contents[2],
+                        ),
+                      ],
+                    );
+                     }
+                  }
+                case 3: 
+                   if (editable && editSubFolderPress != null){
+                    if (V4rs.xSmallModeWidth){
+                      return Column(children: [
+                        Expanded(
+                          child: case3Contents,
+                        ),
+                        Expanded(
+                          child: subFolderEditButton()
+                        )
+                      ]);
+                    } else {
+                      return Row(children: [
+                        Expanded(
+                          child: case3Contents,
+                        ),
+                        Expanded(
+                          child: subFolderEditButton()
+                        )
+                      ]);
+                    }
+                  } else {
+                    return case3Contents;
+                  }
+                case 4:
+                  if (editable && editSubFolderPress != null){
+                    if (V4rs.xSmallModeWidth){
+                       return Column(children: [
+                        Expanded(
+                          child: case4Contents,
+                        ),
+                        Expanded(
+                          child: subFolderEditButton()
+                        )
+                      ]);
+                    } else {
+                      return Row(children: [
+                        Expanded(
+                          child: case4Contents,
+                        ),
+                        Expanded(
+                          child: subFolderEditButton()
+                        )
+                      ]);
+                     }
+                  } else {
+                    return case4Contents;
+                  } 
+                }
+            } (),
+            );
+            }
+          );
+        }
+
+        if (editable){
+         return Opacity(
+            opacity: (obj.show ?? true) ? 1.0 : 0.4, 
+            child: button()
+          );
+        }
+        else {
+          return Visibility(
+            visible: (obj.show ?? true), 
+            maintainSize: true, 
+            maintainAnimation: true,
+            maintainState: true,
+            child: button()
+          );
+        }
+      }
+    }
+
+//=====: 
 
 class BuildPocketFolder extends StatefulWidget{
 
@@ -65,63 +423,6 @@ class _BuildPocketFolderState extends State<BuildPocketFolder> {
     final openBoardWithReturn = widget.openBoardWithReturn;
     final synth = widget.synth;
     String linkTo = obj.linkToUUID ?? '';
-
-    //font settings
-    TextStyle uniqueStyle =  
-    TextStyle(
-      color: obj.fontColor ?? Colors.black,
-      fontSize: obj.fontSize ?? 16,
-      fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-      fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-      fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-      decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-    );
-
-    TextStyle matchStyle =  
-    TextStyle(
-      color: Fv4rs.buttonFontColor,
-      fontSize: V4rs.fontValue(Fv4rs.buttonFontSize),
-      fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-      fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-      fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-      decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-    );
-
-    //label
-      Text theLabel = 
-      Text(obj.label ?? "", 
-        style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        );
-      Text theLabel2 = 
-      Text(obj.label ?? "", 
-        style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-        );
-  
-    //image
-      Widget image = LoadImage.fromSymbol(obj.symbol);
-      
-
-    //symbol
-      Widget theSymbol = 
-        ImageStyle1(
-          image: image, 
-          symbolSaturation: obj.symbolSaturation ?? 1.0, 
-          symbolContrast: obj.symbolContrast ?? 1.0, 
-          invertSymbolColors: obj.invertSymbol ?? false, 
-          matchOverlayColor: obj.matchOverlayColor ?? true, 
-          overlayColor: obj.overlayColor ?? Colors.white,
-          defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-          matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-          matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-          matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-          defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-          defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-          defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-        );
 
         //tap action
           Future<void> doTapAction(
@@ -273,100 +574,15 @@ class _BuildPocketFolderState extends State<BuildPocketFolder> {
 
          }
       },
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        elevation: 2,
-        backgroundColor: (V4rs.isSearchPath(V4rs.searchPathUUIDS.value, obj))
-          ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-          : (obj.matchPOS ?? true) 
-            ? Cv4rs.posToColor(obj.pos ?? 'Extra 2')
-            : obj.backgroundColor ?? Colors.blueGrey,
-        shadowColor: Cv4rs.themeColor4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: (obj.matchBorder ?? true)
-                ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-                : obj.borderColor ?? Colors.white,
-            width: (obj.matchBorder ?? true)
-                ? Bv4rs.buttonBorderWeight
-                : obj.borderWeight ?? 2.5,
-          ),
-        ),
-      ),
+    child: BoardButtonStyle(
+      obj: obj,
+      editable: false,
       onPressed: () async {
         if (altAccessActive) {
           await doTapAction(obj, synth);
         }
       }, 
-      child: () {
-        switch ((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-          case 1:
-            return Stack(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                      V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                    ),
-                    child: theSymbol,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                  child: theLabel,
-                ),
-              ]),
-            ]);
-          case 2:
-            return Stack(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                  child: theLabel,
-                ), 
-                Flexible(child: 
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  ),
-                  child: theSymbol,
-                ),
-                ),
-              ]),
-            ]);
-          case 3:
-            return Stack(children: [
-              Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)),
-                child: theSymbol,
-              ),
-            ]);
-          case 4:
-            return Stack(children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5.0)),
-                child: theLabel2,
-              ),
-            ]);
-          default:
-            return SizedBox.shrink();
-            }
-          }(),
-          ),
+      ),
         )),
         ),
 
@@ -445,62 +661,6 @@ class _BuildTypingKeyState extends State<BuildTypingKey> {
     
     final obj = widget.obj;
     final synth = widget.synth;
-
-    //font settings
-    TextStyle uniqueStyle =  
-    TextStyle(
-      color: obj.fontColor ?? Colors.black,
-      fontSize: obj.fontSize ?? 16,
-      fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-      fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-      fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-      decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-    );
-
-    TextStyle matchStyle =  
-    TextStyle(
-      color: Fv4rs.buttonFontColor,
-      fontSize: V4rs.fontValue(Fv4rs.buttonFontSize),
-      fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-      fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-      fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-      decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-    );
-
-    //label
-      Text theLabel = 
-      Text(obj.label ?? "", 
-        style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        );
-      Text theLabel2 = 
-      Text(obj.label ?? "", 
-        style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-        );
-  
-    //image
-      Widget image = LoadImage.fromSymbol(obj.symbol);
-
-    //symbol
-      Widget theSymbol = 
-        ImageStyle1(
-          image: image, 
-          symbolSaturation: obj.symbolSaturation ?? 1.0, 
-          symbolContrast: obj.symbolContrast ?? 1.0, 
-          invertSymbolColors: obj.invertSymbol ?? false, 
-          matchOverlayColor: obj.matchOverlayColor ?? true, 
-          overlayColor: obj.overlayColor ?? Colors.white,
-          defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-          matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-          matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-          matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-          defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-          defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-          defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-        );
 
         //tap action
           Future<void> doTapAction(
@@ -640,109 +800,15 @@ class _BuildTypingKeyState extends State<BuildTypingKey> {
               return;
           }
       },
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        elevation: 2,
-        backgroundColor: (V4rs.isSearchPath(V4rs.searchPathUUIDS.value, obj))
-          ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-          : (obj.matchPOS ?? true)
-            ? Cv4rs.posToColor(obj.pos ?? 'Extra 2')
-            : obj.backgroundColor ?? Colors.blueGrey,
-        shadowColor: Cv4rs.themeColor4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: (obj.matchBorder ?? true)
-                ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-                : obj.borderColor ?? Colors.white,
-            width: (obj.matchBorder ?? true)
-                ? Bv4rs.buttonBorderWeight
-                : obj.borderWeight ?? 2.5,
-          ),
-        ),
-      ),
+    child: BoardButtonStyle(
+      obj: obj,
+      editable: false,
       onPressed: () async {
         if (altAccessActive) {
           await doTapAction(obj, synth);
         }
-      },
-      child: () {
-        switch ((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-          case 1:
-            //text below
-            return Stack(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                      V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                    ),
-                    child: theSymbol,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5.0)),
-                  child: theLabel,
-                ),
-              ]),
-            ]);
-
-          //text above 
-          case 2:
-            return Stack(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5.0)),
-                  child: theLabel,
-                ), 
-                Flexible(child: 
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  ),
-                  child: theSymbol,
-                ),
-                ),
-              ]),
-            ]);
-          
-          //symbol only 
-          case 3:
-            return Stack(children: [
-              Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)),
-                child: theSymbol,
-              ),
-            ]);
-
-          //label only
-          case 4:
-            return Stack(children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5.0)),
-                child: theLabel2,
-              ),
-            ]);
-          
-          //fallback
-          default:
-            return SizedBox.shrink();
-            }
-          }(),
-          ),
+      }, 
+      ),
         )),
         ),
         //
@@ -833,62 +899,6 @@ class _BuildAudioTileState extends State<BuildAudioTile> {
     
     final obj = widget.obj;
     final synth = widget.synth;
-
-    //font settings
-    TextStyle uniqueStyle =  
-    TextStyle(
-      color: obj.fontColor ?? Colors.black,
-      fontSize: obj.fontSize ?? 16,
-      fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-      fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-      fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-      decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-    );
-
-    TextStyle matchStyle =  
-    TextStyle(
-      color: Fv4rs.buttonFontColor,
-      fontSize: V4rs.fontValue(Fv4rs.buttonFontSize),
-      fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-      fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-      fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-      decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-    );
-
-    //label
-      Text theLabel = 
-      Text(obj.label ?? "", 
-        style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        );
-      Text theLabel2 = 
-      Text(obj.label ?? "", 
-        style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-        );
-  
-    //image
-      Widget image = LoadImage.fromSymbol(obj.symbol);
-
-    //symbol
-      Widget theSymbol = 
-        ImageStyle1(
-          image: image, 
-          symbolSaturation: obj.symbolSaturation ?? 1.0, 
-          symbolContrast: obj.symbolContrast ?? 1.0, 
-          invertSymbolColors: obj.invertSymbol ?? false, 
-          matchOverlayColor: obj.matchOverlayColor ?? true, 
-          overlayColor: obj.overlayColor ?? Colors.white,
-          defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-          matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-          matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-          matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-          defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-          defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-          defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-        );
 
         //tap action
           Future<void> doTapAction(
@@ -1021,109 +1031,15 @@ class _BuildAudioTileState extends State<BuildAudioTile> {
               return;
           }
       },
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        elevation: 2,
-        backgroundColor: (V4rs.isSearchPath(V4rs.searchPathUUIDS.value, obj))
-          ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-          : (obj.matchPOS ?? true)
-            ? Cv4rs.posToColor(obj.pos ?? 'Extra 2')
-            : obj.backgroundColor ?? Colors.blueGrey,
-        shadowColor: Cv4rs.themeColor4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: (obj.matchBorder ?? true)
-                ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-                : obj.borderColor ?? Colors.white,
-            width: (obj.matchBorder ?? true)
-                ? Bv4rs.buttonBorderWeight
-                : obj.borderWeight ?? 2.5,
-          ),
-        ),
-      ),
+    child: BoardButtonStyle(
+      obj: obj,
+      editable: false,
       onPressed: () async {
         if (altAccessActive) {
           await doTapAction(obj, synth);
         }
       },
-      child: () {
-        switch ((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-          case 1:
-            //text below
-            return Stack(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                      V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                    ),
-                    child: theSymbol,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5.0)),
-                  child: theLabel,
-                ),
-              ]),
-            ]);
-
-          //text above 
-          case 2:
-            return Stack(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5.0)),
-                  child: theLabel,
-                ), 
-                Flexible(child: 
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  ),
-                  child: theSymbol,
-                ),
-                ),
-              ]),
-            ]);
-          
-          //symbol only 
-          case 3:
-            return Stack(children: [
-              Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)),
-                child: theSymbol,
-              ),
-            ]);
-
-          //label only
-          case 4:
-            return Stack(children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5.0)),
-                child: theLabel2,
-              ),
-            ]);
-          
-          //fallback
-          default:
-            return SizedBox.shrink();
-            }
-          }(),
-          ),
+     ),
         )),
         ),
         //
@@ -1167,8 +1083,8 @@ class _BuildAudioTileState extends State<BuildAudioTile> {
 
 class BuildButtonGrammer extends StatelessWidget{
 
-    final BoardObjects obj;
-    final TTSInterface synth;
+  final BoardObjects obj;
+  final TTSInterface synth;
 
   final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
   final Future<void> Function() initForSS;
@@ -1185,203 +1101,61 @@ class BuildButtonGrammer extends StatelessWidget{
 
      @override
     Widget build(BuildContext context) {
+      return LayoutBuilder(builder: (context, constraints) {
+        double side = constraints.maxHeight * 0.2;
+        double top = constraints.maxWidth * 0.2;
 
-    //font settings
-        TextStyle uniqueStyle =  
-        TextStyle(
-          color: obj.fontColor ?? Colors.black,
-          fontSize: obj.fontSize ?? 16,
-          fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-          fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-          decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-        );
+        //
+        //button
+        //
+        return Stack(children: [ 
+        Positioned.fill(
+          child: BoardButtonStyle(
+            obj: obj,
+            editable: false,
+            onPressed: () async {
+              switch ((obj.matchSpeakOS ?? true) ? Bv4rs.grammerRowSpeakOnSelect : obj.speakOS) {
+              case 1:
+                V4rs.changedMWfromButton = true;
+                Gv4rs.grammerFunctions(obj.function ?? '');
+                V4rs.changedMWfromButton = false;
+                V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+                break;
+              case 2:
+                V4rs.changedMWfromButton = true;
+                Gv4rs.grammerFunctions(obj.function ?? '');
+                await V4rs.speakOnSelect(
+                  obj.label ?? '', 
+                  V4rs.selectedLanguage.value, 
+                  synth,
+                  speakSelectSherpaOnnxSynth,
+                  initForSS,
+                  playerForSS,
+                );
+                V4rs.changedMWfromButton = false;
+                V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+                break;
+              case 3:
+                V4rs.changedMWfromButton = true;
+                Gv4rs.grammerFunctions(obj.function ?? '');
+                await V4rs.speakOnSelect(
+                  Gv4rs.lastWord, 
+                  V4rs.selectedLanguage.value, 
+                  synth,
+                  speakSelectSherpaOnnxSynth,
+                  initForSS,
+                  playerForSS,
+                );
+                V4rs.changedMWfromButton = false;
+                V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+                break;
+              }
+            },
+          )
+        ),
 
-        TextStyle matchStyle =  
-        TextStyle(
-          color: Fv4rs.buttonFontColor,
-          fontSize: V4rs.fontValue(Fv4rs.buttonFontSize),
-          fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-          fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-          decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-        );
-
-      //label
-        Text theLabel = 
-        Text(obj.label ?? "", 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          );
-        Text theLabel2 = 
-        Text(obj.label ?? "", 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-          );
-      
-      //image
-        Widget image = LoadImage.fromSymbol(obj.symbol);
-
-      //symbol
-        Widget theSymbol = 
-          ImageStyle1(
-            image: image, 
-            symbolSaturation: obj.symbolSaturation ?? 1.0, 
-            symbolContrast: obj.symbolContrast ?? 1.0, 
-            invertSymbolColors: obj.invertSymbol ?? false, 
-            matchOverlayColor: obj.matchOverlayColor ?? true, 
-            overlayColor: obj.overlayColor ?? Colors.white,
-            defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-            matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-            matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-            matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-            defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-            defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-            defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-            );
-             return LayoutBuilder(builder: (context, constraints) {
-      double side = constraints.maxHeight * 0.2;
-      double top = constraints.maxWidth * 0.2;
-
-      //
-      //button
-      //
-      return 
-      
-      Stack(children: [ 
-      Positioned.fill(child: 
-       Visibility(
-        visible: (obj.show ?? true), 
-        maintainSize: true, 
-        maintainAnimation: true,
-        maintainState: true, child:
-        ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-            elevation: 2,
-            backgroundColor: (V4rs.isSearchPath(V4rs.searchPathUUIDS.value, obj))
-              ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-              : (obj.matchPOS ?? true) 
-                ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                : obj.backgroundColor ?? Colors.blueGrey,
-            shadowColor: Cv4rs.themeColor4, 
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: (obj.matchBorder ?? true) 
-                  ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                  : obj.borderColor ?? Colors.white,
-                width: (obj.matchBorder ?? true) 
-                  ? Bv4rs.buttonBorderWeight
-                  : obj.borderWeight ?? 2.5
-              )
-            ),
-          ),
-        onPressed: () async {
-          switch ((obj.matchSpeakOS ?? true) ? Bv4rs.grammerRowSpeakOnSelect : obj.speakOS) {
-          case 1:
-            V4rs.changedMWfromButton = true;
-            Gv4rs.grammerFunctions(obj.function ?? '');
-            V4rs.changedMWfromButton = false;
-            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-            break;
-          case 2:
-            V4rs.changedMWfromButton = true;
-            Gv4rs.grammerFunctions(obj.function ?? '');
-            await V4rs.speakOnSelect(
-              obj.label ?? '', 
-              V4rs.selectedLanguage.value, 
-              synth,
-              speakSelectSherpaOnnxSynth,
-              initForSS,
-              playerForSS,
-            );
-            V4rs.changedMWfromButton = false;
-            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-            break;
-          case 3:
-            V4rs.changedMWfromButton = true;
-            Gv4rs.grammerFunctions(obj.function ?? '');
-            await V4rs.speakOnSelect(
-              Gv4rs.lastWord, 
-              V4rs.selectedLanguage.value, 
-              synth,
-              speakSelectSherpaOnnxSynth,
-              initForSS,
-              playerForSS,
-            );
-            V4rs.changedMWfromButton = false;
-            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-            break;
-          }
-        },
-        child: () {
-          switch((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-            case 1: 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Flexible(child: 
-                Padding(padding: EdgeInsets.fromLTRB(
-                  V4rs.paddingValue(obj.padding ?? 2.0), 
-                  V4rs.paddingValue((obj.padding ?? 2.0) + 2.0), 
-                  V4rs.paddingValue(obj.padding ?? 2.0), 
-                  V4rs.paddingValue(obj.padding ?? 2.0)
-                ), 
-                child:
-                theSymbol,
-                ),
-                ),
-                Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                ),
-              ],
-            );
-            case 2: 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                ),
-                Flexible(child: 
-                Padding(padding: EdgeInsets.fromLTRB(
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                ), 
-                child:
-                  theSymbol,
-                ),
-                ),
-            ],
-            );
-            case 3: 
-              return Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                theSymbol,
-              );
-            case 4:
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-              theLabel2);
-          }
-        } (),
-        )
-      
-      )
-      
-    ),
-
-     //
-        //CORNER TAB 
+        //
+        //corner tab
         //
         Positioned(
               top: 5,
@@ -1394,7 +1168,7 @@ class BuildButtonGrammer extends StatelessWidget{
                   shadowColor: Colors.transparent,
                 padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),),
                 onPressed: () async { 
-                   switch ((obj.matchSpeakOS ?? true) ? Bv4rs.grammerRowSpeakOnSelect : obj.speakOS) {
+                    switch ((obj.matchSpeakOS ?? true) ? Bv4rs.grammerRowSpeakOnSelect : obj.speakOS) {
                       case 1:
                         V4rs.changedMWfromButton = true;
                         Gv4rs.grammerFunctions(obj.function ?? '');
@@ -1437,7 +1211,7 @@ class BuildButtonGrammer extends StatelessWidget{
                   ColorFiltered(
                     colorFilter: ColorFilter.mode(Cv4rs.cornerTabColor, BlendMode.srcIn
                     ), child:
-                   Image.asset('assets/interface_icons/interface_icons/iCornerTabTypingKey.png'),
+                    Image.asset('assets/interface_icons/interface_icons/iCornerTabTypingKey.png'),
                   )
                   )
                 )
@@ -1445,12 +1219,470 @@ class BuildButtonGrammer extends StatelessWidget{
               ),
         )
         
-    ]
-    );
+       ]
+      );
     });
     }
   }
 
+class BuildFolder extends StatefulWidget{
+
+  final BoardObjects obj;
+  final TTSInterface synth;
+  final void Function(BoardObjects board) openBoard;
+  final void Function(BoardObjects board) openBoardWithReturn;
+  final List<BoardObjects> boards;
+  final BoardObjects? Function(String uuid, List<BoardObjects> boards) findBoardById;
+
+  final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
+  final Future<void> Function() initForSS;
+  final AudioPlayer playerForSS;
+
+    const BuildFolder({
+      super.key, 
+      required this.obj, 
+      required this.synth,
+      required this.openBoard, 
+      required this.openBoardWithReturn, 
+      required this.boards,
+      required this.findBoardById,
+
+        required this.speakSelectSherpaOnnxSynth,
+        required this.initForSS,
+        required this.playerForSS,
+      });
+    
+    @override
+    State<BuildFolder> createState() => _BuildFolderState();
+}
+
+class _BuildFolderState extends State<BuildFolder> {
+    final Stopwatch _stopwatch = Stopwatch();
+    DateTime? _lastTapTime;
+    final Duration _doubleTapMaxDelay = Duration(milliseconds: (V4rs.doubleTapClickSpeed));
+    Timer? _singleTapTimer;
+
+    @override
+    Widget build(BuildContext context) {
+
+    final bool altAccessActive = MediaQuery.of(context).accessibleNavigation;
+    
+    final obj = widget.obj;
+    final findBoardById = widget.findBoardById;
+    final boards = widget.boards;
+    final openBoard = widget.openBoard;
+    final openBoardWithReturn = widget.openBoardWithReturn;
+    final synth = widget.synth;
+    String linkTo = obj.linkToUUID ?? '';
+      
+    //tap action
+    Future<void> doTapAction(
+      BoardObjects obj,
+      TTSInterface synth,
+      ) async { 
+        setState(() {
+          V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+        });
+        switch ((obj.matchSpeakOS ?? true) ? Bv4rs.folderSpeakOnSelect : obj.speakOS) {
+        case 1:
+          final board = findBoardById(linkTo, boards);
+            if (board != null) {
+            if (obj.returnAfterSelect == true) {
+              openBoardWithReturn(board);
+            } else {
+              openBoard(board);
+            }
+          }
+          break;
+        case 2:
+          final board = findBoardById(linkTo, boards);
+            if (board != null) {
+            if (obj.returnAfterSelect == true) {
+              openBoardWithReturn(board);
+            } else {
+              openBoard(board);
+            }
+          }
+          await V4rs.speakOnSelect(
+            obj.label ?? '', 
+            V4rs.selectedLanguage.value, 
+            synth,
+            widget.speakSelectSherpaOnnxSynth,
+            widget.initForSS,
+            widget.playerForSS,
+          );
+          break;
+        case 3:
+          final board = findBoardById(linkTo, boards);
+            if (board != null) {
+            if (obj.returnAfterSelect == true) {
+              openBoardWithReturn(board);
+            } else {
+              openBoard(board);
+            }
+          }
+          await V4rs.speakOnSelect(
+            obj.message ?? '', 
+            V4rs.selectedLanguage.value, 
+            synth,
+            widget.speakSelectSherpaOnnxSynth,
+            widget.initForSS,
+            widget.playerForSS,
+          );
+          break;
+        }
+      }
+    Future<void> doSecondaryTap(
+      BoardObjects obj,
+      TTSInterface synth,
+      ) async {
+        setState(() {
+          V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+        });
+        switch ((obj.matchSpeakOS ?? true) ? Bv4rs.folderSpeakOnSelect : obj.speakOS) {
+        case 1:
+          V4rs.changedMWfromButton = true;
+          V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+          V4rs.changedMWfromButton = false;
+          break;
+        case 2:
+          V4rs.changedMWfromButton = true;
+          V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+          await V4rs.speakOnSelect(
+            obj.label ?? '', 
+            V4rs.selectedLanguage.value, 
+            synth,
+            widget.speakSelectSherpaOnnxSynth,
+            widget.initForSS,
+            widget.playerForSS,
+          );
+          V4rs.changedMWfromButton = false;
+          break;
+        case 3:
+          V4rs.changedMWfromButton = true;
+          V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+          await V4rs.speakOnSelect(
+            obj.message ?? '', 
+            V4rs.selectedLanguage.value, 
+            synth,
+            widget.speakSelectSherpaOnnxSynth,
+            widget.initForSS,
+            widget.playerForSS,
+          );
+          V4rs.changedMWfromButton = false;
+          break;
+        }
+      }
+
+    //
+    //button
+    //
+    return LayoutBuilder(
+      builder: (context, constraints) {
+      double side = constraints.maxHeight * 0.3;
+      double top = constraints.maxWidth * 0.25;
+
+      return Stack(children: [ 
+      Positioned.fill(child: 
+      Visibility(
+        visible: (obj.show ?? true), 
+        maintainSize: true, 
+        maintainAnimation: true,
+        maintainState: true, child:
+       Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) => _stopwatch..reset()..start(),
+        onPointerUp: (_) async {
+          _stopwatch.stop();
+          final now = DateTime.now();
+
+
+            //===: USE LONG TAP :===///
+            if (!V4rs.useLongTapOr) {
+              if (_stopwatch.elapsedMilliseconds < V4rs.longTapDuration) {
+                await doTapAction(obj, synth);
+                return;
+              } else {
+                await doSecondaryTap(obj, synth);
+                return;
+              }
+
+            //===: USE DOUBLE TAP  :===///
+          } else {
+              if (_lastTapTime != null &&
+                  now.difference(_lastTapTime!) <= _doubleTapMaxDelay) {
+                _singleTapTimer?.cancel();
+                await doSecondaryTap(obj, synth);
+                _lastTapTime = null;
+                return;
+              }
+              _lastTapTime = now;
+              _singleTapTimer?.cancel();
+              _singleTapTimer = Timer(_doubleTapMaxDelay, () async {
+                await doTapAction(obj, synth);
+                _lastTapTime = null;
+              });
+
+              return;
+        }
+      },
+    child: BoardButtonStyle(
+      obj: obj,
+      editable: false,
+      onPressed: () async {
+        if (altAccessActive) {
+          await doTapAction(obj, synth);
+          }
+        }, 
+      ),
+      )),
+        ),
+        //
+        //CORNER TAB 
+        //
+        Positioned(
+              top: 0,
+              right: 0,
+              child: SizedBox(width: top, height: side,
+                child:
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),),
+                onPressed: () async { if (altAccessActive) {
+                  await doSecondaryTap(obj, synth);
+                } else { 
+                  //pretend you hit the button
+                  await doTapAction(obj, synth);
+                }
+                },
+                child:  Visibility(
+                visible: (obj.show ?? true), 
+                maintainSize: true, 
+                maintainAnimation: true,
+                maintainState: true, 
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(Cv4rs.cornerTabColor, BlendMode.srcIn
+                    ), child:
+                   Image.asset('assets/interface_icons/interface_icons/iCornerTabFolder.png'),
+                  )
+                )
+                )
+              ),
+        )
+        ]); 
+      });
+    }
+  }
+
+class BuildButton extends StatelessWidget{
+    final BoardObjects obj;
+    final TTSInterface synth;
+    final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
+      
+    final Future<void> Function() initForSS;
+    final AudioPlayer playerForSS;
+
+    const BuildButton({
+      super.key, 
+      required this.obj, 
+      required this.synth,
+        required this.speakSelectSherpaOnnxSynth,
+        required this.initForSS,
+        required this.playerForSS,
+    });
+
+    @override
+    Widget build(BuildContext context) {
+      //
+      //button
+      //
+      return BoardButtonStyle(
+        obj: obj,
+        editable: false,
+        onPressed: () async {
+          switch ((obj.matchSpeakOS ?? true) ? Bv4rs.buttonSpeakOnSelect : obj.speakOS) {
+          case 1:
+            V4rs.changedMWfromButton = true;
+            V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+            V4rs.changedMWfromButton = false;
+            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+            break;
+          case 2:
+            V4rs.changedMWfromButton = true;
+            V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+            await V4rs.speakOnSelect(
+                  obj.label ?? '', 
+                  V4rs.selectedLanguage.value, 
+                  synth,
+                  speakSelectSherpaOnnxSynth,
+                  initForSS,
+                  playerForSS,
+                );
+            V4rs.changedMWfromButton = false;
+            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+            break;
+          case 3:
+            V4rs.changedMWfromButton = true;
+            V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+            await V4rs.speakOnSelect(
+                  obj.message ?? '', 
+                  V4rs.selectedLanguage.value, 
+                  synth,
+                  speakSelectSherpaOnnxSynth,
+                  initForSS,
+                  playerForSS,
+                );
+            V4rs.changedMWfromButton = false;
+            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+            break;
+          }
+        },
+      );
+    }
+  }
+
+class BuildSubFolder extends StatelessWidget {
+
+    final BoardObjects obj;
+    final TTSInterface synth;
+
+    final void Function() goBack;
+    final void Function(BoardObjects board) openBoard;
+    final void Function(BoardObjects board) openBoardWithReturn;
+    final List<BoardObjects> boards;
+    final BoardObjects? Function(String uuid, List<BoardObjects> boards) findBoardById;
+
+  final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
+  final Future<void> Function() initForSS;
+  final AudioPlayer playerForSS;
+
+    const BuildSubFolder({
+      super.key, 
+      required this.obj, 
+      required this.synth, 
+      required this.goBack, 
+      required this.openBoard, 
+      required this.openBoardWithReturn, 
+      required this.boards,
+      required this.findBoardById,
+
+        required this.speakSelectSherpaOnnxSynth,
+        required this.initForSS,
+        required this.playerForSS,
+      });
+
+    @override
+  Widget build(BuildContext context) {
+    //navigation  
+      String linkTo = obj.linkToUUID ?? '';
+
+      //
+      //back button
+      //
+      if (obj.type1 == 'backButton'){
+        return BoardButtonStyle(
+          isSubFolder: true,
+          editable: false,
+          obj: obj,
+          onPressed: () async {
+          switch ((obj.matchSpeakOS ?? true) ? Bv4rs.subFolderSpeakOnSelect : obj.speakOS) {
+          case 1:
+            goBack();
+            break;
+          case 2:
+            goBack();
+            await V4rs.speakOnSelect(
+                  obj.label ?? '', 
+                  V4rs.selectedLanguage.value, 
+                  synth,
+                  speakSelectSherpaOnnxSynth,
+                  initForSS,
+                  playerForSS,
+                );
+            break;
+          case 3:
+            goBack();
+            await V4rs.speakOnSelect(
+                obj.alternateLabel ?? '', 
+                V4rs.selectedLanguage.value, 
+                synth,
+                speakSelectSherpaOnnxSynth,
+                initForSS,
+                playerForSS,
+              );
+            break;
+          }
+        },
+        );
+      } 
+
+      //
+      //sub folders + more
+      //
+      return BoardButtonStyle(
+        isSubFolder: true,
+        editable: false,
+        obj: obj,
+        onPressed: () async {
+          switch ((obj.matchSpeakOS ?? true) ? Bv4rs.subFolderSpeakOnSelect : obj.speakOS) {
+            case 1:
+              final board = findBoardById(linkTo, boards);
+               if (board != null) {
+                  if (obj.returnAfterSelect == true) {
+                    openBoardWithReturn(board);
+                  } else {
+                    openBoard(board);
+                  }
+              }
+              V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+              break;
+            case 2:
+              final board = findBoardById(linkTo, boards);
+               if (board != null) {
+                  if (obj.returnAfterSelect == true) {
+                    openBoardWithReturn(board);
+                  } else {
+                    openBoard(board);
+                  }
+              }
+
+              await V4rs.speakOnSelect(
+                  obj.label ?? '', 
+                  V4rs.selectedLanguage.value, 
+                  synth,
+                  speakSelectSherpaOnnxSynth,
+                  initForSS,
+                  playerForSS,
+                );
+              V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+              break;
+            case 3:
+              final board = findBoardById(linkTo, boards);
+               if (board != null) {
+                  if (obj.returnAfterSelect == true) {
+                    openBoardWithReturn(board);
+                  } else {
+                    openBoard(board);
+                  }
+              }
+              await V4rs.speakOnSelect(
+                obj.alternateLabel ?? '', 
+                V4rs.selectedLanguage.value, 
+                synth,
+                speakSelectSherpaOnnxSynth,
+                initForSS,
+                playerForSS,
+              );
+              V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+              break;
+            }},
+      );
+    }
+}
+
+//for print
 class PreveiwButton extends StatelessWidget{
   
   final BoardObjects obj;
@@ -1464,7 +1696,7 @@ class PreveiwButton extends StatelessWidget{
         TextStyle uniqueStyle =  
         TextStyle(
           color: obj.fontColor ?? Colors.black,
-          fontSize: obj.fontSize ?? 16,
+          fontSize: V4rs.fontValue(obj.fontSize ?? 16),
           fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
           fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
           fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
@@ -1519,7 +1751,7 @@ class PreveiwButton extends StatelessWidget{
       //button
       //
       return Opacity(
-        opacity: (obj.show ?? true) ? 1.0 : 0.5, 
+        opacity: (obj.show ?? true) ? 1.0 : 0.0, 
         child: Container(
           decoration: BoxDecoration(
             color: (obj.matchPOS ?? true) 
@@ -1601,964 +1833,10 @@ class PreveiwButton extends StatelessWidget{
     }
 }
 
-class BuildFolder extends StatefulWidget{
-
-    final BoardObjects obj;
-    final TTSInterface synth;
-    final void Function(BoardObjects board) openBoard;
-    final void Function(BoardObjects board) openBoardWithReturn;
-    final List<BoardObjects> boards;
-    final BoardObjects? Function(String uuid, List<BoardObjects> boards) findBoardById;
-
-  final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
-  final Future<void> Function() initForSS;
-  final AudioPlayer playerForSS;
-
-    const BuildFolder({
-      super.key, 
-      required this.obj, 
-      required this.synth,
-      required this.openBoard, 
-      required this.openBoardWithReturn, 
-      required this.boards,
-      required this.findBoardById,
-
-        required this.speakSelectSherpaOnnxSynth,
-        required this.initForSS,
-        required this.playerForSS,
-      });
-    
-    @override
-    State<BuildFolder> createState() => _BuildFolderState();
-}
-
-class _BuildFolderState extends State<BuildFolder> {
-    final Stopwatch _stopwatch = Stopwatch();
-    DateTime? _lastTapTime;
-    final Duration _doubleTapMaxDelay = Duration(milliseconds: (V4rs.doubleTapClickSpeed));
-    Timer? _singleTapTimer;
-
-    @override
-    Widget build(BuildContext context) {
-
-    final bool altAccessActive = MediaQuery.of(context).accessibleNavigation;
-    
-    final obj = widget.obj;
-    final findBoardById = widget.findBoardById;
-    final boards = widget.boards;
-    final openBoard = widget.openBoard;
-    final openBoardWithReturn = widget.openBoardWithReturn;
-    final synth = widget.synth;
-    String linkTo = obj.linkToUUID ?? '';
-
-    //font settings
-    TextStyle uniqueStyle =  
-    TextStyle(
-      color: obj.fontColor ?? Colors.black,
-      fontSize: obj.fontSize ?? 16,
-      fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-      fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-      fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-      decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-    );
-
-    TextStyle matchStyle =  
-    TextStyle(
-      color: Fv4rs.buttonFontColor,
-      fontSize: V4rs.fontValue(Fv4rs.buttonFontSize),
-      fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-      fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-      fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-      decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-    );
-
-    //label
-      Text theLabel = 
-      Text(obj.label ?? "", 
-        style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        );
-      Text theLabel2 = 
-      Text(obj.label ?? "", 
-        style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-        );
-  
-    //image
-      Widget image = LoadImage.fromSymbol(obj.symbol);
-
-    //symbol
-      Widget theSymbol = 
-        ImageStyle1(
-          image: image, 
-          symbolSaturation: obj.symbolSaturation ?? 1.0, 
-          symbolContrast: obj.symbolContrast ?? 1.0, 
-          invertSymbolColors: obj.invertSymbol ?? false, 
-          matchOverlayColor: obj.matchOverlayColor ?? true, 
-          overlayColor: obj.overlayColor ?? Colors.white,
-          defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-          matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-          matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-          matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-          defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-          defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-          defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-        );
-      
-      //tap action
-          Future<void> doTapAction(
-            BoardObjects obj,
-            TTSInterface synth,
-            ) async { 
-              setState(() {
-                V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-              });
-              switch ((obj.matchSpeakOS ?? true) ? Bv4rs.folderSpeakOnSelect : obj.speakOS) {
-              case 1:
-                final board = findBoardById(linkTo, boards);
-                 if (board != null) {
-                  if (obj.returnAfterSelect == true) {
-                    openBoardWithReturn(board);
-                  } else {
-                    openBoard(board);
-                  }
-                }
-                break;
-              case 2:
-                final board = findBoardById(linkTo, boards);
-                 if (board != null) {
-                  if (obj.returnAfterSelect == true) {
-                    openBoardWithReturn(board);
-                  } else {
-                    openBoard(board);
-                  }
-                }
-                await V4rs.speakOnSelect(
-                  obj.label ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  widget.speakSelectSherpaOnnxSynth,
-                  widget.initForSS,
-                  widget.playerForSS,
-                );
-                break;
-              case 3:
-                final board = findBoardById(linkTo, boards);
-                  if (board != null) {
-                  if (obj.returnAfterSelect == true) {
-                    openBoardWithReturn(board);
-                  } else {
-                    openBoard(board);
-                  }
-                }
-                await V4rs.speakOnSelect(
-                  obj.message ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  widget.speakSelectSherpaOnnxSynth,
-                  widget.initForSS,
-                  widget.playerForSS,
-                );
-                break;
-              }
-            }
-          Future<void> doSecondaryTap(
-            BoardObjects obj,
-            TTSInterface synth,
-            ) async {
-             setState(() {
-                V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-              });
-              switch ((obj.matchSpeakOS ?? true) ? Bv4rs.folderSpeakOnSelect : obj.speakOS) {
-              case 1:
-                V4rs.changedMWfromButton = true;
-                V4rs.message.value = V4rs.message.value + (obj.message ?? '');
-                V4rs.changedMWfromButton = false;
-                break;
-              case 2:
-                V4rs.changedMWfromButton = true;
-                V4rs.message.value = V4rs.message.value + (obj.message ?? '');
-                await V4rs.speakOnSelect(
-                  obj.label ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  widget.speakSelectSherpaOnnxSynth,
-                  widget.initForSS,
-                  widget.playerForSS,
-                );
-                V4rs.changedMWfromButton = false;
-                break;
-              case 3:
-                V4rs.changedMWfromButton = true;
-                V4rs.message.value = V4rs.message.value + (obj.message ?? '');
-                await V4rs.speakOnSelect(
-                  obj.message ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  widget.speakSelectSherpaOnnxSynth,
-                  widget.initForSS,
-                  widget.playerForSS,
-                );
-                V4rs.changedMWfromButton = false;
-                break;
-              }
-            }
-      
-      //
-      //button
-      //
-      return LayoutBuilder(builder: (context, constraints) {
-      double side = constraints.maxHeight * 0.3;
-      double top = constraints.maxWidth * 0.25;
-
-      return Stack(children: [ 
-      Positioned.fill(child: 
-      Visibility(
-        visible: (obj.show ?? true), 
-        maintainSize: true, 
-        maintainAnimation: true,
-        maintainState: true, child:
-       Listener(
-        behavior: HitTestBehavior.translucent,
-        onPointerDown: (_) => _stopwatch..reset()..start(),
-        onPointerUp: (_) async {
-          _stopwatch.stop();
-          final now = DateTime.now();
-
-
-            //===: USE LONG TAP :===///
-            if (!V4rs.useLongTapOr) {
-              if (_stopwatch.elapsedMilliseconds < V4rs.longTapDuration) {
-                await doTapAction(obj, synth);
-                return;
-              } else {
-                await doSecondaryTap(obj, synth);
-                return;
-              }
-
-            //===: USE DOUBLE TAP  :===///
-          } else {
-              if (_lastTapTime != null &&
-                  now.difference(_lastTapTime!) <= _doubleTapMaxDelay) {
-                _singleTapTimer?.cancel();
-                await doSecondaryTap(obj, synth);
-                _lastTapTime = null;
-                return;
-              }
-              _lastTapTime = now;
-              _singleTapTimer?.cancel();
-              _singleTapTimer = Timer(_doubleTapMaxDelay, () async {
-                await doTapAction(obj, synth);
-                _lastTapTime = null;
-              });
-
-              return;
-        }
-      },
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        elevation: 2,
-        backgroundColor: (V4rs.isSearchPath(V4rs.searchPathUUIDS.value, obj))
-          ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-          : (obj.matchPOS ?? true)
-            ? Cv4rs.posToColor(obj.pos ?? 'Extra 2')
-            : obj.backgroundColor ?? Colors.blueGrey,
-        shadowColor: Cv4rs.themeColor4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            color: (obj.matchBorder ?? true)
-                ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-                : obj.borderColor ?? Colors.white,
-            width: (obj.matchBorder ?? true)
-                ? Bv4rs.buttonBorderWeight
-                : obj.borderWeight ?? 2.5,
-          ),
-        ),
-      ),
-      onPressed: () async {
-        if (altAccessActive) {
-          await doTapAction(obj, synth);
-          }
-        }, 
-      child: () {
-        switch ((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-          case 1:
-            //text below
-            return Stack(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                      V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                      V4rs.paddingValue(obj.padding ?? 2.0),
-                    ),
-                    child: theSymbol,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                  child: theLabel,
-                ),
-              ]),
-            ]);
-
-          //text above
-          case 2:
-            return Stack(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                  child: theLabel,
-                ), 
-                Flexible(child: 
-                Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                    V4rs.paddingValue(obj.padding ?? 2.0),
-                  ),
-                  child: theSymbol,
-                ),
-                ),
-              ]),
-            ]);
-
-          //image only
-          case 3:
-            return Stack(children: [
-              Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)),
-                child: theSymbol,
-              ),
-            ]);
-
-          //label only  
-          case 4:
-            return Stack(children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-                child: theLabel2,
-              ),
-            ]);
-
-          //fallback 
-          default:
-            return SizedBox.shrink();
-        }
-      }(),
-      ),
-    )),
-        ),
-        //
-        //CORNER TAB 
-        //
-        Positioned(
-              top: 0,
-              right: 0,
-              child: SizedBox(width: top, height: side,
-                child:
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),),
-                onPressed: () async { if (altAccessActive) {
-                  await doSecondaryTap(obj, synth);
-                } else { 
-                  //pretend you hit the button
-                  await doTapAction(obj, synth);
-                }
-                },
-                child:  Visibility(
-                visible: (obj.show ?? true), 
-                maintainSize: true, 
-                maintainAnimation: true,
-                maintainState: true, 
-                  child: ColorFiltered(
-                    colorFilter: ColorFilter.mode(Cv4rs.cornerTabColor, BlendMode.srcIn
-                    ), child:
-                   Image.asset('assets/interface_icons/interface_icons/iCornerTabFolder.png'),
-                  )
-                )
-                )
-              ),
-        )
-        ]); 
-      });
-    }
-  }
-
-class BuildButton extends StatelessWidget{
-
-    final BoardObjects obj;
-    final TTSInterface synth;
-
-      final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
-      final Future<void> Function() initForSS;
-      final AudioPlayer playerForSS;
-
-    const BuildButton({
-      super.key, 
-      required this.obj, 
-      required this.synth,
-        required this.speakSelectSherpaOnnxSynth,
-        required this.initForSS,
-        required this.playerForSS,
-    });
-
-     @override
-    Widget build(BuildContext context) {
-
-    //font settings
-        TextStyle uniqueStyle =  
-        TextStyle(
-          color: obj.fontColor ?? Colors.black,
-          fontSize: obj.fontSize ?? 16,
-          fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-          fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-          decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        TextStyle matchStyle =  
-        TextStyle(
-          color: Fv4rs.buttonFontColor,
-          fontSize: V4rs.fontValue(Fv4rs.buttonFontSize),
-          fontFamily: Fontsy.fontToFamily[Fv4rs.buttonFont], 
-          fontWeight: FontWeight.values[((Fv4rs.buttonFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: Fv4rs.buttonFontItalics ? FontStyle.italic : FontStyle.normal,
-          decoration: Fv4rs.buttonFontUnderline ? TextDecoration.underline : TextDecoration.none,
-        );
-
-      //label
-        Text theLabel = 
-        Text(obj.label ?? "", 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          );
-        Text theLabel2 = 
-        Text(obj.label ?? "", 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-          );
-      
-      //image
-        Widget image = LoadImage.fromSymbol(obj.symbol);
-
-      //symbol
-        Widget theSymbol = 
-          ImageStyle1(
-            image: image, 
-            symbolSaturation: obj.symbolSaturation ?? 1.0, 
-            symbolContrast: obj.symbolContrast ?? 1.0, 
-            invertSymbolColors: obj.invertSymbol ?? false, 
-            matchOverlayColor: obj.matchOverlayColor ?? true, 
-            overlayColor: obj.overlayColor ?? Colors.white,
-            defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-            matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-            matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-            matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-            defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-            defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-            defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-            );
-      //
-      //button
-      //
-      return Visibility(
-        visible: (obj.show ?? true), 
-        maintainSize: true, 
-        maintainAnimation: true,
-        maintainState: true,
-        child: ValueListenableBuilder(valueListenable: V4rs.searchPathUUIDS, builder: (context, search, _) {
-        return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-            elevation: 2,
-            backgroundColor: (V4rs.isSearchPath(V4rs.searchPathUUIDS.value, obj))
-              ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-              : (obj.matchPOS ?? true) 
-                ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                : obj.backgroundColor ?? Cv4rs.themeColor2,
-            shadowColor: Cv4rs.themeColor4, 
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: (obj.matchBorder ?? true) 
-                  ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                  : obj.borderColor ?? Colors.white,
-                width: (obj.matchBorder ?? true) 
-                  ? Bv4rs.buttonBorderWeight
-                  : obj.borderWeight ?? 2.5
-              )
-            ),
-          ),
-        onPressed: () async {
-          switch ((obj.matchSpeakOS ?? true) ? Bv4rs.buttonSpeakOnSelect : obj.speakOS) {
-          case 1:
-            V4rs.changedMWfromButton = true;
-            V4rs.message.value = V4rs.message.value + (obj.message ?? '');
-            V4rs.changedMWfromButton = false;
-            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-            break;
-          case 2:
-            V4rs.changedMWfromButton = true;
-            V4rs.message.value = V4rs.message.value + (obj.message ?? '');
-            await V4rs.speakOnSelect(
-                  obj.label ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  speakSelectSherpaOnnxSynth,
-                  initForSS,
-                  playerForSS,
-                );
-            V4rs.changedMWfromButton = false;
-            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-            break;
-          case 3:
-            V4rs.changedMWfromButton = true;
-            V4rs.message.value = V4rs.message.value + (obj.message ?? '');
-            await V4rs.speakOnSelect(
-                  obj.message ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  speakSelectSherpaOnnxSynth,
-                  initForSS,
-                  playerForSS,
-                );
-            V4rs.changedMWfromButton = false;
-            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-            break;
-          }
-        },
-        child: () {
-          switch((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-            case 1: 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Flexible(child: 
-                Padding(padding: EdgeInsets.fromLTRB(
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),), 
-                child:
-                theSymbol,
-                ),
-                ),
-                Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                ),
-              ],
-            );
-            case 2: 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                ),
-                Flexible(child: 
-                Padding(padding: EdgeInsets.fromLTRB(
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),), 
-                child:
-                  theSymbol,
-                ),
-                ),
-            ],
-            );
-            case 3: 
-              return Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                theSymbol,
-              );
-            case 4:
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-              theLabel2);
-          }
-        } (),
-        );
-        }
-        )
-      );
-    }
-  }
-
-class BuildSubFolder extends StatelessWidget {
-
-    final BoardObjects obj;
-    final TTSInterface synth;
-
-    final void Function() goBack;
-    final void Function(BoardObjects board) openBoard;
-    final void Function(BoardObjects board) openBoardWithReturn;
-    final List<BoardObjects> boards;
-    final BoardObjects? Function(String uuid, List<BoardObjects> boards) findBoardById;
-
-  final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
-  final Future<void> Function() initForSS;
-  final AudioPlayer playerForSS;
-
-    const BuildSubFolder({
-      super.key, 
-      required this.obj, 
-      required this.synth, 
-      required this.goBack, 
-      required this.openBoard, 
-      required this.openBoardWithReturn, 
-      required this.boards,
-      required this.findBoardById,
-
-        required this.speakSelectSherpaOnnxSynth,
-        required this.initForSS,
-        required this.playerForSS,
-      });
-
-    @override
-  Widget build(BuildContext context) {
-
-      //font settings
-        TextStyle uniqueStyle =  
-        TextStyle(
-          color: obj.fontColor ?? Colors.black,
-          fontSize: V4rs.fontValue(obj.fontSize ?? 16),
-          fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-          fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-          decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        TextStyle matchStyle =  
-        TextStyle(
-          color: Fv4rs.subFolderFontColor,
-          fontSize: V4rs.fontValue(Fv4rs.subFolderFontSize),
-          fontFamily: Fontsy.fontToFamily[Fv4rs.subFolderFont], 
-          fontWeight: FontWeight.values[((Fv4rs.subFolderFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: Fv4rs.subFolderFontItalics ? FontStyle.italic : FontStyle.normal,
-          decoration: Fv4rs.subFolderFontUnderline ? TextDecoration.underline : TextDecoration.none,
-        );
-
-      //label
-        Text theLabel = 
-        Text(obj.label ?? "", 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle, 
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis
-        );
-      
-      //image
-        Widget image = LoadImage.fromSymbol(obj.symbol);
-
-      //symbol
-        Widget theSymbol = 
-          ImageStyle1(
-            image: image, 
-            symbolSaturation: obj.symbolSaturation ?? 1.0, 
-            symbolContrast: obj.symbolContrast ?? 1.0, 
-            invertSymbolColors: obj.invertSymbol ?? false, 
-            matchOverlayColor: obj.matchOverlayColor ?? true, 
-            overlayColor: obj.overlayColor ?? Colors.white,
-            defaultSymbolColorOverlay: Bv4rs.subFolderSymbolColorOverlay, 
-            matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-            matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-            matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-            defaultSymbolInvert: Bv4rs.subFolderSymbolInvert, 
-            defaultSymbolContrast: Bv4rs.subFolderSymbolContrast, 
-            defaultSymbolSaturation: Bv4rs.subFolderSymbolSaturation
-            );
-
-      //navigation  
-       String linkTo = obj.linkToUUID ?? '';
-
-      //
-      //back button
-      //
-      if (obj.type1 == 'backButton'){
-        return Visibility(
-        visible: (obj.show ?? true), 
-        maintainSize: true, 
-        maintainAnimation: true,
-        maintainState: true, 
-        child:
-        ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(
-              horizontal: V4rs.paddingValue(5), 
-              vertical: V4rs.paddingValue(2)
-            ),
-            elevation: 2,
-            backgroundColor: (V4rs.isSearchPath(V4rs.searchPathUUIDS.value, obj))
-              ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-              : (obj.matchPOS ?? true) 
-                ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                : obj.backgroundColor ?? Cv4rs.themeColor2,
-            shadowColor: Cv4rs.themeColor4, 
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: (obj.matchBorder ?? true) 
-                  ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                  : obj.borderColor ?? Colors.white,
-                width: (obj.matchBorder ?? true) 
-                  ? Bv4rs.subFolderBorderWeight
-                  : obj.borderWeight ?? 2.5
-              )
-            ),
-          ),
-        onPressed: () async {
-          switch ((obj.matchSpeakOS ?? true) ? Bv4rs.subFolderSpeakOnSelect : obj.speakOS) {
-          case 1:
-            goBack();
-            break;
-          case 2:
-            goBack();
-            await V4rs.speakOnSelect(
-                  obj.label ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  speakSelectSherpaOnnxSynth,
-                  initForSS,
-                  playerForSS,
-                );
-            break;
-          case 3:
-            goBack();
-            await V4rs.speakOnSelect(
-                obj.alternateLabel ?? '', 
-                V4rs.selectedLanguage.value, 
-                synth,
-                speakSelectSherpaOnnxSynth,
-                initForSS,
-                playerForSS,
-              );
-            break;
-          }
-        },
-        child: () {
-          switch((obj.matchFormat ?? true) ? Bv4rs.subFolderFormat : obj.format) {
-            case 1: 
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Padding(padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 5)), child:
-                theSymbol,
-                ),
-                Flexible(child: 
-                Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                ),
-                ),
-              ],
-            );
-            case 2: 
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(child: 
-                  Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                  ),
-                  ),
-                Padding(padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 5.0)), child:
-                  theSymbol,
-                ),
-            ],
-            );
-            case 3: 
-              return Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 5.0)), child:
-                theSymbol,
-              );
-            case 4:
-              return Column(children: [
-              Flexible(child: 
-              Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-              theLabel,
-              )
-              )
-              ]
-              );
-          }
-        } (),
-        )
-      );
-      } 
-
-      //
-      //sub folders + more
-      //
-      return Visibility(
-        visible: (obj.show ?? true), 
-        maintainSize: true, 
-        maintainAnimation: true,
-        maintainState: true, child:
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5), vertical: V4rs.paddingValue(2)),
-            elevation: 2,
-            backgroundColor: (V4rs.isSearchPath(V4rs.searchPathUUIDS.value, obj))
-              ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2')
-              : (obj.matchPOS ?? true) 
-                  ? Cv4rs.posToColor(obj.pos ?? 'Extra 2') 
-                  : obj.backgroundColor ?? Colors.blueGrey,
-            shadowColor: Cv4rs.themeColor4, 
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: (obj.matchBorder ?? true) 
-                  ? Cv4rs.posToBorderColor(obj.pos ?? 'Extra 2') 
-                  : obj.borderColor ?? Colors.white,
-                width: (obj.matchBorder ?? true) 
-                  ? Bv4rs.subFolderBorderWeight
-                  : obj.borderWeight ?? 2.5
-              )
-            ),
-          ),
-          onPressed: () async {
-          switch ((obj.matchSpeakOS ?? true) ? Bv4rs.subFolderSpeakOnSelect : obj.speakOS) {
-            case 1:
-              final board = findBoardById(linkTo, boards);
-               if (board != null) {
-                  if (obj.returnAfterSelect == true) {
-                    openBoardWithReturn(board);
-                  } else {
-                    openBoard(board);
-                  }
-              }
-              V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-              break;
-            case 2:
-              final board = findBoardById(linkTo, boards);
-               if (board != null) {
-                  if (obj.returnAfterSelect == true) {
-                    openBoardWithReturn(board);
-                  } else {
-                    openBoard(board);
-                  }
-              }
-
-              await V4rs.speakOnSelect(
-                  obj.label ?? '', 
-                  V4rs.selectedLanguage.value, 
-                  synth,
-                  speakSelectSherpaOnnxSynth,
-                  initForSS,
-                  playerForSS,
-                );
-              V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-              break;
-            case 3:
-              final board = findBoardById(linkTo, boards);
-               if (board != null) {
-                  if (obj.returnAfterSelect == true) {
-                    openBoardWithReturn(board);
-                  } else {
-                    openBoard(board);
-                  }
-              }
-              await V4rs.speakOnSelect(
-                obj.alternateLabel ?? '', 
-                V4rs.selectedLanguage.value, 
-                synth,
-                speakSelectSherpaOnnxSynth,
-                initForSS,
-                playerForSS,
-              );
-              V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-              break;
-            }},
-          child: () {
-          switch((obj.matchFormat ?? true) ? Bv4rs.subFolderFormat : obj.format) {
-            case 1: 
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: Padding(
-                      padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), 
-                      child: theSymbol,
-                    ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), 
-                      child: theLabel
-                    ),
-                  ),
-              ],
-            );
-            case 2: 
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    flex: 2,
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                      theLabel
-                    ),
-                  ),
-                  Flexible(
-                      flex: 2,
-                      child: Padding(
-                        padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                        theSymbol,
-                    ),
-                  ),
-            ],
-            );
-            case 3: 
-              return Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                theSymbol,
-              );
-            case 4:
-              return Column( 
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Flexible(child: 
-              Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(5)), child:
-              theLabel
-              )
-                ),
-              ]);
-          }
-        } (),
-      ),
-    );
-    }
-}
-
+//
 //nav row buttons 
+//
+
 class NavButtonStyle extends StatelessWidget {
   final NavObjects? me;
   final String label;
@@ -3477,31 +2755,26 @@ class SpecialNavButtonStyle extends StatelessWidget {
   }
 }
 
-
-
+//
 //gramer row buttons
+//
 
-class BuildGrammerButton extends StatelessWidget{
+class GrammerButtonStyle extends StatelessWidget{
+      final GrammerObjects obj;
+      final void Function()? onPressed;
+      final bool editable;
+      
+      const GrammerButtonStyle({
+        super.key, 
+        required this.obj, 
+        required this.onPressed,
+        required this.editable,
+      });
 
-    final GrammerObjects obj;
-    final TTSInterface synth;
-  final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
-  final Future<void> Function() initForSS;
-  final AudioPlayer playerForSS;
 
-    const BuildGrammerButton({
-      super.key, 
-      required this.obj, 
-      required this.synth,
-      required this.speakSelectSherpaOnnxSynth,
-      required this.initForSS,
-      required this.playerForSS,
-    });
-
-     @override
-    Widget build(BuildContext context) {
-
-    //font settings
+      @override
+      Widget build(BuildContext context) {
+        //font settings
         TextStyle uniqueStyle =  
         TextStyle(
           color: obj.fontColor ?? Colors.black,
@@ -3560,18 +2833,143 @@ class BuildGrammerButton extends StatelessWidget{
             defaultSymbolContrast: Bv4rs.grammerRowSymbolContrast, 
             defaultSymbolSaturation: Bv4rs.grammerRowSymbolSaturation
             );
+
+          //
+          //button
+          //
+          return ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                elevation: 0,
+                backgroundColor: 
+                  (editable)
+                  ? (Ev4rs.firstGrammerSelectedUUID.value == obj.id || Ev4rs.secondGrammerSelectedUUID.value == obj.id
+                    || Ev4rs.grammerSelectedUUIDs.value.contains(obj.id)) 
+                    ? Cv4rs.themeColor3
+                    : obj.backgroundColor ?? Colors.transparent
+                  : obj.backgroundColor ?? Colors.transparent,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero, 
+                )
+              ),
+              child: () {
+              switch((obj.matchFormat ?? true) ? Bv4rs.grammerRowFormat : obj.format) {
+                case 1: 
+                  final children = <Widget> [
+                    (obj.symbol != null) ?
+                    Flexible(flex: 4, child: 
+                    Padding(padding: EdgeInsets.fromLTRB(
+                      V4rs.paddingValue(obj.padding ?? 2.0),
+                      V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
+                      V4rs.paddingValue(obj.padding ?? 2.0),
+                      V4rs.paddingValue(obj.padding ?? 2.0),), 
+                    child:
+                    theSymbol,
+                    ),
+                    ) : SizedBox.shrink(),
+                    Flexible(flex: 7,
+                      child: 
+                    Padding(
+                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
+                    theLabel,
+                    ),
+                    ),
+                  ];
+
+                  if (!V4rs.xSmallModeWidth) { 
+                    return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: children);
+                  } else {
+                    return Column(mainAxisAlignment: MainAxisAlignment.center,
+                    children: children);
+                  }
+                  
+                case 2:
+                  final children = <Widget> [
+                    Expanded(flex: 7, child: 
+                    Padding(
+                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
+                    theLabel,
+                    ),
+                    ),
+                    (obj.symbol != null) ?
+                    Flexible(flex: 4, child: 
+                    Padding(padding: EdgeInsets.fromLTRB(
+                      V4rs.paddingValue(obj.padding ?? 2.0),
+                      V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
+                      V4rs.paddingValue(obj.padding ?? 2.0),
+                      V4rs.paddingValue(obj.padding ?? 2.0),), 
+                    child:
+                      theSymbol,
+                    ),
+                    ) : SizedBox.shrink(),
+                  ];
+                  if (!V4rs.xSmallModeWidth) { 
+                    return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: children);
+                  } else {
+                    return Column(mainAxisAlignment: MainAxisAlignment.center,
+                    children: children);
+                  }
+                case 3: 
+                  return (obj.symbol != null) ? Padding(
+                    padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
+                    theSymbol,
+                  ) : SizedBox.shrink();
+                case 4:
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                    Expanded(child: 
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
+                  theLabel2
+                  )
+                    )
+                  ]
+                  );
+              }
+            } (),
+            );
+        
+      }
+    }
+
+//=====: 
+
+class BuildGrammerButton extends StatelessWidget{
+
+    final GrammerObjects obj;
+    final TTSInterface synth;
+  final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
+  final Future<void> Function() initForSS;
+  final AudioPlayer playerForSS;
+
+    const BuildGrammerButton({
+      super.key, 
+      required this.obj, 
+      required this.synth,
+      required this.speakSelectSherpaOnnxSynth,
+      required this.initForSS,
+      required this.playerForSS,
+    });
+
+     @override
+    Widget build(BuildContext context) {
+
+    
       //
       //button
       //
-      return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-            elevation: 0,
-            backgroundColor: obj.backgroundColor ?? Colors.transparent,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero, 
-            )
-          ),
+      return GrammerButtonStyle(
+        obj: obj,
+        editable: false,
         onPressed: () async {
           switch ((obj.matchSpeakOS ?? true) ? Bv4rs.grammerRowSpeakOnSelect : obj.speakOS) {
           case 1:
@@ -3607,90 +3005,7 @@ class BuildGrammerButton extends StatelessWidget{
             break;
           }
         },
-        child: () {
-          switch((obj.matchFormat ?? true) ? Bv4rs.grammerRowFormat : obj.format) {
-            case 1: 
-              final children = <Widget> [
-                (obj.symbol != null) ?
-                Flexible(flex: 4, child: 
-                Padding(padding: EdgeInsets.fromLTRB(
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),), 
-                child:
-                theSymbol,
-                ),
-                ) : SizedBox.shrink(),
-                Flexible(flex: 7,
-                  child: 
-                Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                ),
-                ),
-              ];
-
-              if (!V4rs.xSmallModeWidth) { 
-                return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: children);
-              } else {
-                return Column(mainAxisAlignment: MainAxisAlignment.center,
-                children: children);
-              }
-              
-            case 2:
-              final children = <Widget> [
-                Expanded(flex: 7, child: 
-                Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                ),
-                ),
-                (obj.symbol != null) ?
-                Flexible(flex: 4, child: 
-                Padding(padding: EdgeInsets.fromLTRB(
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),), 
-                child:
-                  theSymbol,
-                ),
-                ) : SizedBox.shrink(),
-              ];
-              if (!V4rs.xSmallModeWidth) { 
-                return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: children);
-              } else {
-                return Column(mainAxisAlignment: MainAxisAlignment.center,
-                children: children);
-              }
-            case 3: 
-              return (obj.symbol != null) ? Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                theSymbol,
-              ) : SizedBox.shrink();
-            case 4:
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Expanded(child: 
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-              theLabel2
-              )
-                )
-              ]
-              );
-          }
-        } (),
-        );
+       );
     }
   }
 
@@ -3721,75 +3036,12 @@ class BuildGrammerFolder extends StatelessWidget{
      @override
     Widget build(BuildContext context) {
 
-    //font settings
-        TextStyle uniqueStyle =  
-        TextStyle(
-          color: obj.fontColor ?? Colors.black,
-          fontSize: V4rs.fontValue(obj.fontSize ?? 16),
-          fontFamily: Fontsy.fontToFamily[(obj.fontFamily ?? 'default')], 
-          fontWeight: FontWeight.values[(((obj.fontWeight ?? 400) ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: (obj.fontItalics ?? false) ? FontStyle.italic : FontStyle.normal,
-          decoration: (obj.fontUnderline ?? false) ? TextDecoration.underline : TextDecoration.none,
-        );
-
-        TextStyle matchStyle =  
-        TextStyle(
-          color: Fv4rs.grammerFontColor,
-          fontSize: V4rs.fontValue(Fv4rs.grammerFontSize),
-          fontFamily: Fontsy.fontToFamily[Fv4rs.grammerFont], 
-          fontWeight: FontWeight.values[((Fv4rs.grammerFontWeight ~/ 100) - 1 ).clamp(0, 8)],
-          fontStyle: Fv4rs.grammerFontItalics ? FontStyle.italic : FontStyle.normal,
-          decoration: Fv4rs.grammerFontUnderline ? TextDecoration.underline : TextDecoration.none,
-        );
-
-      //label
-        Text theLabel = 
-        Text(obj.label ?? "", 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          softWrap: true,
-          );
-        Text theLabel2 = 
-        Text(obj.label ?? "", 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-          softWrap: true,
-          );
-      
-      //image
-        Widget image = LoadImage.fromSymbol(obj.symbol);
-
-      //symbol
-        Widget theSymbol = 
-          ImageStyle1(
-            image: image, 
-            symbolSaturation: obj.symbolSaturation ?? 1.0, 
-            symbolContrast: obj.symbolContrast ?? 1.0, 
-            invertSymbolColors: obj.invertSymbol ?? false, 
-            matchOverlayColor: obj.matchOverlayColor ?? true, 
-            overlayColor: obj.overlayColor ?? Colors.white,
-            defaultSymbolColorOverlay: Bv4rs.grammerRowSymbolColorOverlay, 
-            matchSymbolContrast: obj.matchSymbolContrast ?? true, 
-            matchSymbolInvert: obj.matchInvertSymbol ?? true, 
-            matchSymbolSaturation: obj.matchSymbolSaturation ?? true, 
-            defaultSymbolInvert: Bv4rs.grammerRowSymbolInvert, 
-            defaultSymbolContrast: Bv4rs.grammerRowSymbolContrast, 
-            defaultSymbolSaturation: Bv4rs.grammerRowSymbolSaturation
-            );
       //
       //button
       //
-      return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-            elevation: 0,
-            backgroundColor: obj.backgroundColor ?? Colors.transparent,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero, 
-            )
-          ),
+      return GrammerButtonStyle(
+        obj: obj,
+        editable: false,
         onPressed: () async {
           switch ((obj.matchSpeakOS ?? true) ? Bv4rs.grammerRowSpeakOnSelect : obj.speakOS) {
           case 1:
@@ -3830,87 +3082,8 @@ class BuildGrammerFolder extends StatelessWidget{
             break;
           }
         },
-        child: () {
-          switch((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-            case 1: 
-              final children = <Widget> [
-                (obj.symbol != null) ?
-                Flexible(flex: 4, child: 
-                Padding(padding: EdgeInsets.fromLTRB(
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),), 
-                child:
-                theSymbol,
-                ),
-                ) : SizedBox.shrink(),
-                Flexible(flex: 7,
-                  child: 
-                Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                ),
-                ),
-              ];
-              if (!V4rs.xSmallModeWidth) { 
-                return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: children);
-              } else {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: children);
-              }
-            case 2: 
-             final children = <Widget> [
-              Expanded(flex: 7, child: 
-                Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-                theLabel,
-                ),
-                ),
-                (obj.symbol != null) ?
-                Flexible(flex: 4, child: 
-                Padding(padding: EdgeInsets.fromLTRB(
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue((obj.padding ?? 2.0) + 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),
-                  V4rs.paddingValue(obj.padding ?? 2.0),), 
-                child:
-                  theSymbol,
-                ),
-                ) : SizedBox.shrink(),
-              ];
-
-              if (!V4rs.xSmallModeWidth) { 
-                return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: children);
-              } else {
-                return Column(mainAxisAlignment: MainAxisAlignment.center, 
-                children: children);
-              }
-            case 3: 
-              return (obj.symbol != null) ? Padding(
-                padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
-                theSymbol,
-              ) : SizedBox.shrink();
-            case 4:
-              return Column( children: [
-                Expanded(child: 
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
-              theLabel2
-              )
-                )
-              ]
-              );
-          }
-        } (),
-        );
+        
+      );
     }
   }
 

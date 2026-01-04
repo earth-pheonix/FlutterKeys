@@ -8,6 +8,7 @@ import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
 import 'dart:async';
 import 'package:uuid/uuid.dart';
 import 'package:flutterkeysaac/Models/json_model_boards.dart';
+import 'package:flutterkeysaac/Variables/editing/editing_board_buttons.dart';
 
 
    class BoardEditor extends StatefulWidget{
@@ -126,727 +127,7 @@ import 'package:flutterkeysaac/Models/json_model_boards.dart';
       }
 
 
-      
-      @override
-      Widget build(BuildContext context) {
-
-        var allBoards = Ev4rs.getBoards(root.boards);
-
-        final mapOfBoardNames = {
-          for (var board in allBoards) 
-            if (board.title != null) 
-              board.title!
-        };
-
-        bool compareToMap(String newTitle){
-          //true = new title is unique
-          //false = new title is not unique
-          //takes map of the names and for every name checks if it = new title, goal is for it not to
-          return mapOfBoardNames.every((n) => n != newTitle);
-        }
-
-        if (Ev4rs.selectedBoard.value != null) {
-          Ev4rs.setPlacholderValuesBoard(root.grammerRow, Ev4rs.selectedBoard.value!);
-        }
-
-        final screenSize = MediaQuery.of(context).size;
-        final isLandscape = screenSize.width > screenSize.height;
-
-        return Stack( 
-          children: [
-          
-          ValueListenableBuilder<bool>(valueListenable: Ev4rs.reloadJson, builder: (context, reload, _) {
-            var allGrammerRows= Ev4rs.getGrammerRows(root.grammerRow);
-
-            final mapOfGrammer = {
-              for (var row in allGrammerRows) 
-                if (row.title != null) 
-                  row.title!: row.id,
-            };
-
-            final mapOfUseSubfolders = {
-              1 : 'on',
-              2 : 'off',
-              3 : 'match default',
-            };
-              
-              return ValueListenableBuilder<bool>(valueListenable: Ev4rs.showAddBoard, builder: (context, reload, _) {
-                return Row( 
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  //
-                  //back, in positioned is the tap expander
-                  //
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)),
-                  child: SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.065 : MediaQuery.of(context).size.height * 0.03 ,
-                    child: ButtonStyle1(
-                      imagePath: 'assets/interface_icons/interface_icons/iBack.png', 
-                      onPressed: () {
-                      setState(() {
-                        Ev4rs.closeEditorAction();
-                      });
-                      }
-                    ),
-                  ),
-                  ),
-                
-                  //
-                  //content
-                  //
-                  Flexible(
-                    flex: Ev4rs.showAddBoard.value ? 26 : 29,
-                    child:
-                  ValueListenableBuilder(valueListenable: Ev4rs.showAddBoard, builder: (context, showAdd, _) {
-                    return SizedBox(
-                      child: 
-                      (Ev4rs.showAddBoard.value) 
-                          ? addBoard()
-                          : Padding(
-                            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-
-                          
-                          //title, edit layout/format
-                          (Ev4rs.selectedBoard.value != null)
-                          ? Flexible(
-                            child: Padding(padding: EdgeInsetsGeometry.symmetric(
-                              horizontal: V4rs.paddingValue(10)), child: 
-                            Container(
-                                      decoration: BoxDecoration(
-                                        color: Cv4rs.themeColor4,
-                                        borderRadius: BorderRadius.circular(10)
-                                        ),
-                                      child: Column(children: [
-                                        //
-                                        //board title
-                                        //
-                                        Row(children: [ 
-                                          Flexible(
-                                            fit: FlexFit.loose,
-                                            flex: 5, 
-                                            child: Padding(
-                                              padding: EdgeInsetsGeometry.symmetric(
-                                                horizontal: V4rs.paddingValue(10), vertical: 0), 
-                                              child: ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
-                                                final titleController = TextEditingController(text: value)
-                                                  ..selection = TextSelection.collapsed(offset: value.length);
-
-                                              return TextField(
-                                                controller: titleController,
-                                                textAlign: TextAlign.center,
-                                                style: Sv4rs.settingslabelStyle,
-                                                onChanged: (value){
-                                                  Ev4rs.title.value = value;
-                                                },
-                                                decoration: InputDecoration(
-                                                hintStyle: Sv4rs.settingslabelStyle.copyWith(
-                                                  fontSize: 14,
-                                                  color: Cv4rs.themeColor2,
-                                                ),
-                                                hintText: Ev4rs.title.value,
-                                                ),
-                                              );
-                                              }),
-                                            ),
-                                          ),
-                                          Flexible(
-                                            fit: FlexFit.loose,
-                                            flex: 2, 
-                                            child: Padding(
-                                              padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), 
-                                              child: ButtonStyle4(
-                                                imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                                                onPressed: (){setState(() {
-                                                  if (compareToMap(Ev4rs.title.value)){
-                                                    widget.saveField(root, Ev4rs.selectedBoardUUID.value, 'title', Ev4rs.title.value);
-                                                    Ev4rs.saveJson(root);
-                                                  } else {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                      SnackBar(
-                                                        content: Text('$newBoardTitle already exists'),
-                                                        duration: Duration(milliseconds: 750),
-                                                      ),
-                                                    );
-                                                  }
-                                                  });
-                                                 }, 
-                                                label: 'Save'
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                        ),
-
-                                        //
-                                        //edit layout/format- future
-                                        //
-
-                                      ]
-                                      )
-                                    )
-                            ),
-                          )
-                          : Expanded(child: SizedBox()),
-
-                          //grammer row picker, use subfolders toggle,
-                          (Ev4rs.selectedBoard.value != null)
-                          ? Flexible(
-                            child: Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child: 
-                            Container(
-                                      decoration: BoxDecoration(
-                                        color: Cv4rs.themeColor4,
-                                        borderRadius: BorderRadius.circular(10)
-                                        ),
-                                      child: Column(children: [
-                                        //
-                                        //grammer row picker
-                                        //
-                                        Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: 
-                                          Row(children: [
-                                            Flexible(
-                                              fit: FlexFit.loose,
-                                                flex: 5, 
-                                                child: Padding(
-                                                  padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0),
-                                                  child:
-                                                Column(children: [
-                                                  Text('Grammar Row:', style: Sv4rs.settingslabelStyle, textAlign: TextAlign.center,),
-                                                  ValueListenableBuilder<String>(
-                                                  valueListenable: Ev4rs.usedGrammerRowUUID, builder: (context, use, _) {
-                                                  return DropdownButton<String>(
-                                                  isExpanded: true,
-                                                    hint: Text(
-                                                      'Grammar Row: ${Ev4rs.useGrammerRowTitle}', 
-                                                      style: Sv4rs.settingslabelStyle,
-                                                    ),
-                                                    value: use,
-                                                    items: [
-                                                      DropdownMenuItem<String>(
-                                                        value: '',
-                                                        child: Text('none', style: Sv4rs.settingsSecondaryLabelStyle, textAlign: TextAlign.center,),
-                                                      ),
-                                                    ...mapOfGrammer.entries.map((entry) {
-                                                      return DropdownMenuItem<String>(
-                                                        value: entry.value,
-                                                        child: Text(
-                                                          entry.key, 
-                                                          style: Sv4rs.settingsSecondaryLabelStyle,
-                                                          textAlign: TextAlign.center,
-                                                        ),
-                                                      );
-                                                    })
-                                                    ],
-                                                    onChanged: (value) {
-                                                      if (value != null) {
-                                                        Ev4rs.usedGrammerRowUUID.value = value;
-                                                        Ev4rs.useGrammerRowTitle.value = mapOfGrammer.entries.firstWhere((element) => element.value == value).key;
-                                                      }
-                                                    },
-                                                  );
-                                                  }
-                                                ),
-                                                ]
-                                                )
-                                            )
-                                              ),
-                                            Flexible(
-                                              fit: FlexFit.loose,
-                                              flex: 2, 
-                                              child: Padding(
-                                                padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), 
-                                                child: ButtonStyle4(
-                                                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                                                  onPressed: (){setState(() {
-                                                      widget.saveField(root, Ev4rs.selectedBoardUUID.value, 'useGrammerRow', Ev4rs.usedGrammerRowUUID.value);
-                                                      Ev4rs.saveJson(root);
-                                                      Ev4rs.reloadJson.value = !Ev4rs.reloadJson.value;
-                                                      });
-                                                    }, 
-                                                  label: 'Save'
-                                                ),
-                                              ),
-                                            ),
-                                            ]
-                                          )
-                                        ),
-                                    
-                                        //
-                                        //use subfolders toggle
-                                        //
-                                        ValueListenableBuilder<int>(
-                                          valueListenable: Ev4rs.useSubFolders, 
-                                          builder: (context, use, _) {
-                                          return Padding(
-                                            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                                            child: Row(children: [
-                                              Flexible(
-                                              fit: FlexFit.tight,
-                                              flex: 5, 
-                                              child: Padding(
-                                                  padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0),
-                                                  child:
-                                            Column( children: [
-                                              Text(
-                                                'Use Subfolders:', 
-                                                style: Sv4rs.settingslabelStyle,
-                                                textAlign: TextAlign.start,
-                                               ),
-                                               Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child:
-                                              ValueListenableBuilder<int>(
-                                                valueListenable: Ev4rs.useSubFolders, builder: (context, use, _) {
-                                                  return DropdownButton<int>(
-                                                    isExpanded: true,
-                                                    hint: Text(
-                                                        'use sub folders ${V4rs.useSubFoldersAsBool(Ev4rs.useSubFolders.value)}', 
-                                                        style: Sv4rs.settingslabelStyle,
-                                                      ),
-                                                    value: use,
-                                                    items: [
-                                                      ...mapOfUseSubfolders.entries.map((entry) {
-                                                        return DropdownMenuItem<int>(
-                                                          value: entry.key,
-                                                          child: Text(
-                                                          entry.value, 
-                                                            style: Sv4rs.settingsSecondaryLabelStyle,
-                                                          ),
-                                                        );
-                                                        }
-                                                      )
-                                                    ],
-                                                    onChanged: (key) {
-                                                      if (key != null) {
-                                                        Ev4rs.useSubFolders.value = key;
-                                                      }
-                                                    },
-                                                    );
-                                                  }
-                                                ),
-                                               ),
-                                              ]
-                                            ),
-                                            ),
-                                              ),
-                                            Flexible(
-                                              fit: FlexFit.tight,
-                                              flex: 2, 
-                                              child: Padding(
-                                              padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)),  
-                                              child: ButtonStyle4(
-                                                imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                                                onPressed: (){setState(() {
-                                                    widget.saveField(root, Ev4rs.selectedBoardUUID.value, 'useSubFolders', Ev4rs.useSubFolders.value);
-                                                    Ev4rs.saveJson(root);
-                                                    });
-                                                  }, 
-                                                label: 'Save'
-                                              ),
-                                            ),
-                                            ),
-                                            
-                                            ]
-                                            )
-                                          );
-                                        })
-
-                                      ]
-                                      )
-                                    )
-                            ),
-                          )
-                          : Expanded(child: SizedBox()),
-
-                          //delete, add, template
-                          Flexible(
-                            child: Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child: 
-                          Column(
-                              children: [
-                              //add
-                              Padding(
-                                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(4)),
-                                child: ButtonStyle2(
-                                  imagePath: 'assets/interface_icons/interface_icons/iAddBoard.png', 
-                                  onPressed: () async {
-                                  templateRoot = await V4rs.loadJsonTemplates();
-                                    if (templateRoot.boards.isNotEmpty) {
-                                      Ev4rs.showAddBoard.value = true;
-                                    } 
-                                  },
-                                  label: 'Add Board'
-                                )
-                              ),
-                              //delete
-                              Padding(
-                                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(4)),
-                                child: ButtonStyle2(
-                                  imagePath: 'assets/interface_icons/interface_icons/iAddBoard.png', 
-                                  onPressed: () async {
-                                    final confirmDelete = await showDeleteBoardConfirmation(context, Ev4rs.selectedBoard.value?.title ?? ''); 
-                                    if (confirmDelete == true) {
-                                      setState(() {
-                                        //remove mentions in JSON
-                                        final nav = Ev4rs.findNavByLinked(root.navRow, Ev4rs.selectedBoardUUID.value);
-                                        if (nav != null){
-                                          Ev4rs.updateNavField(root, nav.id, "linkToUUID", '');
-                                          Ev4rs.updateNavField(root, nav.id, "linkToLabel", '');
-                                          
-                                        }
-                                        final button = Ev4rs.findBoardByLinked(root.boards, Ev4rs.selectedBoardUUID.value);
-                                        if (button != null){
-                                          widget.saveField(root, button.id, "linkToUUID", '');
-                                          widget.saveField(root, button.id, "linkToLabel", '');
-                                        }
-                                        final grammer = Ev4rs.findGrammerByLinked(root.grammerRow, Ev4rs.selectedBoardUUID.value);
-                                        if (grammer != null){
-                                          Ev4rs.updateGrammerField(root, grammer.id, "openUUID", '');
-                                        }
-
-                                        //delete
-                                        Ev4rs.deleteBoard(root, Ev4rs.selectedBoardUUID.value);
-                                        Ev4rs.saveJson(root);
-
-                                        //clear selection
-                                        Ev4rs.selectedBoardUUID.value = '';
-                                        Ev4rs.selectedBoard.value = null;
-                                        widget.goBack();
-                                      });
-                                    }
-                                  },
-                                  label: 'Delete Board'
-                                )
-                              ),
-                              
-                              ]
-                            ),
-                            ),
-                            ),
-      
-                          //edit grammer edit overlay
-                          Flexible(
-                            child: Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child: 
-                          
-                            Column(children: [
-                              //edit grammer
-                              Padding(
-                                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)),
-                                child: ButtonStyle2(
-                                  imagePath: 'assets/interface_icons/interface_icons/iGrammerRowSettings.png', 
-                                  onPressed: () async {
-                                    
-                                  },
-                                  label: 'Edit Grammar Row'
-                                )
-                              ),
-
-                              //edit overlay
-
-
-                              ]
-                              ),
-                            ),
-                          ),
-                          ]
-                          )
-                        )
-                      );
-                  }
-                  ),
-                  ),
-                  
-                  //
-                  //close add board
-                  //
-                  if (Ev4rs.showAddBoard.value) 
-                  Flexible(
-                    flex: 2, 
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.fromLTRB(
-                        V4rs.paddingValue(3), 
-                        V4rs.paddingValue(7), V4rs.paddingValue(3), 0),
-                      child: SizedBox( 
-                        height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                        child: ButtonStyle1(
-                          imagePath: 'assets/interface_icons/interface_icons/iClose.png', 
-                          onPressed: () {
-                            setState(() {
-                              Ev4rs.showAddBoard.value = !Ev4rs.showAddBoard.value;
-                            });
-                          }
-                        )
-                      ),
-                    ),
-                  ),
-                  
-                  //
-                  //space between close and other butttons
-                  //
-                  if (Ev4rs.showAddBoard.value) 
-                  Expanded(
-                    flex: 1, 
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.fromLTRB(
-                        V4rs.paddingValue(3), 
-                        V4rs.paddingValue(7), V4rs.paddingValue(3), 0),
-                      child: SizedBox( 
-                      ),
-                    ),
-                  ),
-                  
-
-                  //
-                  //undo + share
-                  //
-                  Flexible(flex: 2, child: 
-                    Column( children:[
-                      //undo
-                      Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                        V4rs.paddingValue(3), V4rs.paddingValue(7), V4rs.paddingValue(3), 0),
-                  child:
-                      SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                    child:ValueListenableBuilder<bool>(
-                        valueListenable: Ev4rs.isUndoing, 
-                        builder: (context, inverting, _) {
-                    return 
-                      ButtonStyle1(
-                        glow: (Ev4rs.isUndoing.value) ? true : false,
-                        imagePath: 'assets/interface_icons/interface_icons/iUndo.png', 
-                        onPressed: () { setState(() {
-                          Ev4rs.undoAction(root);
-                        });
-                        }
-                      );
-                        }),
-                      ),
-                      ),
-
-                      //share
-                      Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                        V4rs.paddingValue(3), V4rs.paddingValue(7), V4rs.paddingValue(3), 0),
-                  child:
-                      SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                    child:
-                    
-                      ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iExport.png', 
-                        onPressed: () { setState(() {
-                          Ev4rs.isExporting.value = !Ev4rs.isExporting.value;
-                        });
-                        }
-                      ), 
-                      ),
-                      ),
-                    ]
-                    ),
-                  ),
-                  
-                  //
-                  //redo + print
-                  //
-                  Flexible(flex: 2, child: 
-                    Column( children:[
-                      //redo
-                      Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                        V4rs.paddingValue(3), 
-                        V4rs.paddingValue(7), V4rs.paddingValue(3), 0),
-                  child:
-                      SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04,
-                    child: ValueListenableBuilder<bool>(
-                        valueListenable: Ev4rs.isRedoing, 
-                        builder: (context, inverting, _) {
-                    return 
-                      ButtonStyle1(
-                        glow: (Ev4rs.isRedoing.value) ? true : false,
-                        imagePath: 'assets/interface_icons/interface_icons/iRe-do.png', 
-                        onPressed: () { setState(() {
-                          Ev4rs.redoAction(root);
-                        });
-                        }
-                      );
-                        }),
-                      ),
-                      ),
-                      //print
-                      Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                        V4rs.paddingValue(3), V4rs.paddingValue(7), V4rs.paddingValue(3), 0),
-                  child:
-                      SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04,
-                    child:
-                      ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iPrint.png', 
-                        onPressed: () { setState(() {
-                          Ev4rs.isPrinting.value = !Ev4rs.isPrinting.value;
-                        });
-                        }
-                      ),
-                      ),
-                      ),
-                    ]
-                    ),
-                  ),
-                  
-                  //
-                  //expand/collapse + board settings
-                  //
-                  Column( children:[
-                    Padding(
-                      padding: EdgeInsetsGeometry.fromLTRB(
-                        V4rs.paddingValue(7), 
-                        V4rs.paddingValue(7), V4rs.paddingValue(7), 0),
-                      child: SizedBox( 
-                        height: (isLandscape) ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.04,
-                        child: (Ev4rs.isButtonExpanded.value) 
-                        ? ButtonStyle1(
-                            imagePath: 'assets/interface_icons/interface_icons/iCollapse.png', 
-                            onPressed: () { 
-                              setState(() {
-                                Ev4rs.isButtonExpanded.value = false;
-                              });
-                            }
-                          ) 
-                        : ButtonStyle1(
-                            imagePath: 'assets/interface_icons/interface_icons/iExpand.png', 
-                            onPressed: () { 
-                              setState(() {
-                                Ev4rs.isButtonExpanded.value = true;
-                              });
-                            }
-                          ) 
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsGeometry.fromLTRB(
-                        V4rs.paddingValue(7), 0, 
-                        V4rs.paddingValue(7), V4rs.paddingValue(7)),
-                      child: SizedBox( 
-                        height: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04 ,
-                        child: Padding(
-                          padding: EdgeInsetsGeometry.all(10), child: 
-                          ButtonStyle1(
-                              glow: (Ev4rs.boardEditor.value) ? true : false,
-                              imagePath: 'assets/interface_icons/interface_icons/iBoard.png', 
-                              onPressed: () { setState(() {
-                                Ev4rs.editBoardsAction(root);
-                              });
-                              }
-                            ) 
-                          ),
-                        ),
-                      ),
-                  ]
-                  )
-                ]
-                );
-              }
-            );
-           }
-          ),
-        //here
-        Positioned(
-          top: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04,
-          child: ValueListenableBuilder<bool>(valueListenable: Ev4rs.showSelectionMenu, builder: (context, showSelectionMenu, _) {
-          return SizedBox( 
-            height: (isLandscape) ? MediaQuery.of(context).size.height * 0.09 : MediaQuery.of(context).size.height * 0.04,
-            child: Padding(
-              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)), 
-              child: Row(
-                children: [
-              //tap
-            if (Ev4rs.isButtonExpanded.value == false)
-                ButtonStyle1(
-                imagePath: 'assets/interface_icons/interface_icons/iTap.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.showSelectionMenu.value = !Ev4rs.showSelectionMenu.value;
-                });
-                }
-              ),
-
-            //tap and swap
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.tapAndSwap) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iTapAndSwap.png', 
-                  onPressed: () { setState(() {
-                    Ev4rs.tapAndSwapAction(root);
-                  });
-                  }
-                ),
-
-            //drag to select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.dragSelectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iDragSelectMultiple.png', 
-                  onPressed: () { setState(() {
-                    Ev4rs.dragSelectMultipleAction(root);
-                  });
-                }
-              ),
-
-            //select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.selectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iSelectMultiple.png', 
-                  onPressed: () { setState(() {
-                    Ev4rs.selectMultipleAction(root);
-                  });
-                }
-              ),
-
-            //invert selection
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-              ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.invertSelections, 
-                    builder: (context, inverting, _) { 
-                return ButtonStyle1(
-                  glow: (Ev4rs.invertSelections.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iInvertSelection.png', 
-                  onPressed: () { 
-                    setState(() {
-                      Ev4rs.invertSelectionAction(root);
-                    });
-                  }
-                );
-              }),
-
-            //sort a-z
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-              ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.sortSelectAZ, 
-                    builder: (context, inverting, _) {
-                return ButtonStyle1(
-                glow: (Ev4rs.sortSelectAZ.value) ? true : false,
-                imagePath: 'assets/interface_icons/interface_icons/iSortAZ.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.sortSelectedAzAction(root);
-                });
-                }
-              );}),
-
-          ]
-          ),
-            ),
-          );
-        }
-        )
-        )
-        ]
-        );
-      }
-    
-      Widget addBoard() {
+      Widget addBoard(bool isLandscape) {
 
         var allBoards = Ev4rs.getBoards(root.boards);
 
@@ -898,13 +179,15 @@ import 'package:flutterkeysaac/Models/json_model_boards.dart';
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+            if(!V4rs.xSmallModeWidth)
             Expanded(
-              flex: 2,
+              flex: 4,
               child: SizedBox()
             ),
             
-            Flexible(
-              flex: 4,
+            Expanded(
+              flex: 8,
               child: 
               Padding(
                 padding: EdgeInsetsGeometry.all(V4rs.paddingValue(20)),
@@ -923,13 +206,14 @@ import 'package:flutterkeysaac/Models/json_model_boards.dart';
               ),
             ),
             
+            if(!V4rs.xSmallModeWidth)
             Expanded(
-              flex: 1,
+              flex: 2,
               child: SizedBox()
             ),
            
-            Flexible(
-              flex: 4,
+            Expanded(
+              flex: 8,
               child:
             Padding(
               padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
@@ -938,32 +222,37 @@ import 'package:flutterkeysaac/Models/json_model_boards.dart';
                   color: Cv4rs.themeColor4,
                   borderRadius: BorderRadius.circular(10)
                   ),
-                child: Column( children: [
-                  Padding(
-                    padding: EdgeInsetsGeometry.fromLTRB(
-                      V4rs.paddingValue(10), 
-                      V4rs.paddingValue(15), V4rs.paddingValue(10), V4rs.paddingValue(15)), 
-                    child: Text('Create from Template:', 
-                      style: Sv4rs.settingslabelStyle.copyWith(
-                        fontSize: 12,
-                        fontWeight: newFontWeight,
-                      ), textAlign: TextAlign.center,
+                child: Column( 
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsGeometry.fromLTRB(
+                        V4rs.paddingValue(10), 
+                        V4rs.paddingValue(15), V4rs.paddingValue(10), V4rs.paddingValue(15)), 
+                      child: Text(
+                        'Create from Template:', 
+                        style: Sv4rs.settingslabelStyle.copyWith(
+                          fontSize: 12,
+                          fontWeight: newFontWeight,
+                        ), textAlign: TextAlign.center,
                       ),
-                  ),
+                    ),
                   
                   //dropdown menu from template json
                   Row(children: [
-                    Flexible(child: 
-                    Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                      V4rs.paddingValue(10), 0, V4rs.paddingValue(10), 0), child:
-                      Text(
-                        'Template:', 
-                        style: Sv4rs.settingslabelStyle,
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsetsGeometry.fromLTRB(
+                          V4rs.paddingValue(10), 0, 
+                          V4rs.paddingValue(10), 0
+                        ), 
+                        child: Text(
+                          'Template:', 
+                          style: Sv4rs.settingslabelStyle,
+                        ),
                       ),
                     ),
-                    ),
-                    Flexible(child: 
-                    ValueListenableBuilder<String>(
+                    Expanded(
+                      child: ValueListenableBuilder<String>(
                       valueListenable: templateUUID, builder: (context, use, _) {
                         return DropdownButton<String>(
                           isExpanded: true,
@@ -1024,57 +313,95 @@ import 'package:flutterkeysaac/Models/json_model_boards.dart';
                   //type picker
 
                   //if type picker not keyboard show row and column picker
-
-                  ButtonStyle2(
-                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                  onPressed: () async {
-                    if (templateUUID.value.isNotEmpty) {
-                      if (newBoardTitle.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Please title your board'), 
-                              duration: Duration(milliseconds: 750),
-                            ),
-                          );
-                      } else if (compareToMap(newBoardTitle)){
-                        copyTemplateBoardToRoot(
-                          root: root, 
-                          templateRoot: templateRoot, 
-                          templateId: templateUUID.value,
-                          newTitle: newBoardTitle,
-                          );
-                        } else {
+                 
+                    ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: () async {
+                      if (templateUUID.value.isNotEmpty) {
+                        if (newBoardTitle.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('$newBoardTitle already exists'), 
-                              duration: Duration(milliseconds: 750),
+                              SnackBar(
+                                content: Text('Please title your board'), 
+                                duration: Duration(milliseconds: 750),
+                              ),
+                            );
+                        } else if (compareToMap(newBoardTitle)){
+                          copyTemplateBoardToRoot(
+                            root: root, 
+                            templateRoot: templateRoot, 
+                            templateId: templateUUID.value,
+                            newTitle: newBoardTitle,
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('$newBoardTitle already exists'), 
+                                duration: Duration(milliseconds: 750),
+                              ),
+                            );
+                          }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please pick a template'), 
+                            duration: Duration(milliseconds: 750),
                             ),
-                          );
-                        }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Please pick a template'), 
-                          duration: Duration(milliseconds: 750),
-                          ),
-                      );
-                    }
-                  }, 
-                  label: "Create",
-                ),
+                        );
+                      }
+                    }, 
+                    label: "Create",
+                  ),
+                  
               ]
               )
             ),
             ),
             ),
             
+            if(!V4rs.xSmallModeWidth)
             Expanded(
-              flex: 1,
+              flex: 2,
               child: SizedBox()
             ),
+
+            
+                  //close add board
+                  Expanded(
+                    flex: 2, 
+                    child: Padding(
+                      padding: EdgeInsetsGeometry.fromLTRB(
+                        V4rs.paddingValue(3), 
+                        V4rs.paddingValue(7), V4rs.paddingValue(3), 0),
+                      child: SizedBox( 
+                        height: (isLandscape || V4rs.xSmallModeWidth) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
+                        child: ButtonStyle1(
+                          imagePath: 'assets/interface_icons/interface_icons/iClose.png', 
+                          onPressed: () {
+                            setState(() {
+                              Ev4rs.showAddBoard.value = !Ev4rs.showAddBoard.value;
+                            });
+                          }
+                        )
+                      ),
+                    ),
+                  ),
+                  
+                  //
+                  //space between close and other butttons
+                  //
+                  if(!V4rs.xSmallModeWidth)
+                  Expanded(
+                    flex: 1, 
+                    child: Padding(
+                      padding: EdgeInsetsGeometry.fromLTRB(
+                        V4rs.paddingValue(3), 
+                        V4rs.paddingValue(7), V4rs.paddingValue(3), 0),
+                      child: SizedBox( 
+                      ),
+                    ),
+                  ),
           ],
         );
-        //
             }
 
             return const Center(child: Text('Templates is Empty'));
@@ -1082,6 +409,495 @@ import 'package:flutterkeysaac/Models/json_model_boards.dart';
         );
       }
  
+      //title, edit layout/format
+      Widget one(
+        Function(String) compareToMap, 
+      ) {
+        if (Ev4rs.selectedBoard.value != null){
+          return Padding(
+            padding: EdgeInsetsGeometry.symmetric(
+            horizontal: V4rs.paddingValue(10)), child: 
+          Container(
+                    decoration: BoxDecoration(
+                      color: Cv4rs.themeColor4,
+                      borderRadius: BorderRadius.circular(10)
+                      ),
+                    child: Column(children: [
+                      //
+                      //board title
+                      //
+                      Row(children: [ 
+                        Flexible(
+                          fit: FlexFit.loose,
+                          flex: 5, 
+                          child: Padding(
+                            padding: EdgeInsetsGeometry.symmetric(
+                              horizontal: V4rs.paddingValue(10), vertical: 0), 
+                            child: ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
+                              final titleController = TextEditingController(text: value)
+                                ..selection = TextSelection.collapsed(offset: value.length);
+
+                            return TextField(
+                              controller: titleController,
+                              textAlign: TextAlign.center,
+                              style: Sv4rs.settingslabelStyle,
+                              onChanged: (value){
+                                Ev4rs.title.value = value;
+                              },
+                              decoration: InputDecoration(
+                              hintStyle: Sv4rs.settingslabelStyle.copyWith(
+                                fontSize: 14,
+                                color: Cv4rs.themeColor2,
+                              ),
+                              hintText: Ev4rs.title.value,
+                              ),
+                            );
+                            }),
+                          ),
+                        ),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          flex: 2, 
+                          child: Padding(
+                            padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), 
+                            child: ButtonStyle4(
+                              imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                              onPressed: (){setState(() {
+                                if (compareToMap(Ev4rs.title.value)){
+                                  widget.saveField(root, Ev4rs.selectedBoardUUID.value, 'title', Ev4rs.title.value);
+                                  Ev4rs.saveJson(root);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('$newBoardTitle already exists'),
+                                      duration: Duration(milliseconds: 750),
+                                    ),
+                                  );
+                                }
+                                });
+                                }, 
+                              label: 'Save'
+                            ),
+                          ),
+                        ),
+                      ],
+                      ),
+
+                      //
+                      //edit layout/format- future
+                      //
+
+                    ]
+                    )
+                  )
+          );
+        } else
+        {
+          return SizedBox();
+        }
+
+      }
+      //grammer row, use subfolders,          
+      Widget two(
+        Map mapOfGrammer, 
+        Map mapOfUseSubfolders,
+      ){
+        if (Ev4rs.selectedBoard.value != null)
+        {
+          return Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 5), child: 
+            Container(
+                      decoration: BoxDecoration(
+                        color: Cv4rs.themeColor4,
+                        borderRadius: BorderRadius.circular(10)
+                        ),
+                      child: Column(children: [
+                        //
+                        //grammer row picker
+                        //
+                        Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: 
+                          Row(children: [
+                            Flexible(
+                              fit: FlexFit.loose,
+                                flex: 5, 
+                                child: Padding(
+                                  padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0),
+                                  child:
+                                Column(children: [
+                                  Text('Grammar Row:', style: Sv4rs.settingslabelStyle, textAlign: TextAlign.center,),
+                                  ValueListenableBuilder<String>(
+                                  valueListenable: Ev4rs.usedGrammerRowUUID, builder: (context, use, _) {
+                                  return DropdownButton<String>(
+                                  isExpanded: true,
+                                    hint: Text(
+                                      'Grammar Row: ${Ev4rs.useGrammerRowTitle}', 
+                                      style: Sv4rs.settingslabelStyle,
+                                    ),
+                                    value: use,
+                                    items: [
+                                      DropdownMenuItem<String>(
+                                        value: '',
+                                        child: Text('none', style: Sv4rs.settingsSecondaryLabelStyle, textAlign: TextAlign.center,),
+                                      ),
+                                    ...mapOfGrammer.entries.map((entry) {
+                                      return DropdownMenuItem<String>(
+                                        value: entry.value,
+                                        child: Text(
+                                          entry.key, 
+                                          style: Sv4rs.settingsSecondaryLabelStyle,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      );
+                                    })
+                                    ],
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        Ev4rs.usedGrammerRowUUID.value = value;
+                                        Ev4rs.useGrammerRowTitle.value = mapOfGrammer.entries.firstWhere((element) => element.value == value).key;
+                                      }
+                                    },
+                                  );
+                                  }
+                                ),
+                                ]
+                                )
+                            )
+                              ),
+                            Flexible(
+                              fit: FlexFit.loose,
+                              flex: 2, 
+                              child: Padding(
+                                padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), 
+                                child: ButtonStyle4(
+                                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                                  onPressed: (){setState(() {
+                                      widget.saveField(root, Ev4rs.selectedBoardUUID.value, 'useGrammerRow', Ev4rs.usedGrammerRowUUID.value);
+                                      Ev4rs.saveJson(root);
+                                      Ev4rs.reloadJson.value = !Ev4rs.reloadJson.value;
+                                      });
+                                    }, 
+                                  label: 'Save'
+                                ),
+                              ),
+                            ),
+                            ]
+                          )
+                        ),
+                    
+                        //
+                        //use subfolders toggle
+                        //
+                        ValueListenableBuilder<int>(
+                          valueListenable: Ev4rs.useSubFolders, 
+                          builder: (context, use, _) {
+                          return Padding(
+                            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+                            child: Row(children: [
+                              Flexible(
+                              fit: FlexFit.tight,
+                              flex: 5, 
+                              child: Padding(
+                                  padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0),
+                                  child:
+                            Column( children: [
+                              Text(
+                                'Use Subfolders:', 
+                                style: Sv4rs.settingslabelStyle,
+                                textAlign: TextAlign.start,
+                                ),
+                                Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), child:
+                              ValueListenableBuilder<int>(
+                                valueListenable: Ev4rs.useSubFolders, builder: (context, use, _) {
+                                  return DropdownButton<int>(
+                                    isExpanded: true,
+                                    hint: Text(
+                                        'use sub folders ${V4rs.useSubFoldersAsBool(Ev4rs.useSubFolders.value)}', 
+                                        style: Sv4rs.settingslabelStyle,
+                                      ),
+                                    value: use,
+                                    items: [
+                                      ...mapOfUseSubfolders.entries.map((entry) {
+                                        return DropdownMenuItem<int>(
+                                          value: entry.key,
+                                          child: Text(
+                                          entry.value, 
+                                            style: Sv4rs.settingsSecondaryLabelStyle,
+                                          ),
+                                        );
+                                        }
+                                      )
+                                    ],
+                                    onChanged: (key) {
+                                      if (key != null) {
+                                        Ev4rs.useSubFolders.value = key;
+                                      }
+                                    },
+                                    );
+                                  }
+                                ),
+                                ),
+                              ]
+                            ),
+                            ),
+                              ),
+                            Flexible(
+                              fit: FlexFit.tight,
+                              flex: 2, 
+                              child: Padding(
+                              padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)),  
+                              child: ButtonStyle4(
+                                imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                                onPressed: (){setState(() {
+                                    widget.saveField(root, Ev4rs.selectedBoardUUID.value, 'useSubFolders', Ev4rs.useSubFolders.value);
+                                    Ev4rs.saveJson(root);
+                                    });
+                                  }, 
+                                label: 'Save'
+                              ),
+                            ),
+                            ),
+                            
+                            ]
+                            )
+                          );
+                        })
+
+                      ]
+                      )
+                    )
+          );
+        } 
+        else
+        {
+          return SizedBox();
+        }
+      }
+      //delete, add, add as template
+      Widget three() {
+        return Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child: 
+                          Column(
+                              children: [
+                              //add
+                              Padding(
+                                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(4)),
+                                child: ButtonStyle2(
+                                  imagePath: 'assets/interface_icons/interface_icons/iAddBoard.png', 
+                                  onPressed: () async {
+                                  templateRoot = await V4rs.loadJsonTemplates();
+                                    if (templateRoot.boards.isNotEmpty) {
+                                      Ev4rs.showAddBoard.value = true;
+                                    } 
+                                  },
+                                  label: 'Add Board'
+                                )
+                              ),
+                              //delete
+                              Padding(
+                                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(4)),
+                                child: ButtonStyle2(
+                                  imagePath: 'assets/interface_icons/interface_icons/iAddBoard.png', 
+                                  onPressed: () async {
+                                    final confirmDelete = await showDeleteBoardConfirmation(context, Ev4rs.selectedBoard.value?.title ?? ''); 
+                                    if (confirmDelete == true) {
+                                      setState(() {
+                                        //remove mentions in JSON
+                                        final nav = Ev4rs.findNavByLinked(root.navRow, Ev4rs.selectedBoardUUID.value);
+                                        if (nav != null){
+                                          Ev4rs.updateNavField(root, nav.id, "linkToUUID", '');
+                                          Ev4rs.updateNavField(root, nav.id, "linkToLabel", '');
+                                          
+                                        }
+                                        final button = Ev4rs.findBoardByLinked(root.boards, Ev4rs.selectedBoardUUID.value);
+                                        if (button != null){
+                                          widget.saveField(root, button.id, "linkToUUID", '');
+                                          widget.saveField(root, button.id, "linkToLabel", '');
+                                        }
+                                        final grammer = Ev4rs.findGrammerByLinked(root.grammerRow, Ev4rs.selectedBoardUUID.value);
+                                        if (grammer != null){
+                                          Ev4rs.updateGrammerField(root, grammer.id, "openUUID", '');
+                                        }
+
+                                        //delete
+                                        Ev4rs.deleteBoard(root, Ev4rs.selectedBoardUUID.value);
+                                        Ev4rs.saveJson(root);
+
+                                        //clear selection
+                                        Ev4rs.selectedBoardUUID.value = '';
+                                        Ev4rs.selectedBoard.value = null;
+                                        widget.goBack();
+                                      });
+                                    }
+                                  },
+                                  label: 'Delete Board'
+                                )
+                              ),
+                              
+                              ]
+                            ),
+                            );
+
+      }
+      //edit grammer, edit langauage overlay
+      Widget four(){
+        return Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child: 
+                          
+                            Column(children: [
+                              //edit grammer
+                              Padding(
+                                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)),
+                                child: ButtonStyle2(
+                                  imagePath: 'assets/interface_icons/interface_icons/iGrammerRowSettings.png', 
+                                  onPressed: () async {
+                                    
+                                  },
+                                  label: 'Edit Grammar Row'
+                                )
+                              ),
+
+                              //edit overlay
+
+
+                              ]
+                              ),
+                            );
+
+      }
+      
+      @override
+      Widget build(BuildContext context) {
+
+        var allBoards = Ev4rs.getBoards(root.boards);
+
+        final mapOfBoardNames = {
+          for (var board in allBoards) 
+            if (board.title != null) 
+              board.title!
+        };
+
+        bool compareToMap(String newTitle){
+          //true = new title is unique
+          //false = new title is not unique
+          //takes map of the names and for every name checks if it = new title, goal is for it not to
+          return mapOfBoardNames.every((n) => n != newTitle);
+        }
+
+        if (Ev4rs.selectedBoard.value != null) {
+          Ev4rs.setPlacholderValuesBoard(root.grammerRow, Ev4rs.selectedBoard.value!);
+        }
+
+        final screenSize = MediaQuery.of(context).size;
+        final isLandscape = screenSize.width > screenSize.height;
+
+        return BaseEditor(
+          root: root,
+          windowWidget: Row(children: [
+          Expanded(
+            flex: 29,
+            child: ValueListenableBuilder<bool>(valueListenable: Ev4rs.reloadJson, builder: (context, reload, _) {
+            var allGrammerRows= Ev4rs.getGrammerRows(root.grammerRow);
+
+            final mapOfGrammer = {
+              for (var row in allGrammerRows) 
+                if (row.title != null) 
+                  row.title!: row.id,
+            };
+
+            final mapOfUseSubfolders = {
+              1 : 'on',
+              2 : 'off',
+              3 : 'match default',
+            };
+              
+              return ValueListenableBuilder<bool>(valueListenable: Ev4rs.showAddBoard, builder: (context, showAdd, _) {
+                return Row( 
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                
+                  //
+                  //content
+                  //
+                  Expanded(
+                    flex: showAdd ? 26 : 29,
+                    child:SizedBox(
+                      child: 
+                      (showAdd) 
+                          ? addBoard(isLandscape)
+                          : Padding(
+                            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+                                if (V4rs.xSmallModeWidth)
+                                Expanded(child: 
+                                Column(
+                                  children: [
+                                    //title, edit layout/format
+                                    one(compareToMap),
+
+                                    //grammer row picker, use subfolders toggle,
+                                    two(
+                                      mapOfGrammer,
+                                      mapOfUseSubfolders
+                                    ),
+                                  ],
+                                ),
+                                ),
+                                if (V4rs.xSmallModeWidth)
+                                Expanded(child:
+                                Column(
+                                  children: [
+                                    //delete, add, add as template
+                                    three(),
+
+                                    //edit grammer, edit langauage overlay
+                                    four(),
+                                  ],
+                                ), 
+                                ),
+
+                              if (!V4rs.xSmallModeWidth)
+                              //title, edit layout/format
+                              Expanded(child:
+                                one(compareToMap),
+                              ),
+
+                              if (!V4rs.xSmallModeWidth)
+                              //grammer row picker, use subfolders toggle,
+                              Expanded(child:
+                                two(
+                                  mapOfGrammer,
+                                  mapOfUseSubfolders
+                                ),
+                              ),
+
+                              if (!V4rs.xSmallModeWidth)
+                              //delete, add, add as template
+                              Expanded(child:
+                                three(),
+                              ),
+
+                              if (!V4rs.xSmallModeWidth)
+                              //edit grammer, edit langauage overlay
+                              Expanded(child:
+                                four(),
+                              ),
+                              ]
+                            )
+                        )
+                      ),
+                  ),
+                  ]
+                );
+              }
+            );
+           }
+          ),
+          ),
+        ])
+        );
+      }
+    
     }
 
 

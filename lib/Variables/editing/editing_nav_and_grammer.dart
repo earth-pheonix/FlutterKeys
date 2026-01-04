@@ -12,7 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_pickers.dart';
 import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
 import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
-  
+import 'package:flutterkeysaac/Variables/editing/editing_board_buttons.dart';
   
   //===: grammer button editor
    class GrammerEditor extends StatefulWidget{
@@ -34,283 +34,232 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
       final ImagePicker _picker = ImagePicker();
       var everyImage = <String>[];
 
-      @override
-      Widget build(BuildContext context) {
-        Root root = widget.root;
-        final screenSize = MediaQuery.of(context).size;
-        final isLandscape = screenSize.width > screenSize.height;
-
-        everyImage = Ev4rs.getAllImages(root);
-          
-
-            final obj_ = Ev4rs.findGrammerById(root.grammerRow, Ev4rs.grammerSelectedUUID);
-            if (obj_ == null) {
-              return const Center(child: Text("Object not found"));
-            }
-
-            Ev4rs.setGrammerPlacholderValues(obj_);
-            
-            var allBoards = Ev4rs.getBoards(root.boards);
-
-            final mapOfBoards = {
-              for (var board in allBoards) 
-                if (board.title != null) 
-                  board.title!: board.id,
-            };
-
-            Widget image = LoadImage.fromSymbol(obj_.symbol);
-
-
-        return Stack( children: [
-              
-            
-            Row( 
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              //
-              //back, in positioned is the tap expander
-              //
-              Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)),
-              child: SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.065 : MediaQuery.of(context).size.height * 0.03 ,
-                child: ButtonStyle1(
-                  imagePath: 'assets/interface_icons/interface_icons/iBack.png', 
-                  onPressed: () {
-                  setState(() {
-                    Ev4rs.closeEditorAction();
-                  });
-                  }
-                ),
-              ),
-              ),
-
-              //
-              //Image, image padding, image overlay settings
-              //
-              ValueListenableBuilder(
-                valueListenable: CombinedValueNotifier(
-                    Ev4rs.padding, Ev4rs.overlay, Ev4rs.contrast, 
-                    Ev4rs.invert, Ev4rs.saturation, Ev4rs.matchContrast, 
-                    Ev4rs.matchInvert, Ev4rs.matchOverlay, Ev4rs.matchSaturation
-                  ), 
-                builder: (context, values, _) {
-              return Expanded(flex: 8, child: 
-                Column( children:[
-                  //
-                  //image
-                  //
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: 
-                          Container(
-                            width: MediaQuery.of(context).size.height * 0.25,
-                            decoration: BoxDecoration(
-                              color: Cv4rs.themeColor4,
-                              borderRadius: BorderRadius.circular(10)
-                              ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(child: Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(Ev4rs.padding.value)), 
-                                  child: ImageStyle1(
-                                      image: image, 
-                                      symbolSaturation: Ev4rs.saturation.value, 
-                                      symbolContrast: Ev4rs.contrast.value, 
-                                      invertSymbolColors: Ev4rs.invert.value, 
-                                      overlayColor: Ev4rs.overlay.value, 
-                                      matchOverlayColor: Ev4rs.matchOverlay.value, 
-                                      matchSymbolContrast: Ev4rs.matchContrast.value, 
-                                      matchSymbolInvert: Ev4rs.matchInvert.value, 
-                                      matchSymbolSaturation: Ev4rs.matchSaturation.value,
-                                      defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-                                      defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-                                      defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-                                      defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-                                      )
-                                  ),
+      Widget imageColumn(Widget image, Root root){
+        //
+        //Image, image padding, image overlay settings
+        //
+        return ValueListenableBuilder(
+          valueListenable: CombinedValueNotifier(
+              Ev4rs.padding, Ev4rs.overlay, Ev4rs.contrast, 
+              Ev4rs.invert, Ev4rs.saturation, Ev4rs.matchContrast, 
+              Ev4rs.matchInvert, Ev4rs.matchOverlay, Ev4rs.matchSaturation
+            ), 
+          builder: (context, values, _) {
+            return Column( children:[
+                //
+                //image
+                //
+                Padding(
+                  padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+                  child: 
+                        Container(
+                          width: MediaQuery.of(context).size.height * 0.25,
+                          decoration: BoxDecoration(
+                            color: Cv4rs.themeColor4,
+                            borderRadius: BorderRadius.circular(10)
+                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(child: Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(Ev4rs.padding.value)), 
+                                child: ImageStyle1(
+                                    image: image, 
+                                    symbolSaturation: Ev4rs.saturation.value, 
+                                    symbolContrast: Ev4rs.contrast.value, 
+                                    invertSymbolColors: Ev4rs.invert.value, 
+                                    overlayColor: Ev4rs.overlay.value, 
+                                    matchOverlayColor: Ev4rs.matchOverlay.value, 
+                                    matchSymbolContrast: Ev4rs.matchContrast.value, 
+                                    matchSymbolInvert: Ev4rs.matchInvert.value, 
+                                    matchSymbolSaturation: Ev4rs.matchSaturation.value,
+                                    defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
+                                    defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
+                                    defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
+                                    defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
+                                    )
                                 ),
-                                Flexible(child: 
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
-                                        SizedBox( 
-                                          width: MediaQuery.of(context).size.height * 0.08,
-                                          child: ButtonStyle3(
-                                            imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png', 
-                                            onPressed: () async {
-                                              Ev4rs.grammerPickImage(widget.saveField, root, _picker);
-                                              if (everyImage.isNotEmpty) {
-                                             // await Ev4rs.cleanupUnusedImages(everyImage);
-                                              } 
-                                            }, 
-                                            label: 'Photo Lib'
-                                          ),
+                              ),
+                              Flexible(child: 
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
+                                      SizedBox( 
+                                        width: MediaQuery.of(context).size.height * 0.08,
+                                        child: ButtonStyle3(
+                                          imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png', 
+                                          onPressed: () async {
+                                            Ev4rs.grammerPickImage(widget.saveField, root, _picker);
+                                            if (everyImage.isNotEmpty) {
+                                            // await Ev4rs.cleanupUnusedImages(everyImage);
+                                            } 
+                                          }, 
+                                          label: 'Photo Lib'
                                         ),
                                       ),
-                                  Visibility(
-                                    visible: false,
-                                    maintainSize: true,
-                                    maintainAnimation: true,
-                                    maintainState: true,
-                                    child: Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
-                                    SizedBox( 
-                                      width: MediaQuery.of(context).size.height * 0.07,
-                                      child: ButtonStyle3(
-                                      imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png', 
-                                      onPressed: () async {
-                                        Ev4rs.grammerPickImage(widget.saveField, root, _picker);
-                                          if (everyImage.isNotEmpty) {
-                                          //  await Ev4rs.cleanupUnusedImages(everyImage);
-                                          } 
-                                      }, 
-                                      label: 'App Lib'
-                                      )
                                     ),
+                                Visibility(
+                                  visible: false,
+                                  maintainSize: true,
+                                  maintainAnimation: true,
+                                  maintainState: true,
+                                  child: Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
+                                  SizedBox( 
+                                    width: MediaQuery.of(context).size.height * 0.07,
+                                    child: ButtonStyle3(
+                                    imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png', 
+                                    onPressed: () async {
+                                      Ev4rs.grammerPickImage(widget.saveField, root, _picker);
+                                        if (everyImage.isNotEmpty) {
+                                        //  await Ev4rs.cleanupUnusedImages(everyImage);
+                                        } 
+                                    }, 
+                                    label: 'App Lib'
+                                    )
                                   ),
-                                  ),
-                              ]
-                              )
-                              ),
-                            ]),
-                          ),
-                  ),
-
-                  //
-                  //padding
-                  //
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                  child:
-                  SizedBox( 
-                    width: MediaQuery.of(context).size.height * 0.25,
-                    child: 
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
+                                ),
+                                ),
+                            ]
+                            )
+                            ),
+                          ]),
                         ),
-                      child:
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(padding: EdgeInsets.all(V4rs.paddingValue(10)), child: 
-                        Column(children: [
-                        Text('Image Padding: ${Ev4rs.padding.value}', style: Sv4rs.settingslabelStyle,),
-                        Slider(
-                              padding: EdgeInsets.fromLTRB(V4rs.paddingValue(10), V4rs.paddingValue(10), V4rs.paddingValue(10), 0),
-                              value: Ev4rs.padding.value,
-                              min: 0.0,
-                              max: 10.0,
-                              divisions: 11,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Image Padding: ${Ev4rs.padding.value}',
-                              onChanged: (value) {
-                                Ev4rs.padding.value = value.roundToDouble();
-                              }
-                          ),
-                        ])
-                        ),
-                        ButtonStyle2(
-                        imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.grammerSelectedUUID, 'padding', Ev4rs.padding.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save Padding'
-                          ),
-                        ]),
-                    ),
-                  ),
-                  ),
-
-                  //
-                  //symbolColors
-                  //
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                  child:
-                  SizedBox(
-                    child:
-                  SymbolColorCustomizer2(
-                    widgety: 
-                    ButtonStyle2(
-                        imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.grammerSelectedUUID, 'matchOverlayColor', Ev4rs.matchOverlay.value);
-                              widget.saveField(root, Ev4rs.grammerSelectedUUID, 'overlayColor', Ev4rs.overlay.value);
-                              widget.saveField(root, Ev4rs.grammerSelectedUUID, 'matchSymbolSaturation', Ev4rs.matchSaturation.value);
-                              widget.saveField(root, Ev4rs.grammerSelectedUUID, 'symbolSaturation', Ev4rs.saturation.value);
-                              widget.saveField(root, Ev4rs.grammerSelectedUUID, 'matchSymbolContrast', Ev4rs.matchContrast.value);
-                              widget.saveField(root, Ev4rs.grammerSelectedUUID, 'symbolContrast', Ev4rs.contrast.value);
-                              widget.saveField(root, Ev4rs.grammerSelectedUUID, 'matchInvertSymbol', Ev4rs.matchInvert.value);
-                              widget.saveField(root, Ev4rs.grammerSelectedUUID, 'invertSymbol', Ev4rs.invert.value);
-                              
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save Adjustments'
-                          ),
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    additionalHeight: MediaQuery.of(context).size.height * 0.8,
-                    width: MediaQuery.of(context).size.height * 0.25,
-                    invert: Ev4rs.invert.value, 
-                    overlay: Ev4rs.overlay.value,
-                    saturation: Ev4rs.saturation.value, 
-                    contrast: Ev4rs.contrast.value, 
-                    matchContrast: Ev4rs.matchContrast.value,
-                    matchInvert: Ev4rs.matchInvert.value,
-                    matchOverlay: Ev4rs.matchOverlay.value,
-                    matchSaturation: Ev4rs.matchSaturation.value,
-                    onContrastChanged: (value){
-                      Ev4rs.contrast.value = value;
-                    }, 
-                    onInvertChanged: (value){
-                      Ev4rs.invert.value = value;
-                    },
-                    onOverlayChanged: (value){
-                      Ev4rs.overlay.value = value;
-                    },
-                    onSaturationChanged: (value){
-                      Ev4rs.saturation.value = value;
-                    },
-                    onMatchContrastChanged: (value){
-                      Ev4rs.matchContrast.value = value;
-                    }, 
-                    onMatchInvertChanged: (value){
-                      Ev4rs.matchInvert.value = value;
-                    },
-                    onMatchOverlayChanged: (value){
-                      Ev4rs.matchOverlay.value = value;
-                    },
-                    onMatchSaturationChanged: (value){
-                      Ev4rs.matchSaturation.value = value;
-                    },
-                    )
-                  )
-                  ),
-                  
-
-                ]
                 ),
-              );
-              }
-            ),
-              
-              //
-              //label, speak on select, font
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
-                  //label
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                  child:
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
+
+                //
+                //padding
+                //
+                Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+                child:
+                SizedBox( 
+                  width: MediaQuery.of(context).size.height * 0.25,
+                  child: 
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Cv4rs.themeColor4,
+                      borderRadius: BorderRadius.circular(10)
+                      ),
+                    child:
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(padding: EdgeInsets.all(V4rs.paddingValue(10)), child: 
+                      Column(children: [
+                      Text('Image Padding: ${Ev4rs.padding.value}', style: Sv4rs.settingslabelStyle,),
+                      Slider(
+                            padding: EdgeInsets.fromLTRB(V4rs.paddingValue(10), V4rs.paddingValue(10), V4rs.paddingValue(10), 0),
+                            value: Ev4rs.padding.value,
+                            min: 0.0,
+                            max: 10.0,
+                            divisions: 11,
+                            activeColor: Cv4rs.themeColor1,
+                            inactiveColor: Cv4rs.themeColor3,
+                            thumbColor: Cv4rs.themeColor1,
+                            label: 'Image Padding: ${Ev4rs.padding.value}',
+                            onChanged: (value) {
+                              Ev4rs.padding.value = value.roundToDouble();
+                            }
                         ),
+                      ])
+                      ),
+                      ButtonStyle2(
+                      imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                        onPressed: (){setState(() {
+                            widget.saveField(root, Ev4rs.grammerSelectedUUID, 'padding', Ev4rs.padding.value);
+                            Ev4rs.saveJson(root);
+                            });
+                        }, 
+                        label: 'Save Padding'
+                        ),
+                      ]),
+                  ),
+                ),
+                ),
+
+                //
+                //symbolColors
+                //
+                Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+                child:
+                SizedBox(
+                  child:
+                SymbolColorCustomizer2(
+                  widgety: 
+                  ButtonStyle2(
+                      imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                        onPressed: (){setState(() {
+                            widget.saveField(root, Ev4rs.grammerSelectedUUID, 'matchOverlayColor', Ev4rs.matchOverlay.value);
+                            widget.saveField(root, Ev4rs.grammerSelectedUUID, 'overlayColor', Ev4rs.overlay.value);
+                            widget.saveField(root, Ev4rs.grammerSelectedUUID, 'matchSymbolSaturation', Ev4rs.matchSaturation.value);
+                            widget.saveField(root, Ev4rs.grammerSelectedUUID, 'symbolSaturation', Ev4rs.saturation.value);
+                            widget.saveField(root, Ev4rs.grammerSelectedUUID, 'matchSymbolContrast', Ev4rs.matchContrast.value);
+                            widget.saveField(root, Ev4rs.grammerSelectedUUID, 'symbolContrast', Ev4rs.contrast.value);
+                            widget.saveField(root, Ev4rs.grammerSelectedUUID, 'matchInvertSymbol', Ev4rs.matchInvert.value);
+                            widget.saveField(root, Ev4rs.grammerSelectedUUID, 'invertSymbol', Ev4rs.invert.value);
+                            
+                            Ev4rs.saveJson(root);
+                            });
+                        }, 
+                        label: 'Save Adjustments'
+                        ),
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  additionalHeight: MediaQuery.of(context).size.height * 0.8,
+                  width: MediaQuery.of(context).size.height * 0.25,
+                  invert: Ev4rs.invert.value, 
+                  overlay: Ev4rs.overlay.value,
+                  saturation: Ev4rs.saturation.value, 
+                  contrast: Ev4rs.contrast.value, 
+                  matchContrast: Ev4rs.matchContrast.value,
+                  matchInvert: Ev4rs.matchInvert.value,
+                  matchOverlay: Ev4rs.matchOverlay.value,
+                  matchSaturation: Ev4rs.matchSaturation.value,
+                  onContrastChanged: (value){
+                    Ev4rs.contrast.value = value;
+                  }, 
+                  onInvertChanged: (value){
+                    Ev4rs.invert.value = value;
+                  },
+                  onOverlayChanged: (value){
+                    Ev4rs.overlay.value = value;
+                  },
+                  onSaturationChanged: (value){
+                    Ev4rs.saturation.value = value;
+                  },
+                  onMatchContrastChanged: (value){
+                    Ev4rs.matchContrast.value = value;
+                  }, 
+                  onMatchInvertChanged: (value){
+                    Ev4rs.matchInvert.value = value;
+                  },
+                  onMatchOverlayChanged: (value){
+                    Ev4rs.matchOverlay.value = value;
+                  },
+                  onMatchSaturationChanged: (value){
+                    Ev4rs.matchSaturation.value = value;
+                  },
+                  )
+                )
+                ),
+                
+              ]
+              );
+            }
+          );
+      }
+      Widget textColumn(GrammerObjects obj_, Root root){
+        //
+        //label, speak on select, font
+        //
+        return Column( 
+          children:[
+            //label
+            Padding(
+              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                ),
                       child: Column(children: [
                         Row(children: [ 
                           Expanded(flex: 5, child: 
@@ -521,14 +470,13 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
                             )
                           ),
                 ]
-              ),
-              ),
-              
-              //
-              //, format, border
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
+              );
+      }
+      Widget formatColumn(Root root){
+        //
+        //, format, border
+        //
+        return Column( children:[
                   
                   //
                   //format
@@ -788,15 +736,14 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
                     ),
                   ),
                 ]
-                ),
-              ),
+                );
               
-              //
-              // button type -> type, func, link, notes
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
-                 
+      }
+      Widget typeColumn(Root root, dynamic mapOfBoards, GrammerObjects obj_){
+        //
+        // button type -> type, func, link, notes
+        //
+        return Column( children:[
                  //type 
                   Padding(
                     padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
@@ -1059,273 +1006,125 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
                     ))),
 
                 ]
-                ),
-              ),
-              
-              //
-              //undo + share
-              //
-              Expanded(flex: 2, child: 
-                Column( children:[
-                  //undo
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child:ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.isUndoing, 
-                    builder: (context, inverting, _) {
-                return 
-                  ButtonStyle1(
-                    glow: (Ev4rs.isUndoing.value) ? true : false,
-                    imagePath: 'assets/interface_icons/interface_icons/iUndo.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.undoAction(root);
-                    });
-                    }
-                  );
-                    }),
-                  ),
-                  ),
+                );
+      }
 
-                  //share
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child:
-                
-                  ButtonStyle1(
-                    imagePath: 'assets/interface_icons/interface_icons/iExport.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.isExporting.value = !Ev4rs.isExporting.value;
-                    });
-                    }
-                  ), 
-                  ),
-                  ),
-                ]
-                ),
+     
+      @override
+      Widget build(BuildContext context) {
+        Root root = widget.root;
+        everyImage = Ev4rs.getAllImages(root);
+          
+
+            final obj_ = Ev4rs.findGrammerById(root.grammerRow, Ev4rs.grammerSelectedUUID);
+            if (obj_ == null) {
+              return const Center(child: Text("Object not found"));
+            }
+
+            Ev4rs.setGrammerPlacholderValues(obj_);
+            
+            var allBoards = Ev4rs.getBoards(root.boards);
+
+            final mapOfBoards = {
+              for (var board in allBoards) 
+                if (board.title != null) 
+                  board.title!: board.id,
+            };
+
+            Widget image = LoadImage.fromSymbol(obj_.symbol);
+
+
+        return BaseEditor(
+          root: root,
+          windowWidget: Row( 
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+            if (!V4rs.smallEditorMode)
+            Expanded(
+              flex: 29,
+              child: 
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                Expanded(flex: 8, child:  imageColumn(image, root)),
+                //Image, 
+                //image padding, 
+                //image overlay settings
+
+                Expanded(flex: 7, child: textColumn(obj_, root)),
+                //label, 
+                //message, 
+                //speak on select, 
+                //font
+
+                Expanded(flex: 7, child: formatColumn(root)),
+                //show, 
+                //format, 
+                //border, 
+                //background
+
+                Expanded(flex: 7, child: typeColumn(root, mapOfBoards, obj_)),
+                //pos, 
+                //button type
+                //button type qualities
+                //notes
+
+              ]
               ),
-              
-              //
-              //redo + print
-              //
-              Expanded(flex: 2, child: 
-                Column( children:[
-                  //redo
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04,
-                child: ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.isRedoing, 
-                    builder: (context, inverting, _) {
-                return 
-                  ButtonStyle1(
-                    glow: (Ev4rs.isRedoing.value) ? true : false,
-                    imagePath: 'assets/interface_icons/interface_icons/iRe-do.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.redoAction(root);
-                    });
-                    }
-                  );
-                    }),
-                  ),
-                  ),
-                  //print
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04,
-                child:
-                  ButtonStyle1(
-                    imagePath: 'assets/interface_icons/interface_icons/iPrint.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.isPrinting.value = !Ev4rs.isPrinting.value;
-                    });
-                    }
-                  ),
-                  ),
-                  ),
-                ]
-                ),
-              ),
-              
-              //
-              //expand/collapse + board settings
-              //
-              Column( children:[
-                Padding(
-                  padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7), 
-                    0
-                  ),
-                  child: SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.04,
-                    child: (Ev4rs.isButtonExpanded.value) 
-                    ? ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iCollapse.png', 
-                        onPressed: () { 
-                          setState(() {
-                            Ev4rs.isButtonExpanded.value = false;
-                          });
-                        }
-                      ) 
-                    : ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iExpand.png', 
-                        onPressed: () { 
-                          setState(() {
-                            Ev4rs.isButtonExpanded.value = true;
-                          });
-                        }
-                      ) 
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(7), 
-                    0, 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7)
-                  ),
-                  child: SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04 ,
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: 
-                       ButtonStyle1(
-                          glow: (Ev4rs.boardEditor.value) ? true : false,
-                          imagePath: 'assets/interface_icons/interface_icons/iBoard.png', 
-                          onPressed: () { setState(() {
-                            Ev4rs.editBoardsAction(root);
-                          });
-                          }
-                        ) 
-                      ),
+            ),
+
+            if (V4rs.smallEditorMode)
+            Expanded(
+              flex: 29,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 15,
+                    child: Column(children: [
+
+                      imageColumn(image, root),
+                      //Image, 
+                      //image padding, 
+                      //image overlay settings
+
+                      formatColumn(root),
+                      //show, 
+                      //format, 
+                      //border, 
+                      //background
+
+                    ]
                     ),
                   ),
-              ]
-              )
-            ]
+
+                  Expanded(
+                    flex: 14,
+                    child: Column(children: [
+
+                    textColumn(obj_, root),
+                    //label, 
+                    //message, 
+                    //speak on select, 
+                    //font
+
+                    typeColumn(root, mapOfBoards, obj_),
+                    //pos, 
+                    //button type
+                    //button type qualities
+                    //notes
+
+                  ]
+                  )
+                  ),
+                ]
+              ),
             ),
-              
-        //here
-        Positioned(
-          top: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04,
-          child: ValueListenableBuilder<bool>(valueListenable: Ev4rs.showSelectionMenu, builder: (context, showSelectionMenu, _) {
-          return SizedBox( 
-            height: (isLandscape) ? MediaQuery.of(context).size.height * 0.09 : MediaQuery.of(context).size.height * 0.04,
-            child:  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)), child:
-          Row(
-            children: [
-              //tap
-            if (Ev4rs.isButtonExpanded.value == false)
-                ButtonStyle1(
-                imagePath: 'assets/interface_icons/interface_icons/iTap.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.showSelectionMenu.value = !Ev4rs.showSelectionMenu.value;
-                });
-                }
-              ),
-
-            //tap and swap
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.tapAndSwap) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iTapAndSwap.png', 
-                  onPressed: () { setState(() {
-                    Ev4rs.tapAndSwapAction(root);
-                  });
-                  }
-                ),
-
-            //drag to select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.dragSelectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iDragSelectMultiple.png', 
-                  onPressed: () { setState(() {
-                    Ev4rs.dragSelectMultipleAction(root);
-                  });
-                }
-              ),
-
-            //select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.selectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iSelectMultiple.png', 
-                  onPressed: () { setState(() {
-                    Ev4rs.selectMultipleAction(root);
-                  });
-                }
-              ),
-
-            //invert selection
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-              ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.invertSelections, 
-                    builder: (context, inverting, _) { 
-                return ButtonStyle1(
-                  glow: (Ev4rs.invertSelections.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iInvertSelection.png', 
-                  onPressed: () { 
-                    setState(() {
-                      Ev4rs.invertSelectionAction(root);
-                    });
-                  }
-                );
-              }),
-
-            //sort a-z
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-              ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.sortSelectAZ, 
-                    builder: (context, inverting, _) {
-                return ButtonStyle1(
-                glow: (Ev4rs.sortSelectAZ.value) ? true : false,
-                imagePath: 'assets/interface_icons/interface_icons/iSortAZ.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.sortSelectedAzAction(root);
-                });
-                }
-              );}),
-
-          ]
+            
+           ]
           ),
-            ),
-          );
-        }
-        )
-        )
-        ]
         );
       }
     }
@@ -1349,68 +1148,18 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
       final ImagePicker _picker = ImagePicker();
       var everyImage = <String>[];
 
-      @override
-      Widget build(BuildContext context) {
-        Root root = widget.root;
-        final screenSize = MediaQuery.of(context).size;
-        final isLandscape = screenSize.width > screenSize.height;
-
-         
-            everyImage = Ev4rs.getAllImages(root);
-          
-
-            final obj_ = Ev4rs.findGrammerById(root.grammerRow, Ev4rs.grammerSelectedUUID);
-            if (obj_ == null) {
-              return const Center(child: Text("Object not found"));
-            }
-
-            Ev4rs.setGrammerPlacholderValues(obj_);
-            
-            var allBoards = Ev4rs.getBoards(root.boards);
-
-            final mapOfBoards = {
-              for (var board in allBoards) 
-                if (board.title != null) 
-                  board.title!: board.id,
-            };
-
-            Widget image = LoadImage.fromSymbol('assets/interface_icons/interface_icons/iPlaceholder.png');
-            Widget image2 = LoadImage.fromSymbol(obj_.symbol);
-
-
-        return Stack( children: [
-             
-            Row( 
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              //
-              //back, in positioned is the tap expander
-              //
-              Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)),
-              child: SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.065 : MediaQuery.of(context).size.height * 0.03 ,
-                child: ButtonStyle1(
-                  imagePath: 'assets/interface_icons/interface_icons/iBack.png', 
-                  onPressed: () {
-                  setState(() {
-                    Ev4rs.closeEditorAction();
-                  });
-                  }
-                ),
-              ),
-              ),
-
-              //
+      Widget imageColumn(Widget image, Widget image2, GrammerObjects obj_, Root root){
+        //
               //Image, image padding, image overlay settings
               //
-              ValueListenableBuilder(
+            return ValueListenableBuilder(
                 valueListenable: CombinedValueNotifier(
                     Ev4rs.padding, Ev4rs.overlay, Ev4rs.contrast, 
                     Ev4rs.invert, Ev4rs.saturation, Ev4rs.matchContrast, 
                     Ev4rs.matchInvert, Ev4rs.matchOverlay, Ev4rs.matchSaturation
                   ), 
                 builder: (context, values, _) {
-              return Expanded(flex: 8, child: 
+              return  
                 Column( children:[
                   //
                   //image
@@ -1678,1036 +1427,882 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
                   ),
                 
                 ]
-                ),
-              );
+                );
               }
-            ),
-              
-              //
-              //label, speak on select, font
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
-                  //label
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                  child:
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column(children: [
-                        Row(children: [ 
-                          Expanded(flex: 5, child: 
-                            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
-                              ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
-                          final labelController = TextEditingController(text: value)
-                          ..selection = TextSelection.collapsed(offset: value.length);
+            );
+      }
+      Widget textColumn(dynamic obj_, Root root){
+        //
+        //label, speak on select, font
+        //
+        return Column( children:[
+            //label
+            Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child:
+              Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                child: Column(children: [
+                  Row(children: [ 
+                    Expanded(flex: 5, child: 
+                      Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
+                        ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
+                    final labelController = TextEditingController(text: value)
+                    ..selection = TextSelection.collapsed(offset: value.length);
 
-                          return 
-                        TextField(
-                          controller: labelController,
-                                style: Ev4rs.labelStyle,
-                                onChanged: (value){
-                                  Ev4rs.label.value = value;
-                                },
-                                decoration: InputDecoration(
-                                hintStyle: Ev4rs.hintLabelStyle,
-                                hintText: (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => (b).label)) ? '${obj_.label}' : '--Not All Match--',
-                                ),
-                              );
-                              }),
-                            ),
+                    return 
+                  TextField(
+                    controller: labelController,
+                          style: Ev4rs.labelStyle,
+                          onChanged: (value){
+                            Ev4rs.label.value = value;
+                          },
+                          decoration: InputDecoration(
+                          hintStyle: Ev4rs.hintLabelStyle,
+                          hintText: (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => (b).label)) ? '${obj_.label}' : '--Not All Match--',
                           ),
-                          Flexible(flex: 2, child: 
-                          Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
-                          ButtonStyle4(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                        );
+                        }),
+                      ),
+                    ),
+                    Flexible(flex: 2, child: 
+                    Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
+                    ButtonStyle4(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                      onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'label', Ev4rs.label.value);
+                          
+                          Ev4rs.saveJson(root);
+                          });
+                      }, 
+                      label: 'Save'
+                      ),
+                    ),
+                    ),
+                ],
+                ),
+                  
+              ]
+                
+              ))),
+            //match speak on select, speak on select
+            Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                child: Column( children: [
+                  ValueListenableBuilder<bool>(
+                    valueListenable: Ev4rs.matchSpeakOnSelect, 
+                    builder: (context, matchSpeakOnSelect, _) {
+                      return Row(children: [
+                        Expanded(child: 
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(
+                            V4rs.paddingValue(10), 
+                            V4rs.paddingValue(10), 
+                            V4rs.paddingValue(10), 
+                            0
+                          ), 
+                          child: Text( (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchSpeakOS)) ?
+                            'Match Speak on Select:' : 'Match Speak on Select: --Not All Match--', 
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: Sv4rs.settingslabelStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
+                          child: Switch(
+                            padding: EdgeInsets.all(0),
+                            value: Ev4rs.matchSpeakOnSelect.value, 
+                            onChanged: (value) {
+                              Ev4rs.matchSpeakOnSelect.value = value;
+                            }
+                          ),
+                        ),
+                      ]
+                      );
+                    }
+                  ),
+                  ValueListenableBuilder<int>(
+                    valueListenable: Ev4rs.speakOnSelect, 
+                    builder: (context, speakOnSelect, _) {
+                      return Padding(
+                        padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+                        child: Column(children: [
+                          if (!Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchSpeakOS)) 
+                            Text('Speak on Select: --Not All Match--', style: Sv4rs.settingslabelStyle),
+                          Slider(
+                            padding: EdgeInsets.fromLTRB(V4rs.paddingValue(5), 0, V4rs.paddingValue(5), 0),
+                            min: 1.0,
+                            max: 3.0,
+                            divisions: 2,
+                            activeColor: Cv4rs.themeColor1,
+                            inactiveColor: Cv4rs.themeColor3,
+                            thumbColor: Cv4rs.themeColor1,
+                            label: 
+                              (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchSpeakOS)) 
+                              ? 'Speak on Select: ${Ev4rs.speakOnSelect.value}'
+                              : 'Speak on Select: --Not All Match--',
+                            value: Ev4rs.speakOnSelect.value.toDouble(), 
+                            onChanged: (value) {
+                              Ev4rs.speakOnSelect.value = value.toInt();
+                              }
+                            ),
+                          Padding(
+                            padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(10)), 
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                              Expanded(child: 
+                                Text(
+                                  "Off", 
+                                  style: Sv4rs.settingslabelStyle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Expanded(child: 
+                                Text(
+                                  "Speak Label", 
+                                  style: Sv4rs.settingslabelStyle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Expanded(child: 
+                                Text(
+                                  "Speak Change", 
+                                  style: Sv4rs.settingslabelStyle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ]
+                            ), 
+                          ),
+                          ButtonStyle2(
+                            imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                             onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'label', Ev4rs.label.value);
-                                
+                                widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'matchSpeakOS', Ev4rs.matchSpeakOnSelect.value);
+                                widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'speakOS', Ev4rs.speakOnSelect.value);
                                 Ev4rs.saveJson(root);
                                 });
                             }, 
                             label: 'Save'
-                            ),
                           ),
-                          ),
-                      ],
+                        ]
                       ),
-                       
-                    ]
-                      
-                    ))),
-                  //match speak on select, speak on select
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
+                      );
+                    }
+                  ),
+                  
+                ]
+              )
+              )
+            ),
+            //font, match font settings, font picker
+            Padding(
+                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+                child: FontPicker2(
+                  widgety:  ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                      onPressed: (){setState(() {
+                          widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'matchFont', Ev4rs.matchFont.value);
+                          widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontSize', Ev4rs.fontSize.value);
+                          widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontItalics', Ev4rs.fontItalics.value);
+                          widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontUnderline', Ev4rs.fontUnderline.value);
+                          widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontWeight', Ev4rs.fontWeight.value);
+                          widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontFamily', Ev4rs.fontFamily.value);
+                          widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontColor', Ev4rs.fontColor.value);
+                          Ev4rs.saveJson(root);
+                          });
+                      }, 
+                      label: 'Save Button Font'
+                      ),
+                      specialLabel: 
+                        (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchFont) 
+                        || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontSize)
+                        || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontItalics)
+                        || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontUnderline)
+                        || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontWeight)
+                        || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontFamily)
+                        || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontColor)) 
+                        ? false 
+                        : true,
+                      matchFontSet: Ev4rs.matchFont.value,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      size: Ev4rs.fontSize.value, 
+                      sizeMax: 25,
+                      sizeMin: 5,
+                      divisions: 20,
+                      weight: (Ev4rs.fontWeight.value).toInt(), 
+                      italics: Ev4rs.fontItalics.value, 
+                      font: Ev4rs.fontFamily.value, 
+                      label: 'Button Font:', 
+                      color: Ev4rs.fontColor.value, 
+                      underline: Ev4rs.fontUnderline.value,
+                      onSizeChanged: (value) {
+                        Ev4rs.fontSize.value = value;
+                        }, 
+                      onWeightChanged: (value) {
+                        Ev4rs.fontWeight.value = value.toDouble();
+                        },
+                      onItalicsChanged: (value) {
+                        Ev4rs.fontItalics.value = value;
+                        },
+                      onFontChanged: (value) {
+                        Ev4rs.fontFamily.value = value;
+                        },
+                      onColorChanged: (value) {
+                        Ev4rs.fontColor.value = value.toColor() ?? Cv4rs.themeColor1;
+                        },
+                      onMatchFont: (value) {
+                        Ev4rs.matchFont.value = value;
+                        },
+                      useUnderline: true, 
+                      onUnderlineChanged: (value) {
+                        Ev4rs.fontUnderline.value = value;
+                        }, 
+                      )
+                    ),
+          ]
+        );
+        
+      }
+      Widget formatColumn(Root root){
+        //
+        // format, border, background
+        //
+
+          return Column( children:[
+            
+            //
+            //format
+            //
+
+            Padding(
+              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+              child: Container(
+                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                child: Column( children: [
+                  ValueListenableBuilder<bool>(
+                    valueListenable: Ev4rs.matchFormat, 
+                    builder: (context, matchFormat, _) {
+                      return Row(children: [
+                        Expanded(child: 
+                          Padding(
+                            padding: EdgeInsetsGeometry.fromLTRB(0, V4rs.paddingValue(10), 0, 0), 
+                              child: Text(
+                                (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchFormat)) 
+                                  ? 'Match Format:'
+                                  : 'Match Format: --Not All Match--',
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: Sv4rs.settingslabelStyle,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                         ),
-                      child: Column( children: [
-                        ValueListenableBuilder<bool>(
-                          valueListenable: Ev4rs.matchSpeakOnSelect, 
-                          builder: (context, matchSpeakOnSelect, _) {
-                            return Row(children: [
-                              Expanded(child: 
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(
-                                  V4rs.paddingValue(10), 
-                                  V4rs.paddingValue(10), 
-                                  V4rs.paddingValue(10), 
-                                  0
-                                ), 
-                                child: Text( (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchSpeakOS)) ?
-                                  'Match Speak on Select:' : 'Match Speak on Select: --Not All Match--', 
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, 0), 
+                          child: Switch(
+                            padding: EdgeInsets.all(0),
+                            value: Ev4rs.matchFormat.value, 
+                            onChanged: (value) {
+                              Ev4rs.matchFormat.value = value;
+                            }
+                          ),
+                        ),
+                      ]
+                      );
+                    }
+                  ),
+                  ValueListenableBuilder<int>(
+                    valueListenable: Ev4rs.format, 
+                    builder: (context, format, _) {
+                      return Padding(
+                        padding: EdgeInsetsGeometry.fromLTRB(
+                          V4rs.paddingValue(5), 
+                          V4rs.paddingValue(15), 
+                          V4rs.paddingValue(5), 
+                          V4rs.paddingValue(10)
+                        ), 
+                        child: Column(children: [
+                                Text(
+                                  "Format: ${ Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.format) 
+                                    ? (Ev4rs.format.value == 1 ? 
+                                        'Text Right' 
+                                      : Ev4rs.format.value == 2 ? 
+                                        'Text Left' 
+                                      : Ev4rs.format.value == 3 ? 
+                                        'Image Only' 
+                                      : Ev4rs.format.value == 4 ? 
+                                        'Text Only' 
+                                      : '') 
+                                    : '--Not All Match--'
+                                    }", 
+                                  style: Sv4rs.settingslabelStyle,
                                   maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Sv4rs.settingslabelStyle,
                                   textAlign: TextAlign.center,
                                 ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
-                                child: Switch(
-                                  padding: EdgeInsets.all(0),
-                                  value: Ev4rs.matchSpeakOnSelect.value, 
-                                  onChanged: (value) {
-                                    Ev4rs.matchSpeakOnSelect.value = value;
-                                  }
-                                ),
-                              ),
-                            ]
-                            );
-                          }
-                        ),
-                        ValueListenableBuilder<int>(
-                          valueListenable: Ev4rs.speakOnSelect, 
-                          builder: (context, speakOnSelect, _) {
-                            return Padding(
-                              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                              child: Column(children: [
-                                if (!Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchSpeakOS)) 
-                                  Text('Speak on Select: --Not All Match--', style: Sv4rs.settingslabelStyle),
-                                Slider(
-                                  padding: EdgeInsets.fromLTRB(V4rs.paddingValue(5), 0, V4rs.paddingValue(5), 0),
-                                  min: 1.0,
-                                  max: 3.0,
-                                  divisions: 2,
-                                  activeColor: Cv4rs.themeColor1,
-                                  inactiveColor: Cv4rs.themeColor3,
-                                  thumbColor: Cv4rs.themeColor1,
-                                  label: 
-                                    (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchSpeakOS)) 
-                                    ? 'Speak on Select: ${Ev4rs.speakOnSelect.value}'
-                                    : 'Speak on Select: --Not All Match--',
-                                  value: Ev4rs.speakOnSelect.value.toDouble(), 
-                                  onChanged: (value) {
-                                    Ev4rs.speakOnSelect.value = value.toInt();
-                                    }
-                                  ),
-                                Padding(
-                                  padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(10)), 
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                    Expanded(child: 
-                                      Text(
-                                        "Off", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Expanded(child: 
-                                      Text(
-                                        "Speak Label", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Expanded(child: 
-                                      Text(
-                                        "Speak Change", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ]
-                                  ), 
-                                ),
-                                ButtonStyle2(
-                                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                                  onPressed: (){setState(() {
-                                      widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'matchSpeakOS', Ev4rs.matchSpeakOnSelect.value);
-                                      widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'speakOS', Ev4rs.speakOnSelect.value);
-                                      Ev4rs.saveJson(root);
-                                      });
-                                  }, 
-                                  label: 'Save'
-                                ),
-                              ]
+                          Slider(
+                            padding: EdgeInsets.fromLTRB(0, V4rs.paddingValue(5), 0, 0),
+                            min: 1.0,
+                            max: 4.0,
+                            divisions: 3,
+                            activeColor: Cv4rs.themeColor1,
+                            inactiveColor: Cv4rs.themeColor3,
+                            thumbColor: Cv4rs.themeColor1,
+                            value: Ev4rs.format.value.toDouble(), 
+                            onChanged: (value) {
+                              Ev4rs.format.value = value.toInt();
+                              }
                             ),
-                            );
-                          }
-                        ),
-                        
-                      ]
-                    )
-                    )
+                          ]
+                      ),
+                      );
+                    }
                   ),
-                  //font, match font settings, font picker
-                  Padding(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                      child: FontPicker2(
-                        widgety:  ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                            onPressed: (){setState(() {
-                                widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'matchFont', Ev4rs.matchFont.value);
-                                widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontSize', Ev4rs.fontSize.value);
-                                widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontItalics', Ev4rs.fontItalics.value);
-                                widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontUnderline', Ev4rs.fontUnderline.value);
-                                widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontWeight', Ev4rs.fontWeight.value);
-                                widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontFamily', Ev4rs.fontFamily.value);
-                                widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'fontColor', Ev4rs.fontColor.value);
-                                Ev4rs.saveJson(root);
-                                });
-                            }, 
-                            label: 'Save Button Font'
-                            ),
-                            specialLabel: 
-                              (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchFont) 
-                              || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontSize)
-                              || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontItalics)
-                              || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontUnderline)
-                              || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontWeight)
-                              || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontFamily)
-                              || Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.fontColor)) 
-                              ? false 
-                              : true,
-                            matchFontSet: Ev4rs.matchFont.value,
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            size: Ev4rs.fontSize.value, 
-                            sizeMax: 25,
-                            sizeMin: 5,
-                            divisions: 20,
-                            weight: (Ev4rs.fontWeight.value).toInt(), 
-                            italics: Ev4rs.fontItalics.value, 
-                            font: Ev4rs.fontFamily.value, 
-                            label: 'Button Font:', 
-                            color: Ev4rs.fontColor.value, 
-                            underline: Ev4rs.fontUnderline.value,
-                            onSizeChanged: (value) {
-                              Ev4rs.fontSize.value = value;
-                              }, 
-                            onWeightChanged: (value) {
-                              Ev4rs.fontWeight.value = value.toDouble();
-                              },
-                            onItalicsChanged: (value) {
-                              Ev4rs.fontItalics.value = value;
-                              },
-                            onFontChanged: (value) {
-                              Ev4rs.fontFamily.value = value;
-                              },
-                            onColorChanged: (value) {
-                              Ev4rs.fontColor.value = value.toColor() ?? Cv4rs.themeColor1;
-                              },
-                            onMatchFont: (value) {
-                              Ev4rs.matchFont.value = value;
-                              },
-                            useUnderline: true, 
-                            onUnderlineChanged: (value) {
-                              Ev4rs.fontUnderline.value = value;
-                              }, 
-                            )
-                          ),
+                  ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'matchFormat', Ev4rs.matchFormat.value);
+                        widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'format', Ev4rs.format.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save'
+                  ),
                 ]
+              )
               ),
-              ),
-              
-              //
-              // format, border, background
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
-                  
-                  //
-                  //format
-                  //
+            ),
 
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                    child: Container(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column( children: [
-                        ValueListenableBuilder<bool>(
-                          valueListenable: Ev4rs.matchFormat, 
-                          builder: (context, matchFormat, _) {
-                            return Row(children: [
-                              Expanded(child: 
-                                Padding(
-                                  padding: EdgeInsetsGeometry.fromLTRB(0, V4rs.paddingValue(10), 0, 0), 
-                                    child: Text(
-                                      (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.matchFormat)) 
-                                        ? 'Match Format:'
-                                        : 'Match Format: --Not All Match--',
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Sv4rs.settingslabelStyle,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, 0), 
-                                child: Switch(
-                                  padding: EdgeInsets.all(0),
-                                  value: Ev4rs.matchFormat.value, 
-                                  onChanged: (value) {
-                                    Ev4rs.matchFormat.value = value;
-                                  }
-                                ),
-                              ),
-                            ]
-                            );
-                          }
-                        ),
-                        ValueListenableBuilder<int>(
-                          valueListenable: Ev4rs.format, 
-                          builder: (context, format, _) {
-                            return Padding(
-                              padding: EdgeInsetsGeometry.fromLTRB(
-                                V4rs.paddingValue(5), 
-                                V4rs.paddingValue(15), 
-                                V4rs.paddingValue(5), 
-                                V4rs.paddingValue(10)
-                              ), 
-                              child: Column(children: [
-                                      Text(
-                                        "Format: ${ Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.format) 
-                                          ? (Ev4rs.format.value == 1 ? 
-                                              'Text Right' 
-                                            : Ev4rs.format.value == 2 ? 
-                                              'Text Left' 
-                                            : Ev4rs.format.value == 3 ? 
-                                              'Image Only' 
-                                            : Ev4rs.format.value == 4 ? 
-                                              'Text Only' 
-                                            : '') 
-                                          : '--Not All Match--'
-                                          }", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                Slider(
-                                  padding: EdgeInsets.fromLTRB(0, V4rs.paddingValue(5), 0, 0),
-                                  min: 1.0,
-                                  max: 4.0,
-                                  divisions: 3,
-                                  activeColor: Cv4rs.themeColor1,
-                                  inactiveColor: Cv4rs.themeColor3,
-                                  thumbColor: Cv4rs.themeColor1,
-                                  value: Ev4rs.format.value.toDouble(), 
-                                  onChanged: (value) {
-                                    Ev4rs.format.value = value.toInt();
-                                    }
-                                  ),
-                                ]
-                            ),
-                            );
-                          }
-                        ),
-                        ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'matchFormat', Ev4rs.matchFormat.value);
-                              widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'format', Ev4rs.format.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                        ),
-                      ]
-                    )
-                    ),
+            
+
+            //
+            //background
+            //
+            
+            Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: //outer padding 
+              Container(
+                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), //inner padding 
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
                   ),
+                child: Column( children: [
 
                   
-
-                  //
-                  //background
-                  //
-                  
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: //outer padding 
-                    Container(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), //inner padding 
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column( children: [
-
-                        
-                        //Background color
-                        ValueListenableBuilder<Color>(
-                          valueListenable: Ev4rs.backgroundColor, 
-                          builder: (context, backgroundColor, _) {
-                            return ExpansionTile(
-                          tilePadding: EdgeInsets.all(0),
-                          title: Row(
-                              children: [
-                                Expanded(child: 
-                                Text((Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.backgroundColor)) 
-                                  ? 'Background Color: '
-                                  : 'Background Color: --Not All Match--', 
-                                  style: Sv4rs.settingslabelStyle,),
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: Cv4rs.themeColor3,
-                                  radius: 20,
-                                  child: Icon(Icons.circle, color: Ev4rs.backgroundColor.value, size: 40, shadows: [
-                                    Shadow(
-                                      color: Cv4rs.themeColor4,
-                                      blurRadius: 4,
-                                    ),
-                                  ],),
-                                ),
-                              ]
-                            ),
-                          children: [
-                            Column(children:[
-                            //hexcode input
-                            Padding(
-                              padding: EdgeInsetsGeometry.symmetric(
-                                horizontal: V4rs.paddingValue(10), 
-                                vertical: V4rs.paddingValue(20)
+                  //Background color
+                  ValueListenableBuilder<Color>(
+                    valueListenable: Ev4rs.backgroundColor, 
+                    builder: (context, backgroundColor, _) {
+                      return ExpansionTile(
+                    tilePadding: EdgeInsets.all(0),
+                    title: Row(
+                        children: [
+                          Expanded(child: 
+                          Text((Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.backgroundColor)) 
+                            ? 'Background Color: '
+                            : 'Background Color: --Not All Match--', 
+                            style: Sv4rs.settingslabelStyle,),
+                          ),
+                          CircleAvatar(
+                            backgroundColor: Cv4rs.themeColor3,
+                            radius: 20,
+                            child: Icon(Icons.circle, color: Ev4rs.backgroundColor.value, size: 40, shadows: [
+                              Shadow(
+                                color: Cv4rs.themeColor4,
+                                blurRadius: 4,
                               ),
-                              child: HexCodeInput2(
-                                startValue: Ev4rs.backgroundColor.value.toHexString(),
-                                textStyle: Sv4rs.settingslabelStyle,
-                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
+                            ],),
+                          ),
+                        ]
+                      ),
+                    children: [
+                      Column(children:[
+                      //hexcode input
+                      Padding(
+                        padding: EdgeInsetsGeometry.symmetric(
+                          horizontal: V4rs.paddingValue(10), 
+                          vertical: V4rs.paddingValue(20)
+                        ),
+                        child: HexCodeInput2(
+                          startValue: Ev4rs.backgroundColor.value.toHexString(),
+                          textStyle: Sv4rs.settingslabelStyle,
+                          hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
+                          onColorChanged: (color) { 
+                            Ev4rs.backgroundColor.value = color;
+                          },
+                        ),
+                      ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: 
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:[ 
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('Scroll horizontally here...', 
+                                style: Sv4rs.settingsSecondaryLabelStyle,
+                                ),
+                              SizedBox(height: 30,),
+                            ]
+                          ),
+                          GestureDetector(
+                            onVerticalDragStart: (_) {},
+                            onVerticalDragUpdate: (_) {},
+                            onVerticalDragEnd: (_) {},
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              child: ColorPicker(
+                                pickerColor: Ev4rs.backgroundColor.value, 
+                                enableAlpha: true,
+                                displayThumbColor: false,
+                                labelTypes: ColorLabelType.values,
                                 onColorChanged: (color) { 
                                   Ev4rs.backgroundColor.value = color;
                                 },
                               ),
                             ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: 
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children:[ 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text('Scroll horizontally here...', 
-                                      style: Sv4rs.settingsSecondaryLabelStyle,
-                                      ),
-                                    SizedBox(height: 30,),
-                                  ]
-                                ),
-                                GestureDetector(
-                                  onVerticalDragStart: (_) {},
-                                  onVerticalDragUpdate: (_) {},
-                                  onVerticalDragEnd: (_) {},
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.3,
-                                    child: ColorPicker(
-                                      pickerColor: Ev4rs.backgroundColor.value, 
-                                      enableAlpha: true,
-                                      displayThumbColor: false,
-                                      labelTypes: ColorLabelType.values,
-                                      onColorChanged: (color) { 
-                                        Ev4rs.backgroundColor.value = color;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]
-                            ),
                           ),
-                        ] 
-                        ),
-                      ]
-                      );
-                          }
-                        ),
-                        
-                        //save 
-                        ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'backgroundColor', Ev4rs.backgroundColor.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                        ),
-                      ]
-                    )
-                    ),
-                  ),
-                ]
-                ),
-              ),
-              
-              //
-              //button type -> link, return after select
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
-
-                  //type 
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: 
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Cv4rs.themeColor4,
-                          borderRadius: BorderRadius.circular(10)
-                          ),
-                          child:  ValueListenableBuilder<int>(
-                          valueListenable: Ev4rs.buttonType, 
-                          builder: (context, buttonType, _) {
-                            return
-                          Column(children: [
-                            Padding (
-                              padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
-                              child: Text((Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.type)) 
-                                  ? 'Type: '
-                                  : 'Type: --Not All Match--', 
-                                style: Sv4rs.settingslabelStyle,
-                                ),
-                            ),
-                            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child: 
-                            DropdownButton<String>(
-                              isExpanded: true,
-                                hint: Text((Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.type)) 
-                                  ? 'Type: '
-                                  : 'Type: --Not All Match--', 
-                                  style: Sv4rs.settingslabelStyle,
-                                ),
-                                value: Ev4rs.grammerType.value,
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value: 'button',
-                                    child: Text(
-                                      'button', 
-                                      style: Sv4rs.settingslabelStyle,
-                                    ),
-                                  ),
-                                  DropdownMenuItem<String>(
-                                    value: 'placeholder',
-                                    child: Text(
-                                      'placeholder', 
-                                      style: Sv4rs.settingslabelStyle,
-                                    ),
-                                  ),
-                                  DropdownMenuItem<String>(
-                                    value: 'folder',
-                                    child: Text(
-                                      'folder', 
-                                      style: Sv4rs.settingslabelStyle,
-                                    ),
-                                  ),
-                                  ],
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    Ev4rs.grammerType.value = value;
-                                  }
-                                },
-                              ),
-                            ),
-                  
-                        //save 
-                        ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'type', Ev4rs.grammerType.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                        ),
-                          ]);
-                        }),
-                  
-                  ),
-                  ),
-
-                  //function
-                  if (Ev4rs.grammerType.value == 'button' || Ev4rs.grammerType.value == 'placeholder')
-                   Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: 
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Cv4rs.themeColor4,
-                          borderRadius: BorderRadius.circular(10)
-                          ),
-                          child:  ValueListenableBuilder<String>(
-                          valueListenable: Ev4rs.grammerFunction, 
-                          builder: (context, grammerFunction, _) {
-                            return
-                          Column(children: [
-                            Padding (
-                              padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
-                              child: Text(
-                                (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.function)) 
-                                  ? 'Grammer Function:'
-                                  : 'Grammer Function: --Not All Match--',
-                                style: Sv4rs.settingslabelStyle,
-                                ),
-                            ),
-                          Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
-                            DropdownButton<String>(
-                                isExpanded: true,
-                                hint: Text(
-                                  'grammer function', 
-                                  style: Sv4rs.settingslabelStyle,
-                                ),
-                                value: Ev4rs.grammerFunction.value,
-                                items: Gv4rs.grammerFunctionMap.entries.map((entry) {
-                                  return DropdownMenuItem<String>(
-                                    value: entry.value,
-                                    child: Text(
-                                      entry.key, 
-                                      style: Sv4rs.settingslabelStyle,
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    Ev4rs.grammerFunction.value = value;
-                                  }
-                                },
-                              ),
-                          ),
-                        //save 
-                        ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'function', Ev4rs.grammerFunction.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                        ),
-                          ]);
-                        }),
-                
-                  ),
-                  ),
-                  
-
-
-                  if (Ev4rs.grammerType.value == 'folder')
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: 
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Cv4rs.themeColor4,
-                          borderRadius: BorderRadius.circular(10)
-                          ),
-                          child:  ValueListenableBuilder<String>(
-                          valueListenable: Ev4rs.link, 
-                          builder: (context, link, _) {
-                            return
-                          Column(children: [
-                            Padding (
-                              padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
-                              child:  Text(
-                                (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.openUUID)) 
-                                  ? 'Link To...'
-                                  : 'Link To... --Not All Match--', 
-                                style: Sv4rs.settingslabelStyle,
-                                ),
-                            ),
-                            DropdownButton<String>(
-                              isExpanded: true,
-                                hint:  Text(
-                                (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.openUUID)) 
-                                  ? 'Link To...'
-                                  : 'Link To... --Not All Match--', 
-                                  style: Sv4rs.settingslabelStyle,
-                                ),
-                                value: Ev4rs.link.value,
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value: '',
-                                    child: Text('none', style: Sv4rs.settingslabelStyle),
-                                  ),
-                                ...mapOfBoards.entries.map((entry) {
-                                  return DropdownMenuItem<String>(
-                                    value: entry.value,
-                                    child: Text(
-                                      entry.key, 
-                                      style: Sv4rs.settingslabelStyle,
-                                    ),
-                                  );
-                                })
-                                ],
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    Ev4rs.link.value = value;
-                                  }
-                                },
-                              ),
-                            //save 
-                            ButtonStyle2(
-                              imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                              onPressed: (){setState(() {
-                                 widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'type', Ev4rs.grammerType.value);
-                                 Ev4rs.saveJson(root);
-                                 });
-                                
-                              }, 
-                              label: 'Save'
-                            ),
-                          ]);
-                        }),
+                        ]
                       ),
                     ),
-
-                  //notes
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                  child:
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column(children: [
-                        Row(children: [ 
-                          Expanded(flex: 5, child: 
-                            Padding(
-                              padding: EdgeInsetsGeometry.symmetric(
-                                horizontal: V4rs.paddingValue(10), 
-                                vertical: V4rs.paddingValue(10)
-                              ), 
-                              child: 
-                              ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
-                          final notesController = TextEditingController(text: value)
-                          ..selection = TextSelection.collapsed(offset: value.length);
-
-                          return 
-                        TextField(
-                          controller: notesController,
-                                minLines: 1,
-                                maxLines: 5,
-                                style: Sv4rs.settingslabelStyle,
-                                onChanged: (value){
-                                  Ev4rs.notes.value = value;
-                                },
-                                decoration: InputDecoration(
-                                hintStyle: Sv4rs.settingslabelStyle,
-                                hintText: (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.note)) 
-                                  ? 'Notes... ${Ev4rs.notes.value}'
-                                  : 'Notes... --Not All Match--',
-                                ),
-                              );
-                              }),
-                            ),
-                          ),
-                          Flexible(flex: 2, child: 
-                          Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
-                          ButtonStyle4(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                            onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'note', Ev4rs.notes.value);
-                                Ev4rs.saveJson(root);
-                                });
-                            }, 
-                            label: 'Save'
-                            ),
-                          ),
-                          ),
-                      ],
-                      ),
-                    ]
-                      
-                    ))),
-
-                ]
-                ),
-              ),
-              
-              //
-              //undo + share
-              //
-              Expanded(flex: 2, child: 
-                Column( children:[
-                  //undo
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child: ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.isUndoing, 
-                    builder: (context, inverting, _) {
-                return 
-                  ButtonStyle1(
-                    glow: (Ev4rs.isUndoing.value) ? true : false,
-                    imagePath: 'assets/interface_icons/interface_icons/iUndo.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.undoAction(root);
-                    });
-                    }
-                  );
-                  }),
-                  ),
-                  ),
-
-                  //share
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child:
-                  ButtonStyle1(
-                    imagePath: 'assets/interface_icons/interface_icons/iExport.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.isExporting.value = !Ev4rs.isExporting.value;
-                    });
-                    }
-                  ), 
-                  ),
+                  ] 
                   ),
                 ]
-                ),
-              ),
-              
-              //
-              //redo + print
-              //
-              Expanded(flex: 2, child: 
-                Column( children:[
-                  //redo
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child: ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.isRedoing, 
-                    builder: (context, inverting, _) {
-                return 
-                  ButtonStyle1(
-                    glow: (Ev4rs.isRedoing.value) ? true : false,
-                    imagePath: 'assets/interface_icons/interface_icons/iRe-do.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.redoAction(root);
-                    });
-                    }
                 );
-                    }),
-                  ),
-                  ),
-                  //print
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child:
-                  ButtonStyle1(
-                    imagePath: 'assets/interface_icons/interface_icons/iPrint.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.isPrinting.value = !Ev4rs.isPrinting.value;
-                    });
                     }
                   ),
-                  ),
+                  
+                  //save 
+                  ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'backgroundColor', Ev4rs.backgroundColor.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save'
                   ),
                 ]
-                ),
+              )
               ),
-              
-              //
-              //expand/collapse + board settings
-              //
-              Column( children:[
-                Padding(
-                  padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7), 
-                    0
+            ),
+          ]
+          );
+      }
+      Widget typeColumn(Root root, dynamic mapOfBoards, GrammerObjects obj_){
+        //
+        //button type -> link, return after select
+        //
+        return Column( children:[
+
+          //type 
+          Padding(
+            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child: 
+              Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
                   ),
-                  child: SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.04,
-                    child: (Ev4rs.isButtonExpanded.value) 
-                    ? ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iCollapse.png', 
-                        onPressed: () { 
-                          setState(() {
-                            Ev4rs.isButtonExpanded.value = false;
-                          });
-                        }
-                      ) 
-                    : ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iExpand.png', 
-                        onPressed: () { 
-                          setState(() {
-                            Ev4rs.isButtonExpanded.value = true;
-                          });
-                        }
-                      ) 
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(7), 
-                    0, 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7)
-                  ),
-                  child: SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04 ,
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: 
-                       ButtonStyle1(
-                          glow: (Ev4rs.boardEditor.value) ? true : false,
-                          imagePath: 'assets/interface_icons/interface_icons/iBoard.png', 
-                          onPressed: () { setState(() {
-                            Ev4rs.editBoardsAction(root);
-                          });
+                  child:  ValueListenableBuilder<int>(
+                  valueListenable: Ev4rs.buttonType, 
+                  builder: (context, buttonType, _) {
+                    return
+                  Column(children: [
+                    Padding (
+                      padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
+                      child: Text((Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.type)) 
+                          ? 'Type: '
+                          : 'Type: --Not All Match--', 
+                        style: Sv4rs.settingslabelStyle,
+                        ),
+                    ),
+                    Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child: 
+                    DropdownButton<String>(
+                      isExpanded: true,
+                        hint: Text((Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.type)) 
+                          ? 'Type: '
+                          : 'Type: --Not All Match--', 
+                          style: Sv4rs.settingslabelStyle,
+                        ),
+                        value: Ev4rs.grammerType.value,
+                        items: [
+                          DropdownMenuItem<String>(
+                            value: 'button',
+                            child: Text(
+                              'button', 
+                              style: Sv4rs.settingslabelStyle,
+                            ),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'placeholder',
+                            child: Text(
+                              'placeholder', 
+                              style: Sv4rs.settingslabelStyle,
+                            ),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: 'folder',
+                            child: Text(
+                              'folder', 
+                              style: Sv4rs.settingslabelStyle,
+                            ),
+                          ),
+                          ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            Ev4rs.grammerType.value = value;
                           }
-                        ) 
+                        },
                       ),
                     ),
-                  ),
-              ]
-              )
-            ]
-            ),
-        //here
-        Positioned(
-          top: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04,
-          child: ValueListenableBuilder<bool>(valueListenable: Ev4rs.showSelectionMenu, builder: (context, showSelectionMenu, _) {
-          return SizedBox( 
-            height: (isLandscape) ? MediaQuery.of(context).size.height * 0.09 : MediaQuery.of(context).size.height * 0.04,
-            child:  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)), child:
-          Row(
-            children: [
-              //tap
-            if (Ev4rs.isButtonExpanded.value == false)
-                ButtonStyle1(
-                imagePath: 'assets/interface_icons/interface_icons/iTap.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.showSelectionMenu.value = !Ev4rs.showSelectionMenu.value;
-                });
-                }
-              ),
-
-            //tap and swap
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.tapAndSwap) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iTapAndSwap.png', 
-                  onPressed: ()  {
-                    setState(() {
-                      Ev4rs.tapAndSwapAction(root);
-                    });
-                  }
+          
+                //save 
+                ButtonStyle2(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                  onPressed: (){setState(() {
+                      widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'type', Ev4rs.grammerType.value);
+                      Ev4rs.saveJson(root);
+                      });
+                  }, 
+                  label: 'Save'
                 ),
-
-            //drag to select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.dragSelectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iDragSelectMultiple.png', 
-                  onPressed: () { 
-                    setState(() {
-                      Ev4rs.dragSelectMultipleAction(root);
-                    });
-                  }
-                ),
-
-            //select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.selectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iSelectMultiple.png', 
-                  onPressed: () { 
-                    setState(() {
-                      Ev4rs.selectMultipleAction(root);
-                    });
-                  }
-                ),
-
-            //invert selection
-
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.invertSelections, 
-                    builder: (context, inverting, _) {
-              return ButtonStyle1(
-                glow: (Ev4rs.invertSelections.value) ? true : false,
-                imagePath: 'assets/interface_icons/interface_icons/iInvertSelection.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.invertSelectionAction(root);
-                });
-                }
-              );
-                    }
-                    ),
-
-            //sort a-z
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-              ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.sortSelectAZ, 
-                    builder: (context, sorting, _) {
-              return ButtonStyle1(
-                imagePath: 'assets/interface_icons/interface_icons/iSortAZ.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.sortSelectedAzAction(root);
-                });
-                }
-              );
-                    })
-
-          ]
+                  ]);
+                }),
+          
           ),
+          ),
+
+          //function
+          if (Ev4rs.grammerType.value == 'button' || Ev4rs.grammerType.value == 'placeholder')
+            Padding(
+            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child: 
+              Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                  child:  ValueListenableBuilder<String>(
+                  valueListenable: Ev4rs.grammerFunction, 
+                  builder: (context, grammerFunction, _) {
+                    return
+                  Column(children: [
+                    Padding (
+                      padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
+                      child: Text(
+                        (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.function)) 
+                          ? 'Grammer Function:'
+                          : 'Grammer Function: --Not All Match--',
+                        style: Sv4rs.settingslabelStyle,
+                        ),
+                    ),
+                  Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
+                    DropdownButton<String>(
+                        isExpanded: true,
+                        hint: Text(
+                          'grammer function', 
+                          style: Sv4rs.settingslabelStyle,
+                        ),
+                        value: Ev4rs.grammerFunction.value,
+                        items: Gv4rs.grammerFunctionMap.entries.map((entry) {
+                          return DropdownMenuItem<String>(
+                            value: entry.value,
+                            child: Text(
+                              entry.key, 
+                              style: Sv4rs.settingslabelStyle,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          if (value != null) {
+                            Ev4rs.grammerFunction.value = value;
+                          }
+                        },
+                      ),
+                  ),
+                //save 
+                ButtonStyle2(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                  onPressed: (){setState(() {
+                      widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'function', Ev4rs.grammerFunction.value);
+                      Ev4rs.saveJson(root);
+                      });
+                  }, 
+                  label: 'Save'
+                ),
+                  ]);
+                }),
+        
+          ),
+          ),
+          
+          if (Ev4rs.grammerType.value == 'folder')
+          Padding(
+            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child: 
+              Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                  child:  ValueListenableBuilder<String>(
+                  valueListenable: Ev4rs.link, 
+                  builder: (context, link, _) {
+                    return
+                  Column(children: [
+                    Padding (
+                      padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
+                      child:  Text(
+                        (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.openUUID)) 
+                          ? 'Link To...'
+                          : 'Link To... --Not All Match--', 
+                        style: Sv4rs.settingslabelStyle,
+                        ),
+                    ),
+                    DropdownButton<String>(
+                      isExpanded: true,
+                        hint:  Text(
+                        (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.openUUID)) 
+                          ? 'Link To...'
+                          : 'Link To... --Not All Match--', 
+                          style: Sv4rs.settingslabelStyle,
+                        ),
+                        value: Ev4rs.link.value,
+                        items: [
+                          DropdownMenuItem<String>(
+                            value: '',
+                            child: Text('none', style: Sv4rs.settingslabelStyle),
+                          ),
+                        ...mapOfBoards.entries.map((entry) {
+                          return DropdownMenuItem<String>(
+                            value: entry.value,
+                            child: Text(
+                              entry.key, 
+                              style: Sv4rs.settingslabelStyle,
+                            ),
+                          );
+                        })
+                        ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            Ev4rs.link.value = value;
+                          }
+                        },
+                      ),
+                    //save 
+                    ButtonStyle2(
+                      imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                      onPressed: (){setState(() {
+                          widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'type', Ev4rs.grammerType.value);
+                          Ev4rs.saveJson(root);
+                          });
+                        
+                      }, 
+                      label: 'Save'
+                    ),
+                  ]);
+                }),
+              ),
             ),
-          );
-        }
-        )
-        )
-        ]
+
+          //notes
+          Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+          child:
+          Container(
+              decoration: BoxDecoration(
+                color: Cv4rs.themeColor4,
+                borderRadius: BorderRadius.circular(10)
+                ),
+              child: Column(children: [
+                Row(children: [ 
+                  Expanded(flex: 5, child: 
+                    Padding(
+                      padding: EdgeInsetsGeometry.symmetric(
+                        horizontal: V4rs.paddingValue(10), 
+                        vertical: V4rs.paddingValue(10)
+                      ), 
+                      child: 
+                      ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
+                  final notesController = TextEditingController(text: value)
+                  ..selection = TextSelection.collapsed(offset: value.length);
+
+                  return 
+                TextField(
+                  controller: notesController,
+                        minLines: 1,
+                        maxLines: 5,
+                        style: Sv4rs.settingslabelStyle,
+                        onChanged: (value){
+                          Ev4rs.notes.value = value;
+                        },
+                        decoration: InputDecoration(
+                        hintStyle: Sv4rs.settingslabelStyle,
+                        hintText: (Ev4rs.compareGrammerObjFields(root.grammerRow, (b) => b.note)) 
+                          ? 'Notes... ${Ev4rs.notes.value}'
+                          : 'Notes... --Not All Match--',
+                        ),
+                      );
+                      }),
+                    ),
+                  ),
+                  Flexible(flex: 2, child: 
+                  Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
+                  ButtonStyle4(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                      widget.saveField(root, Ev4rs.grammerSelectedUUIDs.value, 'note', Ev4rs.notes.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save'
+                    ),
+                  ),
+                  ),
+              ],
+              ),
+            ]
+              
+            ))),
+
+         ]
+        );   
+      }
+
+      @override
+      Widget build(BuildContext context) {
+        Root root = widget.root;
+        
+            everyImage = Ev4rs.getAllImages(root);
+          
+
+            final obj_ = Ev4rs.findGrammerById(root.grammerRow, Ev4rs.grammerSelectedUUID);
+            if (obj_ == null) {
+              return const Center(child: Text("Object not found"));
+            }
+
+            Ev4rs.setGrammerPlacholderValues(obj_);
+            
+            var allBoards = Ev4rs.getBoards(root.boards);
+
+            final mapOfBoards = {
+              for (var board in allBoards) 
+                if (board.title != null) 
+                  board.title!: board.id,
+            };
+
+            Widget image = LoadImage.fromSymbol('assets/interface_icons/interface_icons/iPlaceholder.png');
+            Widget image2 = LoadImage.fromSymbol(obj_.symbol);
+
+
+        return BaseEditor(
+          root: root,
+          windowWidget: Row( 
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!V4rs.smallEditorMode)
+            Expanded(
+              flex: 29,
+              child: 
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                Expanded(flex: 8, child:  imageColumn(image, image2, obj_, root)),
+                //Image, 
+                //image padding, 
+                //image overlay settings
+
+                Expanded(flex: 7, child: textColumn(obj_, root)),
+                //label, 
+                //message, 
+                //speak on select, 
+                //font
+
+                Expanded(flex: 7, child: formatColumn(root)),
+                //show, 
+                //format, 
+                //border, 
+                //background
+
+                Expanded(flex: 7, child: typeColumn(root, mapOfBoards, obj_)),
+                //pos, 
+                //button type
+                //button type qualities
+                //notes
+
+              ]
+              ),
+            ),
+
+            if (V4rs.smallEditorMode)
+            Expanded(
+              flex: 29,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 15,
+                    child: Column(children: [
+
+                      imageColumn(image, image2, obj_, root),
+                      //Image, 
+                      //image padding, 
+                      //image overlay settings
+
+                      formatColumn(root),
+                      //show, 
+                      //format, 
+                      //border, 
+                      //background
+
+                    ]
+                    ),
+                  ),
+
+                  Expanded(
+                    flex: 14,
+                    child: Column(children: [
+
+                    textColumn(obj_, root),
+                    //label, 
+                    //message, 
+                    //speak on select, 
+                    //font
+
+                    typeColumn(root, mapOfBoards, obj_),
+                    //pos, 
+                    //button type
+                    //button type qualities
+                    //notes
+
+                  ]
+                  )
+                  ),
+                ]
+              ),
+            ),
+            ]
+          ),
         );
       }
     }
@@ -2733,14 +2328,1194 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
       final ImagePicker _picker = ImagePicker();
       var everyImage = <String>[];
 
+      Widget imageColumn(Widget image, Root root){
+        //
+        //Image, image padding, image overlay settings
+        //
+        return ValueListenableBuilder(
+          valueListenable: CombinedValueNotifier(
+              Ev4rs.padding, Ev4rs.overlay, Ev4rs.contrast, 
+              Ev4rs.invert, Ev4rs.saturation, Ev4rs.matchContrast, 
+              Ev4rs.matchInvert, Ev4rs.matchOverlay, Ev4rs.matchSaturation
+            ), 
+          builder: (context, values, _) {
+        return Column( children:[
+            //
+            //image
+            //
+            Padding(
+              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+              child: 
+                    Container(
+                      width: MediaQuery.of(context).size.height * 0.25,
+                      decoration: BoxDecoration(
+                        color: Cv4rs.themeColor4,
+                        borderRadius: BorderRadius.circular(10)
+                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(child: Padding(
+                            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(Ev4rs.padding.value)), 
+                            child: ImageStyle1(
+                                image: image, 
+                                symbolSaturation: Ev4rs.saturation.value, 
+                                symbolContrast: Ev4rs.contrast.value, 
+                                invertSymbolColors: Ev4rs.invert.value, 
+                                overlayColor: Ev4rs.overlay.value, 
+                                matchOverlayColor: Ev4rs.matchOverlay.value, 
+                                matchSymbolContrast: Ev4rs.matchContrast.value, 
+                                matchSymbolInvert: Ev4rs.matchInvert.value, 
+                                matchSymbolSaturation: Ev4rs.matchSaturation.value,
+                                defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
+                                defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
+                                defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
+                                defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
+                                )
+                            ),
+                          ),
+                          Flexible(child: 
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
+                                  SizedBox( 
+                                    width: MediaQuery.of(context).size.height * 0.08,
+                                    child: ButtonStyle3(
+                                      imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png', 
+                                      onPressed: () async {
+                                        Ev4rs.navPickImage(widget.saveField, root, _picker);
+                                        if (everyImage.isNotEmpty) {
+                                        //await Ev4rs.cleanupUnusedImages(everyImage);
+                                        } 
+                                      }, 
+                                      label: 'Photo Lib'
+                                    ),
+                                  ),
+                                ),
+                            Visibility(
+                              visible: false,
+                              maintainSize: true,
+                              maintainAnimation: true,
+                              maintainState: true,
+                              child: Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
+                              SizedBox( 
+                                width: MediaQuery.of(context).size.height * 0.07,
+                                child: ButtonStyle3(
+                                imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png', 
+                                onPressed: () async {
+                                  Ev4rs.navPickImage(widget.saveField, root, _picker);
+                                  if (everyImage.isNotEmpty) {
+                                    // await Ev4rs.cleanupUnusedImages(everyImage);
+                                  } 
+                                }, 
+                                label: 'App Lib'
+                                )
+                              ),
+                            ),
+                            ),
+                        ]
+                        )
+                        ),
+                      ]),
+                    ),
+            ),
 
+            //
+            //padding
+            //
+            Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child:
+            SizedBox( 
+              width: MediaQuery.of(context).size.height * 0.25,
+              child: 
+              Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                child:
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(padding: EdgeInsets.all(V4rs.paddingValue(10)), child: 
+                  Column(children: [
+                  Text('Image Padding: ${Ev4rs.padding.value}', style: Sv4rs.settingslabelStyle,),
+                  Slider(
+                        padding: EdgeInsets.fromLTRB(
+                          V4rs.paddingValue(10), 
+                          V4rs.paddingValue(10), 
+                          V4rs.paddingValue(10), 
+                          0
+                        ),
+                        value: Ev4rs.padding.value,
+                        min: 0.0,
+                        max: 10.0,
+                        divisions: 11,
+                        activeColor: Cv4rs.themeColor1,
+                        inactiveColor: Cv4rs.themeColor3,
+                        thumbColor: Cv4rs.themeColor1,
+                        label: 'Image Padding: ${Ev4rs.padding.value}',
+                        onChanged: (value) {
+                          Ev4rs.padding.value = value.roundToDouble();
+                        }
+                    ),
+                  ])
+                  ),
+                  ButtonStyle2(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'padding', Ev4rs.padding.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save Padding'
+                    ),
+                  ]),
+              ),
+            ),
+            ),
+
+            //
+            //symbolColors
+            //
+            Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child:
+            SizedBox(
+              child:
+            SymbolColorCustomizer2(
+              widgety: 
+              ButtonStyle2(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'matchOverlayColor', Ev4rs.matchOverlay.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'overlayColor', Ev4rs.overlay.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'matchSymbolSaturation', Ev4rs.matchSaturation.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'symbolSaturation', Ev4rs.saturation.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'matchSymbolContrast', Ev4rs.matchContrast.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'symbolContrast', Ev4rs.contrast.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'matchInvertSymbol', Ev4rs.matchInvert.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'invertSymbol', Ev4rs.invert.value);
+                        
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save Adjustments'
+                    ),
+              height: MediaQuery.of(context).size.height * 0.3,
+              additionalHeight: MediaQuery.of(context).size.height * 0.8,
+              width: MediaQuery.of(context).size.height * 0.25,
+              invert: Ev4rs.invert.value, 
+              overlay: Ev4rs.overlay.value,
+              saturation: Ev4rs.saturation.value, 
+              contrast: Ev4rs.contrast.value, 
+              matchContrast: Ev4rs.matchContrast.value,
+              matchInvert: Ev4rs.matchInvert.value,
+              matchOverlay: Ev4rs.matchOverlay.value,
+              matchSaturation: Ev4rs.matchSaturation.value,
+              onContrastChanged: (value){
+                Ev4rs.contrast.value = value;
+              }, 
+              onInvertChanged: (value){
+                Ev4rs.invert.value = value;
+              },
+              onOverlayChanged: (value){
+                Ev4rs.overlay.value = value;
+              },
+              onSaturationChanged: (value){
+                Ev4rs.saturation.value = value;
+              },
+              onMatchContrastChanged: (value){
+                Ev4rs.matchContrast.value = value;
+              }, 
+              onMatchInvertChanged: (value){
+                Ev4rs.matchInvert.value = value;
+              },
+              onMatchOverlayChanged: (value){
+                Ev4rs.matchOverlay.value = value;
+              },
+              onMatchSaturationChanged: (value){
+                Ev4rs.matchSaturation.value = value;
+              },
+              )
+            )
+            ),
+            
+
+          ]
+        );
+        }
+      );
+      }
+      Widget textColumn(NavObjects obj_, Root root){
+        //
+        //label, alternate label, speak on select, font
+        //
+        return Column( children:[
+          //label and message
+          Padding(
+            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Cv4rs.themeColor4,
+                borderRadius: BorderRadius.circular(10)
+                ),
+              child: Column(children: [
+                //label
+                Row(children: [ 
+                  Expanded(flex: 5, child: 
+                    Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
+                          ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
+                  final labelController = TextEditingController(text: value)
+                  ..selection = TextSelection.collapsed(offset: value.length);
+
+                  return 
+                TextField(
+                  controller: labelController,
+                        style: Ev4rs.labelStyle,
+                        onChanged: (value){
+                          Ev4rs.label.value = value;
+                        },
+                        decoration: InputDecoration(
+                        hintStyle: Ev4rs.hintLabelStyle,
+                        hintText: '${obj_.label}',
+                        ),
+                      );
+                          }),
+                    ),
+                  ),
+                  Flexible(flex: 2, child: 
+                  Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
+                  ButtonStyle4(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                      widget.saveField(root, Ev4rs.navSelectedUUID, 'label', Ev4rs.label.value);
+                      Ev4rs.saveJson(root);
+                      });
+                    }, 
+                    label: 'Save'
+                    ),
+                  ),
+                  ),
+                ],
+              ),
+                //alternate label
+                Row(children: [ 
+                  Expanded(
+                    flex: 5,
+                    child: 
+                    Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
+                      ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
+                  final alternateController = TextEditingController(text: value)
+                  ..selection = TextSelection.collapsed(offset: value.length);
+
+                  return 
+                TextField(
+                  controller: alternateController,
+                        style: Ev4rs.labelStyle,
+                        onChanged: (value){
+                          Ev4rs.alternateLabel.value = value;
+                        },
+                        decoration: InputDecoration(
+                        hintStyle: Ev4rs.hintLabelStyle,
+                        hintText: '${obj_.alternateLabel}',
+                        ),
+                      );
+                      }),
+                    ),
+                  ),
+                Flexible(
+                  flex: 2,
+                  child: 
+                  Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
+                ButtonStyle4(
+                imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                  onPressed: (){setState(() {
+                      widget.saveField(root, Ev4rs.navSelectedUUID, 'alternateLabel', Ev4rs.alternateLabel.value);
+                      Ev4rs.saveJson(root);
+                      });
+                  }, 
+                  label: 'Save'
+                  ),
+                  ),
+                ),
+              ]
+              ),
+            ]
+            )
+            )
+            ),
+          
+          //match speak on select, speak on select
+          Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Cv4rs.themeColor4,
+                borderRadius: BorderRadius.circular(10)
+                ),
+              child: Column( children: [
+                ValueListenableBuilder<bool>(
+                  valueListenable: Ev4rs.matchSpeakOnSelect, 
+                  builder: (context, matchSpeakOnSelect, _) {
+                    return Row(children: [
+                      Expanded(child: 
+                      Padding(
+                        padding: EdgeInsetsGeometry.fromLTRB(
+                          V4rs.paddingValue(10), 
+                          V4rs.paddingValue(10), V4rs.paddingValue(10), 0), 
+                        child: Text(
+                          'Match Speak on Select:', 
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Sv4rs.settingslabelStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
+                        child: Switch(
+                          padding: EdgeInsets.all(0),
+                          value: Ev4rs.matchSpeakOnSelect.value, 
+                          onChanged: (value) {
+                            Ev4rs.matchSpeakOnSelect.value = value;
+                          }
+                        ),
+                      ),
+                    ]
+                    );
+                  }
+                ),
+                ValueListenableBuilder<int>(
+                  valueListenable: Ev4rs.speakOnSelect, 
+                  builder: (context, speakOnSelect, _) {
+                    return Padding(
+                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+                      child: Column(children: [
+                        Slider(
+                          padding: EdgeInsets.fromLTRB(V4rs.paddingValue(5), 0, V4rs.paddingValue(5), 0),
+                          min: 1.0,
+                          max: 3.0,
+                          divisions: 2,
+                          activeColor: Cv4rs.themeColor1,
+                          inactiveColor: Cv4rs.themeColor3,
+                          thumbColor: Cv4rs.themeColor1,
+                          label: 'Speak on Select: ${Ev4rs.speakOnSelect.value}',
+                          value: Ev4rs.speakOnSelect.value.toDouble(), 
+                          onChanged: (value) {
+                            Ev4rs.speakOnSelect.value = value.toInt();
+                            }
+                          ),
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(10)), 
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                            Expanded(child: 
+                              Text(
+                                "Off", 
+                                style: Sv4rs.settingslabelStyle,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Expanded(child: 
+                              Text(
+                                "Speak Label", 
+                                style: Sv4rs.settingslabelStyle,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Expanded(child: 
+                              Text(
+                                "Speak Alt. Label", 
+                                style: Sv4rs.settingslabelStyle,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ]
+                          ), 
+                        ),
+                        ButtonStyle2(
+                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                          onPressed: (){setState(() {
+                              widget.saveField(root, Ev4rs.navSelectedUUID, 'matchSpeakOS', Ev4rs.matchSpeakOnSelect.value);
+                              widget.saveField(root, Ev4rs.navSelectedUUID, 'speakOS', Ev4rs.speakOnSelect.value);
+                              Ev4rs.saveJson(root);
+                              });
+                          }, 
+                          label: 'Save'
+                        ),
+                      ]
+                    ),
+                    );
+                  }
+                ),
+                
+              ]
+            )
+            )
+          ),
+          //font, match font settings, font picker
+          Padding(
+              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+              child: FontPicker2(
+                widgety:  ButtonStyle2(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'matchFont', Ev4rs.matchFont.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'fontSize', Ev4rs.fontSize.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'fontItalics', Ev4rs.fontItalics.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'fontUnderline', Ev4rs.fontUnderline.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'fontWeight', Ev4rs.fontWeight.value.toInt(),);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'fontFamily', Ev4rs.fontFamily.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'fontColor', Ev4rs.fontColor.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save Button Font'
+                    ),
+                    matchFontSet: Ev4rs.matchFont.value,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    size: Ev4rs.fontSize.value, 
+                    sizeMax: 25,
+                    sizeMin: 5,
+                    divisions: 20,
+                    weight: (Ev4rs.fontWeight.value).toInt(), 
+                    italics: Ev4rs.fontItalics.value, 
+                    font: Ev4rs.fontFamily.value, 
+                    label: 'Button Font:', 
+                    color: Ev4rs.fontColor.value, 
+                    underline: Ev4rs.fontUnderline.value,
+                    onSizeChanged: (value) {
+                      Ev4rs.fontSize.value = value;
+                      }, 
+                    onWeightChanged: (value) {
+                      Ev4rs.fontWeight.value = value.toDouble();
+                      },
+                    onItalicsChanged: (value) {
+                      Ev4rs.fontItalics.value = value;
+                      },
+                    onFontChanged: (value) {
+                      Ev4rs.fontFamily.value = value;
+                      },
+                    onColorChanged: (value) {
+                      Ev4rs.fontColor.value = value.toColor() ?? Cv4rs.themeColor1;
+                      },
+                    onMatchFont: (value) {
+                      Ev4rs.matchFont.value = value;
+                      },
+                    useUnderline: true, 
+                    onUnderlineChanged: (value) {
+                      Ev4rs.fontUnderline.value = value;
+                      }, 
+                    )
+                  ),
+        ]
+      );
+      }
+      Widget formatColumn(Root root){
+        //
+        //show, format, border, background
+        //
+
+        return Column( children:[
+            
+            //
+            //show button
+            //
+
+            Padding(
+              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+              child: Container( 
+                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: Column( children: [
+                  ValueListenableBuilder<bool>(
+                    valueListenable: Ev4rs.show, 
+                    builder: (context, matchSpeakOnSelect, _) {
+                      return Row(children: [
+                        Expanded(
+                          child: Text(
+                            'Show Button:', 
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Sv4rs.settingslabelStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
+                          child: Switch(
+                            padding: EdgeInsets.all(0),
+                            value: Ev4rs.show.value, 
+                            onChanged: (value) {
+                              Ev4rs.show.value = value;
+                            }
+                          ),
+                        ),
+                        ]
+                      );
+                    }
+                  ),
+                  ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'show', Ev4rs.show.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save'
+                  ),
+                ]
+              )
+              ),
+            ),
+            
+            //
+            //format
+            //
+
+            Padding(
+              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+              child: Container(
+                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                child: Column( children: [
+                  ValueListenableBuilder<bool>(
+                    valueListenable: Ev4rs.matchFormat, 
+                    builder: (context, matchFormat, _) {
+                      return Row(children: [
+                        Expanded(child: 
+                          Padding(
+                            padding: EdgeInsetsGeometry.fromLTRB(
+                              V4rs.paddingValue(5), 
+                              V4rs.paddingValue(10), 
+                              V4rs.paddingValue(5), 
+                              0
+                            ),
+                              child: Text(
+                                'Match Format:', 
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Sv4rs.settingslabelStyle,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
+                          child: Switch(
+                            padding: EdgeInsets.all(0),
+                            value: Ev4rs.matchFormat.value, 
+                            onChanged: (value) {
+                              Ev4rs.matchFormat.value = value;
+                            }
+                          ),
+                        ),
+                      ]
+                      );
+                    }
+                  ),
+                  ValueListenableBuilder<int>(
+                    valueListenable: Ev4rs.format, 
+                    builder: (context, format, _) {
+                      return Padding(
+                        padding: EdgeInsetsGeometry.fromLTRB(
+                          V4rs.paddingValue(5), 
+                          V4rs.paddingValue(15), 
+                          V4rs.paddingValue(5), 
+                          V4rs.paddingValue(10)
+                        ), 
+                        child: Column(children: [
+                                Text(
+                                  "Format: ${
+                                    Ev4rs.format.value == 1 ? 
+                                      'Text Below' 
+                                    : Ev4rs.format.value == 2 ? 
+                                      'Text Above' 
+                                    : Ev4rs.format.value == 3 ? 
+                                      'Image Only' 
+                                    : Ev4rs.format.value == 4 ? 
+                                      'Text Only' 
+                                    : ''
+                                    }", 
+                                  style: Sv4rs.settingslabelStyle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                ),
+                          Slider(
+                            padding: EdgeInsets.fromLTRB(0, V4rs.paddingValue(5), 0, 0),
+                            min: 1.0,
+                            max: 4.0,
+                            divisions: 3,
+                            activeColor: Cv4rs.themeColor1,
+                            inactiveColor: Cv4rs.themeColor3,
+                            thumbColor: Cv4rs.themeColor1,
+                            value: Ev4rs.format.value.toDouble(), 
+                            onChanged: (value) {
+                              Ev4rs.format.value = value.toInt();
+                              }
+                            ),
+                          ]
+                      ),
+                      );
+                    }
+                  ),
+                  ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'matchFormat', Ev4rs.matchFormat.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'format', Ev4rs.format.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save'
+                  ),
+                ]
+              )
+              ),
+            ),
+
+            //
+            //border
+            //
+
+            Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: //outer padding 
+              Container(
+                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), //inner padding 
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                child: Column( children: [
+
+                  //match border 
+                  ValueListenableBuilder<bool>(
+                    valueListenable: Ev4rs.matchBorder, 
+                    builder: (context, matchSpeakOnSelect, _) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                        Expanded(child: 
+                          Padding(
+                            padding: EdgeInsetsGeometry.fromLTRB(
+                              V4rs.paddingValue(5), V4rs.paddingValue(10), 
+                              V4rs.paddingValue(5), 
+                              V4rs.paddingValue(20)), 
+                              child: Text(
+                                'Match Border:', 
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Sv4rs.settingslabelStyle,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
+                          child: Switch(
+                            padding: EdgeInsets.all(0),
+                            value: Ev4rs.matchBorder.value, 
+                            onChanged: (value) {
+                              Ev4rs.matchBorder.value = value;
+                            }
+                          ),
+                        ),
+                      ]
+                      );
+                    }
+                  ),
+
+                  //border weight 
+                  ValueListenableBuilder<double>(
+                    valueListenable: Ev4rs.borderWeight, 
+                    builder: (context, borderWeight, _) {
+                      return Column (children: [
+                      Text('Border Weight: ${Ev4rs.borderWeight.value}', style: Sv4rs.settingslabelStyle),
+                      Slider(
+                            padding: EdgeInsets.fromLTRB(V4rs.paddingValue(5), 0, V4rs.paddingValue(5), 0),
+                            min: 0.0,
+                            max: 10.0,
+                            divisions: 20,
+                            activeColor: Cv4rs.themeColor1,
+                            inactiveColor: Cv4rs.themeColor3,
+                            thumbColor: Cv4rs.themeColor1,
+                            label: 'Border Weight: ${Ev4rs.borderWeight.value}',
+                            value: Ev4rs.borderWeight.value.toDouble(), 
+                            onChanged: (value) {
+                              Ev4rs.borderWeight.value = value;
+                              }
+                      )
+                      ]
+                            );
+                    }
+                  ),
+
+                  //border color
+                  ValueListenableBuilder<Color>(
+                    valueListenable: Ev4rs.borderColor, 
+                    builder: (context, borderColor, _) {
+                      return ExpansionTile(
+                    tilePadding: EdgeInsets.all(0),
+                    title: Row(
+                        children: [
+                          Expanded(child: 
+                          Text('Border Color:', style: Sv4rs.settingslabelStyle,),
+                          ),
+                          CircleAvatar(
+                            backgroundColor: Cv4rs.themeColor3,
+                            radius: 20,
+                            child: Icon(Icons.circle, color: Ev4rs.borderColor.value, size: 40, shadows: [
+                              Shadow(
+                                color: Cv4rs.themeColor4,
+                                blurRadius: 4,
+                              ),
+                            ],),
+                          ),
+                        ]
+                      ),
+                    children: [
+                      Column(children:[
+                      //hexcode input
+                      Padding(
+                        padding: EdgeInsetsGeometry.symmetric(
+                          horizontal: V4rs.paddingValue(10), 
+                          vertical: V4rs.paddingValue(20)
+                        ),
+                        child: HexCodeInput2(
+                          startValue: Ev4rs.borderColor.value.toHexString(),
+                          textStyle: Sv4rs.settingslabelStyle,
+                          hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
+                          onColorChanged: (color) { 
+                            Ev4rs.borderColor.value = color;
+                          },
+                        ),
+                      ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: 
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:[ 
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('Scroll horizontally here...', 
+                                style: Sv4rs.settingsSecondaryLabelStyle,
+                                ),
+                              SizedBox(height: 30,),
+                            ]
+                          ),
+                          GestureDetector(
+                            onVerticalDragStart: (_) {},
+                            onVerticalDragUpdate: (_) {},
+                            onVerticalDragEnd: (_) {},
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              child: ColorPicker(
+                                pickerColor: Ev4rs.borderColor.value, 
+                                enableAlpha: true,
+                                displayThumbColor: false,
+                                labelTypes: ColorLabelType.values,
+                                onColorChanged: (color) { 
+                                  Ev4rs.borderColor.value = color;
+                                },
+                              ),
+                            ),
+                          ),
+                        ]
+                      ),
+                    ),
+                  ] 
+                  ),
+                ]
+                );
+                    }
+                  ),
+                  
+                  //save 
+                  ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'borderWeight', Ev4rs.borderWeight.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'matchBorder', Ev4rs.matchBorder.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'borderColor', Ev4rs.borderColor.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save'
+                  ),
+                ]
+              )
+              ),
+            ),
+
+            //background
+            
+            Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: //outer padding 
+              Container(
+                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), //inner padding 
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                child: Column( children: [
+
+                  //match border 
+                  ValueListenableBuilder<bool>(
+                    valueListenable: Ev4rs.matchBackground, 
+                    builder: (context, matchBackground, _) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                        Expanded(child: 
+                          Padding(
+                            padding: EdgeInsetsGeometry.fromLTRB(
+                              V4rs.paddingValue(5), 
+                              V4rs.paddingValue(10), 
+                              V4rs.paddingValue(5), 
+                              V4rs.paddingValue(10)
+                            ), 
+                              child: Text(
+                                'Match Color:', 
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: Sv4rs.settingslabelStyle,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
+                          child: Switch(
+                            padding: EdgeInsets.all(0),
+                            value: Ev4rs.matchBackground.value,
+                            onChanged: (value) {
+                              Ev4rs.matchBackground.value = value;
+                            }
+                          ),
+                        ),
+                      ]
+                      );
+                    }
+                  ),
+
+                  //border color
+                  ValueListenableBuilder<Color>(
+                    valueListenable: Ev4rs.backgroundColor, 
+                    builder: (context, backgroundColor, _) {
+                      return ExpansionTile(
+                    tilePadding: EdgeInsets.all(0),
+                    title: Row(
+                        children: [
+                          Expanded(child: 
+                          Text('Button Color:', style: Sv4rs.settingslabelStyle,),
+                          ),
+                          CircleAvatar(
+                            backgroundColor: Cv4rs.themeColor3,
+                            radius: 20,
+                            child: Icon(Icons.circle, color: Ev4rs.backgroundColor.value, size: 40, shadows: [
+                              Shadow(
+                                color: Cv4rs.themeColor4,
+                                blurRadius: 4,
+                              ),
+                            ],),
+                          ),
+                        ]
+                      ),
+
+                    children: [
+                      Column(children:[
+                      //hexcode input
+                      Padding(
+                        padding: EdgeInsetsGeometry.symmetric(
+                          horizontal: V4rs.paddingValue(10), 
+                          vertical: V4rs.paddingValue(20)
+                        ),
+                        child: HexCodeInput2(
+                          startValue: Ev4rs.backgroundColor.value.toHexString(),
+                          textStyle: Sv4rs.settingslabelStyle,
+                          hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
+                          onColorChanged: (color) { 
+                            Ev4rs.backgroundColor.value = color;
+                          },
+                        ),
+                      ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: 
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:[ 
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('Scroll horizontally here...', 
+                                style: Sv4rs.settingsSecondaryLabelStyle,
+                                ),
+                              SizedBox(height: 30,),
+                            ]
+                          ),
+                          GestureDetector(
+                            onVerticalDragStart: (_) {},
+                            onVerticalDragUpdate: (_) {},
+                            onVerticalDragEnd: (_) {},
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              child: ColorPicker(
+                                pickerColor: Ev4rs.backgroundColor.value, 
+                                enableAlpha: true,
+                                displayThumbColor: false,
+                                labelTypes: ColorLabelType.values,
+                                onColorChanged: (color) { 
+                                  Ev4rs.backgroundColor.value = color;
+                                },
+                              ),
+                            ),
+                          ),
+                        ]
+                      ),
+                    ),
+                  ] 
+                  ),
+                ]
+                );
+                    }
+                  ),
+                  
+                  //save 
+                  ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'matchPOS', Ev4rs.matchBackground.value);
+                        widget.saveField(root, Ev4rs.navSelectedUUID, 'backgroundColor', Ev4rs.backgroundColor.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save'
+                  ),
+                ]
+              )
+              ),
+            ),
+          ]
+          );
+      }
+      
+      Widget typeColumn(Root root, dynamic mapOfBoards, NavObjects obj_){
+          //
+          //pos, button type -> link, return after select, grammer func, mp3
+          //
+        return Column( children:[
+          //part of speech
+          
+          Padding(
+            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child: SizedBox( child:
+              Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                  child:  ValueListenableBuilder<String>(
+                  valueListenable: Ev4rs.pos, 
+                  builder: (context, pos, _) {
+                    return 
+                  Column(children: [
+                    SizedBox(child:
+                    Padding (
+                      padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
+                      child: Text(
+                        'Part of Speech:', 
+                        style: Sv4rs.settingslabelStyle,
+                        ),
+                    ),
+                    ),
+                    Padding(padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(10)), child:
+                    DropdownButton<String>(
+                      isExpanded: true,
+                      hint: SizedBox(child: Text(
+                        'Part of Speech:', 
+                        style: Sv4rs.settingslabelStyle,
+                        ),),
+                      value: Ev4rs.pos.value.toLowerCase(),
+                      items: Gv4rs.partOfSpeechList.map((item) {
+                        return DropdownMenuItem<String>(
+                          value: item,
+                          child: SizedBox(child: Text(
+                            item,
+                            style: Sv4rs.settingslabelStyle,
+                            overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                        onChanged: (value) {
+                          if (value != null) {
+                          Ev4rs.pos.value = value;
+                        }
+                        }
+                    ),
+                    ),
+                //save 
+                ButtonStyle2(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                  onPressed: (){setState(() {
+                      widget.saveField(root, Ev4rs.navSelectedUUID, 'pos', Ev4rs.pos.value);
+                      Ev4rs.saveJson(root);
+                      });
+                  }, 
+                  label: 'Save'
+                ),
+                  ]);
+                }),
+        
+          ),
+            ),
+          ),
+          
+          Padding(
+            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child: 
+              Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                  child:  ValueListenableBuilder<String>(
+                  valueListenable: Ev4rs.link, 
+                  builder: (context, link, _) {
+                    return
+                  Column(children: [
+                    Padding (
+                      padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
+                      child: Text(
+                        'Link To...', 
+                        style: Sv4rs.settingslabelStyle,
+                        ),
+                    ),
+                    Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child: 
+                    DropdownButton<String>(
+                      isExpanded: true,
+                        hint: Text(
+                          'link to...', 
+                          style: Sv4rs.settingslabelStyle,
+                        ),
+                        value: Ev4rs.link.value,
+                        items: [
+                          DropdownMenuItem<String>(
+                            value: '',
+                            child: 
+                            Text('none', style: Sv4rs.settingslabelStyle),
+                          ),
+                        ...mapOfBoards.entries.map((entry) {
+                          return DropdownMenuItem<String>(
+                            value: entry.value,
+                            child: Text(
+                              entry.key, 
+                              style: Sv4rs.settingslabelStyle,
+                            ),
+                          );
+                        })
+                        ],
+                        onChanged: (value) {
+                          if (value != null) {
+                            Ev4rs.link.value = value;
+                            Ev4rs.linkLabel.value = mapOfBoards.entries.firstWhere((element) => element.value == value).key;
+                          }
+                        },
+                      ),
+                    ),
+                    //save 
+                    ButtonStyle2(
+                      imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                      onPressed: (){setState(() {
+                          widget.saveField(root, Ev4rs.navSelectedUUID, 'linkToUUID', Ev4rs.link.value);
+                          widget.saveField(root, Ev4rs.navSelectedUUID, 'linkToLabel', Ev4rs.linkLabel.value);
+                          Ev4rs.saveJson(root);
+                          });
+                      }, 
+                      label: 'Save'
+                    ),
+                  ]);
+                }),
+              ),
+            ),
+
+          //notes
+          Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+          child:
+            Container(
+              decoration: BoxDecoration(
+                color: Cv4rs.themeColor4,
+                borderRadius: BorderRadius.circular(10)
+                ),
+              child: Column(children: [
+                Row(children: [ 
+                  Expanded(flex: 5, child: 
+                    Padding(padding: EdgeInsetsGeometry.symmetric(
+                        horizontal: V4rs.paddingValue(10), 
+                        vertical: V4rs.paddingValue(10)
+                      ), child: 
+                      ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
+                  final notesController = TextEditingController(text: value)
+                  ..selection = TextSelection.collapsed(offset: value.length);
+
+                  return 
+                TextField(
+                  controller: notesController,
+                        minLines: 1,
+                        maxLines: 5,
+                        style: Sv4rs.settingslabelStyle,
+                        onChanged: (value){
+                          Ev4rs.notes.value = value;
+                        },
+                        decoration: InputDecoration(
+                        hintStyle: Sv4rs.settingslabelStyle,
+                        hintText: 'Notes... ${Ev4rs.notes.value}',
+                        ),
+                      );
+                      }),
+                    ),
+                  ),
+                  Flexible(flex: 2, child: 
+                  Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
+                  ButtonStyle4(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                      widget.saveField(root, Ev4rs.navSelectedUUID, 'note', Ev4rs.notes.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save'
+                    ),
+                  ),
+                  ),
+              ],
+              ),
+            ]
+              
+            ))),
+
+         ]
+        ); 
+      }
+
+     
       @override
       Widget build(BuildContext context) {
         Root root = widget.root;
-        final screenSize = MediaQuery.of(context).size;
-        final isLandscape = screenSize.width > screenSize.height;
-
-
+        
             everyImage = Ev4rs.getAllImages(root);
           
 
@@ -2762,1475 +3537,97 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
             Widget image = LoadImage.fromSymbol(obj_.symbol);
 
 
-        return Stack( children: [
-              
-            Row( 
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              //
-              //back, in positioned is the tap expander
-              //
-              Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)),
-              child: SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.065 : MediaQuery.of(context).size.height * 0.03 ,
-                child: ButtonStyle1(
-                  imagePath: 'assets/interface_icons/interface_icons/iBack.png', 
-                  onPressed: () {
-                  setState(() {
-                    Ev4rs.closeEditorAction();
-                  });
-                  }
-                ),
-              ),
-              ),
+        return BaseEditor(
+          root: root,
+          windowWidget: Row( 
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-              //
-              //Image, image padding, image overlay settings
-              //
-              ValueListenableBuilder(
-                valueListenable: CombinedValueNotifier(
-                    Ev4rs.padding, Ev4rs.overlay, Ev4rs.contrast, 
-                    Ev4rs.invert, Ev4rs.saturation, Ev4rs.matchContrast, 
-                    Ev4rs.matchInvert, Ev4rs.matchOverlay, Ev4rs.matchSaturation
-                  ), 
-                builder: (context, values, _) {
-              return Expanded(flex: 8, child: 
-                Column( children:[
-                  //
-                  //image
-                  //
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: 
-                          Container(
-                            width: MediaQuery.of(context).size.height * 0.25,
-                            decoration: BoxDecoration(
-                              color: Cv4rs.themeColor4,
-                              borderRadius: BorderRadius.circular(10)
-                              ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(child: Padding(
-                                  padding: EdgeInsetsGeometry.all(V4rs.paddingValue(Ev4rs.padding.value)), 
-                                  child: ImageStyle1(
-                                      image: image, 
-                                      symbolSaturation: Ev4rs.saturation.value, 
-                                      symbolContrast: Ev4rs.contrast.value, 
-                                      invertSymbolColors: Ev4rs.invert.value, 
-                                      overlayColor: Ev4rs.overlay.value, 
-                                      matchOverlayColor: Ev4rs.matchOverlay.value, 
-                                      matchSymbolContrast: Ev4rs.matchContrast.value, 
-                                      matchSymbolInvert: Ev4rs.matchInvert.value, 
-                                      matchSymbolSaturation: Ev4rs.matchSaturation.value,
-                                      defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
-                                      defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
-                                      defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
-                                      defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
-                                      )
-                                  ),
-                                ),
-                                Flexible(child: 
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
-                                        SizedBox( 
-                                          width: MediaQuery.of(context).size.height * 0.08,
-                                          child: ButtonStyle3(
-                                            imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png', 
-                                            onPressed: () async {
-                                              Ev4rs.navPickImage(widget.saveField, root, _picker);
-                                              if (everyImage.isNotEmpty) {
-                                              //await Ev4rs.cleanupUnusedImages(everyImage);
-                                              } 
-                                            }, 
-                                            label: 'Photo Lib'
-                                          ),
-                                        ),
-                                      ),
-                                  Visibility(
-                                    visible: false,
-                                    maintainSize: true,
-                                    maintainAnimation: true,
-                                    maintainState: true,
-                                    child: Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child:
-                                    SizedBox( 
-                                      width: MediaQuery.of(context).size.height * 0.07,
-                                      child: ButtonStyle3(
-                                      imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png', 
-                                      onPressed: () async {
-                                        Ev4rs.navPickImage(widget.saveField, root, _picker);
-                                        if (everyImage.isNotEmpty) {
-                                         // await Ev4rs.cleanupUnusedImages(everyImage);
-                                        } 
-                                      }, 
-                                      label: 'App Lib'
-                                      )
-                                    ),
-                                  ),
-                                  ),
-                              ]
-                              )
-                              ),
-                            ]),
-                          ),
-                  ),
+            if (!V4rs.smallEditorMode)
+            Expanded(
+              flex: 29,
+              child: 
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-                  //
-                  //padding
-                  //
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                  child:
-                  SizedBox( 
-                    width: MediaQuery.of(context).size.height * 0.25,
-                    child: 
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child:
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(padding: EdgeInsets.all(V4rs.paddingValue(10)), child: 
-                        Column(children: [
-                        Text('Image Padding: ${Ev4rs.padding.value}', style: Sv4rs.settingslabelStyle,),
-                        Slider(
-                              padding: EdgeInsets.fromLTRB(
-                                V4rs.paddingValue(10), 
-                                V4rs.paddingValue(10), 
-                                V4rs.paddingValue(10), 
-                                0
-                              ),
-                              value: Ev4rs.padding.value,
-                              min: 0.0,
-                              max: 10.0,
-                              divisions: 11,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Image Padding: ${Ev4rs.padding.value}',
-                              onChanged: (value) {
-                                Ev4rs.padding.value = value.roundToDouble();
-                              }
-                          ),
-                        ])
-                        ),
-                        ButtonStyle2(
-                        imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'padding', Ev4rs.padding.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save Padding'
-                          ),
-                        ]),
+                Expanded(flex: 8, child:  imageColumn(image, root)),
+                //Image, 
+                //image padding, 
+                //image overlay settings
+
+                Expanded(flex: 7, child: textColumn(obj_, root)),
+                //label, 
+                //message, 
+                //speak on select, 
+                //font
+
+                Expanded(flex: 7, child: formatColumn(root)),
+                //show, 
+                //format, 
+                //border, 
+                //background
+
+                Expanded(flex: 7, child: typeColumn(root, mapOfBoards, obj_)),
+                //pos, 
+                //button type
+                //button type qualities
+                //notes
+
+              ]
+              ),
+            ),
+
+            if (V4rs.smallEditorMode)
+            Expanded(
+              flex: 29,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 15,
+                    child: Column(children: [
+
+                      imageColumn(image, root),
+                      //Image, 
+                      //image padding, 
+                      //image overlay settings
+
+                      formatColumn(root),
+                      //show, 
+                      //format, 
+                      //border, 
+                      //background
+
+                    ]
                     ),
                   ),
-                  ),
 
-                  //
-                  //symbolColors
-                  //
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                  child:
-                  SizedBox(
-                    child:
-                  SymbolColorCustomizer2(
-                    widgety: 
-                    ButtonStyle2(
-                        imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'matchOverlayColor', Ev4rs.matchOverlay.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'overlayColor', Ev4rs.overlay.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'matchSymbolSaturation', Ev4rs.matchSaturation.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'symbolSaturation', Ev4rs.saturation.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'matchSymbolContrast', Ev4rs.matchContrast.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'symbolContrast', Ev4rs.contrast.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'matchInvertSymbol', Ev4rs.matchInvert.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'invertSymbol', Ev4rs.invert.value);
-                              
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save Adjustments'
-                          ),
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    additionalHeight: MediaQuery.of(context).size.height * 0.8,
-                    width: MediaQuery.of(context).size.height * 0.25,
-                    invert: Ev4rs.invert.value, 
-                    overlay: Ev4rs.overlay.value,
-                    saturation: Ev4rs.saturation.value, 
-                    contrast: Ev4rs.contrast.value, 
-                    matchContrast: Ev4rs.matchContrast.value,
-                    matchInvert: Ev4rs.matchInvert.value,
-                    matchOverlay: Ev4rs.matchOverlay.value,
-                    matchSaturation: Ev4rs.matchSaturation.value,
-                    onContrastChanged: (value){
-                      Ev4rs.contrast.value = value;
-                    }, 
-                    onInvertChanged: (value){
-                      Ev4rs.invert.value = value;
-                    },
-                    onOverlayChanged: (value){
-                      Ev4rs.overlay.value = value;
-                    },
-                    onSaturationChanged: (value){
-                      Ev4rs.saturation.value = value;
-                    },
-                    onMatchContrastChanged: (value){
-                      Ev4rs.matchContrast.value = value;
-                    }, 
-                    onMatchInvertChanged: (value){
-                      Ev4rs.matchInvert.value = value;
-                    },
-                    onMatchOverlayChanged: (value){
-                      Ev4rs.matchOverlay.value = value;
-                    },
-                    onMatchSaturationChanged: (value){
-                      Ev4rs.matchSaturation.value = value;
-                    },
-                    )
+                  Expanded(
+                    flex: 14,
+                    child: Column(children: [
+
+                    textColumn(obj_, root),
+                    //label, 
+                    //message, 
+                    //speak on select, 
+                    //font
+
+                    typeColumn(root, mapOfBoards, obj_),
+                    //pos, 
+                    //button type
+                    //button type qualities
+                    //notes
+
+                  ]
                   )
                   ),
-                  
-
                 ]
-                ),
-              );
-              }
+              ),
             ),
-              
-              //
-              //label, alternate label, speak on select, font
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
-                  //label and message
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column(children: [
-                        //label
-                        Row(children: [ 
-                          Expanded(flex: 5, child: 
-                            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
-                                 ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
-                          final labelController = TextEditingController(text: value)
-                          ..selection = TextSelection.collapsed(offset: value.length);
-
-                          return 
-                        TextField(
-                          controller: labelController,
-                                style: Ev4rs.labelStyle,
-                                onChanged: (value){
-                                  Ev4rs.label.value = value;
-                                },
-                                decoration: InputDecoration(
-                                hintStyle: Ev4rs.hintLabelStyle,
-                                hintText: '${obj_.label}',
-                                ),
-                              );
-                                 }),
-                            ),
-                          ),
-                          Flexible(flex: 2, child: 
-                          Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
-                          ButtonStyle4(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                            onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'label', Ev4rs.label.value);
-                              Ev4rs.saveJson(root);
-                              });
-                            }, 
-                            label: 'Save'
-                            ),
-                          ),
-                          ),
-                        ],
-                      ),
-                        //alternate label
-                        Row(children: [ 
-                          Expanded(
-                            flex: 5,
-                            child: 
-                            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
-                              ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
-                          final alternateController = TextEditingController(text: value)
-                          ..selection = TextSelection.collapsed(offset: value.length);
-
-                          return 
-                        TextField(
-                          controller: alternateController,
-                                style: Ev4rs.labelStyle,
-                                onChanged: (value){
-                                  Ev4rs.alternateLabel.value = value;
-                                },
-                                decoration: InputDecoration(
-                                hintStyle: Ev4rs.hintLabelStyle,
-                                hintText: '${obj_.alternateLabel}',
-                                ),
-                              );
-                              }),
-                            ),
-                          ),
-                        Flexible(
-                          flex: 2,
-                          child: 
-                          Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
-                        ButtonStyle4(
-                        imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'alternateLabel', Ev4rs.alternateLabel.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                          ),
-                          ),
-                        ),
-                      ]
-                      ),
-                    ]
-                    )
-                    )
-                    ),
-                  
-                  //match speak on select, speak on select
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column( children: [
-                        ValueListenableBuilder<bool>(
-                          valueListenable: Ev4rs.matchSpeakOnSelect, 
-                          builder: (context, matchSpeakOnSelect, _) {
-                            return Row(children: [
-                              Expanded(child: 
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(
-                                  V4rs.paddingValue(10), 
-                                  V4rs.paddingValue(10), V4rs.paddingValue(10), 0), 
-                                child: Text(
-                                  'Match Speak on Select:', 
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Sv4rs.settingslabelStyle,
-                                  textAlign: TextAlign.center,
-                                ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
-                                child: Switch(
-                                  padding: EdgeInsets.all(0),
-                                  value: Ev4rs.matchSpeakOnSelect.value, 
-                                  onChanged: (value) {
-                                    Ev4rs.matchSpeakOnSelect.value = value;
-                                  }
-                                ),
-                              ),
-                            ]
-                            );
-                          }
-                        ),
-                        ValueListenableBuilder<int>(
-                          valueListenable: Ev4rs.speakOnSelect, 
-                          builder: (context, speakOnSelect, _) {
-                            return Padding(
-                              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                              child: Column(children: [
-                                Slider(
-                                  padding: EdgeInsets.fromLTRB(V4rs.paddingValue(5), 0, V4rs.paddingValue(5), 0),
-                                  min: 1.0,
-                                  max: 3.0,
-                                  divisions: 2,
-                                  activeColor: Cv4rs.themeColor1,
-                                  inactiveColor: Cv4rs.themeColor3,
-                                  thumbColor: Cv4rs.themeColor1,
-                                  label: 'Speak on Select: ${Ev4rs.speakOnSelect.value}',
-                                  value: Ev4rs.speakOnSelect.value.toDouble(), 
-                                  onChanged: (value) {
-                                    Ev4rs.speakOnSelect.value = value.toInt();
-                                    }
-                                  ),
-                                Padding(
-                                  padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(10)), 
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                    Expanded(child: 
-                                      Text(
-                                        "Off", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Expanded(child: 
-                                      Text(
-                                        "Speak Label", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Expanded(child: 
-                                      Text(
-                                        "Speak Alt. Label", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ]
-                                  ), 
-                                ),
-                                ButtonStyle2(
-                                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                                  onPressed: (){setState(() {
-                                      widget.saveField(root, Ev4rs.navSelectedUUID, 'matchSpeakOS', Ev4rs.matchSpeakOnSelect.value);
-                                      widget.saveField(root, Ev4rs.navSelectedUUID, 'speakOS', Ev4rs.speakOnSelect.value);
-                                      Ev4rs.saveJson(root);
-                                      });
-                                  }, 
-                                  label: 'Save'
-                                ),
-                              ]
-                            ),
-                            );
-                          }
-                        ),
-                        
-                      ]
-                    )
-                    )
-                  ),
-                  //font, match font settings, font picker
-                  Padding(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                      child: FontPicker2(
-                        widgety:  ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                            onPressed: (){setState(() {
-                                widget.saveField(root, Ev4rs.navSelectedUUID, 'matchFont', Ev4rs.matchFont.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUID, 'fontSize', Ev4rs.fontSize.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUID, 'fontItalics', Ev4rs.fontItalics.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUID, 'fontUnderline', Ev4rs.fontUnderline.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUID, 'fontWeight', Ev4rs.fontWeight.value.toInt(),);
-                                widget.saveField(root, Ev4rs.navSelectedUUID, 'fontFamily', Ev4rs.fontFamily.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUID, 'fontColor', Ev4rs.fontColor.value);
-                                Ev4rs.saveJson(root);
-                                });
-                            }, 
-                            label: 'Save Button Font'
-                            ),
-                            matchFontSet: Ev4rs.matchFont.value,
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            size: Ev4rs.fontSize.value, 
-                            sizeMax: 25,
-                            sizeMin: 5,
-                            divisions: 20,
-                            weight: (Ev4rs.fontWeight.value).toInt(), 
-                            italics: Ev4rs.fontItalics.value, 
-                            font: Ev4rs.fontFamily.value, 
-                            label: 'Button Font:', 
-                            color: Ev4rs.fontColor.value, 
-                            underline: Ev4rs.fontUnderline.value,
-                            onSizeChanged: (value) {
-                              Ev4rs.fontSize.value = value;
-                              }, 
-                            onWeightChanged: (value) {
-                              Ev4rs.fontWeight.value = value.toDouble();
-                              },
-                            onItalicsChanged: (value) {
-                              Ev4rs.fontItalics.value = value;
-                              },
-                            onFontChanged: (value) {
-                              Ev4rs.fontFamily.value = value;
-                              },
-                            onColorChanged: (value) {
-                              Ev4rs.fontColor.value = value.toColor() ?? Cv4rs.themeColor1;
-                              },
-                            onMatchFont: (value) {
-                              Ev4rs.matchFont.value = value;
-                              },
-                            useUnderline: true, 
-                            onUnderlineChanged: (value) {
-                              Ev4rs.fontUnderline.value = value;
-                              }, 
-                            )
-                          ),
-                ]
-              ),
-              ),
-              
-              //
-              //show, format, border, background
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
-                  
-                  //
-                  //show button
-                  //
-
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                    child: Container( 
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Column( children: [
-                        ValueListenableBuilder<bool>(
-                          valueListenable: Ev4rs.show, 
-                          builder: (context, matchSpeakOnSelect, _) {
-                            return Row(children: [
-                              Expanded(
-                                child: Text(
-                                  'Show Button:', 
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Sv4rs.settingslabelStyle,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
-                                child: Switch(
-                                  padding: EdgeInsets.all(0),
-                                  value: Ev4rs.show.value, 
-                                  onChanged: (value) {
-                                    Ev4rs.show.value = value;
-                                  }
-                                ),
-                              ),
-                              ]
-                            );
-                          }
-                        ),
-                        ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'show', Ev4rs.show.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                        ),
-                      ]
-                    )
-                    ),
-                  ),
-                  
-                  //
-                  //format
-                  //
-
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                    child: Container(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column( children: [
-                        ValueListenableBuilder<bool>(
-                          valueListenable: Ev4rs.matchFormat, 
-                          builder: (context, matchFormat, _) {
-                            return Row(children: [
-                              Expanded(child: 
-                                Padding(
-                                  padding: EdgeInsetsGeometry.fromLTRB(
-                                    V4rs.paddingValue(5), 
-                                    V4rs.paddingValue(10), 
-                                    V4rs.paddingValue(5), 
-                                    0
-                                  ),
-                                    child: Text(
-                                      'Match Format:', 
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Sv4rs.settingslabelStyle,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
-                                child: Switch(
-                                  padding: EdgeInsets.all(0),
-                                  value: Ev4rs.matchFormat.value, 
-                                  onChanged: (value) {
-                                    Ev4rs.matchFormat.value = value;
-                                  }
-                                ),
-                              ),
-                            ]
-                            );
-                          }
-                        ),
-                        ValueListenableBuilder<int>(
-                          valueListenable: Ev4rs.format, 
-                          builder: (context, format, _) {
-                            return Padding(
-                              padding: EdgeInsetsGeometry.fromLTRB(
-                                V4rs.paddingValue(5), 
-                                V4rs.paddingValue(15), 
-                                V4rs.paddingValue(5), 
-                                V4rs.paddingValue(10)
-                              ), 
-                              child: Column(children: [
-                                      Text(
-                                        "Format: ${
-                                          Ev4rs.format.value == 1 ? 
-                                            'Text Below' 
-                                          : Ev4rs.format.value == 2 ? 
-                                            'Text Above' 
-                                          : Ev4rs.format.value == 3 ? 
-                                            'Image Only' 
-                                          : Ev4rs.format.value == 4 ? 
-                                            'Text Only' 
-                                          : ''
-                                          }", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                Slider(
-                                  padding: EdgeInsets.fromLTRB(0, V4rs.paddingValue(5), 0, 0),
-                                  min: 1.0,
-                                  max: 4.0,
-                                  divisions: 3,
-                                  activeColor: Cv4rs.themeColor1,
-                                  inactiveColor: Cv4rs.themeColor3,
-                                  thumbColor: Cv4rs.themeColor1,
-                                  value: Ev4rs.format.value.toDouble(), 
-                                  onChanged: (value) {
-                                    Ev4rs.format.value = value.toInt();
-                                    }
-                                  ),
-                                ]
-                            ),
-                            );
-                          }
-                        ),
-                        ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'matchFormat', Ev4rs.matchFormat.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'format', Ev4rs.format.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                        ),
-                      ]
-                    )
-                    ),
-                  ),
-
-                  //
-                  //border
-                  //
-
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: //outer padding 
-                    Container(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), //inner padding 
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column( children: [
-
-                        //match border 
-                        ValueListenableBuilder<bool>(
-                          valueListenable: Ev4rs.matchBorder, 
-                          builder: (context, matchSpeakOnSelect, _) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                              Expanded(child: 
-                                Padding(
-                                  padding: EdgeInsetsGeometry.fromLTRB(
-                                    V4rs.paddingValue(5), V4rs.paddingValue(10), 
-                                    V4rs.paddingValue(5), 
-                                    V4rs.paddingValue(20)), 
-                                    child: Text(
-                                      'Match Border:', 
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Sv4rs.settingslabelStyle,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
-                                child: Switch(
-                                  padding: EdgeInsets.all(0),
-                                  value: Ev4rs.matchBorder.value, 
-                                  onChanged: (value) {
-                                    Ev4rs.matchBorder.value = value;
-                                  }
-                                ),
-                              ),
-                            ]
-                            );
-                          }
-                        ),
-
-                        //border weight 
-                        ValueListenableBuilder<double>(
-                          valueListenable: Ev4rs.borderWeight, 
-                          builder: (context, borderWeight, _) {
-                            return Column (children: [
-                            Text('Border Weight: ${Ev4rs.borderWeight.value}', style: Sv4rs.settingslabelStyle),
-                            Slider(
-                                  padding: EdgeInsets.fromLTRB(V4rs.paddingValue(5), 0, V4rs.paddingValue(5), 0),
-                                  min: 0.0,
-                                  max: 10.0,
-                                  divisions: 20,
-                                  activeColor: Cv4rs.themeColor1,
-                                  inactiveColor: Cv4rs.themeColor3,
-                                  thumbColor: Cv4rs.themeColor1,
-                                  label: 'Border Weight: ${Ev4rs.borderWeight.value}',
-                                  value: Ev4rs.borderWeight.value.toDouble(), 
-                                  onChanged: (value) {
-                                    Ev4rs.borderWeight.value = value;
-                                    }
-                            )
-                            ]
-                                  );
-                          }
-                        ),
-
-                        //border color
-                        ValueListenableBuilder<Color>(
-                          valueListenable: Ev4rs.borderColor, 
-                          builder: (context, borderColor, _) {
-                            return ExpansionTile(
-                          tilePadding: EdgeInsets.all(0),
-                          title: Row(
-                              children: [
-                                Expanded(child: 
-                                Text('Border Color:', style: Sv4rs.settingslabelStyle,),
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: Cv4rs.themeColor3,
-                                  radius: 20,
-                                  child: Icon(Icons.circle, color: Ev4rs.borderColor.value, size: 40, shadows: [
-                                    Shadow(
-                                      color: Cv4rs.themeColor4,
-                                      blurRadius: 4,
-                                    ),
-                                  ],),
-                                ),
-                              ]
-                            ),
-                          children: [
-                            Column(children:[
-                            //hexcode input
-                            Padding(
-                              padding: EdgeInsetsGeometry.symmetric(
-                                horizontal: V4rs.paddingValue(10), 
-                                vertical: V4rs.paddingValue(20)
-                              ),
-                              child: HexCodeInput2(
-                                startValue: Ev4rs.borderColor.value.toHexString(),
-                                textStyle: Sv4rs.settingslabelStyle,
-                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
-                                onColorChanged: (color) { 
-                                  Ev4rs.borderColor.value = color;
-                                },
-                              ),
-                            ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: 
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children:[ 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text('Scroll horizontally here...', 
-                                      style: Sv4rs.settingsSecondaryLabelStyle,
-                                      ),
-                                    SizedBox(height: 30,),
-                                  ]
-                                ),
-                                GestureDetector(
-                                  onVerticalDragStart: (_) {},
-                                  onVerticalDragUpdate: (_) {},
-                                  onVerticalDragEnd: (_) {},
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.3,
-                                    child: ColorPicker(
-                                      pickerColor: Ev4rs.borderColor.value, 
-                                      enableAlpha: true,
-                                      displayThumbColor: false,
-                                      labelTypes: ColorLabelType.values,
-                                      onColorChanged: (color) { 
-                                        Ev4rs.borderColor.value = color;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]
-                            ),
-                          ),
-                        ] 
-                        ),
-                      ]
-                      );
-                          }
-                        ),
-                        
-                        //save 
-                        ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'borderWeight', Ev4rs.borderWeight.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'matchBorder', Ev4rs.matchBorder.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'borderColor', Ev4rs.borderColor.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                        ),
-                      ]
-                    )
-                    ),
-                  ),
-
-                  //background
-                  
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: //outer padding 
-                    Container(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), //inner padding 
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column( children: [
-
-                        //match border 
-                        ValueListenableBuilder<bool>(
-                          valueListenable: Ev4rs.matchBackground, 
-                          builder: (context, matchBackground, _) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                              Expanded(child: 
-                                Padding(
-                                  padding: EdgeInsetsGeometry.fromLTRB(
-                                    V4rs.paddingValue(5), 
-                                    V4rs.paddingValue(10), 
-                                    V4rs.paddingValue(5), 
-                                    V4rs.paddingValue(10)
-                                  ), 
-                                    child: Text(
-                                      'Match Color:', 
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Sv4rs.settingslabelStyle,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
-                                child: Switch(
-                                  padding: EdgeInsets.all(0),
-                                  value: Ev4rs.matchBackground.value,
-                                  onChanged: (value) {
-                                    Ev4rs.matchBackground.value = value;
-                                  }
-                                ),
-                              ),
-                            ]
-                            );
-                          }
-                        ),
-
-                        //border color
-                        ValueListenableBuilder<Color>(
-                          valueListenable: Ev4rs.backgroundColor, 
-                          builder: (context, backgroundColor, _) {
-                            return ExpansionTile(
-                          tilePadding: EdgeInsets.all(0),
-                          title: Row(
-                              children: [
-                                Expanded(child: 
-                                Text('Button Color:', style: Sv4rs.settingslabelStyle,),
-                                ),
-                                CircleAvatar(
-                                  backgroundColor: Cv4rs.themeColor3,
-                                  radius: 20,
-                                  child: Icon(Icons.circle, color: Ev4rs.backgroundColor.value, size: 40, shadows: [
-                                    Shadow(
-                                      color: Cv4rs.themeColor4,
-                                      blurRadius: 4,
-                                    ),
-                                  ],),
-                                ),
-                              ]
-                            ),
-
-                          children: [
-                            Column(children:[
-                            //hexcode input
-                            Padding(
-                              padding: EdgeInsetsGeometry.symmetric(
-                                horizontal: V4rs.paddingValue(10), 
-                                vertical: V4rs.paddingValue(20)
-                              ),
-                              child: HexCodeInput2(
-                                startValue: Ev4rs.backgroundColor.value.toHexString(),
-                                textStyle: Sv4rs.settingslabelStyle,
-                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
-                                onColorChanged: (color) { 
-                                  Ev4rs.backgroundColor.value = color;
-                                },
-                              ),
-                            ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: 
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children:[ 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text('Scroll horizontally here...', 
-                                      style: Sv4rs.settingsSecondaryLabelStyle,
-                                      ),
-                                    SizedBox(height: 30,),
-                                  ]
-                                ),
-                                GestureDetector(
-                                  onVerticalDragStart: (_) {},
-                                  onVerticalDragUpdate: (_) {},
-                                  onVerticalDragEnd: (_) {},
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.3,
-                                    child: ColorPicker(
-                                      pickerColor: Ev4rs.backgroundColor.value, 
-                                      enableAlpha: true,
-                                      displayThumbColor: false,
-                                      labelTypes: ColorLabelType.values,
-                                      onColorChanged: (color) { 
-                                        Ev4rs.backgroundColor.value = color;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ]
-                            ),
-                          ),
-                        ] 
-                        ),
-                      ]
-                      );
-                          }
-                        ),
-                        
-                        //save 
-                        ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'matchPOS', Ev4rs.matchBackground.value);
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'backgroundColor', Ev4rs.backgroundColor.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                        ),
-                      ]
-                    )
-                    ),
-                  ),
-                ]
-                ),
-              ),
-              
-              //
-              //pos, button type -> link, return after select, grammer func, mp3
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
-                  //part of speech
-                  
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: SizedBox( child:
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Cv4rs.themeColor4,
-                          borderRadius: BorderRadius.circular(10)
-                          ),
-                          child:  ValueListenableBuilder<String>(
-                          valueListenable: Ev4rs.pos, 
-                          builder: (context, pos, _) {
-                            return 
-                          Column(children: [
-                            SizedBox(child:
-                            Padding (
-                              padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
-                              child: Text(
-                                'Part of Speech:', 
-                                style: Sv4rs.settingslabelStyle,
-                                ),
-                            ),
-                            ),
-                            Padding(padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(10)), child:
-                            DropdownButton<String>(
-                              isExpanded: true,
-                              hint: SizedBox(child: Text(
-                                'Part of Speech:', 
-                                style: Sv4rs.settingslabelStyle,
-                                ),),
-                              value: Ev4rs.pos.value.toLowerCase(),
-                              items: Gv4rs.partOfSpeechList.map((item) {
-                                return DropdownMenuItem<String>(
-                                  value: item,
-                                  child: SizedBox(child: Text(
-                                    item,
-                                    style: Sv4rs.settingslabelStyle,
-                                    overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                                onChanged: (value) {
-                                  if (value != null) {
-                                  Ev4rs.pos.value = value;
-                                }
-                                }
-                            ),
-                            ),
-                        //save 
-                        ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'pos', Ev4rs.pos.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
-                        ),
-                          ]);
-                        }),
-                
-                  ),
-                    ),
-                  ),
-                  
-                  Padding(
-                    padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: 
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Cv4rs.themeColor4,
-                          borderRadius: BorderRadius.circular(10)
-                          ),
-                          child:  ValueListenableBuilder<String>(
-                          valueListenable: Ev4rs.link, 
-                          builder: (context, link, _) {
-                            return
-                          Column(children: [
-                            Padding (
-                              padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.paddingValue(15),0,0),
-                              child: Text(
-                                'Link To...', 
-                                style: Sv4rs.settingslabelStyle,
-                                ),
-                            ),
-                            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10)), child: 
-                            DropdownButton<String>(
-                              isExpanded: true,
-                                hint: Text(
-                                  'link to...', 
-                                  style: Sv4rs.settingslabelStyle,
-                                ),
-                                value: Ev4rs.link.value,
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value: '',
-                                    child: 
-                                    Text('none', style: Sv4rs.settingslabelStyle),
-                                  ),
-                                ...mapOfBoards.entries.map((entry) {
-                                  return DropdownMenuItem<String>(
-                                    value: entry.value,
-                                    child: Text(
-                                      entry.key, 
-                                      style: Sv4rs.settingslabelStyle,
-                                    ),
-                                  );
-                                })
-                                ],
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    Ev4rs.link.value = value;
-                                    Ev4rs.linkLabel.value = mapOfBoards.entries.firstWhere((element) => element.value == value).key;
-                                  }
-                                },
-                              ),
-                            ),
-                            //save 
-                            ButtonStyle2(
-                              imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                              onPressed: (){setState(() {
-                                  widget.saveField(root, Ev4rs.navSelectedUUID, 'linkToUUID', Ev4rs.link.value);
-                                  widget.saveField(root, Ev4rs.navSelectedUUID, 'linkToLabel', Ev4rs.linkLabel.value);
-                                  Ev4rs.saveJson(root);
-                                  });
-                              }, 
-                              label: 'Save'
-                            ),
-                          ]);
-                        }),
-                      ),
-                    ),
-
-                  //notes
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                  child:
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column(children: [
-                        Row(children: [ 
-                          Expanded(flex: 5, child: 
-                            Padding(padding: EdgeInsetsGeometry.symmetric(
-                                horizontal: V4rs.paddingValue(10), 
-                                vertical: V4rs.paddingValue(10)
-                              ), child: 
-                              ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
-                          final notesController = TextEditingController(text: value)
-                          ..selection = TextSelection.collapsed(offset: value.length);
-
-                          return 
-                        TextField(
-                          controller: notesController,
-                                minLines: 1,
-                                maxLines: 5,
-                                style: Sv4rs.settingslabelStyle,
-                                onChanged: (value){
-                                  Ev4rs.notes.value = value;
-                                },
-                                decoration: InputDecoration(
-                                hintStyle: Sv4rs.settingslabelStyle,
-                                hintText: 'Notes... ${Ev4rs.notes.value}',
-                                ),
-                              );
-                              }),
-                            ),
-                          ),
-                          Flexible(flex: 2, child: 
-                          Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
-                          ButtonStyle4(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                            onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUID, 'note', Ev4rs.notes.value);
-                                Ev4rs.saveJson(root);
-                                });
-                            }, 
-                            label: 'Save'
-                            ),
-                          ),
-                          ),
-                      ],
-                      ),
-                    ]
-                      
-                    ))),
-
-                ]
-                ),
-              ),
-              
-              //
-              //undo + share
-              //
-              Expanded(flex: 2, child: 
-                Column( children:[
-                  //undo
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child:ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.isUndoing, 
-                    builder: (context, inverting, _) {
-                return 
-                  ButtonStyle1(
-                    glow: (Ev4rs.isUndoing.value) ? true : false,
-                    imagePath: 'assets/interface_icons/interface_icons/iUndo.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.undoAction(root);
-                    });
-                    }
-                  );
-                    }),
-                  ),
-                  ),
-
-                  //share
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child:
-                
-                  ButtonStyle1(
-                    imagePath: 'assets/interface_icons/interface_icons/iExport.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.isExporting.value = !Ev4rs.isExporting.value;
-                    });
-                    }
-                  ), 
-                  ),
-                  ),
-                ]
-                ),
-              ),
-              
-              //
-              //redo + print
-              //
-              Expanded(flex: 2, child: 
-                Column( children:[
-                  //redo
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04,
-                child: ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.isRedoing, 
-                    builder: (context, inverting, _) {
-                return 
-                  ButtonStyle1(
-                    glow: (Ev4rs.isRedoing.value) ? true : false,
-                    imagePath: 'assets/interface_icons/interface_icons/iRe-do.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.redoAction(root);
-                    });
-                    }
-                  );
-                    }),
-                  ),
-                  ),
-                  //print
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04,
-                child:
-                  ButtonStyle1(
-                    imagePath: 'assets/interface_icons/interface_icons/iPrint.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.isPrinting.value = !Ev4rs.isPrinting.value;
-                    });
-                    }
-                  ),
-                  ),
-                  ),
-                ]
-                ),
-              ),
-              
-              //
-              //expand/collapse + board settings
-              //
-              Column( children:[
-                Padding(
-                  padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7), 
-                    0
-                  ),
-                  child: SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.04,
-                    child: (Ev4rs.isButtonExpanded.value) 
-                    ? ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iCollapse.png', 
-                        onPressed: () { 
-                          setState(() {
-                            Ev4rs.isButtonExpanded.value = false;
-                          });
-                        }
-                      ) 
-                    : ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iExpand.png', 
-                        onPressed: () { 
-                          setState(() {
-                            Ev4rs.isButtonExpanded.value = true;
-                          });
-                        }
-                      ) 
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(7), 
-                    0, 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7)
-                  ),
-                  child: SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04 ,
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: 
-                       ButtonStyle1(
-                          glow: (Ev4rs.boardEditor.value) ? true : false,
-                          imagePath: 'assets/interface_icons/interface_icons/iBoard.png', 
-                          onPressed: () { setState(() {
-                            Ev4rs.editBoardsAction(root);
-                          });
-                          }
-                        ) 
-                      ),
-                    ),
-                  ),
-              ]
-              )
-            ]
-            ),
-        //here
-        Positioned(
-          top: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04,
-          child: ValueListenableBuilder<bool>(valueListenable: Ev4rs.showSelectionMenu, builder: (context, showSelectionMenu, _) {
-          return SizedBox( 
-            height: (isLandscape) ? MediaQuery.of(context).size.height * 0.09 : MediaQuery.of(context).size.height * 0.04,
-            child:  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)), child:
-          Row(
-            children: [
-              //tap
-            if (Ev4rs.isButtonExpanded.value == false)
-                ButtonStyle1(
-                imagePath: 'assets/interface_icons/interface_icons/iTap.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.showSelectionMenu.value = !Ev4rs.showSelectionMenu.value;
-                });
-                }
-              ),
-
-            //tap and swap
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.tapAndSwap) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iTapAndSwap.png', 
-                  onPressed: () { setState(() {
-                    Ev4rs.tapAndSwapAction(root);
-                  });
-                  }
-                ),
-
-            //drag to select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.dragSelectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iDragSelectMultiple.png', 
-                  onPressed: () { setState(() {
-                    Ev4rs.dragSelectMultipleAction(root);
-                  });
-                }
-              ),
-
-            //select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.selectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iSelectMultiple.png', 
-                  onPressed: () { setState(() {
-                    Ev4rs.selectMultipleAction(root);
-                  });
-                }
-              ),
-
-            //invert selection
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-              ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.invertSelections, 
-                    builder: (context, inverting, _) { 
-                return ButtonStyle1(
-                  glow: (Ev4rs.invertSelections.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iInvertSelection.png', 
-                  onPressed: () { 
-                    setState(() {
-                      Ev4rs.invertSelectionAction(root);
-                    });
-                  }
-                );
-              }),
-
-            //sort a-z
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-              ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.sortSelectAZ, 
-                    builder: (context, inverting, _) {
-                return ButtonStyle1(
-                glow: (Ev4rs.sortSelectAZ.value) ? true : false,
-                imagePath: 'assets/interface_icons/interface_icons/iSortAZ.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.sortSelectedAzAction(root);
-                });
-                }
-              );}),
-
-          ]
+            
+           ]
           ),
-            ),
-          );
-        }
-        )
-        )
-        ]
         );
       }
     }
@@ -4254,61 +3651,11 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
       final ImagePicker _picker = ImagePicker();
       var everyImage = <String>[];
 
-      @override
-      Widget build(BuildContext context) {
-        Root root = widget.root;
-        final screenSize = MediaQuery.of(context).size;
-        final isLandscape = screenSize.width > screenSize.height;
-
-
-            everyImage = Ev4rs.getAllImages(root);
-          
-
-            final obj_ = Ev4rs.findNavById(root.navRow, Ev4rs.navSelectedUUID);
-            if (obj_ == null) {
-              return const Center(child: Text("Object not found"));
-            }
-
-            Ev4rs.setNavPlacholderValues(obj_);
-            
-            var allBoards = Ev4rs.getBoards(root.boards);
-
-            final mapOfBoards = {
-              for (var board in allBoards) 
-                if (board.title != null) 
-                  board.title!: board.id,
-            };
-
-            Widget image = LoadImage.fromSymbol('assets/interface_icons/interface_icons/iPlaceholder.png');
-            Widget image2 = LoadImage.fromSymbol(obj_.symbol);
-
-        return Stack( children: [
-              
-
-            Row( 
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              //
-              //back, in positioned is the tap expander
-              //
-              Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)),
-              child: SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.065 : MediaQuery.of(context).size.height * 0.03 ,
-                child: ButtonStyle1(
-                  imagePath: 'assets/interface_icons/interface_icons/iBack.png', 
-                  onPressed: () {
-                  setState(() {
-                    Ev4rs.closeEditorAction();
-                  });
-                  }
-                ),
-              ),
-              ),
-
-              //
+      Widget imageColumn(Widget image, Widget image2, NavObjects obj_, Root root){
+        //
               //Image, image padding, image overlay settings
               //
-              ValueListenableBuilder(
+             return  ValueListenableBuilder(
                 valueListenable: CombinedValueNotifier(
                     Ev4rs.padding, Ev4rs.overlay, Ev4rs.contrast, 
                     Ev4rs.invert, Ev4rs.saturation, Ev4rs.matchContrast, 
@@ -4594,297 +3941,298 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
                 ),
               );
               }
-            ),
+            );
               
-              //
-              //label, message, speak on select, font
-              //
-              Expanded(flex: 7, child: 
-                Column( children:[
-                  //label and message
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                  child:
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column(children: [
-                        Row(children: [ 
-                          Expanded(flex: 5, child: 
-                            Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
-                                 ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
-                          final labelController = TextEditingController(text: value)
-                          ..selection = TextSelection.collapsed(offset: value.length);
+      }
+      Widget textColumn(NavObjects obj_, Root root){
+        //
+        //label, message, speak on select, font
+        //
+        return Column( children:[
+            //label and message
+            Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+            child:
+              Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                child: Column(children: [
+                  Row(children: [ 
+                    Expanded(flex: 5, child: 
+                      Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
+                            ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
+                    final labelController = TextEditingController(text: value)
+                    ..selection = TextSelection.collapsed(offset: value.length);
 
-                          return 
-                        TextField(
-                          controller: labelController,
-                                style: Ev4rs.labelStyle,
-                                onChanged: (value){
-                                  Ev4rs.label.value = value;
-                                },
-                                decoration: InputDecoration(
-                                hintStyle: Ev4rs.hintLabelStyle,
-                                hintText: (Ev4rs.compareNavObjFields(root.navRow, (b) => (b).label)) ? '${obj_.label}' : '--Not All Match--',
-                                ),
-                              );
-                                 }),
-                            ),
+                    return 
+                  TextField(
+                    controller: labelController,
+                          style: Ev4rs.labelStyle,
+                          onChanged: (value){
+                            Ev4rs.label.value = value;
+                          },
+                          decoration: InputDecoration(
+                          hintStyle: Ev4rs.hintLabelStyle,
+                          hintText: (Ev4rs.compareNavObjFields(root.navRow, (b) => (b).label)) ? '${obj_.label}' : '--Not All Match--',
                           ),
-                          Flexible(flex: 2, child: 
-                          Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
-                          ButtonStyle4(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                            onPressed: (){setState(() {
-                              widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'label', Ev4rs.label.value);
-                              Ev4rs.saveJson(root);
-                              });
-                            }, 
-                            label: 'Save'
-                            ),
-                          ),
-                          ),
-                      ],
+                        );
+                            }),
                       ),
-                        Row(children: [ 
-                        Expanded(
-                          flex: 5,
-                          child: 
-                        Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
-                             ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
-                          final alternateController = TextEditingController(text: value)
-                          ..selection = TextSelection.collapsed(offset: value.length);
+                    ),
+                    Flexible(flex: 2, child: 
+                    Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
+                    ButtonStyle4(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                      onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'label', Ev4rs.label.value);
+                        Ev4rs.saveJson(root);
+                        });
+                      }, 
+                      label: 'Save'
+                      ),
+                    ),
+                    ),
+                ],
+                ),
+                  Row(children: [ 
+                  Expanded(
+                    flex: 5,
+                    child: 
+                  Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(10), vertical: 0), child: 
+                        ValueListenableBuilder(valueListenable: Ev4rs.notes, builder: (context, value, _) {
+                    final alternateController = TextEditingController(text: value)
+                    ..selection = TextSelection.collapsed(offset: value.length);
 
-                          return 
-                        TextField(
-                          controller: alternateController,
-                            style: Ev4rs.labelStyle,
-                            onChanged: (value){
-                              Ev4rs.alternateLabel.value = value;
-                            },
-                            decoration: InputDecoration(
-                            hintStyle: Ev4rs.hintLabelStyle,
-                            hintText: (Ev4rs.compareNavObjFields(root.navRow, (b) => (b).alternateLabel)) ? '${obj_.alternateLabel}' : '--Not All Match--',
-                            ),
-                          );
-                             }),
-                        ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: 
-                          Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
-                        ButtonStyle4(
-                        imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
-                              Ev4rs.message.value = '${Ev4rs.message.value.trim()} ';
-                              widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'alternateLabel', Ev4rs.alternateLabel.value);
-                              Ev4rs.saveJson(root);
-                              });
-                          }, 
-                          label: 'Save'
+                    return 
+                  TextField(
+                    controller: alternateController,
+                      style: Ev4rs.labelStyle,
+                      onChanged: (value){
+                        Ev4rs.alternateLabel.value = value;
+                      },
+                      decoration: InputDecoration(
+                      hintStyle: Ev4rs.hintLabelStyle,
+                      hintText: (Ev4rs.compareNavObjFields(root.navRow, (b) => (b).alternateLabel)) ? '${obj_.alternateLabel}' : '--Not All Match--',
+                      ),
+                    );
+                        }),
+                  ),
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: 
+                    Padding(padding: EdgeInsetsGeometry.symmetric(vertical: V4rs.paddingValue(5)), child: 
+                  ButtonStyle4(
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        Ev4rs.message.value = '${Ev4rs.message.value.trim()} ';
+                        widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'alternateLabel', Ev4rs.alternateLabel.value);
+                        Ev4rs.saveJson(root);
+                        });
+                    }, 
+                    label: 'Save'
+                    ),
+                    ),
+                  ),
+                ]
+                ),
+              ]
+              )
+              )
+              ),
+            //match speak on select, speak on select
+            Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                child: Column( children: [
+                  ValueListenableBuilder<bool>(
+                    valueListenable: Ev4rs.matchSpeakOnSelect, 
+                    builder: (context, matchSpeakOnSelect, _) {
+                      return Row(children: [
+                        Expanded(child: 
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(
+                            V4rs.paddingValue(10), 
+                            V4rs.paddingValue(10), 
+                            V4rs.paddingValue(10), 0), 
+                          child: Text( (Ev4rs.compareNavObjFields(root.navRow, (b) => b.matchSpeakOS)) ?
+                            'Match Speak on Select:' : 'Match Speak on Select: --Not All Match--', 
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: Sv4rs.settingslabelStyle,
+                            textAlign: TextAlign.center,
                           ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
+                          child: Switch(
+                            padding: EdgeInsets.all(0),
+                            value: Ev4rs.matchSpeakOnSelect.value, 
+                            onChanged: (value) {
+                              Ev4rs.matchSpeakOnSelect.value = value;
+                            }
                           ),
                         ),
                       ]
-                      ),
-                    ]
-                    )
-                    )
-                    ),
-                  //match speak on select, speak on select
-                  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Cv4rs.themeColor4,
-                        borderRadius: BorderRadius.circular(10)
-                        ),
-                      child: Column( children: [
-                        ValueListenableBuilder<bool>(
-                          valueListenable: Ev4rs.matchSpeakOnSelect, 
-                          builder: (context, matchSpeakOnSelect, _) {
-                            return Row(children: [
+                      );
+                    }
+                  ),
+                  ValueListenableBuilder<int>(
+                    valueListenable: Ev4rs.speakOnSelect, 
+                    builder: (context, speakOnSelect, _) {
+                      return Padding(
+                        padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+                        child: Column(children: [
+                          if (!Ev4rs.compareNavObjFields(root.navRow, (b) => b.matchSpeakOS)) 
+                            Text('Speak on Select: --Not All Match--', style: Sv4rs.settingslabelStyle),
+                          Slider(
+                            padding: EdgeInsets.fromLTRB(V4rs.paddingValue(5), 0, V4rs.paddingValue(5), 0),
+                            min: 1.0,
+                            max: 3.0,
+                            divisions: 2,
+                            activeColor: Cv4rs.themeColor1,
+                            inactiveColor: Cv4rs.themeColor3,
+                            thumbColor: Cv4rs.themeColor1,
+                            label: 
+                              (Ev4rs.compareNavObjFields(root.navRow, (b) => b.matchSpeakOS)) 
+                              ? 'Speak on Select: ${Ev4rs.speakOnSelect.value}'
+                              : 'Speak on Select: --Not All Match--',
+                            value: Ev4rs.speakOnSelect.value.toDouble(), 
+                            onChanged: (value) {
+                              Ev4rs.speakOnSelect.value = value.toInt();
+                              }
+                            ),
+                          Padding(
+                            padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(10)), 
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
                               Expanded(child: 
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(
-                                  V4rs.paddingValue(10), 
-                                  V4rs.paddingValue(10), 
-                                  V4rs.paddingValue(10), 0), 
-                                child: Text( (Ev4rs.compareNavObjFields(root.navRow, (b) => b.matchSpeakOS)) ?
-                                  'Match Speak on Select:' : 'Match Speak on Select: --Not All Match--', 
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
+                                Text(
+                                  "Off", 
                                   style: Sv4rs.settingslabelStyle,
-                                  textAlign: TextAlign.center,
-                                ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.paddingValue(10), 0), 
-                                child: Switch(
-                                  padding: EdgeInsets.all(0),
-                                  value: Ev4rs.matchSpeakOnSelect.value, 
-                                  onChanged: (value) {
-                                    Ev4rs.matchSpeakOnSelect.value = value;
-                                  }
+                              Expanded(child: 
+                                Text(
+                                  "Speak Label", 
+                                  style: Sv4rs.settingslabelStyle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Expanded(child: 
+                                Text(
+                                  "Speak Alt. Label", 
+                                  style: Sv4rs.settingslabelStyle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ]
-                            );
-                          }
-                        ),
-                        ValueListenableBuilder<int>(
-                          valueListenable: Ev4rs.speakOnSelect, 
-                          builder: (context, speakOnSelect, _) {
-                            return Padding(
-                              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                              child: Column(children: [
-                                if (!Ev4rs.compareNavObjFields(root.navRow, (b) => b.matchSpeakOS)) 
-                                  Text('Speak on Select: --Not All Match--', style: Sv4rs.settingslabelStyle),
-                                Slider(
-                                  padding: EdgeInsets.fromLTRB(V4rs.paddingValue(5), 0, V4rs.paddingValue(5), 0),
-                                  min: 1.0,
-                                  max: 3.0,
-                                  divisions: 2,
-                                  activeColor: Cv4rs.themeColor1,
-                                  inactiveColor: Cv4rs.themeColor3,
-                                  thumbColor: Cv4rs.themeColor1,
-                                  label: 
-                                    (Ev4rs.compareNavObjFields(root.navRow, (b) => b.matchSpeakOS)) 
-                                    ? 'Speak on Select: ${Ev4rs.speakOnSelect.value}'
-                                    : 'Speak on Select: --Not All Match--',
-                                  value: Ev4rs.speakOnSelect.value.toDouble(), 
-                                  onChanged: (value) {
-                                    Ev4rs.speakOnSelect.value = value.toInt();
-                                    }
-                                  ),
-                                Padding(
-                                  padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(10)), 
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                    Expanded(child: 
-                                      Text(
-                                        "Off", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Expanded(child: 
-                                      Text(
-                                        "Speak Label", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Expanded(child: 
-                                      Text(
-                                        "Speak Alt. Label", 
-                                        style: Sv4rs.settingslabelStyle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ]
-                                  ), 
-                                ),
-                                ButtonStyle2(
-                                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                                  onPressed: (){setState(() {
-                                      widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'matchSpeakOS', Ev4rs.matchSpeakOnSelect.value);
-                                      widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'speakOS', Ev4rs.speakOnSelect.value);
-                                      Ev4rs.saveJson(root);
-                                      });
-                                  }, 
-                                  label: 'Save'
-                                ),
-                              ]
-                            ),
-                            );
-                          }
-                        ),
-                        
-                      ]
-                    )
-                    )
-                  ),
-                  //font, match font settings, font picker
-                  Padding(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
-                      child: FontPicker2(
-                        widgety:  ButtonStyle2(
-                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                            ), 
+                          ),
+                          ButtonStyle2(
+                            imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                             onPressed: (){setState(() {
-                                widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'matchFont', Ev4rs.matchFont.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontSize', Ev4rs.fontSize.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontItalics', Ev4rs.fontItalics.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontUnderline', Ev4rs.fontUnderline.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontWeight', Ev4rs.fontWeight.value.toInt(),);
-                                widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontFamily', Ev4rs.fontFamily.value);
-                                widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontColor', Ev4rs.fontColor.value);
+                                widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'matchSpeakOS', Ev4rs.matchSpeakOnSelect.value);
+                                widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'speakOS', Ev4rs.speakOnSelect.value);
                                 Ev4rs.saveJson(root);
                                 });
                             }, 
-                            label: 'Save Button Font'
-                            ),
-                            specialLabel: 
-                              (Ev4rs.compareNavObjFields(root.navRow, (b) => b.matchFont) 
-                              || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontSize)
-                              || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontItalics)
-                              || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontUnderline)
-                              || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontWeight)
-                              || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontFamily)
-                              || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontColor)) 
-                              ? false 
-                              : true,
-                            matchFontSet: Ev4rs.matchFont.value,
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            size: Ev4rs.fontSize.value, 
-                            sizeMax: 25,
-                            sizeMin: 5,
-                            divisions: 20,
-                            weight: (Ev4rs.fontWeight.value).toInt(), 
-                            italics: Ev4rs.fontItalics.value, 
-                            font: Ev4rs.fontFamily.value, 
-                            label: 'Button Font:', 
-                            color: Ev4rs.fontColor.value, 
-                            underline: Ev4rs.fontUnderline.value,
-                            onSizeChanged: (value) {
-                              Ev4rs.fontSize.value = value;
-                              }, 
-                            onWeightChanged: (value) {
-                              Ev4rs.fontWeight.value = value.toDouble();
-                              },
-                            onItalicsChanged: (value) {
-                              Ev4rs.fontItalics.value = value;
-                              },
-                            onFontChanged: (value) {
-                              Ev4rs.fontFamily.value = value;
-                              },
-                            onColorChanged: (value) {
-                              Ev4rs.fontColor.value = value.toColor() ?? Cv4rs.themeColor1;
-                              },
-                            onMatchFont: (value) {
-                              Ev4rs.matchFont.value = value;
-                              },
-                            useUnderline: true, 
-                            onUnderlineChanged: (value) {
-                              Ev4rs.fontUnderline.value = value;
-                              }, 
-                            )
+                            label: 'Save'
                           ),
+                        ]
+                      ),
+                      );
+                    }
+                  ),
+                  
                 ]
-              ),
-              ),
-              
-              //
+              )
+              )
+            ),
+            //font, match font settings, font picker
+            Padding(
+                padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+                child: FontPicker2(
+                  widgety:  ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                      onPressed: (){setState(() {
+                          widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'matchFont', Ev4rs.matchFont.value);
+                          widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontSize', Ev4rs.fontSize.value);
+                          widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontItalics', Ev4rs.fontItalics.value);
+                          widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontUnderline', Ev4rs.fontUnderline.value);
+                          widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontWeight', Ev4rs.fontWeight.value.toInt(),);
+                          widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontFamily', Ev4rs.fontFamily.value);
+                          widget.saveField(root, Ev4rs.navSelectedUUIDs.value, 'fontColor', Ev4rs.fontColor.value);
+                          Ev4rs.saveJson(root);
+                          });
+                      }, 
+                      label: 'Save Button Font'
+                      ),
+                      specialLabel: 
+                        (Ev4rs.compareNavObjFields(root.navRow, (b) => b.matchFont) 
+                        || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontSize)
+                        || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontItalics)
+                        || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontUnderline)
+                        || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontWeight)
+                        || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontFamily)
+                        || Ev4rs.compareNavObjFields(root.navRow, (b) => b.fontColor)) 
+                        ? false 
+                        : true,
+                      matchFontSet: Ev4rs.matchFont.value,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      size: Ev4rs.fontSize.value, 
+                      sizeMax: 25,
+                      sizeMin: 5,
+                      divisions: 20,
+                      weight: (Ev4rs.fontWeight.value).toInt(), 
+                      italics: Ev4rs.fontItalics.value, 
+                      font: Ev4rs.fontFamily.value, 
+                      label: 'Button Font:', 
+                      color: Ev4rs.fontColor.value, 
+                      underline: Ev4rs.fontUnderline.value,
+                      onSizeChanged: (value) {
+                        Ev4rs.fontSize.value = value;
+                        }, 
+                      onWeightChanged: (value) {
+                        Ev4rs.fontWeight.value = value.toDouble();
+                        },
+                      onItalicsChanged: (value) {
+                        Ev4rs.fontItalics.value = value;
+                        },
+                      onFontChanged: (value) {
+                        Ev4rs.fontFamily.value = value;
+                        },
+                      onColorChanged: (value) {
+                        Ev4rs.fontColor.value = value.toColor() ?? Cv4rs.themeColor1;
+                        },
+                      onMatchFont: (value) {
+                        Ev4rs.matchFont.value = value;
+                        },
+                      useUnderline: true, 
+                      onUnderlineChanged: (value) {
+                        Ev4rs.fontUnderline.value = value;
+                        }, 
+                      )
+                    ),
+          ]
+        );
+      }
+
+      Widget formatColumn(Root root){
+        //
               //show, format, border, background
               //
-              Expanded(flex: 7, child: 
-                Column( children:[
+              return Column( children:[
                   
                   //
                   //show button
@@ -5389,14 +4737,15 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
                     ),
                   ),
                 ]
-                ),
-              ),
-              
-              //
+              );
+      }
+
+      Widget typeColumn(Root root, dynamic mapOfBoards, NavObjects obj_){
+        //
               //pos, button type -> link, return after select, grammer func, mp3
               //
-              Expanded(flex: 7, child: 
-                Column( children:[
+
+                return Column( children:[
                   //part of speech
                   
                   Padding(
@@ -5593,276 +4942,125 @@ import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
                     )
                     ),
 
-                ]
-                ),
-              ),
-              
-              //
-              //undo + share
-              //
-              Expanded(flex: 2, child: 
-                Column( children:[
-                  //undo
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child: ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.isUndoing, 
-                    builder: (context, inverting, _) {
-                return 
-                  ButtonStyle1(
-                    glow: (Ev4rs.isUndoing.value) ? true : false,
-                    imagePath: 'assets/interface_icons/interface_icons/iUndo.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.undoAction(root);
-                    });
-                    }
-                  );
-                  }),
-                  ),
-                  ),
-
-                  //share
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04,
-                child:
-                  ButtonStyle1(
-                    imagePath: 'assets/interface_icons/interface_icons/iExport.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.isExporting.value = !Ev4rs.isExporting.value;
-                    });
-                    }
-                  ), 
-                  ),
-                  ),
-                ]
-                ),
-              ),
-              
-              //
-              //redo + print
-              //
-              Expanded(flex: 2, child: 
-                Column( children:[
-                  //redo
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04,
-                child: ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.isRedoing, 
-                    builder: (context, inverting, _) {
-                return 
-                  ButtonStyle1(
-                    glow: (Ev4rs.isRedoing.value) ? true : false,
-                    imagePath: 'assets/interface_icons/interface_icons/iRe-do.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.redoAction(root);
-                    });
-                    }
+                 ]
                 );
-                    }),
+              
+      }
+
+      @override
+      Widget build(BuildContext context) {
+        Root root = widget.root;
+        
+            everyImage = Ev4rs.getAllImages(root);
+          
+
+            final obj_ = Ev4rs.findNavById(root.navRow, Ev4rs.navSelectedUUID);
+            if (obj_ == null) {
+              return const Center(child: Text("Object not found"));
+            }
+
+            Ev4rs.setNavPlacholderValues(obj_);
+            
+            var allBoards = Ev4rs.getBoards(root.boards);
+
+            final mapOfBoards = {
+              for (var board in allBoards) 
+                if (board.title != null) 
+                  board.title!: board.id,
+            };
+
+            Widget image = LoadImage.fromSymbol('assets/interface_icons/interface_icons/iPlaceholder.png');
+            Widget image2 = LoadImage.fromSymbol(obj_.symbol);
+
+        return BaseEditor(
+          root: root,
+          windowWidget: Row( 
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (!V4rs.smallEditorMode)
+            Expanded(
+              flex: 29,
+              child: 
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                Expanded(flex: 8, child:  imageColumn(image, image2, obj_, root)),
+                //Image, 
+                //image padding, 
+                //image overlay settings
+
+                Expanded(flex: 7, child: textColumn(obj_, root)),
+                //label, 
+                //message, 
+                //speak on select, 
+                //font
+
+                Expanded(flex: 7, child: formatColumn(root)),
+                //show, 
+                //format, 
+                //border, 
+                //background
+
+                Expanded(flex: 7, child: typeColumn(root, mapOfBoards, obj_)),
+                //pos, 
+                //button type
+                //button type qualities
+                //notes
+
+              ]
+              ),
+            ),
+
+            if (V4rs.smallEditorMode)
+            Expanded(
+              flex: 29,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 15,
+                    child: Column(children: [
+
+                      imageColumn(image, image2, obj_, root),
+                      //Image, 
+                      //image padding, 
+                      //image overlay settings
+
+                      formatColumn(root),
+                      //show, 
+                      //format, 
+                      //border, 
+                      //background
+
+                    ]
+                    ),
                   ),
-                  ),
-                  //print
-                  Padding(padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(3), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(3), 
-                    0
-                  ),
-              child:
-                  SizedBox( 
-                height: (isLandscape) ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.04 ,
-                child:
-                  ButtonStyle1(
-                    imagePath: 'assets/interface_icons/interface_icons/iPrint.png', 
-                    onPressed: () { setState(() {
-                      Ev4rs.isPrinting.value = !Ev4rs.isPrinting.value;
-                    });
-                    }
-                  ),
-                  ),
+
+                  Expanded(
+                    flex: 14,
+                    child: Column(children: [
+
+                    textColumn(obj_, root),
+                    //label, 
+                    //message, 
+                    //speak on select, 
+                    //font
+
+                    typeColumn(root, mapOfBoards, obj_),
+                    //pos, 
+                    //button type
+                    //button type qualities
+                    //notes
+
+                  ]
+                  )
                   ),
                 ]
-                ),
               ),
-              
-              //
-              //expand/collapse + board settings
-              //
-              Column( children:[
-                Padding(
-                  padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7), 
-                    0
-                  ),
-                  child: SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.07 : MediaQuery.of(context).size.height * 0.04,
-                    child: (Ev4rs.isButtonExpanded.value) 
-                    ? ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iCollapse.png', 
-                        onPressed: () { 
-                          setState(() {
-                            Ev4rs.isButtonExpanded.value = false;
-                          });
-                        }
-                      ) 
-                    : ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iExpand.png', 
-                        onPressed: () { 
-                          setState(() {
-                            Ev4rs.isButtonExpanded.value = true;
-                          });
-                        }
-                      ) 
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsGeometry.fromLTRB(
-                    V4rs.paddingValue(7), 
-                    0, 
-                    V4rs.paddingValue(7), 
-                    V4rs.paddingValue(7)
-                  ),
-                  child: SizedBox( 
-                    height: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04 ,
-                    child: Padding(
-                      padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child: 
-                       ButtonStyle1(
-                          glow: (Ev4rs.boardEditor.value) ? true : false,
-                          imagePath: 'assets/interface_icons/interface_icons/iBoard.png', 
-                          onPressed: () { setState(() {
-                            Ev4rs.editBoardsAction(root);
-                          });
-                          }
-                        ) 
-                      ),
-                    ),
-                  ),
-              ]
-              )
+            ),
             ]
-            ),
-        //here
-        Positioned(
-          top: (isLandscape) ? MediaQuery.of(context).size.height * 0.08 : MediaQuery.of(context).size.height * 0.04,
-          child: ValueListenableBuilder<bool>(valueListenable: Ev4rs.showSelectionMenu, builder: (context, showSelectionMenu, _) {
-          return SizedBox( 
-            height: (isLandscape) ? MediaQuery.of(context).size.height * 0.09 : MediaQuery.of(context).size.height * 0.04,
-            child:  Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(7)), child:
-          Row(
-            children: [
-              //tap
-            if (Ev4rs.isButtonExpanded.value == false)
-                ButtonStyle1(
-                imagePath: 'assets/interface_icons/interface_icons/iTap.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.showSelectionMenu.value = !Ev4rs.showSelectionMenu.value;
-                });
-                }
-              ),
-
-            //tap and swap
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.tapAndSwap) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iTapAndSwap.png', 
-                  onPressed: ()  {
-                    setState(() {
-                      Ev4rs.tapAndSwapAction(root);
-                    });
-                  }
-                ),
-
-            //drag to select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.dragSelectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iDragSelectMultiple.png', 
-                  onPressed: () { 
-                    setState(() {
-                      Ev4rs.dragSelectMultipleAction(root);
-                    });
-                  }
-                ),
-
-            //select multiple
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ButtonStyle1(
-                  glow: (Ev4rs.selectMultiple.value) ? true : false,
-                  imagePath: 'assets/interface_icons/interface_icons/iSelectMultiple.png', 
-                  onPressed: () { 
-                    setState(() {
-                      Ev4rs.selectMultipleAction(root);
-                    });
-                  }
-                ),
-
-            //invert selection
-
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-                ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.invertSelections, 
-                    builder: (context, inverting, _) {
-              return ButtonStyle1(
-                glow: (Ev4rs.invertSelections.value) ? true : false,
-                imagePath: 'assets/interface_icons/interface_icons/iInvertSelection.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.invertSelectionAction(root);
-                });
-                }
-              );
-                    }
-                    ),
-
-            //sort a-z
-            if (Ev4rs.isButtonExpanded.value == false 
-              && Ev4rs.showSelectionMenu.value == true)
-              ValueListenableBuilder<bool>(
-                    valueListenable: Ev4rs.sortSelectAZ, 
-                    builder: (context, sorting, _) {
-              return ButtonStyle1(
-                imagePath: 'assets/interface_icons/interface_icons/iSortAZ.png', 
-                onPressed: () { setState(() {
-                  Ev4rs.sortSelectedAzAction(root);
-                });
-                }
-              );
-                    })
-
-          ]
           ),
-            ),
-          );
-        }
-        )
-        )
-        ]
         );
       }
     }

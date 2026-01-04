@@ -12,16 +12,19 @@ import 'package:flutterkeysaac/Variables/export_variables.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_variables.dart';
 import 'package:flutterkeysaac/Screens/settings.dart';
 import 'package:flutterkeysaac/Screens/expand_page.dart';
+import 'package:flutterkeysaac/Screens/onboarding.dart'; 
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
+import 'package:flutterkeysaac/Screens/editor.dart';
+import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 
 class Home extends StatefulWidget {
   final TTSInterface synth;
-  final int? highlightStart;
+  final int? highlightStart; 
   final int? highlightLength;
   final Map<String, sherpa_onnx.OfflineTts?>? sherpaOnnxSynth;
   final Future<void> Function() init;
@@ -163,6 +166,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     V4rs.xSmallModeWidth = (screenSize.width <= 500);
     V4rs.xSmallModeHeight = (screenSize.height <= 600);
     V4rs.xSmallMode = V4rs.xSmallModeHeight || V4rs.xSmallModeWidth;
+    V4rs.smallEditorMode = (screenSize.width <= 900);
   
     final double boardHeight = (V4rs.isLandscape) && (V4rs.keyboardheight > 0) && (!isShrunk)
         ? V4rs.keyboardheight
@@ -204,36 +208,54 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             V4rs.thisBoard = _root!.boards[_currentBoardIndex];
           }
 
-        return Stack(children: [
-        
-        //
-        //Settings
-        //
-          if (V4rs.showSettings.value)
-                Settings(
-                  synth: widget.synth,
-                  captureAllForPrint: captureAllForPrint,
-                  speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
-                  initForSS: widget.initForSS,
-                  playerForSS: widget.playerForSS,
-                  reloadSherpaOnnx: widget.reloadSherpaOnnx,
-                ),
-
-        //
-        //Expand Page
-        //
-          if (V4rs.showExpandPage.value) 
-            ExpandPage(
+        return AnimatedBuilder(
+            animation: Listenable.merge([
+              V4rs.showExpandPage,
+              V4rs.showSettings,
+              Ev4rs.showEditor,
+              V4rs.doOnboarding,
+            ]), 
+            builder: (context, _) {
+        //=====: Onboarding
+          if (V4rs.doOnboarding.value) {
+              return Onboarding();
+          } else
+        //=====: Settings
+          if (V4rs.showSettings.value){
+            return Settings(
+              synth: widget.synth,
+              captureAllForPrint: captureAllForPrint,
               speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
               initForSS: widget.initForSS,
               playerForSS: widget.playerForSS,
-            ),
-
-        //
-        //Home
-        //
-          if (!V4rs.showSettings.value && !V4rs.showExpandPage.value)
-          Scaffold(
+              reloadSherpaOnnx: widget.reloadSherpaOnnx,
+            );
+          } else
+        //=====: Expand Page
+          if (V4rs.showExpandPage.value){
+           return ExpandPage(
+              speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
+              initForSS: widget.initForSS,
+              playerForSS: widget.playerForSS,
+            );
+          } else         
+        //=====: Editor
+          if (Ev4rs.showEditor.value) {
+            return Editor(
+              synth: widget.synth,
+              speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
+              initForSS: widget.initForSS,
+              playerForSS: widget.playerForSS,
+              mwHeight: mwHeight,
+              navHeight: navHeight,
+              grammerHeight: grammerHeight,
+              totalBoardHeight: totalBoardHeight,
+              screenSize: screenSize,
+            );
+          } else 
+        //=====: Home
+          {
+          return Scaffold(
             resizeToAvoidBottomInset: false,
             body: SafeArea(
               bottom: false,
@@ -360,8 +382,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 ],
               ),
             ),
-          ),
-        ]);
+            );
+          }
+        });
       },
     );
   }

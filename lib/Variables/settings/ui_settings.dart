@@ -165,7 +165,7 @@ class _OpenWelcomeScreen extends State<OpenWelcomeScreen> with WidgetsBindingObs
                   }
                 setState(() {
                   V4rs.doOnboarding.value = true;
-                  V4rs.setOnboardingCompleteStatus(true);
+                  V4rs.setOnboardingCompleteStatus(false);
                 });
               }, 
               ),
@@ -250,50 +250,56 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
   }
 
   Widget systemVoiceDropdown(bool forSS, String language, var dropdownValue) {
-    return ListTile(
-        title: Text('Voice', style: Sv4rs.settingslabelStyle),
-        trailing: DropdownButton<String>(
-        value: dropdownValue,
-        onChanged: (value) async {
-          //set the selected voice to the language
-          setState(() {
-            if (value != null) {
-              if (forSS){
-                Vv4rs.setSSlanguageVoiceSystem(
-                  language, 
-                  value, 
-                  "system", 
-                  Vv4rs.speakSelectSystemLanguageVoice[language]?.pitch, 
-                  Vv4rs.speakSelectSystemLanguageVoice[language]?.rate, 
-                );
-              } else {
-                Vv4rs.setlanguageVoiceSystem(
-                  language, 
-                  value, 
-                  "system", 
-                  Vv4rs.systemLanguageVoice[language]?.pitch, 
-                  Vv4rs.systemLanguageVoice[language]?.rate, 
-                );
+    return Row(children: [
+        Text('Voice', style: Sv4rs.settingslabelStyle),
+        Spacer(),
+        Expanded(
+          flex: V4rs.xSmallModeWidth ? 2 : 1,
+          child: DropdownButton<String>(
+            isExpanded: true,
+            value: dropdownValue,
+            onChanged: (value) async {
+            //set the selected voice to the language
+              setState(() {
+                if (value != null) {
+                  if (forSS){
+                    Vv4rs.setSSlanguageVoiceSystem(
+                      language, 
+                      value, 
+                      "system", 
+                      Vv4rs.speakSelectSystemLanguageVoice[language]?.pitch, 
+                      Vv4rs.speakSelectSystemLanguageVoice[language]?.rate, 
+                    );
+                  } else {
+                    Vv4rs.setlanguageVoiceSystem(
+                      language, 
+                      value, 
+                      "system", 
+                      Vv4rs.systemLanguageVoice[language]?.pitch, 
+                      Vv4rs.systemLanguageVoice[language]?.rate, 
+                    );
+                  }
+                }
               }
-            }
-          }
-          );
-        },
-        items: [
-          DropdownMenuItem<String>(
-            value: 'default',
-            child: Text('default', style: Sv4rs.settingslabelStyle),
-          ),
+              );
+            },
+            items: [
+              DropdownMenuItem<String>(
+                value: 'default',
+                child: Text('default', style: Sv4rs.settingslabelStyle, maxLines: 3,),
+              ),
 
-          ...Vv4rs.uniqueSystemVoices[language]!.map((voice) {
-            final identifier = voice['identifier']!.toString(); // <-- cast to String
-            return DropdownMenuItem<String>(
-              value: identifier,
-              child: Text(Vv4rs.cleanSystemVoiceLabel(voice), style: Sv4rs.settingslabelStyle),
-            );
-          }),
-        ],
+              ...Vv4rs.uniqueSystemVoices[language]!.map((voice) {
+                final identifier = voice['identifier']!.toString(); // <-- cast to String
+                return DropdownMenuItem<String>(
+                  value: identifier,
+                  child: Text(Vv4rs.cleanSystemVoiceLabel(voice), style: Sv4rs.settingslabelStyle, maxLines: 3,),
+                );
+              }),
+            ],
+        ),
       ),
+      ]
     );
   }
 
@@ -357,41 +363,53 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
           //
           //Pick Voice to sample
           //
-          DropdownButton<ManifestModel?>(
-          value: dropdownValue,
-          onChanged: (value) async {
-            setState(() {
-              if (value != null) {
-                Vv4rs.sampleSpeaker = 0;
-                Vv4rs.sampleSherpaOnnx = value;
-                findSampleSpeakerDropdownCount();
-              }
-            }
-            );
-          },
-          items: [
-            DropdownMenuItem<ManifestModel?>(
-              value: null,
-              child: Text('none', style: Sv4rs.settingslabelStyle),
+          Expanded(
+            flex: V4rs.xSmallModeWidth ? 2 : 1,
+            child: 
+            DropdownButton<ManifestModel?>(
+              isExpanded: true,
+              value: dropdownValue,
+              onChanged: (value) async {
+                setState(() {
+                  if (value != null) {
+                    Vv4rs.sampleSpeaker = 0;
+                    Vv4rs.sampleSherpaOnnx = value;
+                    findSampleSpeakerDropdownCount();
+                  }
+                }
+                );
+              },
+              items: [
+                DropdownMenuItem<ManifestModel?>(
+                  value: null,
+                  child:Text('none', style: Sv4rs.settingslabelStyle),
+                ),
+
+                ...Vv4rs.perLangSherpaOnnxVoices[language]!.map((voice) {
+                  return DropdownMenuItem<ManifestModel>(
+                    value: voice,
+                    child: Text(
+                      Vv4rs.cleanSherpaOnnxVoiceLabel(voice), 
+                      style: Sv4rs.settingslabelStyle,
+                      maxLines: 3,
+                    ),
+                  );
+                }),
+              ],
             ),
-
-            ...Vv4rs.perLangSherpaOnnxVoices[language]!.map((voice) {
-              return DropdownMenuItem<ManifestModel>(
-                value: voice,
-                child: Text(Vv4rs.cleanSherpaOnnxVoiceLabel(voice), style: Sv4rs.settingslabelStyle),
-              );
-            }),
-          ],
-        ),
-
+          ),
         //
         //Pick Speaker (if more than one) to sample
         //
         
 
           if (speakerDropdownCount > 1)
+          Expanded(
+            flex: 1,
+            child: 
           Padding(padding: EdgeInsetsGeometry.fromLTRB(V4rs.paddingValue(20),0,0,0), child:
             DropdownButton<int>(
+              isExpanded: true,
               value: Vv4rs.sampleSpeaker, 
               onChanged: (value) {
                 if (value != null) {
@@ -421,7 +439,8 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                 },
               ),
             ) )
-          ],
+          ),
+        ],
         ),
         Row( 
           children: [
@@ -872,7 +891,10 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
               //
                 //voice
                 if (Sv4rs.pickFromEngine == 'system')
-                  systemVoiceDropdown(false, language, dropdownValue),
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(20)), 
+                    child: systemVoiceDropdown(false, language, dropdownValue),
+                  ),
                
                 //rate
                 if (Sv4rs.pickFromEngine == 'system')
@@ -906,7 +928,9 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
             padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(10)),
             child: Row(
               children: [
-                Text('Use unique voice for Speak on Select', style: Sv4rs.settingslabelStyle),
+                Flexible(child: 
+                  Text('Use unique voice for Speak on Select', style: Sv4rs.settingslabelStyle),
+                ),
                 Spacer(),
                 Switch(value: Sv4rs.useDifferentVoiceforSS, onChanged: (value) {
                   setState(() {
@@ -1013,7 +1037,10 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                 
                 //voice
                 if (Sv4rs.pickFromEngine == 'system')
-                  systemVoiceDropdown(true, language, dropdownValue),
+                  Padding(
+                    padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(20)),
+                    child: systemVoiceDropdown(true, language, dropdownValue),
+                  ),
                
                 //rate
                 if (Sv4rs.pickFromEngine == 'system')

@@ -486,7 +486,7 @@ class Ev4rs {
       static TextStyle get labelStyle =>  
       TextStyle(
         color: fontColor.value,
-        fontSize: fontSize.value,
+        fontSize: V4rs.fontValue(fontSize.value),
         fontFamily: Fontsy.fontToFamily[fontFamily.value], 
         fontWeight: FontWeight.values[((fontWeight.value ~/ 100) - 1 ).clamp(0, 8)],
         fontStyle: fontItalics.value ? FontStyle.italic : FontStyle.normal,
@@ -496,7 +496,7 @@ class Ev4rs {
       static TextStyle get hintLabelStyle =>  
       TextStyle(
         color: Cv4rs.themeColor3,
-        fontSize: fontSize.value,
+        fontSize: V4rs.fontValue(fontSize.value),
         fontFamily: Fontsy.fontToFamily[fontFamily.value], 
         fontWeight: FontWeight.values[((fontWeight.value ~/ 100) - 1 ).clamp(0, 8)],
         fontStyle: fontItalics.value ? FontStyle.italic : FontStyle.normal,
