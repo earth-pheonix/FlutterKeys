@@ -18,6 +18,7 @@ import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:path/path.dart' as p;
+import 'package:flutterkeysaac/Variables/settings/speak_on_select.dart';
 import 'package:flutterkeysaac/Variables/sherpa_onnx_tts.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
@@ -527,6 +528,7 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
           await tts.setRate(rate);
           await tts.setPitch(pitch);
           await tts.speak(segmentText);
+          V4rs.theIsSpeaking.value = false;
         }
     } else {
       if (speakSelectSherpaOnnxSynth[lang] != null) {
@@ -759,6 +761,8 @@ static Future<File> resolveImageFile(String relativePath) async {
     final prefs = await SharedPreferences.getInstance();
     // how to clear a value from shared prefs:  
     //await prefs.remove('myBoardsets');
+    //clear all values from prefs
+   //await prefs.clear();
 
     //reset Json on load
     //deleteLocalCopy(); 
@@ -769,6 +773,7 @@ static Future<File> resolveImageFile(String relativePath) async {
     await Bv4rs.loadSavedBoardsetValues();
     await ExV4rs.loadSavedExportValues();
     await Vv4rs.loadSavedVoiceValues();
+    await BSSv4rs.loadSavedBookmarkedSSValues();
 
     //load the boardsets
     final myBoardsetNames = prefs.getStringList(_myBoardsets);

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
 import 'package:flutterkeysaac/Variables/system_tts/tts_interface.dart';
 import 'package:flutterkeysaac/Variables/settings/ui_settings.dart';
+import 'package:flutterkeysaac/Variables/assorted_ui/ui_pops.dart';
+import 'package:flutterkeysaac/Variables/settings/speak_on_select.dart';
+
 import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
 import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
@@ -13,7 +16,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutterkeysaac/Variables/highlight_message_window.dart';
 import 'package:flutterkeysaac/Variables/editing/save_indicator.dart';
-import 'package:flutterkeysaac/Variables/assorted_ui/ui_pops.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_pickers.dart';
 import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_options.dart';
@@ -194,7 +196,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                               }
                               for (var language in Sv4rs.myLanguages) {
                                     Vv4rs.setupSystemVoicePicker(language, 'default');
-                                    Vv4rs.setupSherpaOnnxVoicePicker(language, 'default');
+                                    Vv4rs.setupSherpaOnnxVoicePicker(language,);
                                   }
                             });
                           },
@@ -216,11 +218,22 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                   initForSS: widget.initForSS,
                   playerForSS: widget.playerForSS,
                   reloadSherpaOnnx: widget.reloadSherpaOnnx,
-                  
                 ), 
 
                 //
-                //interfece settings
+                //speak on select settings
+                //
+                UiSpeakOnSelect(
+                  synth: widget.synth, 
+                  speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
+                  initForSS: widget.initForSS,
+                  playerForSS: widget.playerForSS,
+                  totalWidth: totalWidth,
+                ),
+
+
+                //
+                //interface settings
                 //
 
                 ExpansionTile(
@@ -616,45 +629,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                 tts: widget.synth, 
                 label: 'Second Fallback Font: ${Fontsy.familyToFont[Fv4rs.fallbackFont2]}'
                ),
-
-                //speak on select: interface icons
-                Row(children: [
-                Expanded(
-                    child: Container(
-                      color: Cv4rs.themeColor4,
-                      child: Padding(padding: EdgeInsetsGeometry.symmetric(
-                        horizontal: V4rs.paddingValue(15)
-                      ), child:
-                      Row(
-                        children: [
-                          Text('Speak on select: Interface Buttons', style: Sv4rs.settingslabelStyle),
-                          Spacer(),
-                          Switch(
-                            value: Sv4rs.speakInterfaceButtonsOnSelect, 
-                            onChanged: (value) {
-                              setState(() {
-                                Sv4rs.speakInterfaceButtonsOnSelect = value;
-                                Sv4rs.saveSpeakInterfaceButtonsOnSelect(value);
-                              });
-                              if (Sv4rs.speakInterfaceButtonsOnSelect) {
-                                V4rs.speakOnSelect(
-                                  'Interface speak on select $value', 
-                                  V4rs.selectedLanguage.value, 
-                                  widget.synth,
-                                  widget.speakSelectSherpaOnnxSynth,
-                                  widget.initForSS,
-                                  widget.playerForSS,
-                                );
-                              }
-                           })
-                        ]
-                      ),
-                      ),
-                    ),
-                  ),
-                ]),
-
-                    ]),
+               ]),
 
                 //   
                 //alerts settings
@@ -2177,54 +2152,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                       
                         ]
                       ),
-                      //speak on select
-                      ExpansionTile(
-                        title: Text('Speak on Select:', style: Sv4rs.settingslabelStyle),
-                        collapsedBackgroundColor: Cv4rs.themeColor4,
-                        backgroundColor: Cv4rs.themeColor4,
-                        childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                        children: [
-                          Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(20)), child:
-                        Column(
-                          children: [
-                            Row(
-                          children: [
-                            Expanded(
-                            child: Slider(
-                              value: Bv4rs.navRowSpeakOnSelect.toDouble(),
-                              min: 1.0,
-                              max: 3.0,
-                              divisions: 2,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Speak on Select: ${Bv4rs.navRowSpeakOnSelect}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  Bv4rs.navRowSpeakOnSelect = value.toInt();
-                                  Bv4rs.saveNavRowSpeakOnSelect(value.toInt());
-                                });
-                              },
-                            ),
-                            ),
-                          ]),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Off', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Label', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Alternate Label', style: Sv4rs.settingslabelStyle),),
-                              ],
-                            )
-                          ]),
-                        )
-                        ]
-                        ),
+                      
                       //symbol colors
                       SymbolColorCustomizer(
                         invert: Bv4rs.navRowSymbolInvert,
@@ -2403,54 +2331,6 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                     ]
                       ),
                         ]),
-                      //speak OS
-                       ExpansionTile(
-                        title: Text('Speak on Select:', style: Sv4rs.settingslabelStyle),
-                        collapsedBackgroundColor: Cv4rs.themeColor4,
-                        backgroundColor: Cv4rs.themeColor4,
-                        childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                        children: [
-                          Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(20)), child:
-                        Column(
-                          children: [
-                            Row(
-                          children: [
-                            Expanded(
-                            child: Slider(
-                              value: Bv4rs.grammerRowSpeakOnSelect.toDouble(),
-                              min: 1.0,
-                              max: 3.0,
-                              divisions: 2,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Speak on Select: ${Bv4rs.grammerRowSpeakOnSelect}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  Bv4rs.grammerRowSpeakOnSelect = value.toInt();
-                                  Bv4rs.savegrammerRowSpeakOnSelect(value.toInt());
-                                });
-                              },
-                            ),
-                            ),
-                          ]),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Off', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Label', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Change', style: Sv4rs.settingslabelStyle),),
-                              ],
-                            )
-                          ]),
-                        )
-                        ]
-                        ),
                       //symbol COlors
                         SymbolColorCustomizer(
                           invert: Bv4rs.grammerRowSymbolInvert, 
@@ -2634,54 +2514,6 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                       
                         ]
                       ),
-                      //speakOS
-                       ExpansionTile(
-                        title: Text('Speak on Select:', style: Sv4rs.settingslabelStyle),
-                        collapsedBackgroundColor: Cv4rs.themeColor4,
-                        backgroundColor: Cv4rs.themeColor4,
-                        childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                        children: [
-                          Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(20)), child:
-                        Column(
-                          children: [
-                            Row(
-                          children: [
-                            Expanded(
-                            child: Slider(
-                              value: Bv4rs.subFolderSpeakOnSelect.toDouble(),
-                              min: 1.0,
-                              max: 3.0,
-                              divisions: 2,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Speak on Select: ${Bv4rs.subFolderSpeakOnSelect}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  Bv4rs.subFolderSpeakOnSelect = value.toInt();
-                                  Bv4rs.saveSubFolderSpeakOnSelect(value.toInt());
-                                });
-                              },
-                            ),
-                            ),
-                          ]),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Off', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded( flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Label', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded( flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Alternate Label', style: Sv4rs.settingslabelStyle),),
-                              ],
-                            )
-                          ]),
-                        )
-                        ]
-                        ),
                        //symbol colors
                        SymbolColorCustomizer(
                         invert: Bv4rs.subFolderSymbolInvert, 
@@ -2849,251 +2681,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                       
                         ]
                       ),
-                      //speak on select
-                      ExpansionTile(
-                        title: Text('Speak on Select:', style: Sv4rs.settingslabelStyle),
-                        collapsedBackgroundColor: Cv4rs.themeColor4,
-                        backgroundColor: Cv4rs.themeColor4,
-                        childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                        children: [
-                           ExpansionTile(
-                              title: Text('Button Speak on Select:', style: Sv4rs.settingslabelStyle),
-                              collapsedBackgroundColor: Cv4rs.themeColor4,
-                              backgroundColor: Cv4rs.themeColor4,
-                              childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                              children: [
-                                Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(20)), child:
-                              Column(
-                                children: [
-                                  Row(
-                                children: [
-                                  Expanded(
-                                  child: Slider(
-                                    value: Bv4rs.buttonSpeakOnSelect.toDouble(),
-                                    min: 1.0,
-                                    max: 3.0,
-                                    divisions: 2,
-                                    activeColor: Cv4rs.themeColor1,
-                                    inactiveColor: Cv4rs.themeColor3,
-                                    thumbColor: Cv4rs.themeColor1,
-                                    label: 'Speak on Select: ${Bv4rs.buttonSpeakOnSelect}',
-                                    onChanged: (value) async {
-                                      setState(() {
-                                        Bv4rs.buttonSpeakOnSelect = value.toInt();
-                                        Bv4rs.saveButtonSpeakOnSelect(value.toInt());
-                                      });
-                                    },
-                                  ),
-                                  ),
-                                ]),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                      Text('Off', style: Sv4rs.settingslabelStyle),),
-                                      Spacer(flex: 3),
-                                      Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                      Text('Speak Label', style: Sv4rs.settingslabelStyle),),
-                                      Spacer(flex: 3),
-                                      Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                      Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
-                                    ],
-                                  )
-                                ]),
-                              )
-                              ]
-                             ),
-                           ExpansionTile(
-                        title: Text('Pocket Folder Speak on Select:', style: Sv4rs.settingslabelStyle),
-                        collapsedBackgroundColor: Cv4rs.themeColor4,
-                        backgroundColor: Cv4rs.themeColor4,
-                        childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                        children: [
-                          Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(20)), child:
-                        Column(
-                          children: [
-                            Row(
-                          children: [
-                            Expanded(
-                            child: Slider(
-                              value: Bv4rs.pocketFolderSpeakOnSelect.toDouble(),
-                              min: 1.0,
-                              max: 3.0,
-                              divisions: 2,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Speak on Select: ${Bv4rs.pocketFolderSpeakOnSelect}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  Bv4rs.pocketFolderSpeakOnSelect = value.toInt();
-                                  Bv4rs.savepocketFolderSpeakOnSelect(value.toInt());
-                                });
-                              },
-                            ),
-                            ),
-                          ]),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Off', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Label', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
-                              ],
-                            )
-                          ]),
-                        )
-                        ]
-                        ),
-                           ExpansionTile(
-                        title: Text('Folder Speak on Select:', style: Sv4rs.settingslabelStyle),
-                        collapsedBackgroundColor: Cv4rs.themeColor4,
-                        backgroundColor: Cv4rs.themeColor4,
-                        childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                        children: [
-                          Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(20)), child:
-                        Column(
-                          children: [
-                            Row(
-                          children: [
-                            Expanded(
-                            child: Slider(
-                              value: Bv4rs.folderSpeakOnSelect.toDouble(),
-                              min: 1.0,
-                              max: 3.0,
-                              divisions: 2,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Speak on Select: ${Bv4rs.folderSpeakOnSelect}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  Bv4rs.folderSpeakOnSelect = value.toInt();
-                                  Bv4rs.savefolderSpeakOnSelect(value.toInt());
-                                });
-                              },
-                            ),
-                            ),
-                          ]),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Off', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Label', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
-                              ],
-                            )
-                          ]),
-                        )
-                        ]
-                        ),
-                           ExpansionTile(
-                        title: Text('Audio Tile Speak on Select:', style: Sv4rs.settingslabelStyle),
-                        collapsedBackgroundColor: Cv4rs.themeColor4,
-                        backgroundColor: Cv4rs.themeColor4,
-                        childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                        children: [
-                          Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(20)), child:
-                        Column(
-                          children: [
-                            Row(
-                          children: [
-                            Expanded(
-                            child: Slider(
-                              value: Bv4rs.audioTileSpeakOnSelect.toDouble(),
-                              min: 1.0,
-                              max: 3.0,
-                              divisions: 2,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Speak on Select: ${Bv4rs.audioTileSpeakOnSelect}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  Bv4rs.audioTileSpeakOnSelect = value.toInt();
-                                  Bv4rs.saveaudioTileSpeakOnSelect(value.toInt());
-                                });
-                              },
-                            ),
-                            ),
-                          ]),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Off', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Label', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
-                              ],
-                            )
-                          ]),
-                        )
-                        ]
-                        ),
-                           ExpansionTile(
-                        title: Text('Typing Button Speak on Select:', style: Sv4rs.settingslabelStyle),
-                        collapsedBackgroundColor: Cv4rs.themeColor4,
-                        backgroundColor: Cv4rs.themeColor4,
-                        childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                        children: [
-                          Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 0, V4rs.paddingValue(20)), child:
-                        Column(
-                          children: [
-                            Row(
-                          children: [
-                            Expanded(
-                            child: Slider(
-                              value: Bv4rs.typingKeySpeakOnSelect.toDouble(),
-                              min: 1.0,
-                              max: 3.0,
-                              divisions: 2,
-                              activeColor: Cv4rs.themeColor1,
-                              inactiveColor: Cv4rs.themeColor3,
-                              thumbColor: Cv4rs.themeColor1,
-                              label: 'Speak on Select: ${Bv4rs.typingKeySpeakOnSelect}',
-                              onChanged: (value) async {
-                                setState(() {
-                                  Bv4rs.typingKeySpeakOnSelect = value.toInt();
-                                  Bv4rs.savetypingKeySpeakOnSelect(value.toInt());
-                                });
-                              },
-                            ),
-                            ),
-                          ]),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Off', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Label', style: Sv4rs.settingslabelStyle),),
-                                Spacer(flex: 3),
-                                Expanded(flex: V4rs.xSmallModeWidth ? 3 : 1, child:
-                                Text('Speak Message ', style: Sv4rs.settingslabelStyle),),
-                              ],
-                            )
-                          ]),
-                        )
-                        ]
-                        ),
                       
-                        ]
-                        ),
                       //symbol settings
                       SymbolColorCustomizer(
                         invert: Bv4rs.buttonSymbolInvert, 

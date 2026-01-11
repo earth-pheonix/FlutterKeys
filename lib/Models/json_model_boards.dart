@@ -845,5 +845,3 @@ extension BoardsDisplay on BoardObjects {
 extension BoardObjectsClone on BoardObjects {
   BoardObjects clone() => BoardObjects.fromJson(toJson());
 }
-
-

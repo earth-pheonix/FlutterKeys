@@ -497,7 +497,7 @@ class _MessageWindowState extends State<MessageWindow> {
     }
 
   //var for language functions
-  String get currentLanguage => Sv4rs.myLanguages.elementAt(currentLanguageIndex);
+  String get localCurrentLanguage => Sv4rs.myLanguages.elementAt(currentLanguageIndex);
  
   //scrolling 
   void _scrollOneLineDown() {
@@ -724,10 +724,9 @@ class _MessageWindowState extends State<MessageWindow> {
             value: currentLanguageIndex.toDouble(),
             onChanged: (value) async {
                currentLanguageIndex = value.round();
-                final currentLanguage = languages[currentLanguageIndex];
                 if (Sv4rs.speakInterfaceButtonsOnSelect) {
                   V4rs.speakOnSelect(
-                    'selected language set to ${V4rs.languageToLocalePrefix_(currentLanguage).toUpperCase()}', 
+                    'selected language set to ${V4rs.languageToLocalePrefix_(localCurrentLanguage).toUpperCase()}', 
                     V4rs.selectedLanguage.value, 
                     widget.synth,
                     widget.speakSelectSherpaOnnxSynth,
@@ -736,9 +735,9 @@ class _MessageWindowState extends State<MessageWindow> {
                     );
                   }
               setState(() {
-                V4rs.selectedLanguage.value = currentLanguage;
+                V4rs.selectedLanguage.value = localCurrentLanguage;
               });
-              await V4rs.saveSelectedLang(currentLanguage);
+              await V4rs.saveSelectedLang(localCurrentLanguage);
             },
           ),
         ),
@@ -753,7 +752,7 @@ class _MessageWindowState extends State<MessageWindow> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
-          V4rs.languageToLocalePrefix_(currentLanguage).toUpperCase(),
+          V4rs.languageToLocalePrefix_(localCurrentLanguage).toUpperCase(),
           style: TextStyle(
             color: Cv4rs.themeColor4,
             fontWeight: FontWeight.bold,

@@ -5,6 +5,7 @@ import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
 import 'package:flutterkeysaac/Screens/message_row.dart';
 import 'package:flutterkeysaac/Variables/system_tts/tts_interface.dart';
 import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
+import 'package:flutterkeysaac/Variables/assorted_ui/ui_pops.dart';
 import 'package:flutterkeysaac/Models/json_model_boards.dart';
 import 'package:flutterkeysaac/Models/json_model_grammer.dart';
 import 'package:flutterkeysaac/Variables/editing/save_indicator.dart';
@@ -259,7 +260,18 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             resizeToAvoidBottomInset: false,
             body: SafeArea(
               bottom: false,
-              child: Column(
+              child: GestureDetector( 
+                  behavior: HitTestBehavior.translucent,
+                  onVerticalDragEnd: (details) {
+                    if (details.primaryVelocity != null && details.primaryVelocity! > 0) {
+                      showOptionsPopupForSpeakOnSelect(
+                        widget.reloadSherpaOnnx,
+                        context,
+                      );
+                    }
+                  },
+                  child: 
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Message row
@@ -380,6 +392,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     ),
                   ),
                 ],
+              ),
               ),
             ),
             );

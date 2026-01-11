@@ -8,6 +8,7 @@ import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
+import 'package:flutterkeysaac/Variables/settings/bookmark_voice.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutterkeysaac/Models/manifest_model.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
@@ -176,7 +177,6 @@ class _OpenWelcomeScreen extends State<OpenWelcomeScreen> with WidgetsBindingObs
   }
 }
 
-
 class VoicePicker extends StatefulWidget {
   final TTSInterface synth;
   final double totalWidth;
@@ -200,9 +200,11 @@ class VoicePicker extends StatefulWidget {
 }
 
 class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
+
   double pitchValue = 1.0;
   double rateValue = 0.5;
   double lengthScale = 1.0;
+  int deleteValue = 0;
   late AudioPlayer wavSamplePlayer;
 
   @override
@@ -212,7 +214,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
     wavSamplePlayer = AudioPlayer();
     for (var language in Sv4rs.myLanguages) {
       Vv4rs.setupSystemVoicePicker(language, 'default');
-      Vv4rs.setupSherpaOnnxVoicePicker(language, 'default');
+      Vv4rs.setupSherpaOnnxVoicePicker(language);
     }
   }
 
@@ -516,6 +518,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                             } else {
                               setState(() { 
                                 Vv4rs.myEngineForVoiceLang[language] = Vv4rs.sherpaOnnxLanguageVoice[language]!.engine;
+                                Vv4rs.saveMyEngineForVoiceLang(language, true, 'sherpa-onnx');
                               });
                             }
                             widget.reloadSherpaOnnx(forSS);
@@ -580,9 +583,9 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                 (forSS)
                   ? Vv4rs.setSSlanguageVoiceSystem(
                       language, 
-                      Vv4rs.systemLanguageVoice[language]?.voice, 
-                      Vv4rs.systemLanguageVoice[language]?.engine, 
-                      Vv4rs.systemLanguageVoice[language]?.pitch, 
+                      Vv4rs.speakSelectSystemLanguageVoice[language]?.voice, 
+                      Vv4rs.speakSelectSystemLanguageVoice[language]?.engine, 
+                      Vv4rs.speakSelectSystemLanguageVoice[language]?.pitch, 
                       value, 
                     )
                   : Vv4rs.setlanguageVoiceSystem(
@@ -636,16 +639,16 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                 (forSS)
                   ? Vv4rs.setSSlanguageVoiceSystem(
                       language, 
-                      Vv4rs.systemLanguageVoice[language]?.voice, 
-                      Vv4rs.systemLanguageVoice[language]?.engine, 
-                      value, 
-                      Vv4rs.systemLanguageVoice[language]?.rate,
+                      Vv4rs.speakSelectSystemLanguageVoice[language]?.voice, 
+                      Vv4rs.speakSelectSystemLanguageVoice[language]?.engine, 
+                      pitchValue, 
+                      Vv4rs.speakSelectSystemLanguageVoice[language]?.rate,
                     )
                   : Vv4rs.setlanguageVoiceSystem(
                       language, 
                       Vv4rs.systemLanguageVoice[language]?.voice, 
                       Vv4rs.systemLanguageVoice[language]?.engine,
-                      value, 
+                      pitchValue, 
                       Vv4rs.systemLanguageVoice[language]?.rate,
                     );
               });
@@ -782,6 +785,258 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
     );
   }
 
+  Widget bookmarkButton(String lang, bool forSS) {
+    return Padding(
+        padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)), 
+        child: ButtonStyle1(
+          glow: true,
+          padding: !V4rs.xSmallMode ? 5 : 15,
+          imagePath: 'assets/interface_icons/interface_icons/iBookmark.png', 
+          onPressed: (){
+            if (forSS){
+              if (Vv4rs.myEngineForVoiceLang[lang] == 'system'){
+                BVv4rs.setBookmarkedVoiceSystem(
+                  lang,
+                  Vv4rs.speakSelectSystemLanguageVoice[lang]?.voice,
+                  Vv4rs.speakSelectSystemLanguageVoice[lang]?.engine,
+                  Vv4rs.speakSelectSystemLanguageVoice[lang]?.pitch,
+                  Vv4rs.speakSelectSystemLanguageVoice[lang]?.rate,
+                );
+              } else 
+              if (Vv4rs.myEngineForVoiceLang[lang] == 'sherpa-onnx'){
+                BVv4rs.setBookmarkedVoiceSherpaOnnx(
+                  lang, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.id, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.engine, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.tokenPath, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.modelVoice, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.speakerCount, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.speakerID, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.lengthScale, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.speakers, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.lexicon, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.farFiles, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.fstFiles, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.voicesBin, 
+                  Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.eSpeakPath
+                );
+              }
+            }
+            else {
+              if (Vv4rs.myEngineForVoiceLang[lang] == 'system'){
+                BVv4rs.setBookmarkedVoiceSystem(
+                  lang,
+                  Vv4rs.systemLanguageVoice[lang]?.voice,
+                  Vv4rs.systemLanguageVoice[lang]?.engine,
+                  Vv4rs.systemLanguageVoice[lang]?.pitch,
+                  Vv4rs.systemLanguageVoice[lang]?.rate,
+                );
+              } else 
+              if (Vv4rs.myEngineForVoiceLang[lang] == 'sherpa-onnx'){
+                BVv4rs.setBookmarkedVoiceSherpaOnnx(
+                  lang, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.id, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.engine, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.tokenPath, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.modelVoice, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.speakerCount, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.speakerID, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.lengthScale, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.speakers, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.lexicon, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.farFiles, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.fstFiles, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.voicesBin, 
+                  Vv4rs.sherpaOnnxLanguageVoice[lang]?.eSpeakPath
+                );
+              }
+            }
+          }
+        ), 
+    );
+  }
+
+  Widget deleteButton(String lang) {
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Cv4rs.themeColor3,
+      ),
+      child: (BVv4rs.bookmarkedCount.value[lang] != null
+        && BVv4rs.bookmarkedCount.value[lang]! >= 0 )
+        ? Row(
+        children: [ 
+            Padding(
+              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+              child:Column(
+              children: [
+                SizedBox(width: !V4rs.xSmallMode? 90 : 60, child: 
+                Text('Delete:', style: Sv4rs.settingslabelStyle),
+                ),
+                SizedBox(width: !V4rs.xSmallMode ? 90 : 60, child: 
+                DropdownButton<int>(
+                  hint: const Text('###'),
+                  value: deleteValue,
+                  isExpanded: true,
+                  items: List.generate(
+                    BVv4rs.bookmarkedCount.value[lang] ?? 0,
+                    (index) {
+                      return DropdownMenuItem<int>(
+                        value: index,
+                        child: Text('$index'),
+                      );
+                    },
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value != null){
+                        deleteValue = value;
+                      }
+                    });
+                  },
+                )
+                ),
+            ],
+            ),
+            ),
+            SizedBox(width: !V4rs.xSmallModeWidth ? 50 : 30, child: 
+            Padding(
+              padding: EdgeInsetsGeometry.fromLTRB(0, V4rs.paddingValue(10), V4rs.paddingValue(10), V4rs.paddingValue(10)), 
+              child: ButtonStyle1(
+                glow: true,
+                padding: 2,
+                imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                onPressed: (){
+                  BVv4rs.deleteBookmarked(deleteValue, lang);
+                  deleteValue = 0;
+                }
+              ), 
+            ),
+            )
+          ]
+      )
+        : SizedBox.shrink()
+    );
+  }
+
+  Widget bookmarkedRow(String language, bool forSS){
+    return ValueListenableBuilder(
+      valueListenable: BVv4rs.bookmarkedCount, 
+      builder: (context, count, _) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: !V4rs.xSmallMode ? 100 : 60, 
+                  height: !V4rs.xSmallMode ? 60 : 50, 
+                  child: bookmarkButton(language, forSS),
+                ),
+                SizedBox(width: !V4rs.xSmallModeWidth ? 160 : 100, child: 
+                deleteButton(language),
+                ),
+                for (int i=0; i <(BVv4rs.bookmarkedVoices[language]?.length ?? 0); i ++)...[
+                  SizedBox(width: !V4rs.xSmallModeWidth ? 250 : 150, child: 
+                  ButtonStyle2(
+                    flex: 3,
+                    maxLines: 3,
+                    imagePath: 'assets/interface_icons/interface_icons/iVoice.png', 
+                    onPressed: (){
+                      setState(() {
+                        if (forSS) {
+                          Vv4rs.myEngineForSSVoiceLang = BVv4rs.bookmarkedVoices[language]?[i].engine;
+                          (BVv4rs.bookmarkedVoices[language]?[i].engine == 'system') 
+                            ? Vv4rs.setSSlanguageVoiceSystem(
+                              language, 
+                              BVv4rs.bookmarkedVoices[language]?[i].voice, 
+                              "system", 
+                              BVv4rs.bookmarkedVoices[language]?[i].pitch, 
+                              BVv4rs.bookmarkedVoices[language]?[i].rate, 
+                            )
+                            : Vv4rs.setSSlanguageVoiceSherpaOnnx(
+                              language, 
+                              BVv4rs.bookmarkedVoices[language]?[i].id,
+                              BVv4rs.bookmarkedVoices[language]?[i].engine, 
+                              BVv4rs.bookmarkedVoices[language]?[i].tokenPath, 
+                              BVv4rs.bookmarkedVoices[language]?[i].modelVoice,
+                              BVv4rs.bookmarkedVoices[language]?[i].speakerCount,
+                              BVv4rs.bookmarkedVoices[language]?[i].speakerID,
+                              BVv4rs.bookmarkedVoices[language]?[i].lengthScale, 
+                              BVv4rs.bookmarkedVoices[language]?[i].speakers,
+                              BVv4rs.bookmarkedVoices[language]?[i].lexicon,
+                              BVv4rs.bookmarkedVoices[language]?[i].farFiles,
+                              BVv4rs.bookmarkedVoices[language]?[i].fstFiles,
+                              BVv4rs.bookmarkedVoices[language]?[i].voicesBin,
+                              BVv4rs.bookmarkedVoices[language]?[i].eSpeakPath,
+                            );
+                        } 
+                        else {
+                          Vv4rs.myEngineForVoiceLang[language] = BVv4rs.bookmarkedVoices[language]?[i].engine;
+                          if (BVv4rs.bookmarkedVoices[language]?[i].engine == 'system') {
+                              Vv4rs.setlanguageVoiceSystem(
+                                language, 
+                                BVv4rs.bookmarkedVoices[language]?[i].voice, 
+                                "system", 
+                                BVv4rs.bookmarkedVoices[language]?[i].pitch, 
+                                BVv4rs.bookmarkedVoices[language]?[i].rate, 
+                              );
+                            } 
+                            else {
+                            Vv4rs.setlanguageVoiceSherpaOnnx(
+                              language, 
+                              BVv4rs.bookmarkedVoices[language]?[i].id,
+                              BVv4rs.bookmarkedVoices[language]?[i].engine, 
+                              BVv4rs.bookmarkedVoices[language]?[i].tokenPath, 
+                              BVv4rs.bookmarkedVoices[language]?[i].modelVoice,
+                              BVv4rs.bookmarkedVoices[language]?[i].speakerCount,
+                              BVv4rs.bookmarkedVoices[language]?[i].speakerID,
+                              BVv4rs.bookmarkedVoices[language]?[i].lengthScale ?? 1.0, 
+                              BVv4rs.bookmarkedVoices[language]?[i].speakers,
+                              BVv4rs.bookmarkedVoices[language]?[i].lexicon,
+                              BVv4rs.bookmarkedVoices[language]?[i].farFiles,
+                              BVv4rs.bookmarkedVoices[language]?[i].fstFiles,
+                              BVv4rs.bookmarkedVoices[language]?[i].voicesBin,
+                              BVv4rs.bookmarkedVoices[language]?[i].eSpeakPath,
+                            );
+                            widget.reloadSherpaOnnx(forSS);
+                            print('done'); //done
+                          }
+                        }
+                      });
+                    },
+                    label: 
+                    (BVv4rs.bookmarkedVoices[language]?[i] != null)
+                      ? (BVv4rs.bookmarkedVoices[language]?[i].engine == 'system') 
+                        ? '$i: ${ //name
+                            BVv4rs.findSystemVoiceName(language, BVv4rs.bookmarkedVoices[language]?[i].voice)
+                          } - Pitch: ${
+                            BVv4rs.bookmarkedVoices[language]?[i].pitch ?? 1.0
+                          } - Rate: ${
+                            BVv4rs.bookmarkedVoices[language]?[i].rate ?? ((Platform.isIOS) ? 0.5 : 1.0)
+                          }'
+                        : '$i - ${ //name
+                            BVv4rs.findSherpaVoiceName(language, BVv4rs.bookmarkedVoices[language]?[i].id)
+                          } - Speaker: ${
+                            BVv4rs.bookmarkedVoices[language]?[i].speakerID ?? 0
+                          } - Rate: ${
+                            BVv4rs.bookmarkedVoices[language]?[i].lengthScale ?? 1.0
+                          }'
+                      : '$i error' 
+                  ),
+                ),
+                ], 
+                SizedBox(width: widget.totalWidth - 160)
+              ],
+            ),
+        );
+      }
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
@@ -804,7 +1059,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
             );
           }},
       children: [
-        
+
         //
         //Note for users
         //
@@ -813,7 +1068,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
             child: Padding( 
               padding: EdgeInsets.fromLTRB(V4rs.paddingValue(20), 0, 0, V4rs.paddingValue(15)),
               child: Text(
-                'Multilingual users should not rely on default voices- please manually select a voice for each language.', 
+                'users should not rely on default voices- please manually select a voice for each language.', 
                 style: Sv4rs.settingsSecondaryLabelStyle,
                ),
               ),
@@ -826,6 +1081,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
         //
 
         ...Sv4rs.myLanguages.map((language){
+
           
           if (
             Vv4rs.systemVoices.isEmpty || 
@@ -833,8 +1089,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
             Vv4rs.perLangSherpaOnnxVoices.isEmpty
           ){
             return CircularProgressIndicator();
-          } 
-          
+          }  else {
           ManifestModel? findDropdownValue() {
             ManifestModel? value;
             if (Vv4rs.sampleSherpaOnnx == null){
@@ -865,54 +1120,60 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
     
 
           return SizedBox(width: widget.totalWidth, child:
-          ExpansionTile(
-            title: Text(language, style: Sv4rs.settingslabelStyle),
-            collapsedBackgroundColor: Cv4rs.themeColor4,
-            backgroundColor: Cv4rs.themeColor4,
-            childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-            children: [
-              
-              engineDropdown(),
+            ExpansionTile(
+              title: Text(language, style: Sv4rs.settingslabelStyle),
+              collapsedBackgroundColor: Cv4rs.themeColor4,
+              backgroundColor: Cv4rs.themeColor4,
+              childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
+              children: [
+                
+                //bookmarked voices
+                bookmarkedRow(language, false),
+                
+                //engine picker
+                engineDropdown(),
 
-              //
-              // if sherpa-onnx
-              //
-                //voice
-                  if (Sv4rs.pickFromEngine == 'sherpa-onnx')
-                    sherpaOnnxVoiceDropdown(false, language, dropdownValue),
+                //
+                //sherpa-onnx
+                //
+                  //voice
+                    if (Sv4rs.pickFromEngine == 'sherpa-onnx')
+                      sherpaOnnxVoiceDropdown(false, language, dropdownValue),
+                  
+                    //rate
+                    if (Sv4rs.pickFromEngine == 'sherpa-onnx')
+                      sherpaOnnxRateSlider(false, language),
+                    
+
+                //
+                //system
+                //
+                  //voice
+                  if (Sv4rs.pickFromEngine == 'system')
+                    Padding(
+                      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(20)), 
+                      child: systemVoiceDropdown(false, language, dropdownValue),
+                    ),
                 
                   //rate
-                  if (Sv4rs.pickFromEngine == 'sherpa-onnx')
-                    sherpaOnnxRateSlider(false, language),
+                  if (Sv4rs.pickFromEngine == 'system')
+                    systemRateSlider(false, language),
                   
+                  //pitch
+                  if (Sv4rs.pickFromEngine == 'system')
+                    systemPitchSlider(false, language),
 
-              //
-              // system engine
-              //
-                //voice
-                if (Sv4rs.pickFromEngine == 'system')
-                  Padding(
-                    padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(20)), 
-                    child: systemVoiceDropdown(false, language, dropdownValue),
-                  ),
-               
-                //rate
-                if (Sv4rs.pickFromEngine == 'system')
-                  systemRateSlider(false, language),
-                
-                //pitch
-                if (Sv4rs.pickFromEngine == 'system')
-                  systemPitchSlider(false, language),
-
-              //
-              //testVoice button
-              //
-              testVoiceButton(false, language),
-            ]
-          ),
+                //
+                //testVoice button
+                //
+                testVoiceButton(false, language),
+              ]
+            ),
         );
         }
+        }
         ),
+
       
       //
       //Speak on Select Voice
@@ -937,7 +1198,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                     Sv4rs.useDifferentVoiceforSS = value;
                     Sv4rs.saveUseDiffVoiceSS(value);
 
-                    if (Sv4rs.useDifferentVoiceforSS = false){
+                    if (Sv4rs.useDifferentVoiceforSS == false){
                       for (final lang in Sv4rs.myLanguages){
                         if (Vv4rs.myEngineForVoiceLang[lang] == 'sherpa-onnx'){
                           Vv4rs.setSSlanguageVoiceSherpaOnnx(
@@ -983,7 +1244,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
             Vv4rs.perLangSherpaOnnxVoices.isEmpty
           ){
             return CircularProgressIndicator();
-          } 
+          } else {
           
           ManifestModel? findDropdownValue() {
             ManifestModel? value;
@@ -1022,10 +1283,14 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                 CircularProgressIndicator()
               else //offer voices
               
-              engineDropdown(),
+              //bookmarked voices
+                bookmarkedRow(language, true),
+              
+              //engine
+                engineDropdown(),
 
               //
-              // if sherpa-onnx
+              //sherpa-onnx
               //
               if (Sv4rs.pickFromEngine == 'sherpa-onnx')
               sherpaOnnxVoiceDropdown(true, language, dropdownValue),
@@ -1059,10 +1324,12 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
             ],
           );
           }
+        }
         ),
       
         ],
       ),
+  
      ]
     );
   }

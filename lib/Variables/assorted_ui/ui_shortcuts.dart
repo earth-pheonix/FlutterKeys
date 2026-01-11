@@ -174,6 +174,8 @@ class ButtonStyle2 extends StatelessWidget {
   final VoidCallback onPressed;
   final String label;
   final double padding;
+  final double maxLines;
+  final int flex;
 
   const ButtonStyle2 ({
     super.key,
@@ -181,6 +183,8 @@ class ButtonStyle2 extends StatelessWidget {
     required this.onPressed,
     required this.label,
     this.padding = 10,
+    this.maxLines = 2,
+    this.flex = 2,
   });
 
   @override
@@ -218,11 +222,11 @@ class ButtonStyle2 extends StatelessWidget {
           ),
         
         Expanded(
-          flex: 2,
+          flex: flex,
           child: 
         Text(label, 
         style: Sv4rs.settingslabelStyle,
-        maxLines: 2,
+        maxLines: maxLines.toInt(),
         overflow: TextOverflow.ellipsis,
         ),
         ),
