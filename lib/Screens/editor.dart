@@ -22,11 +22,6 @@ class Editor extends StatefulWidget {
   final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
   final Future<void> Function() initForSS;
   final AudioPlayer playerForSS;
-  final double mwHeight;
-  final double navHeight;
-  final double grammerHeight;
-  final double totalBoardHeight;
-  final Size screenSize;
 
   const Editor({
     super.key,
@@ -36,11 +31,6 @@ class Editor extends StatefulWidget {
     required this.speakSelectSherpaOnnxSynth,
     required this.initForSS,
     required this.playerForSS,
-    required this.mwHeight,
-    required this.navHeight,
-    required this.grammerHeight,
-    required this.totalBoardHeight,
-    required this.screenSize,
   });
 
   @override
@@ -228,6 +218,49 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+
+
+    final media = MediaQuery.of(context);
+    final screenSize = MediaQuery.of(context).size;
+    final double defaultBoardHeight = screenSize.height * (7 / 12);
+    final safeScreenHeight = screenSize.height - media.padding.top;
+    final view = View.of(context);
+    final physcialWidth = view.physicalSize.width / view.devicePixelRatio;
+    final physicalHeight = view.physicalSize.height / view.devicePixelRatio;
+    final isShrunk = (physcialWidth > (screenSize.width - 10)) 
+        || ((physicalHeight > (screenSize.height - 10)));
+
+    V4rs.isLandscape = screenSize.width > screenSize.height;
+    V4rs.xSmallModeWidth = (screenSize.width <= 500);
+    V4rs.xSmallModeHeight = (screenSize.height <= 600);
+    V4rs.xSmallMode = V4rs.xSmallModeHeight || V4rs.xSmallModeWidth;
+    V4rs.smallEditorMode = (screenSize.width <= 900);
+  
+    final double boardHeight = (V4rs.isLandscape) && (V4rs.keyboardheight > 0) && (!isShrunk)
+        ? V4rs.keyboardheight
+        : defaultBoardHeight;
+    
+    double availableFlex = safeScreenHeight - boardHeight;
+    if (availableFlex < 0) availableFlex = 0;
+
+    final double flexForMW = V4rs.xSmallMode ? 12 : 10;
+    final double flexNav = V4rs.xSmallMode ? 6 : 8;
+    final double flexGrammer = 4;
+    final double totalFlex = flexGrammer + flexNav + flexForMW;
+
+    final double mwHeight = availableFlex * (flexForMW / totalFlex);
+    final double navHeight = (Bv4rs.showNavRow == 3) ? 0 : availableFlex * (flexNav / totalFlex);
+    final double grammerHeight = (Bv4rs.showGrammerRow == 3) ? 0 : availableFlex * (flexGrammer / totalFlex);
+    final double boardFlex = ((Bv4rs.showGrammerRow == 3) 
+      ? availableFlex * (flexGrammer / totalFlex) 
+      : 0) 
+      + ((Bv4rs.showNavRow == 3) 
+      ? availableFlex * (flexNav / totalFlex) 
+      : 0);
+
+    final double totalBoardHeight = boardHeight + boardFlex;
+ 
+
     Widget navListener(Widget returning) {
       return ValueListenableBuilder(
         valueListenable: CombinedValueNotifier(
@@ -344,7 +377,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                         Stack(
                           children: [
                             SizedBox(
-                              height: widget.mwHeight,
+                              height: mwHeight,
                               child: Container(
                                 color: Cv4rs.themeColor2,
                                 child: ValueListenableBuilder(
@@ -375,7 +408,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                         ),
                         // Navigation row
                         SizedBox(
-                              height: widget.navHeight,
+                              height: navHeight,
                               child: Container(
                                 color: Cv4rs.themeColor3,
                                 child: (Bv4rs.showNavRow == 2) 
@@ -421,7 +454,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                                         Ev4rs.secondGrammerSelectedUUID, null, null ),
                                         builder: (context, values, _) {
                         return SizedBox(
-                          height: widget.grammerHeight,
+                          height: grammerHeight,
                           child: Container(
                             color: Cv4rs.themeColor4,
                             child: (Bv4rs.showGrammerRow == 2) 
@@ -478,7 +511,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                         builder: (context, values, _) {
                           return (!Ev4rs.dragSelectMultiple.value) ?
                             SizedBox(
-                              height: widget.totalBoardHeight,
+                              height: totalBoardHeight,
                               child: Container(
                                 color: Cv4rs.themeColor4,
                                   child: Stack(
@@ -520,7 +553,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                               ),
                             )
                             : SizedBox(
-                              height: widget.totalBoardHeight,
+                              height: totalBoardHeight,
                               child: Container(
                                 color: Cv4rs.themeColor4,
                                 child: GestureDetector(
@@ -583,8 +616,8 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                 //
                 else {
                   return Container(
-                    height: widget.screenSize.height,
-                    width: widget.screenSize.width,
+                    height: screenSize.height,
+                    width: screenSize.width,
                       color: Cv4rs.themeColor2,
                       child:
                         ValueListenableBuilder<bool>(
@@ -604,11 +637,11 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                             builder: (context, isEditingSubFolder, _) {
                               
                               return ValueListenableBuilder<BoardObjects?>(
-                                    valueListenable: Ev4rs.subFolderSelectedButton,
-                                    builder: (context, whatIsSelected, _) {
-                                      return buildEditor();
-                               }
-                               );
+                                valueListenable: Ev4rs.subFolderSelectedButton,
+                                builder: (context, whatIsSelected, _) {
+                                  return buildEditor();
+                                }
+                              );
                             }
                         );
                               },

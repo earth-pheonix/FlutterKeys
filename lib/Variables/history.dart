@@ -15,6 +15,7 @@ import 'package:share_plus/share_plus.dart'; //for export
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
+import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'dart:async';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
@@ -61,7 +62,7 @@ class HistoryPage{
           );
         }
         else {
-          return TapHistoryPage.buildMessageHistoryWidget(
+          return TapHistoryPage.buildTapHistoryWidget(
             root,
             setState,
             obj,
@@ -258,7 +259,7 @@ class MessageHistoryPage {
     );
   }
  
-  static  Widget buildTapHistoryButton(int flex){
+  static Widget buildTapHistoryButton(int flex){
     return Expanded(
       flex: flex, 
       child: HistoryButtonStyle(
@@ -266,6 +267,9 @@ class MessageHistoryPage {
         contents: 'Tap History', 
         onPressed: (){
           HistoryV4rs.openTapHistory.value = true;
+          if (HistoryV4rs.openTapHistory.value){
+            HistoryV4rs.getTapHistoryPages();
+          }
         }, 
         isSubFolder: true
       )
@@ -278,11 +282,13 @@ class MessageHistoryPage {
       child: HistoryButtonStyle(
         image: 'assets/interface_icons/interface_icons/iClear.png',
         contents: 'Clear History', 
-        onPressed: (){ setState((){
-          HistoryV4rs.messageHistory = [];
-          HistoryV4rs.getMessageHistoryPages();
-          }
-        );
+        onPressed: (){ 
+          setState((){
+            HistoryV4rs.clearPrefsMessageHistory();
+            HistoryV4rs.messageHistory = [];
+            HistoryV4rs.getMessageHistoryPages();
+            }
+          );
         }, 
         isSubFolder: true
       )
@@ -357,7 +363,7 @@ class MessageHistoryPage {
 
 class TapHistoryPage {
         
-  static Widget buildMessageHistoryWidget(
+  static Widget buildTapHistoryWidget(
     Root root,
     void Function(void Function()) setState,
     BoardObjects obj,
@@ -395,7 +401,7 @@ class TapHistoryPage {
                   Spacer(flex: 2), 
                   buildOpenMessageHistoryButton(36),
                   Spacer(flex: 40), 
-                  buildExportButton(36, context),
+                  buildExportButton(36, context, root, boards),
                   Spacer(flex: 2),
                   buildClearButton(24, setState),
                   Spacer(flex: 1), 
@@ -519,14 +525,18 @@ class TapHistoryPage {
     );
   }
   
-  static Widget buildExportButton(int flex, context){
+  static Widget buildExportButton(int flex, context, Root root, List<BoardObjects> boards){
     return Expanded(
       flex: flex, 
       child: HistoryButtonStyle(
         image: 'assets/interface_icons/interface_icons/iExport.png',
         contents: 'Export', 
         onPressed: (){
-          
+          HistoryV4rs.exportTapHistory(
+            context,
+            boards,
+            root
+          );
         }, 
         isSubFolder: true
       )
@@ -538,7 +548,7 @@ class TapHistoryPage {
       flex: flex, 
       child: HistoryButtonStyle(
         image: 'assets/interface_icons/interface_icons/iPlaceholder.png',
-        contents: 'Tap History', 
+        contents: 'Message History', 
         onPressed: (){
           HistoryV4rs.openTapHistory.value = false;
         }, 
@@ -554,6 +564,7 @@ class TapHistoryPage {
         image: 'assets/interface_icons/interface_icons/iClear.png',
         contents: 'Clear History', 
         onPressed: (){ setState((){
+          HistoryV4rs.clearPrefsTapHistory(HistoryV4rs.tapHistory);
           HistoryV4rs.tapHistory = {};
           HistoryV4rs.getTapHistoryPages();
           }
@@ -604,24 +615,35 @@ class TapHistoryPage {
   }
   
   static Widget buildHistoryButton(int flex, int index, int pathWidth, Root root, List<BoardObjects> boards){
-    
-    Iterable<MapEntry<String, int>> thePage 
-      = HistoryV4rs.tapHistoryPages.value[HistoryV4rs.selectedTapHistoryPage.value].entries;
+    final pages = HistoryV4rs.tapHistoryPages.value;
+    final pageIndex = HistoryV4rs.selectedTapHistoryPage.value;
 
-    String? thePath = SeV4rs.getPath(SeV4rs.findPath(root, thePage.elementAt(index).key));
-    BoardObjects? theObj = SeV4rs.findObjfromUUID(thePage.elementAt(index).key, boards);
+    Map<String, int>? thePage 
+      =  ((pageIndex >= 0 && pageIndex < pages.length))
+      ? HistoryV4rs.tapHistoryPages.value[HistoryV4rs.selectedTapHistoryPage.value]
+      : null;
+
+    String? thePath = ((thePage != null) ? index < thePage.length : false)
+      ? SeV4rs.getPath(SeV4rs.findPath(root, thePage.entries.elementAt(index).key))
+      : null;
+    BoardObjects? theObj = ((thePage != null) ? index < thePage.length: false)
+      ? Ev4rs.findBoardById(boards, thePage.entries.elementAt(index).key)
+      : null;
+    int theCount = ((thePage != null) ? index < thePage.length : false)
+      ? thePage.entries.elementAt(index).value
+      : 0;
 
     return ValueListenableBuilder(
       valueListenable: HistoryV4rs.selectedMessageHistoryPage, 
       builder: (context, selected, _){
         return Expanded(
               flex: flex, 
-              child: (thePath.isNotEmpty && theObj != null) 
+              child: (thePath != null && theObj != null) 
                 ? TapHistoryButtonStyle(
                   pathWidth: pathWidth,
                   path: thePath,
                   obj: theObj,
-                  count: thePage.elementAt(index).value,
+                  count: theCount,
                   onPressed: (){}, 
                 )
                 : TapHistoryPlaceholder(),
@@ -1052,6 +1074,8 @@ class TapHistoryButtonStyle extends StatelessWidget{
 
       @override
       Widget build(BuildContext context) {
+        final defaultStyle = Theme.of(context).textTheme.bodyLarge ?? const TextStyle();
+
         //font settings
         TextStyle uniqueStyle =  
         TextStyle(
@@ -1074,23 +1098,36 @@ class TapHistoryButtonStyle extends StatelessWidget{
         );
 
       //label
-        Text theCount =
-        Text('Taps: $count', 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          );
+        Text countAndPath = 
+          Text.rich(
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            TextSpan(
+              style: (obj.matchFont ?? true) ? defaultStyle.merge(matchStyle) : defaultStyle.merge(uniqueStyle),
+              children: [
+                TextSpan(
+                  text: 'Taps: $count ',
+                  style: (obj.matchFont ?? true) 
+                    ? matchStyle.copyWith(fontWeight: FontWeight.w600) 
+                    : uniqueStyle.copyWith(fontWeight: FontWeight.w600),
+                ),
+                TextSpan(
+                  text: '- $path -> ${obj.label}',
+                ),
+              ]
+            ), 
+        );
         Text theLabel = 
-        Text(obj.label ?? "", 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          Text(obj.label ?? "", 
+            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           );
         Text theLabel2 = 
-        Text(obj.label ?? "", 
-          style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
+          Text(obj.label ?? "", 
+            style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
           );
       
       //image
@@ -1115,10 +1152,7 @@ class TapHistoryButtonStyle extends StatelessWidget{
           );
 
         var case1Contents = <Widget> [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-            child: theCount
-          ),
+          
           Flexible(
             child: Padding(
               padding: EdgeInsets.fromLTRB(
@@ -1137,10 +1171,7 @@ class TapHistoryButtonStyle extends StatelessWidget{
         ];
 
         var case2Contents = <Widget> [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-            child: theCount
-          ),
+         
           Padding(
             padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), child:
             theLabel,
@@ -1159,10 +1190,7 @@ class TapHistoryButtonStyle extends StatelessWidget{
         ];
 
         var case3Contents = <Widget> [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-            child: theCount
-          ),
+          
           Padding(
             padding: EdgeInsets.all(V4rs.paddingValue(obj.padding ?? 2.0)), child:
             theSymbol,
@@ -1171,23 +1199,12 @@ class TapHistoryButtonStyle extends StatelessWidget{
 
         var case4Contents = <Widget> [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
-              child: theCount
-            ),
-            Padding(
               padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)), 
               child: theLabel2
             )
         ];
 
-        Widget pathContents = 
-          Padding(
-            padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)),
-            child: Text(
-              path, 
-              style: (obj.matchFont ?? true) ? matchStyle : uniqueStyle
-            )
-          );
+        
 
         Widget button() {
           return ValueListenableBuilder(valueListenable: V4rs.searchPathUUIDS, builder: (context, search, _) {
@@ -1228,7 +1245,11 @@ class TapHistoryButtonStyle extends StatelessWidget{
                         ),
                         Expanded(
                           flex: pathWidth,
-                          child: pathContents,
+                          child: 
+                            Padding(
+                              padding: EdgeInsets.all(V4rs.paddingValue(8)),
+                              child: countAndPath
+                            ),
                         ),
                       ],
                     );
@@ -1245,7 +1266,11 @@ class TapHistoryButtonStyle extends StatelessWidget{
                         ),
                         Expanded(
                           flex: pathWidth,
-                          child: pathContents,
+                          child: 
+                            Padding(
+                              padding: EdgeInsets.all(V4rs.paddingValue(5)),
+                              child: countAndPath
+                            ),
                         ),
                       ],
                     );
@@ -1260,7 +1285,11 @@ class TapHistoryButtonStyle extends StatelessWidget{
                         ),
                         Expanded(
                           flex: pathWidth,
-                          child: pathContents,
+                          child: 
+                            Padding(
+                              padding: EdgeInsets.all(V4rs.paddingValue(5)),
+                              child: countAndPath
+                            ),
                         ),
                       ],
                     );
@@ -1275,7 +1304,11 @@ class TapHistoryButtonStyle extends StatelessWidget{
                         ),
                         Expanded(
                           flex: pathWidth,
-                          child: pathContents,
+                          child: 
+                            Padding(
+                              padding: EdgeInsets.all(V4rs.paddingValue(5)),
+                              child: countAndPath
+                            ),
                         ),
                       ],
                     );
@@ -1359,6 +1392,11 @@ class HistoryV4rs {
     await prefs.setStringList("messageHistory", messageHistory);
   } 
 
+  static Future<void> clearPrefsMessageHistory () async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove("messageHistory");
+  } 
+
   static ValueNotifier<List<List<String>>> messageHistoryPages  = ValueNotifier([]);
   static List<List<String>> getMessageHistoryPages(){
     print('getMessageHistoryPages: hello');
@@ -1397,7 +1435,7 @@ class HistoryV4rs {
             '(${englishMonths[now.month]} ${now.day}, ${now.year}) - ${context.pageNumber}'
           ),
         build: (pw.Context context) => [
-          pw.Header(level: 0, child: pw.Text("Message History - (${englishMonths[now.month]} ${now.day}, ${now.year})")),
+          pw.Header(level: 0, child: pw.Text("Message History (${englishMonths[now.month]} ${now.day}, ${now.year})")),
           pw.ListView.builder(
             itemCount: HistoryV4rs.messageHistory.length,
             itemBuilder: (context, index) => pw.Text(HistoryV4rs.messageHistory[index]),
@@ -1422,6 +1460,7 @@ class HistoryV4rs {
   //
   //tap history
   //
+
   static ValueNotifier<bool> openTapHistory = ValueNotifier(false);
   static ValueNotifier<int> selectedTapHistoryPage = ValueNotifier(0);
 
@@ -1434,10 +1473,17 @@ class HistoryV4rs {
   static Map<String, int> tapHistory = {};
   static Future<void> savetapHistory (Map<String, int> tapHistory) async {
     final prefs = await SharedPreferences.getInstance();
+    final i = tapHistory.length - 1;
     await prefs.setInt("tapHistoryLength", tapHistory.length);
-    for (int i=0; i < tapHistory.length; i++){
-      await prefs.setString("tapHistory-key-$i", tapHistory.entries.elementAt(i).key);
-      await prefs.setInt("tapHistory-value-$i", tapHistory.entries.elementAt(i).value);
+    await prefs.setString("tapHistory-key-$i", tapHistory.entries.elementAt(i).key);
+    await prefs.setInt("tapHistory-value-$i", tapHistory.entries.elementAt(i).value);
+  } 
+  static Future<void> clearPrefsTapHistory (Map<String, int> tapHistory) async {
+    final prefs = await SharedPreferences.getInstance();
+    for(int i=0; i < tapHistory.length; i++){
+      await prefs.setInt("tapHistoryLength", 0);
+      await prefs.remove("tapHistory-key-$i");
+      await prefs.remove("tapHistory-value-$i");
     }
   } 
 
@@ -1456,7 +1502,107 @@ class HistoryV4rs {
     return tapHistoryPages.value;
   }
 
-  //static Future<void> exportMessageHistory(dynamic context) async {
+  static void addTap(BoardObjects obj){
+    if (HistoryV4rs.trackTaps){
+      if (HistoryV4rs.tapHistory[obj.id] != null){
+        HistoryV4rs.tapHistory[obj.id] = HistoryV4rs.tapHistory[obj.id]! + 1;
+      } 
+      else {
+        HistoryV4rs.tapHistory[obj.id] = 1;
+      }
+      savetapHistory(HistoryV4rs.tapHistory);
+    }
+  }
+
+  
+  static Future<void> exportTapHistory(dynamic context, List<BoardObjects> boards, Root root) async {
+    final pdf = pw.Document();
+    DateTime now = DateTime.now();
+    final box = context.findRenderObject() as RenderBox?;
+
+    pw.TableRow buildTableHeading(List<String> cells) {
+      return pw.TableRow(
+        children: cells.map((cell) {
+          return pw.Padding(
+            padding: const pw.EdgeInsets.all(5),
+            child: pw.Text(
+              cell,
+              style: pw.TextStyle(
+                fontWeight: pw.FontWeight.bold,
+                fontSize: 10,
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    }
+
+    pw.TableRow buildTableRow(int index, List<BoardObjects> boards, Root root) {
+      String? thePath = (index < HistoryV4rs.tapHistory.length)
+        ? SeV4rs.getPath(SeV4rs.findPath(root, HistoryV4rs.tapHistory.entries.elementAt(index).key))
+        : null;
+      BoardObjects? theObj = (index < HistoryV4rs.tapHistory.length)
+        ? Ev4rs.findBoardById(boards, HistoryV4rs.tapHistory.entries.elementAt(index).key)
+        : null;
+      int theCount = (index < HistoryV4rs.tapHistory.length)
+        ? HistoryV4rs.tapHistory.entries.elementAt(index).value
+        : 0;
+
+      List<String> cells = [theObj?.label ?? '', theCount.toString(), '$thePath -> ${theObj?.label}'];
+
+      return pw.TableRow(
+        children: cells.map((cell) {
+          return pw.Padding(
+            padding: const pw.EdgeInsets.all(5),
+            child: pw.Text(
+              cell,
+              style: pw.TextStyle(
+                fontWeight: pw.FontWeight.normal,
+                fontSize: 10,
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    }
+
+    pdf.addPage(
+       pw.MultiPage(
+        footer: (context) => 
+          pw.Text(
+            '(${englishMonths[now.month]} ${now.day}, ${now.year}) - ${context.pageNumber}'
+          ),
+        build: (pw.Context context) => [
+          pw.Header(level: 0, child: pw.Text("Tap History (${englishMonths[now.month]} ${now.day}, ${now.year})")),
+          pw.Table(
+            columnWidths: {
+                  0: const pw.FlexColumnWidth(1),
+                  1: const pw.FlexColumnWidth(2), 
+                  2: const pw.FlexColumnWidth(3),
+                },
+            children: [
+              buildTableHeading(['Button', 'Count', 'Path']),
+              for (int i=0; i<tapHistory.length; i++)
+                buildTableRow(i, boards, root),
+            ],
+          ),
+        ],
+       ),
+    );
+
+    final Uint8List bytes = await pdf.save();
+
+    final directory = await getTemporaryDirectory();
+    final file = File('${directory.path}/tap_history_${now.year}-${now.month}-${now.day}.pdf');
+
+    await file.writeAsBytes(bytes);
+
+    await Share.shareXFiles(
+      [XFile(file.path)], 
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    );
+  }
+  
   
   //
   //load saved values 

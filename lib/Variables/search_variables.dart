@@ -164,7 +164,10 @@ class SeV4rs{
       if (b.id == id) return b;
       
       if (b.content.isNotEmpty) {
-        if (b.id == id) return b;
+        if (b.id == id) {
+          final BoardObjects? foundInContent = findObjfromUUID(id, b.content);
+          if (foundInContent != null) return foundInContent;
+        }
       }
     }
     return null;
@@ -200,15 +203,19 @@ class SeV4rs{
     //saftey- for if something falls through
     return path;
   }
+  
   static String getPath(Map<String, String> map){
     String path = '';
+    
 
-    path = map.entries.first.value;
+    path = map.entries.last.value;
 
     for (int i=1; i < map.length; i++){
-      path = "$path -> ${map.entries.elementAt(i).value}";
+      path = "$path -> ${map.entries.elementAt((map.length-1) - i).value}";
     }
 
+    print(path);
     return path;
   }
+
 }

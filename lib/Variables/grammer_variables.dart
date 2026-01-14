@@ -248,6 +248,9 @@ class Gv4rs {
       // oversee -> overseeing
       } else if (endsWith("see")) {
         return appendWord("ing ");
+      //be -> being
+      } else if (endsWith('be') && startsWith('be')){
+        return appendWord("ing ");
       //abuse -> abusing
       } else if (endsWith("e")) {
         return V4rs.message.value = "${deleteLastChar(oldText)}ing ";

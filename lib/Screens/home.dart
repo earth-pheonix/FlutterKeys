@@ -19,7 +19,6 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
-import 'package:flutterkeysaac/Screens/editor.dart';
 import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
@@ -244,19 +243,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             );
           } else         
         //=====: Editor
-          if (Ev4rs.showEditor.value) {
-            return Editor(
-              synth: widget.synth,
-              speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
-              initForSS: widget.initForSS,
-              playerForSS: widget.playerForSS,
-              mwHeight: mwHeight,
-              navHeight: navHeight,
-              grammerHeight: grammerHeight,
-              totalBoardHeight: totalBoardHeight,
-              screenSize: screenSize,
-            );
-          } else 
+          
         //=====: Home
           {
           return Scaffold(

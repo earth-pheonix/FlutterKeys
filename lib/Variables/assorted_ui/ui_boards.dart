@@ -466,6 +466,7 @@ class _BuildPocketFolderState extends State<BuildPocketFolder> {
               V4rs.changedMWfromButton = false;
               break;
             }
+            HistoryV4rs.addTap(obj);
           }     
 
           Future<void> doSecondaryTap(
@@ -667,10 +668,10 @@ class _BuildTypingKeyState extends State<BuildTypingKey> {
           Future<void> doTapAction(
             BoardObjects obj,
             TTSInterface synth,
-            ) async {
-              setState(() {
-                V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
-              });
+          ) async {
+            setState(() {
+              V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+            });
             switch ((obj.matchSpeakOS ?? true) ? Bv4rs.typingKeySpeakOnSelect : obj.speakOS) {
                   case 1:
                     V4rs.changedMWfromButton = true;
@@ -704,7 +705,8 @@ class _BuildTypingKeyState extends State<BuildTypingKey> {
                     V4rs.changedMWfromButton = false;
                     break;
                   }
-                }     
+            HistoryV4rs.addTap(obj);
+          }     
 
           Future<void> doSecondaryTap(
             BoardObjects obj,
@@ -746,6 +748,7 @@ class _BuildTypingKeyState extends State<BuildTypingKey> {
                     V4rs.changedMWfromButton = false;
                     break;
                   }
+                HistoryV4rs.addTap(obj);
                 }
 
       
@@ -935,7 +938,8 @@ class _BuildAudioTileState extends State<BuildAudioTile> {
                     await LoadAudio.fromAudio(obj.audioClip);
                     break;
                   }
-                }     
+                
+          }     
 
           Future<void> doSecondaryTap(
             BoardObjects obj,
@@ -977,7 +981,8 @@ class _BuildAudioTileState extends State<BuildAudioTile> {
                     V4rs.changedMWfromButton = false;
                     break;
                   }
-                }
+                HistoryV4rs.addTap(obj);
+            }
 
       
       //
@@ -1332,7 +1337,9 @@ class _BuildFolderState extends State<BuildFolder> {
           );
           break;
         }
-      }
+      
+    }
+
     Future<void> doSecondaryTap(
       BoardObjects obj,
       TTSInterface synth,
@@ -1373,6 +1380,7 @@ class _BuildFolderState extends State<BuildFolder> {
           V4rs.changedMWfromButton = false;
           break;
         }
+        HistoryV4rs.addTap(obj);
       }
 
     //
@@ -1539,6 +1547,7 @@ class BuildButton extends StatelessWidget{
             V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
             break;
           }
+          HistoryV4rs.addTap(obj);
         },
       );
     }
@@ -2567,10 +2576,11 @@ class SpecialNavButtonStyle extends StatelessWidget {
           case 1:
             //add navigation link to
 
-            if (HistoryV4rs.useHistory){
+            if (HistoryV4rs.useHistory || HistoryV4rs.trackTaps){
               if ((me != null) ? me!.type == 'history' : false){
                 HistoryV4rs.getMessageHistoryPages();
                 HistoryV4rs.openHistory.value = true;
+                HistoryV4rs.openTapHistory.value = false;
               }
             }
             FocusScope.of(context).unfocus();
@@ -2581,10 +2591,11 @@ class SpecialNavButtonStyle extends StatelessWidget {
           case 2:
             //add navigation link to
 
-            if (HistoryV4rs.useHistory){
+            if (HistoryV4rs.useHistory || HistoryV4rs.trackTaps){
               if ((me != null) ? me!.type == 'history' : false){
                 HistoryV4rs.getMessageHistoryPages();
                 HistoryV4rs.openHistory.value = true;
+                HistoryV4rs.openTapHistory.value = false;
               }
             }
             FocusScope.of(context).unfocus();
@@ -2603,10 +2614,11 @@ class SpecialNavButtonStyle extends StatelessWidget {
           case 3:
             //add navigation link to
 
-            if (HistoryV4rs.useHistory){
+            if (HistoryV4rs.useHistory || HistoryV4rs.trackTaps){
               if ((me != null) ? me!.type == 'history' : false){
                 HistoryV4rs.getMessageHistoryPages();
                 HistoryV4rs.openHistory.value = true;
+                HistoryV4rs.openTapHistory.value = false;
               }
             }
             FocusScope.of(context).unfocus();

@@ -7,6 +7,8 @@ import 'package:flutterkeysaac/Variables/system_tts/tts_factory.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
 import 'dart:async';
+
+import 'package:flutterkeysaac/Screens/editor.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 import 'package:flutterkeysaac/Variables/sherpa_onnx_tts.dart';
@@ -170,7 +172,8 @@ class _MyApp extends State<MyApp> {
               V4rs.doOnboarding,
             ]), 
             builder: (context, _) {
-             return  Home(
+              if (!Ev4rs.showEditor.value){
+             return Home(
                     synth: synth!,
                     highlightLength: _highlightLength,
                     highlightStart: _highlightStart,
@@ -182,6 +185,15 @@ class _MyApp extends State<MyApp> {
                     playerForSS: openTtsPlayerSpeakSelectSherpaOnnx,
                     reloadSherpaOnnx: reloadSherpaOnnx,
                   );
+              } 
+              else {
+            return Editor(
+              synth: synth!,
+              speakSelectSherpaOnnxSynth: speakSelectSherpaOnnxSynth,
+              initForSS: initSpeakSelectSherpaOnnx,
+              playerForSS: openTtsPlayerSpeakSelectSherpaOnnx,
+            );
+              }
             }
           );
         }
