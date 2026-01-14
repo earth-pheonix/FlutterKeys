@@ -170,6 +170,13 @@ class Bv4rs {
     await prefs.setInt(_subFolderSpeakOnSelect, subFolderSpeakOnSelect);
   }
 
+  //return after select
+  static bool globalReturnAfterSelect = false; 
+  static Future<void> saveglobalReturnAfterSelect(bool globalReturnAfterSelect) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('globalReturnAfterSelect', globalReturnAfterSelect);
+  }
+
   //border weight
   static double subFolderBorderWeight = 3.5;
   static final String _subFolderBorderWeight = 'subFolderBorderWeight';
@@ -337,6 +344,8 @@ class Bv4rs {
   static Future<void> loadSavedBoardsetValues() async {
     final prefs = await SharedPreferences.getInstance();
 
+    globalReturnAfterSelect = prefs.getBool('globalReturnAfterSelect') ?? false;
+
     navRowSpeakOnSelect = prefs.getInt(_navRowSpeakOnSelect) ?? 1;
     navRowBorderWeight = prefs.getDouble(_navRowBorderWeight) ?? 3.5;
     showNavRow = prefs.getInt(_showNavRow) ?? 1;
@@ -373,7 +382,6 @@ class Bv4rs {
     grammerRowFormat = prefs.getInt(_grammerRowFormat) ?? 1;
     grammerRowSpeakOnSelect = prefs.getInt(_grammerRowSpeakOnSelect) ?? 1;
     showGrammerRow = prefs.getInt(_showGrammerRow) ?? 1;
-    
   }
 
 }

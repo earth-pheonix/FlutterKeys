@@ -748,7 +748,8 @@ static Future<void> deleteLocalCopy() async {
     myBoardsets.clear();
     saveMyBoardsets(myBoardsets);
     
-    loadRootData();
+    await loadRootData();
+    print('current file $currentFile');
     ExV4rs.fileToExport = currentFile;
   } 
 }

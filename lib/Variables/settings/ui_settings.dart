@@ -1081,8 +1081,6 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
         //
 
         ...Sv4rs.myLanguages.map((language){
-
-          
           if (
             Vv4rs.systemVoices.isEmpty || 
             Vv4rs.uniqueSystemVoices.isEmpty || 
@@ -1126,10 +1124,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
               backgroundColor: Cv4rs.themeColor4,
               childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
               children: [
-                
-                //bookmarked voices
-                bookmarkedRow(language, false),
-                
+              
                 //engine picker
                 engineDropdown(),
 
@@ -1167,6 +1162,10 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                 //testVoice button
                 //
                 testVoiceButton(false, language),
+
+
+                //bookmarked voices
+                bookmarkedRow(language, false),
               ]
             ),
         );
@@ -1283,8 +1282,6 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                 CircularProgressIndicator()
               else //offer voices
               
-              //bookmarked voices
-                bookmarkedRow(language, true),
               
               //engine
                 engineDropdown(),
@@ -1321,15 +1318,17 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
 
               testVoiceButton(true, language),
 
+
+              //bookmarked voices
+                bookmarkedRow(language, true),
+
             ],
           );
           }
         }
         ),
-      
         ],
       ),
-  
      ]
     );
   }

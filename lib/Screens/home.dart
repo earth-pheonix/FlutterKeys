@@ -226,6 +226,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         //=====: Settings
           if (V4rs.showSettings.value){
             return Settings(
+              root: _root!,
+              boards: _root!.boards,
               synth: widget.synth,
               captureAllForPrint: captureAllForPrint,
               speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,

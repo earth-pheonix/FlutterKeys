@@ -658,7 +658,10 @@ class TapHistoryPage {
 //
 
 class HistorySettings extends StatefulWidget{
-  const HistorySettings({super.key});
+  final List<BoardObjects> boards;
+  final Root roots;
+
+  const HistorySettings({super.key, required this.boards, required this.roots});
 
   @override
   State<HistorySettings> createState() => _HistorySettings();
@@ -763,7 +766,7 @@ class _HistorySettings extends State<HistorySettings>{
                       )
                     ]),
                   onPressed: () {
-                    
+                    HistoryV4rs.exportTapHistory(context, widget.boards, widget.roots);
                   }, 
                 ),
               ),

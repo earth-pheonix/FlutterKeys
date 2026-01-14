@@ -22,10 +22,13 @@ import 'package:flutterkeysaac/Variables/fonts/font_options.dart';
 import 'package:share_plus/share_plus.dart'; //for export
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
+import 'package:flutterkeysaac/Models/json_model_boards.dart';
 import 'dart:io';
 
 
 class Settings extends StatefulWidget {
+  final Root root;
+  final List<BoardObjects> boards;
   final TTSInterface synth;
   final Future<List<Uint8List?>> Function() captureAllForPrint;
   
@@ -37,6 +40,8 @@ class Settings extends StatefulWidget {
 
   const Settings({
     super.key, 
+    required this.root,
+    required this.boards,
     required this.synth,
     required this.captureAllForPrint,
     required this.speakSelectSherpaOnnxSynth,
@@ -64,10 +69,13 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
     Vv4rs.loadSystemVoices(widget.synth);
     rootFuture = V4rs.loadRootData();
   }
-
  
  @override
   Widget build(BuildContext context) {
+    ExV4rs.fileToExport = V4rs.currentFile;
+    print('current file = ${V4rs.currentFile}');
+    print('fileToExport = ${ExV4rs.fileToExport}');
+
     return FutureBuilder<Root>(
       future: rootFuture,
       builder: (context, snapshot) {
@@ -241,7 +249,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         );
                       }},
                   children: [
-                    HistorySettings(),
+                    HistorySettings(roots: widget.root, boards: widget.boards,),
                     ExpansionTile(
                       title: Text('Theme Colors:', style: Sv4rs.settingslabelStyle),
                       collapsedBackgroundColor: Cv4rs.themeColor4,
@@ -1545,6 +1553,22 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                           );
                       }},
                   children: [
+                    Padding(padding: EdgeInsetsGeometry.symmetric(
+                      horizontal: V4rs.paddingValue(15)), child: 
+                    Row(
+                      children: [
+                        Text('Return After Select (buttons & sub folders):', style: Sv4rs.settingslabelStyle),
+                        Spacer(),
+                        Switch(value: Bv4rs.globalReturnAfterSelect, onChanged: (value) {
+                          setState(() {
+                            Bv4rs.globalReturnAfterSelect = value;
+                            Bv4rs.saveglobalReturnAfterSelect(value);
+                          });
+                        }),
+                      ]
+                    ),
+                    ),
+
                     //share boardset
                     ExpansionTile(
                       title: Text('Export Boardset:', style: Sv4rs.settingslabelStyle),
@@ -1556,7 +1580,6 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         children: [
                           Text('Boardset: ', style: Sv4rs.settingslabelStyle),
                           Spacer(flex: V4rs.xSmallModeWidth ? 1 : 2),
-                          if (ExV4rs.fileToExport != null)
                           Expanded(
                             child: 
                            DropdownButton<String>(
@@ -1582,7 +1605,39 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                           ]
                         ),
                         Row (children: [
-                          if (!V4rs.xSmallModeWidth)
+                          Expanded(child: 
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                alignment: Alignment.center,
+                                backgroundColor: Cv4rs.themeColor2,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [ 
+                                  Expanded(child: 
+                                    Padding(
+                                      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(V4rs.paddingValue(10)),), 
+                                      child: Text(
+                                        'Export File & Images', 
+                                        maxLines: 2, 
+                                        textAlign: TextAlign.center, 
+                                        style: Fv4rs.mwLabelStyle.copyWith(
+                                          color: Cv4rs.themeColor4, 
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                LoadingIndicator(notifier: ExV4rs.loading2), 
+                                ]),
+                              onPressed: () async {
+                                final zipFile = await ExV4rs.createBoardsetZip();
+                                  await Share.shareXFiles(
+                                    [XFile(zipFile.path, mimeType: 'application/zip')],
+                                    sharePositionOrigin: Rect.fromLTWH(position.dx, position.dy, size.width, size.height),
+                                  );
+                              }, 
+                            ),
+                          ),
                           Spacer(),
                           Expanded(child: 
                             TextButton(
@@ -1606,12 +1661,12 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                                       ),
                                     ),
                                   ),
-                                LoadingIndicator(notifier: ExV4rs.loading),
+                                LoadingIndicator(notifier: ExV4rs.loading), 
                                 ]),
                               onPressed: () async {
-                                final zipFile = await ExV4rs.createBoardsetZip();
+                                final file = await ExV4rs.createBoardsetExport();
                                   await Share.shareXFiles(
-                                    [XFile(zipFile.path, mimeType: 'application/zip')],
+                                    [XFile(file.path)],
                                     sharePositionOrigin: Rect.fromLTWH(position.dx, position.dy, size.width, size.height),
                                   );
                               }, 
@@ -1646,14 +1701,15 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                               }, 
                             ),
                           ),
-                          if (!V4rs.xSmallModeWidth)
-                          Spacer(),
+                          
                         ]
                         ),
-                      ]),
+                       ]
+                      ),
 
 
                     //new boardset
+                    
 
                     //POS colors
                     ExpansionTile(

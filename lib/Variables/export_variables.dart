@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart';
 class ExV4rs {
 
   static ValueNotifier<bool> loading = ValueNotifier(false);
+  static ValueNotifier<bool> loading2 = ValueNotifier(false);
   static ValueNotifier<bool> loadingPrint = ValueNotifier(false);
   
   static File? fileToExport = V4rs.currentFile;
@@ -113,23 +114,23 @@ class ExV4rs {
     required Directory exportDir,
   }) async {
     try {
-      // Load the asset bytes (must match your asset path structure)
+      // Load the asset bytes
       final byteData = await rootBundle.load(assetRelativePath);
       final bytes = byteData.buffer.asUint8List();
 
-      // Extract only the filename (e.g., 'cat.png')
+      // Extract filename
       final filename = p.basename(assetRelativePath);
 
-      // Create the output file inside export folder
+      // Create the output file
       final outFile = File(p.join(exportDir.path, filename));
 
-      // Write asset bytes to the file
+      // Write bytes
       await outFile.writeAsBytes(bytes);
 
       return outFile.path; // absolute path
 
     } catch (e) {
-      // asset may not exist, wrong path, etc.
+      // saftey
       return null;
     }
   }
@@ -231,7 +232,7 @@ static List<int> _prepareAndEncodeArchive(List<ArchiveFile> files) {
     // 4. add read me
     final firstReadMe = File(
       await prepReadMes(
-        'assets/magma_vocab_symbols/READ_ME.txt'
+        'assets/magma_vocab_symbols/README.txt'
       )
     );
 
@@ -277,7 +278,7 @@ static List<int> _prepareAndEncodeArchive(List<ArchiveFile> files) {
     // 7. add read me
     final secondReadMe = File(
       await prepReadMes(
-        'assets/sounds/READ_ME.txt'
+        'assets/sounds/README.txt'
       )
     );
     final secondReadMeName = p.basename(secondReadMe.path);
@@ -303,6 +304,40 @@ static List<int> _prepareAndEncodeArchive(List<ArchiveFile> files) {
     // Return ZIP
     loading.value = false;
     return zipFile;
+  }
+
+ //use dropdown to set fileToExport before calling
+  static Future<File> createBoardsetExport() async {
+    loading.value = true;
+
+    final archive = Archive();
+
+    // get file name
+    final fileLabel = p.basename(fileToExport!.path);
+    
+    // 1. Add JSON to root of ZIP
+    archive.addFile(
+      ArchiveFile(
+        fileLabel,
+        await fileToExport!.length(),
+        await fileToExport!.readAsBytes(),
+      ),
+    );
+
+    // Make the path
+    final tempDir = await getTemporaryDirectory();
+    final output = p.join(tempDir.path, fileLabel);
+
+    //Encode zip
+    final bytes = await compute(_prepareAndEncodeArchive, archive.files);
+
+    // Write ZIP
+    final file = File(output);
+    await file.writeAsBytes(bytes);
+
+    // Return ZIP
+    loading.value = false;
+    return file;
   }
 
   static String getFileName(File file){

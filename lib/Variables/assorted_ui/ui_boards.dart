@@ -480,7 +480,7 @@ class _BuildPocketFolderState extends State<BuildPocketFolder> {
             case 1:
               final board = findBoardById(linkTo, boards);
                 if (board != null) {
-                  if (obj.returnAfterSelect == true) {
+                  if (obj.returnAfterSelect == 2 || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect)) {
                     openBoardWithReturn(board);
                   } else {
                     openBoard(board);
@@ -490,7 +490,7 @@ class _BuildPocketFolderState extends State<BuildPocketFolder> {
             case 2:
               final board = findBoardById(linkTo, boards);
                 if (board != null) {
-                  if (obj.returnAfterSelect == true) {
+                  if (obj.returnAfterSelect == 2 || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect)) {
                     openBoardWithReturn(board);
                   } else {
                     openBoard(board);
@@ -508,7 +508,7 @@ class _BuildPocketFolderState extends State<BuildPocketFolder> {
             case 3:
               final board = findBoardById(linkTo, boards);
                 if (board != null) {
-                  if (obj.returnAfterSelect == true) {
+                  if (obj.returnAfterSelect == 2 || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect)) {
                     openBoardWithReturn(board);
                   } else {
                     openBoard(board);
@@ -1293,7 +1293,7 @@ class _BuildFolderState extends State<BuildFolder> {
         case 1:
           final board = findBoardById(linkTo, boards);
             if (board != null) {
-            if (obj.returnAfterSelect == true) {
+            if (obj.returnAfterSelect == 2 || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect) || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect)) {
               openBoardWithReturn(board);
             } else {
               openBoard(board);
@@ -1303,7 +1303,7 @@ class _BuildFolderState extends State<BuildFolder> {
         case 2:
           final board = findBoardById(linkTo, boards);
             if (board != null) {
-            if (obj.returnAfterSelect == true) {
+            if (obj.returnAfterSelect == 2 || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect)) {
               openBoardWithReturn(board);
             } else {
               openBoard(board);
@@ -1321,7 +1321,7 @@ class _BuildFolderState extends State<BuildFolder> {
         case 3:
           final board = findBoardById(linkTo, boards);
             if (board != null) {
-            if (obj.returnAfterSelect == true) {
+            if (obj.returnAfterSelect == 2 || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect)) {
               openBoardWithReturn(board);
             } else {
               openBoard(board);
@@ -1640,7 +1640,7 @@ class BuildSubFolder extends StatelessWidget {
             case 1:
               final board = findBoardById(linkTo, boards);
                if (board != null) {
-                  if (obj.returnAfterSelect == true) {
+                  if (obj.returnAfterSelect == 2 || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect)) {
                     openBoardWithReturn(board);
                   } else {
                     openBoard(board);
@@ -1651,7 +1651,7 @@ class BuildSubFolder extends StatelessWidget {
             case 2:
               final board = findBoardById(linkTo, boards);
                if (board != null) {
-                  if (obj.returnAfterSelect == true) {
+                  if (obj.returnAfterSelect == 2 || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect)) {
                     openBoardWithReturn(board);
                   } else {
                     openBoard(board);
@@ -1671,7 +1671,7 @@ class BuildSubFolder extends StatelessWidget {
             case 3:
               final board = findBoardById(linkTo, boards);
                if (board != null) {
-                  if (obj.returnAfterSelect == true) {
+                  if (obj.returnAfterSelect == 2 || (obj.returnAfterSelect == 1 && Bv4rs.globalReturnAfterSelect)) {
                     openBoardWithReturn(board);
                   } else {
                     openBoard(board);
@@ -1984,7 +1984,6 @@ class NavButtonStyle extends StatelessWidget {
                 openBoard(board);
                 FocusScope.of(context).unfocus();
               }
-              
             break;
           case 2:
               if (me != null){

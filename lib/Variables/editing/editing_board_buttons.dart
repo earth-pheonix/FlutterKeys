@@ -1724,7 +1724,7 @@ import 'dart:async';
                   borderRadius: BorderRadius.circular(10)
                   ),
                   child: Column(children: [
-                ValueListenableBuilder<bool>(
+                ValueListenableBuilder<int>(
                   valueListenable: Ev4rs.returnAfterSelect, 
                   builder: (context, returnAfterSelect, _) {
                     return Row(
@@ -1747,17 +1747,35 @@ import 'dart:async';
                             ),
                           ),
                       ),
-                      Padding(
-                        padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.editorPaddingValue(10), 0), 
-                        child: Switch(
-                          padding: EdgeInsets.all(0),
+                      Expanded(
+                        child: DropdownButton<int>(
+                          isExpanded: true,
+                          hint: Text(
+                            'Return', 
+                            style: Sv4rs.settingslabelStyle,
+                          ),
                           value: Ev4rs.returnAfterSelect.value,
-                          onChanged: (value) { setState(() {
-                            Ev4rs.returnAfterSelect.value = value;
-                          });
-                          }
-                        ),
-                      ),
+                          items: [
+                            DropdownMenuItem<int>(
+                              value: 1,
+                              child: Text('match', style: Sv4rs.settingslabelStyle),
+                            ),
+                            DropdownMenuItem<int>(
+                              value: 2,
+                              child: Text('true', style: Sv4rs.settingslabelStyle),
+                            ),
+                            DropdownMenuItem<int>(
+                              value: 3,
+                              child: Text('false', style: Sv4rs.settingslabelStyle),
+                            ),
+                          ],
+                          onChanged: (value) { 
+                            if (value != null){
+                              Ev4rs.returnAfterSelect.value = value;
+                            }
+                          },
+                        )
+                      )
                     ]
                     );
                   }
@@ -1799,7 +1817,9 @@ import 'dart:async';
                           style: Sv4rs.settingslabelStyle,
                           ),
                       ),
-                    Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.editorPaddingValue(10)), child:
+                    Padding(
+                      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.editorPaddingValue(10)), 
+                      child:
                       DropdownButton<String>(
                           isExpanded: true,
                           hint: Text(
@@ -3437,7 +3457,7 @@ import 'dart:async';
                   borderRadius: BorderRadius.circular(10)
                   ),
                   child: Column(children: [
-                ValueListenableBuilder<bool>(
+                ValueListenableBuilder<int>(
                   valueListenable: Ev4rs.returnAfterSelect, 
                   builder: (context, returnAfterSelect, _) {
                     return Row(
@@ -3461,17 +3481,36 @@ import 'dart:async';
                             ),
                           ),
                       ),
-                      Padding(
-                        padding: EdgeInsetsGeometry.fromLTRB(0, 0, V4rs.editorPaddingValue(10), 0), 
-                        child: Switch(
-                          padding: EdgeInsets.all(0),
+                      Expanded(
+                        child: DropdownButton<int>(
+                          isExpanded: true,
+                          hint: Text(
+                            'Return', 
+                            style: Sv4rs.settingslabelStyle,
+                          ),
                           value: Ev4rs.returnAfterSelect.value,
-                          onChanged: (value) { setState(() {
-                            Ev4rs.returnAfterSelect.value = value;
-                            });
-                          }
-                        ),
-                      ),
+                          items: [
+                            DropdownMenuItem<int>(
+                              value: 1,
+                              child: Text('match', style: Sv4rs.settingslabelStyle),
+                            ),
+                            DropdownMenuItem<int>(
+                              value: 2,
+                              child: Text('true', style: Sv4rs.settingslabelStyle),
+                            ),
+                            DropdownMenuItem<int>(
+                              value: 3,
+                              child: Text('false', style: Sv4rs.settingslabelStyle),
+                            ),
+                          ],
+                          onChanged: (value) { 
+                            if (value != null){
+                              Ev4rs.returnAfterSelect.value = value;
+                            }
+                          },
+                        )
+                      )
+                    
                     ]
                     );
                   }
@@ -3917,19 +3956,17 @@ import 'dart:async';
                               inactiveColor: Cv4rs.themeColor3,
                               thumbColor: Cv4rs.themeColor1,
                               label: 'Image Padding: ${Ev4rs.padding.value}',
-                              onChanged: (value) { setState(() {
+                              onChanged: (value) { 
                                 Ev4rs.padding.value = value.roundToDouble();
-                              });
                               }
                           ),
                         ])
                         ),
                         ButtonStyle2(
                         imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
-                          onPressed: (){setState(() {
+                          onPressed: (){
                               widget.saveField(root, Ev4rs.selectedUUID, 'padding', Ev4rs.padding.value);
                               Ev4rs.saveJson(root);
-                              });
                           }, 
                           label: 'Save Padding'
                           ),
@@ -4039,8 +4076,9 @@ import 'dart:async';
                               TextField(
                                 controller: labelController,
                                 style: Ev4rs.labelStyle,
-                                onChanged: (value){
+                                onChanged: (value){setState(() {
                                   Ev4rs.label.value = value;
+                                  });
                                 },
                                 decoration: InputDecoration(
                                 hintStyle: Ev4rs.hintLabelStyle,
@@ -4070,8 +4108,9 @@ import 'dart:async';
                               TextField(
                                 controller: alternateController,
                                 style: Ev4rs.labelStyle,
-                                onChanged: (value){
+                                onChanged: (value){setState(() {
                                   Ev4rs.alternateLabel.value = value;
+                                });
                                 },
                                 decoration: InputDecoration(
                                 hintStyle: Ev4rs.hintLabelStyle,
@@ -4134,9 +4173,8 @@ import 'dart:async';
                                 child: Switch(
                                   padding: EdgeInsets.all(0),
                                   value: Ev4rs.matchSpeakOnSelect.value, 
-                                  onChanged: (value) { setState(() {
+                                  onChanged: (value) {
                                     Ev4rs.matchSpeakOnSelect.value = value;
-                                  });
                                   }
                                 ),
                               ),
@@ -4165,9 +4203,8 @@ import 'dart:async';
                                   thumbColor: Cv4rs.themeColor1,
                                   label: 'Speak on Select: ${Ev4rs.speakOnSelect.value}',
                                   value: Ev4rs.speakOnSelect.value.toDouble(), 
-                                  onChanged: (value) { setState(() {
+                                  onChanged: (value) {
                                     Ev4rs.speakOnSelect.value = value.toInt();
-                                    });
                                     }
                                   ),
                                 Padding(
@@ -4318,9 +4355,8 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.show.value, 
-                            onChanged: (value) { setState(() {
+                            onChanged: (value) {
                               Ev4rs.show.value = value;
-                              });
                             }
                           ),
                         ),
@@ -4379,9 +4415,8 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchFormat.value, 
-                            onChanged: (value) { setState(() {
+                            onChanged: (value) {
                               Ev4rs.matchFormat.value = value;
-                              });
                             }
                           ),
                         ),
@@ -4425,9 +4460,8 @@ import 'dart:async';
                             inactiveColor: Cv4rs.themeColor3,
                             thumbColor: Cv4rs.themeColor1,
                             value: Ev4rs.format.value.toDouble(), 
-                            onChanged: (value) { setState(() {
+                            onChanged: (value) { 
                               Ev4rs.format.value = value.toInt();
-                              });
                               }
                             ),
                           ]
@@ -4489,9 +4523,8 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchBorder.value, 
-                            onChanged: (value) { setState(() {
+                            onChanged: (value) {
                               Ev4rs.matchBorder.value = value;
-                              });
                             }
                           ),
                         ),
@@ -4516,9 +4549,8 @@ import 'dart:async';
                             thumbColor: Cv4rs.themeColor1,
                             label: 'Border Weight: ${Ev4rs.borderWeight.value}',
                             value: Ev4rs.borderWeight.value.toDouble(), 
-                            onChanged: (value) { setState(() {
+                            onChanged: (value) {
                               Ev4rs.borderWeight.value = value;
-                              });
                               }
                       )
                       ]
@@ -4657,9 +4689,8 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchBackground.value,
-                            onChanged: (value) { setState(() {
+                            onChanged: (value) {
                               Ev4rs.matchBackground.value = value;
-                              });
                             }
                           ),
                         ),
@@ -4817,11 +4848,10 @@ import 'dart:async';
                             ),
                           );
                         }).toList(),
-                          onChanged: (value) { setState(() {
+                          onChanged: (value) {
                             if (value != null) {
                               Ev4rs.pos.value = value;
                             }
-                          });
                         }
                       ),
                       ),
@@ -4886,11 +4916,10 @@ import 'dart:async';
                               ),
                             ),
                             ],
-                          onChanged: (value) { setState(() {
+                          onChanged: (value) { 
                             if (value != null) {
                               Ev4rs.subFolderType.value = value;
                             }
-                             });
                           },
                         ),
                       ),
@@ -4955,12 +4984,12 @@ import 'dart:async';
                             );
                           })
                           ],
-                          onChanged: (value) { setState(() {
+                          onChanged: (value) {
                             if (value != null) {
+                              print('value is not null');
                               Ev4rs.link.value = value;
                               Ev4rs.linkLabel.value = mapOfBoards.entries.firstWhere((element) => element.value == value).key;
                             }
-                            });
                           },
                         ),
                       ),
@@ -4971,7 +5000,7 @@ import 'dart:async';
                             widget.saveField(root, Ev4rs.subFolderSelectedUUID, 'linkToUUID', Ev4rs.link.value);
                             widget.saveField(root, Ev4rs.subFolderSelectedUUID, 'linkToLabel', Ev4rs.linkLabel.value);
                             Ev4rs.saveJson(root);
-                            });
+                          });
                         }, 
                         label: 'Save'
                       ),
@@ -4980,6 +5009,87 @@ import 'dart:async';
                 ),
               ),
 
+            Padding(
+            padding: EdgeInsetsGeometry.all(V4rs.editorPaddingValue(10)),
+            child: 
+              Container(
+                decoration: BoxDecoration(
+                  color: Cv4rs.themeColor4,
+                  borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Column(children: [
+                ValueListenableBuilder<int>(
+                  valueListenable: Ev4rs.returnAfterSelect, 
+                  builder: (context, returnAfterSelect, _) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                      Expanded(child: 
+                        Padding(
+                          padding: EdgeInsetsGeometry.fromLTRB(
+                            V4rs.editorPaddingValue(5), 
+                            V4rs.editorPaddingValue(10), 
+                            V4rs.editorPaddingValue(5), 
+                            V4rs.editorPaddingValue(10)
+                          ), 
+                            child: Text(
+                              'Return After Select:', 
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: Sv4rs.settingslabelStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                      ),
+                      Expanded(
+                        child: DropdownButton<int>(
+                          isExpanded: true,
+                          hint: Text(
+                            'Return', 
+                            style: Sv4rs.settingslabelStyle,
+                          ),
+                          value: Ev4rs.returnAfterSelect.value,
+                          items: [
+                            DropdownMenuItem<int>(
+                              value: 1,
+                              child: Text('match', style: Sv4rs.settingslabelStyle),
+                            ),
+                            DropdownMenuItem<int>(
+                              value: 2,
+                              child: Text('true', style: Sv4rs.settingslabelStyle),
+                            ),
+                            DropdownMenuItem<int>(
+                              value: 3,
+                              child: Text('false', style: Sv4rs.settingslabelStyle),
+                            ),
+                          ],
+                          onChanged: (value) { 
+                            if (value != null){
+                              Ev4rs.returnAfterSelect.value = value;
+                            }
+                          },
+                        )
+                      )
+                    ]
+                    );
+                  }
+                ),
+                ButtonStyle2(
+                      imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                      onPressed: (){ setState(() {
+                          widget.saveField(root, Ev4rs.selectedUUID, 'returnAfterSelect', Ev4rs.returnAfterSelect.value);
+                          Ev4rs.saveJson(root);
+                      });
+                      }, 
+                      label: 'Save'
+                    ),
+                  
+                  ]
+                  ),
+              ),
+              ),
+
+           
             //notes
             Padding(padding: EdgeInsetsGeometry.all(V4rs.editorPaddingValue(10)),
             child:
@@ -5004,9 +5114,8 @@ import 'dart:async';
                           minLines: 1,
                           maxLines: 5,
                           style: Sv4rs.settingslabelStyle,
-                          onChanged: (value){ setState(() {
+                          onChanged: (value){ 
                             Ev4rs.notes.value = value;
-                          });
                           },
                           decoration: InputDecoration(
                           hintStyle: Sv4rs.settingslabelStyle,

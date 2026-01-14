@@ -528,7 +528,7 @@ class Ev4rs {
       static ValueNotifier<String> grammerType = ValueNotifier('button');
       static ValueNotifier<String> link = ValueNotifier('');
       static ValueNotifier<String> linkLabel = ValueNotifier('');
-      static ValueNotifier<bool> returnAfterSelect = ValueNotifier(false);
+      static ValueNotifier<int> returnAfterSelect = ValueNotifier(1);
       static ValueNotifier<String> grammerFunction = ValueNotifier('placholder');
       static ValueNotifier<String> notes = ValueNotifier('');
 
@@ -2062,7 +2062,7 @@ class Ev4rs {
               board.linkToLabel = newValue as String?;
               break;
             case 'returnAfterSelect':
-              board.returnAfterSelect = newValue as bool?;
+              board.returnAfterSelect = newValue as int?;
               break;
             case 'function':
               board.function = newValue as String?;
@@ -2540,7 +2540,7 @@ class Ev4rs {
                 board.linkToLabel = newValue as String?;
                 break;
               case 'returnAfterSelect':
-                board.returnAfterSelect = newValue as bool?;
+                board.returnAfterSelect = newValue as int?;
                 break;
               case 'function':
                 board.function = newValue as String?;

@@ -194,7 +194,7 @@
                     "label": "Pinned",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "showOr": 1,
 
                     "matchFormat": true,
@@ -285,7 +285,7 @@
                     "label": "History",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "showOr": 1,
 
                     "matchFormat": true,
@@ -4097,7 +4097,7 @@
                     "label": "Prepositions",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -4143,7 +4143,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -4189,7 +4189,7 @@
                     "label": "Conjunctions",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -4235,7 +4235,7 @@
                     "label": "more",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -4284,7 +4284,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4331,7 +4331,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4378,7 +4378,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4425,7 +4425,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4472,7 +4472,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4519,7 +4519,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4566,7 +4566,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4613,7 +4613,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4660,7 +4660,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4707,7 +4707,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4754,7 +4754,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4803,7 +4803,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4850,7 +4850,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4897,7 +4897,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -4944,7 +4944,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -4991,7 +4991,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5038,7 +5038,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5085,7 +5085,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5132,7 +5132,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5179,7 +5179,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5226,7 +5226,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5274,7 +5274,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5321,7 +5321,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5368,7 +5368,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5415,7 +5415,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5462,7 +5462,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5509,7 +5509,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5556,7 +5556,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5604,7 +5604,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5651,7 +5651,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5699,7 +5699,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5746,7 +5746,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5794,7 +5794,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5841,7 +5841,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5888,7 +5888,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -5935,7 +5935,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -5983,7 +5983,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6030,7 +6030,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6077,7 +6077,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6124,7 +6124,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6171,7 +6171,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6218,7 +6218,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6318,7 +6318,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -6364,7 +6364,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -6410,7 +6410,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -6456,7 +6456,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -6505,7 +6505,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6596,7 +6596,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6643,7 +6643,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6690,7 +6690,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6737,7 +6737,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6784,7 +6784,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6831,7 +6831,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6878,7 +6878,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6925,7 +6925,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -6972,7 +6972,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7021,7 +7021,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7068,7 +7068,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7115,7 +7115,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7162,7 +7162,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7209,7 +7209,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7256,7 +7256,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7303,7 +7303,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7350,7 +7350,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7397,7 +7397,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7444,7 +7444,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7492,7 +7492,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7539,7 +7539,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7586,7 +7586,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7633,7 +7633,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7680,7 +7680,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7727,7 +7727,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7774,7 +7774,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7821,7 +7821,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7868,7 +7868,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7915,7 +7915,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -7962,7 +7962,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -8010,7 +8010,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -8057,7 +8057,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -8104,7 +8104,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": false,
 
@@ -8151,7 +8151,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -8198,7 +8198,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -8245,7 +8245,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": false,
 
@@ -8292,7 +8292,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -8339,7 +8339,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -8386,7 +8386,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": false,
 
@@ -8433,7 +8433,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                      "function": null,
                     "show": true,
 
@@ -8490,7 +8490,7 @@
                     "label": "back",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -8536,7 +8536,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -8582,7 +8582,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -8628,7 +8628,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -8674,7 +8674,7 @@
                     "label": "more",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -8723,7 +8723,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -8770,7 +8770,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -8817,7 +8817,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -8864,7 +8864,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -8911,7 +8911,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -8958,7 +8958,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -9005,7 +9005,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -9052,7 +9052,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9099,7 +9099,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9146,7 +9146,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9194,7 +9194,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9243,7 +9243,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9290,7 +9290,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9337,7 +9337,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9385,7 +9385,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9432,7 +9432,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -9479,7 +9479,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -9526,7 +9526,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9574,7 +9574,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9621,7 +9621,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9668,7 +9668,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9717,7 +9717,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9764,7 +9764,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9811,7 +9811,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -9858,7 +9858,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -9905,7 +9905,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -9952,7 +9952,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -9999,7 +9999,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -10046,7 +10046,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -10093,7 +10093,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10140,7 +10140,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10187,7 +10187,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10234,7 +10234,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10281,7 +10281,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10328,7 +10328,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10375,7 +10375,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10422,7 +10422,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10469,7 +10469,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10516,7 +10516,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10563,7 +10563,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10610,7 +10610,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10657,7 +10657,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10758,7 +10758,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -10804,7 +10804,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -10850,7 +10850,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -10896,7 +10896,7 @@
                     "label": "more",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -10947,7 +10947,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -10994,7 +10994,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11041,7 +11041,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11088,7 +11088,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11135,7 +11135,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11182,7 +11182,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11229,7 +11229,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11276,7 +11276,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11323,7 +11323,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11370,7 +11370,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11417,7 +11417,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11466,7 +11466,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11513,7 +11513,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11560,7 +11560,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11607,7 +11607,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11654,7 +11654,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11701,7 +11701,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11748,7 +11748,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11795,7 +11795,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11842,7 +11842,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11889,7 +11889,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11938,7 +11938,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -11985,7 +11985,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12032,7 +12032,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12079,7 +12079,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12126,7 +12126,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12173,7 +12173,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12220,7 +12220,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12267,7 +12267,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12314,7 +12314,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12361,7 +12361,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12408,7 +12408,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12457,7 +12457,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12504,7 +12504,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12551,7 +12551,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12598,7 +12598,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12645,7 +12645,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12692,7 +12692,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12739,7 +12739,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12786,7 +12786,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12833,7 +12833,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12880,7 +12880,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -12981,7 +12981,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -13027,7 +13027,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -13073,7 +13073,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -13119,7 +13119,7 @@
                     "label": "more",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -13170,7 +13170,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13217,7 +13217,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13264,7 +13264,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13311,7 +13311,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13358,7 +13358,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13405,7 +13405,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13452,7 +13452,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13499,7 +13499,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13546,7 +13546,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13593,7 +13593,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13640,7 +13640,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13689,7 +13689,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13736,7 +13736,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13783,7 +13783,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13830,7 +13830,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13877,7 +13877,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13924,7 +13924,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -13971,7 +13971,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14018,7 +14018,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14065,7 +14065,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14112,7 +14112,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14161,7 +14161,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14208,7 +14208,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14255,7 +14255,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14302,7 +14302,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14349,7 +14349,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14396,7 +14396,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14443,7 +14443,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14490,7 +14490,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14537,7 +14537,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14584,7 +14584,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14631,7 +14631,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14680,7 +14680,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14727,7 +14727,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14775,7 +14775,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14822,7 +14822,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14869,7 +14869,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14916,7 +14916,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -14963,7 +14963,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -15010,7 +15010,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -15057,7 +15057,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -15104,7 +15104,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -15205,7 +15205,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
                     
 
@@ -15252,7 +15252,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -15298,7 +15298,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -15344,7 +15344,7 @@
                     "label": "more",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -15392,7 +15392,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15439,7 +15439,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15486,7 +15486,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15533,7 +15533,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15580,7 +15580,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15627,7 +15627,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15674,7 +15674,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15721,7 +15721,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15768,7 +15768,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15815,7 +15815,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15862,7 +15862,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15911,7 +15911,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -15958,7 +15958,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16005,7 +16005,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16052,7 +16052,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16099,7 +16099,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16146,7 +16146,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16193,7 +16193,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16240,7 +16240,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16287,7 +16287,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -16334,7 +16334,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -16383,7 +16383,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16430,7 +16430,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16477,7 +16477,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16524,7 +16524,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16571,7 +16571,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16618,7 +16618,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16665,7 +16665,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16712,7 +16712,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16759,7 +16759,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -16806,7 +16806,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -16853,7 +16853,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16902,7 +16902,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -16949,7 +16949,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -16996,7 +16996,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -17043,7 +17043,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -17090,7 +17090,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -17137,7 +17137,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -17184,7 +17184,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -17231,7 +17231,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -17278,7 +17278,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -17325,7 +17325,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": false,
 
@@ -17426,7 +17426,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -17472,7 +17472,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -17518,7 +17518,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -17564,7 +17564,7 @@
                     "label": "more",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -17615,7 +17615,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -17662,7 +17662,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -17709,7 +17709,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -17756,7 +17756,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -17803,7 +17803,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -17850,7 +17850,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -17897,7 +17897,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -17944,7 +17944,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -17991,7 +17991,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18038,7 +18038,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18085,7 +18085,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18134,7 +18134,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18181,7 +18181,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18228,7 +18228,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18275,7 +18275,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18322,7 +18322,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18369,7 +18369,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18416,7 +18416,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18463,7 +18463,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18510,7 +18510,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18557,7 +18557,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18606,7 +18606,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18653,7 +18653,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18700,7 +18700,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18747,7 +18747,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18794,7 +18794,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18841,7 +18841,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18888,7 +18888,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18935,7 +18935,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -18982,7 +18982,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19029,7 +19029,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19076,7 +19076,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19125,7 +19125,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19172,7 +19172,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19219,7 +19219,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19266,7 +19266,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19313,7 +19313,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19360,7 +19360,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19407,7 +19407,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19454,7 +19454,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19501,7 +19501,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19548,7 +19548,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19649,7 +19649,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -19695,7 +19695,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -19741,7 +19741,7 @@
                     "label":  null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -19787,7 +19787,7 @@
                     "label": "more",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": true,
 
                     "matchFormat": false,
@@ -19838,7 +19838,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19885,7 +19885,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19932,7 +19932,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -19980,7 +19980,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20027,7 +20027,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20075,7 +20075,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20122,7 +20122,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20169,7 +20169,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20216,7 +20216,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20263,7 +20263,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20310,7 +20310,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20359,7 +20359,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20406,7 +20406,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20453,7 +20453,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20501,7 +20501,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20548,7 +20548,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20595,7 +20595,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20643,7 +20643,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20690,7 +20690,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20737,7 +20737,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20786,7 +20786,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20833,7 +20833,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20880,7 +20880,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20927,7 +20927,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -20975,7 +20975,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21022,7 +21022,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21069,7 +21069,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21116,7 +21116,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21163,7 +21163,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21210,7 +21210,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21258,7 +21258,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21305,7 +21305,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21353,7 +21353,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21400,7 +21400,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21449,7 +21449,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21496,7 +21496,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21543,7 +21543,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21590,7 +21590,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21637,7 +21637,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21684,7 +21684,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21732,7 +21732,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21779,7 +21779,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -21880,7 +21880,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": false,
 
                     "matchFormat": false,
@@ -21926,7 +21926,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": false,
 
                     "matchFormat": false,
@@ -21972,7 +21972,7 @@
                     "label": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": false,
 
                     "matchFormat": false,
@@ -22018,7 +22018,7 @@
                     "label": "more",
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "show": false,
 
                     "matchFormat": false,
@@ -22068,7 +22068,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "comparativeEr",
                     "show": true,
 
@@ -22115,7 +22115,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "disPrefix",
                     "show": true,
 
@@ -22162,7 +22162,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "superlitiveEst",
                     "show": true,
 
@@ -22209,7 +22209,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function":  "adverbMaker",
                     "show": true,
 
@@ -22256,7 +22256,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function":  "unPrefix",
                     "show": true,
 
@@ -22303,7 +22303,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function":  "edSuffix",
                     "show": true,
 
@@ -22350,7 +22350,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function":  "posessive",
                     "show": true,
 
@@ -22397,7 +22397,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function":  "pluralPlus",
                     "show": true,
 
@@ -22444,7 +22444,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function":  "ingSuffix",
                     "show": true,
 
@@ -22491,7 +22491,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "agentNouns",
                     "show": true,
 
@@ -22540,7 +22540,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function":  "placeholder",
                     "show": false,
 
@@ -22587,7 +22587,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "ySuffix",
                     "show": true,
 
@@ -22634,7 +22634,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "willContraction",
                     "show": true,
 
@@ -22681,7 +22681,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "ieSuffix",
                     "show": true,
 
@@ -22728,7 +22728,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -22775,7 +22775,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -22822,7 +22822,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "haveContraction",
                     "show": true,
 
@@ -22869,7 +22869,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "not",
                     "show": true,
 
@@ -22916,7 +22916,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -22963,7 +22963,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "wouldContraction",
                     "show": true,
 
@@ -23010,7 +23010,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23059,7 +23059,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "tionSuffix",
                     "show": true,
 
@@ -23106,7 +23106,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "pastTense",
                     "show": true,
 
@@ -23153,7 +23153,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23200,7 +23200,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23247,7 +23247,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "pastParticiple",
                     "show": true,
 
@@ -23294,7 +23294,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23341,7 +23341,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23388,7 +23388,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23435,7 +23435,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23482,7 +23482,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23529,7 +23529,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23577,7 +23577,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "amContraction",
                     "show": true,
 
@@ -23624,7 +23624,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23671,7 +23671,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "areContraction",
                     "show": true,
 
@@ -23718,7 +23718,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23765,7 +23765,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23812,7 +23812,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23859,7 +23859,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23906,7 +23906,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -23953,7 +23953,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 
@@ -24000,7 +24000,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                    "returnAfterSelect": null,
+                     "returnAfterSelect": 1,
                     "function": "placeholder",
                     "show": false,
 

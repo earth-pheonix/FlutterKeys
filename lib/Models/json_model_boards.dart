@@ -30,7 +30,7 @@ class BoardObjects {
   String? audioClip;
   String? linkToLabel;
   String? linkToUUID;
-  bool? returnAfterSelect;
+  int? returnAfterSelect;
   bool? show;
 
   bool? matchPOS;
@@ -139,7 +139,7 @@ class BoardObjects {
       audioClip: json['audioClip'] as String?,
       linkToLabel: json['linkToLabel'] as String?,
       linkToUUID: json['linkToUUID'] as String?,
-      returnAfterSelect: json['returnAfterSelect'] as bool?,
+      returnAfterSelect: json['returnAfterSelect'] as int?,
       show: json['show'] as bool?,
       matchPOS: json['matchPOS'] as bool?,
       pos: json['pos'] as String?,
