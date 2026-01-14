@@ -1,6 +1,7 @@
 
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
 import 'package:flutterkeysaac/Variables/highlight_message_window.dart';
+import 'package:flutterkeysaac/Variables/history.dart';
 import 'package:flutterkeysaac/Variables/system_tts/tts_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
@@ -342,6 +343,13 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
     Future<void> Function() init,
     AudioPlayer player,
   ) async {
+    if (text != '' && HistoryV4rs.useHistory){
+      HistoryV4rs.messageHistory.add(text);
+      HistoryV4rs.saveMessageHistory(HistoryV4rs.messageHistory);
+      if (HistoryV4rs.openHistory.value == true){
+        HistoryV4rs.messageHistoryPages.value = HistoryV4rs.getMessageHistoryPages();
+      }
+    }
 
     final segments = identifyLanguageSegments(text, deafultLang);
     
@@ -569,8 +577,18 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
   }
 
 //
-//button type map
+//button
 //
+
+static void addToMessage(BoardObjects obj){
+  V4rs.changedMWfromButton = true;
+  V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+  if (HistoryV4rs.trackTaps){
+    
+  }
+  V4rs.changedMWfromButton = false;
+}
+
 static Map<String, int> buttonTypeMap = {
   'button': 1,
   'pocket folder': 2,
@@ -774,6 +792,7 @@ static Future<File> resolveImageFile(String relativePath) async {
     await ExV4rs.loadSavedExportValues();
     await Vv4rs.loadSavedVoiceValues();
     await BSSv4rs.loadSavedBookmarkedSSValues();
+    await HistoryV4rs.loadSavedHistoryValues();
 
     //load the boardsets
     final myBoardsetNames = prefs.getStringList(_myBoardsets);

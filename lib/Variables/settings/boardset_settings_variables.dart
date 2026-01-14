@@ -75,7 +75,7 @@ class Bv4rs {
   }
 
   //overlay 
-  static Color navRowSymbolColorOverlay = Color(0x00000000);
+  static Color navRowSymbolColorOverlay = Color(0x000000FF);
   static final String _navRowSymbolColorOverlay = 'navRowSymbolColorOverlay';
 
   static Future<void> saveNavRowSymbolColorOverlay(Color navRowSymbolColorOverlay) async {
@@ -342,7 +342,7 @@ class Bv4rs {
     showNavRow = prefs.getInt(_showNavRow) ?? 1;
 
     navRowSymbolInvert = prefs.getBool(_navRowSymbolInvert) ?? false;
-    navRowSymbolColorOverlay = Color(prefs.getInt(_navRowSymbolColorOverlay) ?? 0x00000000);
+    navRowSymbolColorOverlay = Color(prefs.getInt(_navRowSymbolColorOverlay) ?? 0x000000FF);
     navRowSymbolSaturation = prefs.getDouble(_navRowSymbolSaturation) ?? 1.0;
     navRowSymbolContrast = prefs.getDouble(_navRowSymbolContrast) ?? 1.0;
 

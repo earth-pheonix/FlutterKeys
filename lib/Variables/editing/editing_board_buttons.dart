@@ -649,7 +649,7 @@ import 'dart:async';
             Switch(
               padding: EdgeInsets.all(0),
               value: Ev4rs.matchLabel.value, 
-              onChanged: (value) { 
+              onChanged: (value) {
                 setState(() {
                   Ev4rs.matchLabel.value = value;
                 });
@@ -677,8 +677,9 @@ import 'dart:async';
             child: Switch(
               padding: EdgeInsets.all(0),
               value: Ev4rs.matchSpeakOnSelect.value, 
-              onChanged: (value) {
+              onChanged: (value) { setState(() {
                 Ev4rs.matchSpeakOnSelect.value = value;
+                });
               }
             ),
           ),
@@ -840,8 +841,9 @@ import 'dart:async';
                             thumbColor: Cv4rs.themeColor1,
                             label: 'Speak on Select: ${Ev4rs.speakOnSelect.value}',
                             value: Ev4rs.speakOnSelect.value.toDouble(), 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.speakOnSelect.value = value.toInt();
+                              });
                               }
                             ),
                           Padding(
@@ -972,7 +974,9 @@ import 'dart:async';
               padding: EdgeInsets.all(0),
               value: Ev4rs.show.value, 
               onChanged: (value) {
-                Ev4rs.show.value = value;
+                setState(() {
+                  Ev4rs.show.value = value;
+                });
               }
             ),
           ),         
@@ -997,8 +1001,10 @@ import 'dart:async';
             child: Switch(
               padding: EdgeInsets.all(0),
               value: Ev4rs.matchBorder.value, 
-              onChanged: (value) {
+              onChanged: (value) { 
+                setState(() {
                 Ev4rs.matchBorder.value = value;
+                });
               }
             ),
           ),
@@ -1044,8 +1050,9 @@ import 'dart:async';
             child: Switch(
               padding: EdgeInsets.all(0),
               value: Ev4rs.matchBackground.value,
-              onChanged: (value) {
+              onChanged: (value) { setState(() {
                 Ev4rs.matchBackground.value = value;
+              });
               }
             ),
           ),
@@ -1129,8 +1136,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchFormat.value, 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.matchFormat.value = value;
+                            });
                             }
                           ),
                         ),
@@ -1182,8 +1190,9 @@ import 'dart:async';
                             inactiveColor: Cv4rs.themeColor3,
                             thumbColor: Cv4rs.themeColor1,
                             value: Ev4rs.format.value.toDouble(), 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.format.value = value.toInt();
+                              });
                               }
                             ),
                           ]
@@ -1254,9 +1263,11 @@ import 'dart:async';
                             thumbColor: Cv4rs.themeColor1,
                             label: 'Border Weight: ${Ev4rs.borderWeight.value}',
                             value: Ev4rs.borderWeight.value.toDouble(), 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.borderWeight.value = value;
-                              }
+                              
+                              });
+                            }
                       )
                       ]
                             );
@@ -1544,10 +1555,11 @@ import 'dart:async';
                             ),
                           );
                         }).toList(),
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                             Ev4rs.pos.value = value;
                           }
+                          });
                           }
                       ),
                       ),
@@ -1606,10 +1618,11 @@ import 'dart:async';
                               ),
                             );
                           }).toList(),
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                               Ev4rs.buttonType.value = value;
                             }
+                            });
                           },
                         ),
                       ),
@@ -1676,11 +1689,12 @@ import 'dart:async';
                             );
                           })
                           ],
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                               Ev4rs.link.value = value;
                               Ev4rs.linkLabel.value = mapOfBoards.entries.firstWhere((element) => element.value == value).key;
                             }
+                            });
                           },
                         ),
                       ),
@@ -1738,8 +1752,9 @@ import 'dart:async';
                         child: Switch(
                           padding: EdgeInsets.all(0),
                           value: Ev4rs.returnAfterSelect.value,
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             Ev4rs.returnAfterSelect.value = value;
+                          });
                           }
                         ),
                       ),
@@ -1801,10 +1816,11 @@ import 'dart:async';
                               ),
                             );
                           }).toList(),
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                               Ev4rs.grammerFunction.value = value;
                             }
+                            });
                           },
                         ),
                     ),
@@ -2238,8 +2254,9 @@ import 'dart:async';
                         inactiveColor: Cv4rs.themeColor3,
                         thumbColor: Cv4rs.themeColor1,
                         label: 'Image Padding: ${Ev4rs.padding.value}',
-                        onChanged: (value) {
+                        onChanged: (value) { setState(() {
                           Ev4rs.padding.value = value.roundToDouble();
+                          });
                         }
                     ),
                   ])
@@ -2475,8 +2492,9 @@ import 'dart:async';
                       return Switch(
                         padding: EdgeInsets.all(0),
                         value: Ev4rs.matchLabel.value, 
-                        onChanged: (value) {
+                        onChanged: (value) { setState(() {
                           Ev4rs.matchLabel.value = value;
+                          });
                         }
                       );
                       }
@@ -2526,8 +2544,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchSpeakOnSelect.value, 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.matchSpeakOnSelect.value = value;
+                              });
                             }
                           ),
                         ),
@@ -2558,8 +2577,9 @@ import 'dart:async';
                               ? 'Speak on Select: ${Ev4rs.speakOnSelect.value}'
                               : 'Speak on Select: --Not All Match--',
                             value: Ev4rs.speakOnSelect.value.toDouble(), 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.speakOnSelect.value = value.toInt();
+                              });
                               }
                             ),
                           Padding(
@@ -2724,8 +2744,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.show.value, 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.show.value = value;
+                              });
                             }
                           ),
                         ),
@@ -2783,8 +2804,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchFormat.value, 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.matchFormat.value = value;
+                              });
                             }
                           ),
                         ),
@@ -2829,8 +2851,9 @@ import 'dart:async';
                             inactiveColor: Cv4rs.themeColor3,
                             thumbColor: Cv4rs.themeColor1,
                             value: Ev4rs.format.value.toDouble(), 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.format.value = value.toInt();
+                              });
                               }
                             ),
                           ]
@@ -2896,8 +2919,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchBorder.value, 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.matchBorder.value = value;
+                              });
                             }
                           ),
                         ),
@@ -2933,8 +2957,9 @@ import 'dart:async';
                                 ? 'Border Weight: ${Ev4rs.borderWeight}'
                                 : 'Border Weight: --Not All Match--',
                             value: Ev4rs.borderWeight.value.toDouble(), 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.borderWeight.value = value;
+                              });
                               }
                       )
                       ]
@@ -3081,8 +3106,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchBackground.value,
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.matchBackground.value = value;
+                              });
                             }
                           ),
                         ),
@@ -3241,10 +3267,11 @@ import 'dart:async';
                             ),
                           );
                         }).toList(),
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                             Ev4rs.pos.value = value;
                           }
+                          });
                           }
                       ),
                       ),
@@ -3303,10 +3330,11 @@ import 'dart:async';
                               ),
                             );
                           }).toList(),
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                               Ev4rs.buttonType.value = value;
                             }
+                            });
                           },
                         ),
                       ),
@@ -3374,11 +3402,12 @@ import 'dart:async';
                             );
                           })
                           ],
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                               Ev4rs.link.value = value;
                               Ev4rs.linkLabel.value = mapOfBoards.entries.firstWhere((element) => element.value == value).key;
                             }
+                            });
                           },
                         ),
                     ),
@@ -3437,8 +3466,9 @@ import 'dart:async';
                         child: Switch(
                           padding: EdgeInsets.all(0),
                           value: Ev4rs.returnAfterSelect.value,
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             Ev4rs.returnAfterSelect.value = value;
+                            });
                           }
                         ),
                       ),
@@ -3502,10 +3532,11 @@ import 'dart:async';
                               ),
                             );
                           }).toList(),
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                               Ev4rs.grammerFunction.value = value;
                             }
+                            });
                           },
                         ),
                     ),
@@ -3886,8 +3917,9 @@ import 'dart:async';
                               inactiveColor: Cv4rs.themeColor3,
                               thumbColor: Cv4rs.themeColor1,
                               label: 'Image Padding: ${Ev4rs.padding.value}',
-                              onChanged: (value) {
+                              onChanged: (value) { setState(() {
                                 Ev4rs.padding.value = value.roundToDouble();
+                              });
                               }
                           ),
                         ])
@@ -4102,8 +4134,9 @@ import 'dart:async';
                                 child: Switch(
                                   padding: EdgeInsets.all(0),
                                   value: Ev4rs.matchSpeakOnSelect.value, 
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.matchSpeakOnSelect.value = value;
+                                  });
                                   }
                                 ),
                               ),
@@ -4132,8 +4165,9 @@ import 'dart:async';
                                   thumbColor: Cv4rs.themeColor1,
                                   label: 'Speak on Select: ${Ev4rs.speakOnSelect.value}',
                                   value: Ev4rs.speakOnSelect.value.toDouble(), 
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.speakOnSelect.value = value.toInt();
+                                    });
                                     }
                                   ),
                                 Padding(
@@ -4284,8 +4318,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.show.value, 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.show.value = value;
+                              });
                             }
                           ),
                         ),
@@ -4344,8 +4379,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchFormat.value, 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.matchFormat.value = value;
+                              });
                             }
                           ),
                         ),
@@ -4389,8 +4425,9 @@ import 'dart:async';
                             inactiveColor: Cv4rs.themeColor3,
                             thumbColor: Cv4rs.themeColor1,
                             value: Ev4rs.format.value.toDouble(), 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.format.value = value.toInt();
+                              });
                               }
                             ),
                           ]
@@ -4452,8 +4489,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchBorder.value, 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.matchBorder.value = value;
+                              });
                             }
                           ),
                         ),
@@ -4478,8 +4516,9 @@ import 'dart:async';
                             thumbColor: Cv4rs.themeColor1,
                             label: 'Border Weight: ${Ev4rs.borderWeight.value}',
                             value: Ev4rs.borderWeight.value.toDouble(), 
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.borderWeight.value = value;
+                              });
                               }
                       )
                       ]
@@ -4618,8 +4657,9 @@ import 'dart:async';
                           child: Switch(
                             padding: EdgeInsets.all(0),
                             value: Ev4rs.matchBackground.value,
-                            onChanged: (value) {
+                            onChanged: (value) { setState(() {
                               Ev4rs.matchBackground.value = value;
+                              });
                             }
                           ),
                         ),
@@ -4777,11 +4817,12 @@ import 'dart:async';
                             ),
                           );
                         }).toList(),
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
-                            Ev4rs.pos.value = value;
-                          }
-                          }
+                              Ev4rs.pos.value = value;
+                            }
+                          });
+                        }
                       ),
                       ),
                   //save 
@@ -4845,10 +4886,11 @@ import 'dart:async';
                               ),
                             ),
                             ],
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                               Ev4rs.subFolderType.value = value;
                             }
+                             });
                           },
                         ),
                       ),
@@ -4913,11 +4955,12 @@ import 'dart:async';
                             );
                           })
                           ],
-                          onChanged: (value) {
+                          onChanged: (value) { setState(() {
                             if (value != null) {
                               Ev4rs.link.value = value;
                               Ev4rs.linkLabel.value = mapOfBoards.entries.firstWhere((element) => element.value == value).key;
                             }
+                            });
                           },
                         ),
                       ),
@@ -4961,8 +5004,9 @@ import 'dart:async';
                           minLines: 1,
                           maxLines: 5,
                           style: Sv4rs.settingslabelStyle,
-                          onChanged: (value){
+                          onChanged: (value){ setState(() {
                             Ev4rs.notes.value = value;
+                          });
                           },
                           decoration: InputDecoration(
                           hintStyle: Sv4rs.settingslabelStyle,
@@ -5298,8 +5342,9 @@ import 'dart:async';
                               inactiveColor: Cv4rs.themeColor3,
                               thumbColor: Cv4rs.themeColor1,
                               label: 'Image Padding: ${Ev4rs.padding.value}',
-                              onChanged: (value) {
+                              onChanged: (value) { setState(() {
                                 Ev4rs.padding.value = value.roundToDouble();
+                                });
                               }
                           ),
                         ])
@@ -5552,8 +5597,9 @@ import 'dart:async';
                                 child: Switch(
                                   padding: EdgeInsets.all(0),
                                   value: Ev4rs.matchSpeakOnSelect.value, 
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.matchSpeakOnSelect.value = value;
+                                    });
                                   }
                                 ),
                               ),
@@ -5582,8 +5628,9 @@ import 'dart:async';
                                     ? 'Speak on Select: ${Ev4rs.speakOnSelect.value}'
                                     : 'Speak on Select: --Not All Match--',
                                   value: Ev4rs.speakOnSelect.value.toDouble(), 
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.speakOnSelect.value = value.toInt();
+                                    });
                                     }
                                   ),
                                 Padding(
@@ -5745,8 +5792,9 @@ import 'dart:async';
                                 child: Switch(
                                   padding: EdgeInsets.all(0),
                                   value: Ev4rs.show.value, 
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.show.value = value;
+                                    });
                                   }
                                 ),
                               ),
@@ -5804,8 +5852,9 @@ import 'dart:async';
                                 child: Switch(
                                   padding: EdgeInsets.all(0),
                                   value: Ev4rs.matchFormat.value, 
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.matchFormat.value = value;
+                                    });
                                   }
                                 ),
                               ),
@@ -5850,8 +5899,9 @@ import 'dart:async';
                                   inactiveColor: Cv4rs.themeColor3,
                                   thumbColor: Cv4rs.themeColor1,
                                   value: Ev4rs.format.value.toDouble(), 
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.format.value = value.toInt();
+                                    });
                                     }
                                   ),
                                 ]
@@ -5915,8 +5965,9 @@ import 'dart:async';
                                 child: Switch(
                                   padding: EdgeInsets.all(0),
                                   value: Ev4rs.matchBorder.value, 
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.matchBorder.value = value;
+                                    });
                                   }
                                 ),
                               ),
@@ -5948,8 +5999,9 @@ import 'dart:async';
                                       ? 'Border Weight: ${Ev4rs.borderWeight}'
                                       : 'Border Weight: --Not All Match--',
                                   value: Ev4rs.borderWeight.value.toDouble(), 
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.borderWeight.value = value;
+                                    });
                                     }
                             )
                             ]
@@ -6100,8 +6152,9 @@ import 'dart:async';
                                 child: Switch(
                                   padding: EdgeInsets.all(0),
                                   value: Ev4rs.matchBackground.value,
-                                  onChanged: (value) {
+                                  onChanged: (value) { setState(() {
                                     Ev4rs.matchBackground.value = value;
+                                    });
                                   }
                                 ),
                               ),
@@ -6258,10 +6311,11 @@ import 'dart:async';
                                   ),
                                 );
                               }).toList(),
-                                onChanged: (value) {
+                                onChanged: (value) { setState(() {
                                   if (value != null) {
                                   Ev4rs.pos.value = value;
                                 }
+                                });
                                 }
                             ),
                             ),
@@ -6329,10 +6383,11 @@ import 'dart:async';
                                     ),
                                   ),
                                   ],
-                                onChanged: (value) {
+                                onChanged: (value) { setState(() {
                                   if (value != null) {
                                     Ev4rs.subFolderType.value = value;
                                   }
+                                  });
                                 },
                               ),
                             ),
@@ -6400,11 +6455,12 @@ import 'dart:async';
                                   );
                                 })
                                 ],
-                                onChanged: (value) {
+                                onChanged: (value) { setState(() {
                                   if (value != null) {
                                     Ev4rs.link.value = value;
                                     Ev4rs.linkLabel.value = mapOfBoards.entries.firstWhere((element) => element.value == value).key;
                                   }
+                                  });
                                 },
                               ),
                             //save 

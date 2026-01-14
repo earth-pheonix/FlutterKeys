@@ -250,7 +250,6 @@ extension BoardsDisplay on BoardObjects {
     final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth,
     final Future<void> Function() initForSS,
     final AudioPlayer playerForSS,
-    
     ) {
       
     switch (format) {

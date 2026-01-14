@@ -27,7 +27,7 @@ The goal of this project:
     - allows selecting text within the message window and using the context menu,
     - while typing: preserves accsess to autoccorect and autocapitalization (if enabled),
     - while typing: preserves accsess to keyboard shortcuts, personal dictonary and text replacment settings,
-- Keyboard does not cover the grammer, message, or navigation rows & their functions remain accssessible.
+- Keyboard does not cover the grammer, message, or navigation rows--keeping their functions accessible.
 - Navigation buttons automatically hide the keyboard. 
 
 ---
@@ -52,19 +52,19 @@ The goal of this project:
 - Boardsets (multiple boardsets, option for a blank boardset, plan for multiple pre built options)
 - Languages (can pick multiple languages, with unique voices for each language) 
     - voices are limited by what is on the device, and what the app is allowed to use
-    - prebuild boardsets + grammer buttons are english only (But- I would accsept & appreciate help in changing that)
+    - prebuilt boardsets + grammer buttons are english only (But I would absolutley celebrate help in changing that)
 
 
 ---
 
 ### Accsess and Openess:
 - 100% free
-- Open Source voice options (*because companies shouldn't get to own our voices*)
+- Open Source voice options (*because companies shouldn't get to own our voices!*)
 - Import and export voices (must be in compatible format)
 - Import and export boards & boardsets (must be in compatible format)
 - Exporting includes the image files
 - Plan for supporting .OBF format
-- Android & iOS (likly to also be on web, windows, linux, and macOS)
+- Android & iOS (likely to also be on web, windows, linux, and macOS)
 - Somewhat multilingual
     - fonts in multiple scripts
     - language code wrappers to use multiple languages in one sentance with complete control 

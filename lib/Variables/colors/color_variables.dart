@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Cv4rs {
+
+  static Color adjustAlternateColor(Color startColor){
+    Color endColor = (startColor.computeLuminance() > 0.5) 
+      ? adjustLuminance(startColor, 0.07)
+      : adjustLuminance(startColor, -0.07);
+    return endColor;
+  }
+
+  static Color adjustLuminance(Color color, double amount){
+    final hsl = HSLColor.fromColor(color);
+    final newLum = (hsl.lightness + amount).clamp(0.0, 1.0);
+    return hsl.withLightness(newLum).toColor();
+  }
   
   //corner tab color  
   static Color cornerTabColor = Color(0xba8b8b8b);

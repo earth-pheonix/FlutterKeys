@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterkeysaac/Variables/settings/boardset_settings_variables.dart';
 import 'package:flutterkeysaac/Variables/variables.dart';
+import 'package:flutterkeysaac/Variables/history.dart';
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
 import 'package:flutterkeysaac/Screens/message_row.dart';
 import 'package:flutterkeysaac/Variables/system_tts/tts_interface.dart';
@@ -90,6 +91,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         _currentBoardIndex = idx;
         V4rs.syncIndex = _currentBoardIndex;
         V4rs.thisBoard = board;
+        HistoryV4rs.openHistory.value = false;
       });
     }
   }
@@ -120,6 +122,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         _currentBoardIndex = _boardHistory.removeLast();
         V4rs.syncIndex = _currentBoardIndex;
         V4rs.thisBoard = board;
+        HistoryV4rs.openHistory.value = false;
       });
     }
   }
@@ -365,33 +368,52 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                   ), 
 
                   // Board row
-                  SizedBox(
-                    height: totalBoardHeight,
-                    child: Container(
-                      color: Cv4rs.themeColor4,
-                      child: Center( child:
-                      IndexedStack(
-                        index: _currentBoardIndex,
-                        children: [
-                          for (var board in _root!.boards)
-                              board.buildWidget(
-                                board,
-                                widget.synth,
-                                () => _goBackBoard(board),
-                                _openBoard,
-                                _openBoardWithReturn,
-                                _root!.boards,
-                                _findBoardById,
-                                widget.speakSelectSherpaOnnxSynth,
-                                widget.initForSS,
-                                widget.playerForSS,
-                              ),
-                        ],
+                  ValueListenableBuilder(
+                    valueListenable: HistoryV4rs.openHistory, 
+                    builder: (context, open, _){
+                      return SizedBox(
+                      height: totalBoardHeight,
+                      child: Container(
+                        color: Cv4rs.themeColor4,
+                        child: 
+                          IndexedStack(
+                            index: _currentBoardIndex,
+                            children: [
+                              for (var board in _root!.boards)
+                              (HistoryV4rs.openHistory.value)
+                                ? HistoryPage.buildHistoryWidget(
+                                    _root!,
+                                    setState,
+                                    board,
+                                    widget.synth,
+                                    () => _goBackBoard(board),
+                                    _openBoard,
+                                    _openBoardWithReturn,
+                                    _root!.boards,
+                                    _findBoardById,
+                                    widget.speakSelectSherpaOnnxSynth,
+                                    widget.initForSS,
+                                    widget.playerForSS,
+                                  )
+                                : board.buildWidget(
+                                    board,
+                                    widget.synth,
+                                    () => _goBackBoard(board),
+                                    _openBoard,
+                                    _openBoardWithReturn,
+                                    _root!.boards,
+                                    _findBoardById,
+                                    widget.speakSelectSherpaOnnxSynth,
+                                    widget.initForSS,
+                                    widget.playerForSS,
+                                  ),
+                            ],
+                          ),
+                        
                       ),
-                      ),
-                    ),
-                  ),
-                ],
+                      );
+                    })
+                  ],
               ),
               ),
             ),

@@ -316,7 +316,7 @@ extension NavRowDisplay on NavObjects {
     //ignore special and storage (history, pinned, storage)
     final buttons = content.where((c) => c.type == 'navButton').toList();
     final storageChest = content.where((c) => c.type == 'storage').toList(); 
-    final specialButtons = content.where((c) => c.type == 'specialNavButton').toList(); 
+    final specialButtons = content.where((c) => c.type == 'history' || c.type == 'pinned').toList(); 
 
     final chunked = <List<NavObjects>>[];
     for (var i = 0; i < buttons.length; i += perRow) {
@@ -458,7 +458,7 @@ extension NavRowDisplay on NavObjects {
     //ignore special and storage (history, pinned, storage)
     final buttons = content.where((c) => c.type == 'navButton').toList();
     final storageChest = content.where((c) => c.type == 'storage').toList(); 
-    final specialButtons = content.where((c) => c.type == 'specialNavButton').toList(); 
+    final specialButtons = content.where((c) => c.type == 'history' || c.type == 'pinned').toList(); 
 
     final chunked = <List<NavObjects>>[];
     for (var i = 0; i < buttons.length; i += perRow) {
@@ -606,7 +606,7 @@ extension NavRowDisplay on NavObjects {
           boards, findBoardById, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
       case 'navButton':
         return _buildNavButton(synth, openBoard, boards, findBoardById, obj, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
-      case "specialNavButton":
+      case "history" || "pinned":
         return _buildSpecialNavButton(synth, obj, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
       case "storage":
         return _buildStorageChest(synth, toggleStorage);
@@ -633,7 +633,7 @@ extension NavRowDisplay on NavObjects {
         return _buildEditableRow(root, synth, toggleStorage, openBoard, boards, findBoardById, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
       case 'navButton':
         return _buildEditableNavButton(root, synth, obj, openBoard, boards, findBoardById, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
-      case "specialNavButton":
+      case "history" || "pinned":
         return _buildSpecialNavButton(synth, obj, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
       case "storage":
         return _buildStorageChest(synth, toggleStorage);

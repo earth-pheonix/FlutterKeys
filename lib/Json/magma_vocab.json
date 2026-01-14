@@ -190,7 +190,7 @@
                 
                 {
                     "id": "7a3d679a-7eda-11f0-895d-325096b39f47",
-                    "type": "specialNavButton",
+                    "type": "pinned",
                     "label": "Pinned",
                     "linkToLabel": null,
                     "linkToUUID": null,
@@ -218,8 +218,8 @@
 
                     "symbol": "assets/interface_icons/interface_icons/iPinned.png",
                     "padding": null,
-                    "matchOverlayColor": true,
-                    "overlayColor": null,
+                    "matchOverlayColor": false,
+                    "overlayColor": 0,
                     "matchSymbolSaturation": true,
                     "symbolSaturation": null,
                     "matchSymbolContrast": true,
@@ -281,7 +281,7 @@
                 },
                 {
                     "id": "7aaf8af8-7dde-4ac1-b4e6-5f411e4ea031",
-                    "type": "specialNavButton",
+                    "type": "history",
                     "label": "History",
                     "linkToLabel": null,
                     "linkToUUID": null,
@@ -309,8 +309,8 @@
 
                     "symbol": "assets/interface_icons/interface_icons/iHistory.png",
                     "padding": null,
-                    "matchOverlayColor": true,
-                    "overlayColor": null,
+                    "matchOverlayColor": false,
+                    "overlayColor": 0,
                     "matchSymbolSaturation": true,
                     "symbolSaturation": null,
                     "matchSymbolContrast": true,

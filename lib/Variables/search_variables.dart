@@ -159,8 +159,18 @@ class SeV4rs{
   }
 
 //for history
+  static BoardObjects? findObjfromUUID(String id, List<BoardObjects> boards){
+    for (var b in boards) {
+      if (b.id == id) return b;
+      
+      if (b.content.isNotEmpty) {
+        if (b.id == id) return b;
+      }
+    }
+    return null;
+  }
+  
   static Map<String, String> findPath(Root root, String inputUUID){
-
     Map<String, String> path = {};
     var firstObj = Ev4rs.findBoardById(root.boards, inputUUID);
       if (firstObj != null){
@@ -188,6 +198,17 @@ class SeV4rs{
         }
     }
     //saftey- for if something falls through
+    return path;
+  }
+  static String getPath(Map<String, String> map){
+    String path = '';
+
+    path = map.entries.first.value;
+
+    for (int i=1; i < map.length; i++){
+      path = "$path -> ${map.entries.elementAt(i).value}";
+    }
+
     return path;
   }
 }

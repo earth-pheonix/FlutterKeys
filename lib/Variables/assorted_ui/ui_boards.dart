@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
+import 'package:flutterkeysaac/Variables/history.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
 import 'package:flutterkeysaac/Variables/grammer_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/boardset_settings_variables.dart';
@@ -2565,6 +2566,13 @@ class SpecialNavButtonStyle extends StatelessWidget {
         switch (matchSpeakOS ? Bv4rs.navRowSpeakOnSelect : speakOS) {
           case 1:
             //add navigation link to
+
+            if (HistoryV4rs.useHistory){
+              if ((me != null) ? me!.type == 'history' : false){
+                HistoryV4rs.getMessageHistoryPages();
+                HistoryV4rs.openHistory.value = true;
+              }
+            }
             FocusScope.of(context).unfocus();
             if (me != null){
               V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, me!.linkToUUID ?? '');
@@ -2572,6 +2580,13 @@ class SpecialNavButtonStyle extends StatelessWidget {
             break;
           case 2:
             //add navigation link to
+
+            if (HistoryV4rs.useHistory){
+              if ((me != null) ? me!.type == 'history' : false){
+                HistoryV4rs.getMessageHistoryPages();
+                HistoryV4rs.openHistory.value = true;
+              }
+            }
             FocusScope.of(context).unfocus();
             if (me != null){
               V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, me!.linkToUUID ?? '');
@@ -2587,6 +2602,13 @@ class SpecialNavButtonStyle extends StatelessWidget {
             break;
           case 3:
             //add navigation link to
+
+            if (HistoryV4rs.useHistory){
+              if ((me != null) ? me!.type == 'history' : false){
+                HistoryV4rs.getMessageHistoryPages();
+                HistoryV4rs.openHistory.value = true;
+              }
+            }
             FocusScope.of(context).unfocus();
             if (me != null){
               V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, me!.linkToUUID ?? '');
@@ -2634,9 +2656,32 @@ class SpecialNavButtonStyle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-
+                if ((me != null) ? me!.type == 'history' : false)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:[
+                    if (HistoryV4rs.useHistory)
+                    SizedBox(
+                      width:  8,
+                      height:  8,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5))
+                        ),
+                        color: Cv4rs.themeColor1,
+                      )
+                    ),
+                    if (HistoryV4rs.useHistory)
+                      SizedBox(
+                        width:  8,
+                        height:  8,
+                        child: CircleAvatar(backgroundColor: Cv4rs.themeColor1)
+                      ),
+                  ]
+                ),
+                
                 //image
-                Expanded(child: 
+                Flexible(child: 
                 Padding(
                   padding: EdgeInsets.all(V4rs.paddingValue(padding)),
                   child: ImageStyle1(
@@ -2684,7 +2729,7 @@ class SpecialNavButtonStyle extends StatelessWidget {
                 ),
 
                 //image
-                Expanded( child:
+                Flexible( child:
                 Padding(
                   padding: EdgeInsets.all(V4rs.paddingValue(padding)),
                   child: ImageStyle1(
@@ -2703,6 +2748,24 @@ class SpecialNavButtonStyle extends StatelessWidget {
                     defaultSymbolColorOverlay: Bv4rs.navRowSymbolColorOverlay)
                 ),
                 ),
+                if ((me != null) ? me!.type == 'history' : false)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:[
+                    if (HistoryV4rs.trackTaps)
+                      SizedBox(
+                        width: 8,
+                        height: 8,
+                        child: CircleAvatar(backgroundColor: Cv4rs.themeColor1)
+                      ),
+                    if (HistoryV4rs.useHistory)
+                      SizedBox(
+                        width: 8,
+                        height: 8,
+                        child: Container(color: Cv4rs.themeColor1)
+                      ),
+                  ]
+                ),
               ]
             );
           
@@ -2711,8 +2774,51 @@ class SpecialNavButtonStyle extends StatelessWidget {
           //
 
           case 3:
-            return Padding(
-                  padding: EdgeInsets.all(V4rs.paddingValue(padding)),
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              if ((me != null) ? me!.type == 'history' : false)
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    0, V4rs.paddingValue(padding), 1, V4rs.xSmallModeWidth ? 3 : 0,
+                  ),
+                  child:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children:[
+                    if (HistoryV4rs.trackTaps)
+                    Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.xSmallMode ? 1 : 2,), child:
+                      SizedBox(
+                        width: V4rs.xSmallMode ? 5 : 8,
+                        height: V4rs.xSmallMode ? 5 : 8,
+                        child: CircleAvatar(backgroundColor: Cv4rs.themeColor1)
+                      ),
+                    ),
+                    if (HistoryV4rs.useHistory)
+                    Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.xSmallMode ? 1 : 2,), child:
+                      SizedBox(
+                        width: V4rs.xSmallMode ? 5 : 8,
+                        height: V4rs.xSmallMode ? 5 : 8,
+                        child: Container(
+                          decoration: BoxDecoration(
+                          color: Cv4rs.themeColor1,
+                          borderRadius: BorderRadius.all(Radius.circular(1))
+                        ), 
+                        )
+                      ),
+                    ),
+                    
+                  ]
+                ),
+                ),
+              Flexible(child: 
+              Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    V4rs.paddingValue(padding),  
+                    1,
+                    V4rs.paddingValue(padding),
+                    V4rs.paddingValue(padding),
+                  ),
                   child: ImageStyle1(
                     image: image, 
                     matchSymbolSaturation: matchSymbolSaturation,
@@ -2727,18 +2833,42 @@ class SpecialNavButtonStyle extends StatelessWidget {
                     defaultSymbolSaturation: Bv4rs.navRowSymbolSaturation,
                     defaultSymbolContrast: Bv4rs.navRowSymbolContrast,
                     defaultSymbolColorOverlay: Bv4rs.navRowSymbolColorOverlay)
-                );
+                ),
+              ),
          
+            ]);
+            
           //
           //text only
           //
           
           case 4:
-            return Text(
-                  label, maxLines: 3, style: matchFont ? Fv4rs.navRowLabelStyle : labelStyle,  
-                  textAlign: TextAlign.center, 
-                  overflow: TextOverflow.ellipsis, 
-                );
+            return Column(children: [
+              if ((me != null) ? me!.type == 'history' : false)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:[
+                    if (HistoryV4rs.trackTaps)
+                      SizedBox(
+                        width:  8,
+                        height:  8,
+                        child: CircleAvatar(backgroundColor: Cv4rs.themeColor1)
+                      ),
+                    if (HistoryV4rs.useHistory)
+                      SizedBox(
+                        width:  8,
+                        height:  8,
+                        child: Container(color: Cv4rs.themeColor1)
+                      ),
+                  ]
+                ),
+              Text(
+                label, maxLines: 3, style: matchFont ? Fv4rs.navRowLabelStyle : labelStyle,  
+                textAlign: TextAlign.center, 
+                overflow: TextOverflow.ellipsis, 
+              ),
+           ]
+          );
           
           //
           //oops

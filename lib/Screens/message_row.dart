@@ -15,6 +15,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart'; 
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 import 'package:flutterkeysaac/Variables/highlight_message_window.dart';
+import 'package:flutterkeysaac/Variables/history.dart';
 
 class MessageRow extends StatefulWidget {
   final TTSInterface synth;
@@ -1190,6 +1191,10 @@ class _RightOfMessageWindowState extends State<RightOfMessageWindow> {
                             widget.playerForSS,
                             );
                           }
+                        if (V4rs.message.value != '' && HistoryV4rs.useHistory){
+                          HistoryV4rs.messageHistory.add(V4rs.message.value);
+                          HistoryV4rs.saveMessageHistory(HistoryV4rs.messageHistory);
+                        }
                       widget.controller.clear();
                     },
                   ),

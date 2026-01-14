@@ -4,7 +4,7 @@ import 'package:flutterkeysaac/Variables/system_tts/tts_interface.dart';
 import 'package:flutterkeysaac/Variables/settings/ui_settings.dart';
 import 'package:flutterkeysaac/Variables/assorted_ui/ui_pops.dart';
 import 'package:flutterkeysaac/Variables/settings/speak_on_select.dart';
-
+import 'package:flutterkeysaac/Variables/history.dart';
 import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
 import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
@@ -19,7 +19,7 @@ import 'package:flutterkeysaac/Variables/editing/save_indicator.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_pickers.dart';
 import 'package:flutterkeysaac/Variables/colors/color_pickers.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_options.dart';
-import 'package:share_plus/share_plus.dart'; 
+import 'package:share_plus/share_plus.dart'; //for export
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 import 'dart:io';
@@ -221,18 +221,6 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                 ), 
 
                 //
-                //speak on select settings
-                //
-                UiSpeakOnSelect(
-                  synth: widget.synth, 
-                  speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
-                  initForSS: widget.initForSS,
-                  playerForSS: widget.playerForSS,
-                  totalWidth: totalWidth,
-                ),
-
-
-                //
                 //interface settings
                 //
 
@@ -253,7 +241,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         );
                       }},
                   children: [
-                    
+                    HistorySettings(),
                     ExpansionTile(
                       title: Text('Theme Colors:', style: Sv4rs.settingslabelStyle),
                       collapsedBackgroundColor: Cv4rs.themeColor4,
@@ -765,362 +753,18 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                   ],
                 ),
                 
-                //
-                //expand page settings
-                //
 
-                ExpansionTile(
-                  title: Text('Expand Page:', style: Sv4rs.settingslabelStyle,),
-                  collapsedBackgroundColor: Cv4rs.themeColor4,
-                  backgroundColor: Cv4rs.themeColor4,
-                  childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                  onExpansionChanged: (bool expanded) {  
-                    if (Sv4rs.speakInterfaceButtonsOnSelect) {
-                        V4rs.speakOnSelect(
-                          'Expand page settings', 
-                          V4rs.selectedLanguage.value, 
-                          widget.synth,
-                          widget.speakSelectSherpaOnnxSynth,
-                          widget.initForSS,
-                          widget.playerForSS,
-                        );
-                      }},
-                  children: [
-                    ExpansionTile(
-                      title: Text('Page Colors:', style: Sv4rs.settingslabelStyle),
-                      collapsedBackgroundColor: Cv4rs.themeColor4,
-                      backgroundColor: Cv4rs.themeColor4,
-                      childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
-                      children: [
-                        //theme color 1
-                        ExpansionTile(
-                          title: Row(
-                            children: [
-                              Text('Color 1:', style: Sv4rs.settingslabelStyle,),
-                              const Spacer(),
-                              CircleAvatar(
-                                backgroundColor: Cv4rs.themeColor3,
-                                radius: 20,
-                                child: Icon(Icons.circle, color: Cv4rs.expandColor1, size: 40, shadows: [
-                                  Shadow(
-                                    color: Cv4rs.themeColor4,
-                                    blurRadius: 4,
-                                  ),
-                                ],),
-                              ),
-                            ]
-                          ),
-                          children: [
-                            //hexcode input
-                            Padding(
-                              padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(40), vertical: V4rs.paddingValue(20)),
-                              child: HexCodeInput(
-                                startValue: Cv4rs.expandColor1.toHexString(),
-                                textStyle: Sv4rs.settingslabelStyle,
-                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
-                                onColorChanged: (color) {
-                                  setState(() {
-                                      Cv4rs.expandColor1 = color;
-                                      Cv4rs.saveexpandcolorone(color);
-                                  });
-                                },
-                              ),
-                            ),
-                            //color picker
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                V4rs.paddingValue(40), 0, 
-                                V4rs.paddingValue(10), V4rs.paddingValue(10)),
-                              child: ColorPicker(
-                                pickerColor: Cv4rs.expandColor1, 
-                                enableAlpha: false,
-                                displayThumbColor: false,
-                                labelTypes: ColorLabelType.values,
-                                onColorChanged:  (Color color) {
-                                    setState(() {
-                                      Cv4rs. expandColor1 = color;
-                                      Cv4rs.saveexpandcolorone(color);
-                                  });
-                                },
-                              ),
-                          ),
-                          ],
-                        ),
-                        //theme color 2
-                        ExpansionTile(
-                          title: Row(
-                            children: [
-                              Text('Color 2:', style: Sv4rs.settingslabelStyle,),
-                              const Spacer(),
-                              CircleAvatar(
-                                backgroundColor: Cv4rs.themeColor3,
-                                radius: 20,
-                                child: Icon(Icons.circle, color: Cv4rs.expandColor2, size: 40, shadows: [
-                                  Shadow(
-                                    color: Cv4rs.themeColor4,
-                                    blurRadius: 4,
-                                  ),
-                                ],),
-                              ),
-                            ]
-                          ),
-                          children: [
-                            //hexcode input
-                            Padding(
-                              padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(40), vertical: V4rs.paddingValue(20)),
-                              child: HexCodeInput(
-                                startValue: Cv4rs.expandColor2.toHexString(),
-                                textStyle: Sv4rs.settingslabelStyle,
-                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
-                                onColorChanged: (color) {
-                                  setState(() {
-                                      Cv4rs.expandColor2 = color;
-                                      Cv4rs.saveexpandcolortwo(color);
-                                  });
-                                },
-                              ),
-                            ),
-                            //color picker
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(V4rs.paddingValue(40), 
-                              0, V4rs.paddingValue(10), 
-                              V4rs.paddingValue(10)
-                              ),
-                              child: ColorPicker(
-                                pickerColor: Cv4rs.expandColor2, 
-                                enableAlpha: false,
-                                displayThumbColor: false,
-                                labelTypes: ColorLabelType.values,
-                                onColorChanged:  (Color color) {
-                                    setState(() {
-                                      Cv4rs.expandColor2 = color;
-                                      Cv4rs.saveexpandcolortwo(color);
-                                  });
-                                },
-                              ),
-                          ),
-                          ],
-                        ),
-                        //theme color 3
-                        ExpansionTile(
-                          title: Row(
-                            children: [
-                              Text('Color 3:', style: Sv4rs.settingslabelStyle,),
-                              const Spacer(),
-                              CircleAvatar(
-                                backgroundColor: Cv4rs.themeColor3,
-                                radius: 20,
-                                child: Icon(Icons.circle, color: Cv4rs.expandColor3, size: 40, shadows: [
-                                  Shadow(
-                                    color: Cv4rs.themeColor4,
-                                    blurRadius: 6,
-                                  ),
-                                  Shadow(
-                                    color: Cv4rs.themeColor4,
-                                    blurRadius: 6,
-                                  ),
-                                  Shadow(
-                                    color: Cv4rs.themeColor4,
-                                    blurRadius: 6,
-                                  ),
-                                ],
-                                ),
-                              ),
-                            ]
-                          ),
-                          children: [
-                            //hexcode input
-                            Padding(
-                              padding: EdgeInsetsGeometry.symmetric(
-                                horizontal: V4rs.paddingValue(40), 
-                                vertical: V4rs.paddingValue(20)),
-                              child: HexCodeInput(
-                                startValue: Cv4rs.expandColor3.toHexString(),
-                                textStyle: Sv4rs.settingslabelStyle,
-                                hintTextStyle: TextStyle(color: Cv4rs.expandColor3, fontSize: 16),
-                                onColorChanged: (color) {
-                                  setState(() {
-                                      Cv4rs.expandColor3 = color;
-                                      Cv4rs.saveexpandcolorthree(color);
-                                  });
-                                },
-                              ),
-                            ),
-                            //color picker
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                V4rs.paddingValue(40), 
-                                0, V4rs.paddingValue(10), 
-                                V4rs.paddingValue(10)
-                              ),
-                              child: ColorPicker(
-                                pickerColor: Cv4rs.expandColor3, 
-                                enableAlpha: false,
-                                displayThumbColor: false,
-                                labelTypes: ColorLabelType.values,
-                                onColorChanged:  (Color color) {
-                                    setState(() {
-                                      Cv4rs.expandColor3 = color;
-                                      Cv4rs.saveexpandcolorthree(color);
-                                  });
-                                },
-                              ),
-                          ),
-                          ],
-                        ),
-                        //theme color 4
-                        ExpansionTile(
-                          title: Row(
-                            children: [
-                              Text('Color 4:', style: Sv4rs.settingslabelStyle,),
-                              const Spacer(),
-                              CircleAvatar(
-                                backgroundColor: Cv4rs.themeColor3,
-                                radius: 20,
-                                child: Icon(Icons.circle, color: Cv4rs.expandColor4, size: 40, shadows: [
-                                  Shadow(
-                                    color: Cv4rs.themeColor4,
-                                    blurRadius: 4,
-                                  ),
-                                ],),
-                              ),
-                            ]
-                          ),
-                          children: [
-                            //hexcode input
-                            Padding(
-                              padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(40), vertical: V4rs.paddingValue(20)),
-                              child: HexCodeInput(
-                                startValue: Cv4rs.expandColor4.toHexString(),
-                                textStyle: Sv4rs.settingslabelStyle,
-                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
-                                onColorChanged: (color) {
-                                  setState(() {
-                                      Cv4rs.expandColor4 = color;
-                                      Cv4rs.saveexpandcolorfour(color);
-                                  });
-                                },
-                              ),
-                            ),
-                            //color picker
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(V4rs.paddingValue(40), 0, V4rs.paddingValue(10), V4rs.paddingValue(10)),
-                              child: ColorPicker(
-                                pickerColor: Cv4rs.expandColor4, 
-                                enableAlpha: false,
-                                displayThumbColor: false,
-                                labelTypes: ColorLabelType.values,
-                                onColorChanged:  (Color color) {
-                                    setState(() {
-                                      Cv4rs.expandColor4 = color;
-                                      Cv4rs.saveexpandcolorfour(color);
-                                  });
-                                },
-                              ),
-                          ),
-                          ],
-                        ),
-                        //interface icon color
-                        ExpansionTile(
-                          title: Row(
-                            children: [
-                              Text('Icon Color:', style: Sv4rs.settingslabelStyle,),
-                              const Spacer(),
-                              CircleAvatar(
-                                backgroundColor: Cv4rs.themeColor3,
-                                radius: 20,
-                                child: Icon(Icons.circle, color: Cv4rs.expandIconColor, size: 40, shadows: [
-                                  Shadow(
-                                    color: Cv4rs.expandColor4,
-                                    blurRadius: 4,
-                                  ),
-                                ],),
-                              ),
-                            ]
-                          ),
-                          children: [
-                            //hexcode input
-                            Padding(
-                              padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(40), vertical: V4rs.paddingValue(20)),
-                              child: HexCodeInput(
-                                startValue: Cv4rs.expandIconColor.toHexString(),
-                                textStyle: Sv4rs.settingslabelStyle,
-                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
-                                onColorChanged: (color) {
-                                  setState(() {
-                                      Cv4rs.expandIconColor = color;
-                                      Cv4rs.saveexpandiconcolor(color);
-                                  });
-                                },
-                              ),
-                            ),
-                            //color picker
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(V4rs.paddingValue(40), 0, V4rs.paddingValue(10), V4rs.paddingValue(10)),
-                              child: ColorPicker(
-                                pickerColor: Cv4rs.expandIconColor, 
-                                enableAlpha: false,
-                                displayThumbColor: false,
-                                labelTypes: ColorLabelType.values,
-                                onColorChanged:  (Color color) {
-                                    setState(() {
-                                      Cv4rs.expandIconColor = color;
-                                      Cv4rs.saveexpandiconcolor(color);
-                                  });
-                                },
-                              ),
-                          ),
-                          ],
-                        ),
-                        ]),
-                    FontPicker1(
-                      useUnderline: false,
-                      onUnderlineChanged: (value) async {},
-                      size: Fv4rs.expandedFontSize, 
-                      weight: Fv4rs.expandedFontWeight, 
-                      italics: Fv4rs.expandedFontItalics, 
-                      font: Fv4rs.expandedFont, 
-                      label: 'Font Settings:', 
-                      color: Fv4rs.expandedFontColor,
-                      sizeMin: 10,
-                      sizeMax: 300, 
-                      onSizeChanged: (value) async {
-                                setState(() {
-                                   Fv4rs.expandedFontSize = value;
-                                   Fv4rs.saveExpandedFontSize(value);
-                                });
-                              }, 
-                      onWeightChanged: (value) async {
-                                setState(() {
-                                   Fv4rs.expandedFontWeight = value;
-                                   Fv4rs.saveExpandedFontWeight(value);
-                                });
-                              }, 
-                      onItalicsChanged: (value) async {
-                                setState(() {
-                                   Fv4rs.expandedFontItalics = value;
-                                   Fv4rs.saveExpandedFontItalics(value);
-                                });
-                              }, 
-                      onFontChanged: (value) async {
-                                setState(() {
-                                   Fv4rs.expandedFont = value;
-                                   Fv4rs.saveExpandedFont(value);
-                                });
-                              }, 
-                      onColorChanged: (value) async {
-                                setState(() {
-                                   Fv4rs.expandedFontColor = value.toColor() ?? Fv4rs.expandedFontColor;
-                                   Fv4rs.saveExpandedFontColor(value.toColor() ?? Fv4rs.expandedFontColor);
-                                });
-                              }, 
-                      tts: widget.synth,
-                      speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
-                      initForSS: widget.initForSS,
-                      playerForSS: widget.playerForSS,
-                      )
-                  ],
-                    ),
+                //
+                //speak on select settings
+                //
+                UiSpeakOnSelect(
+                  synth: widget.synth, 
+                  speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
+                  initForSS: widget.initForSS,
+                  playerForSS: widget.playerForSS,
+                  totalWidth: totalWidth,
+                ),
+
 
                 //
                 //message window settings
@@ -1522,7 +1166,364 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                   ],
                     ),
 
-                
+
+                //
+                //expand page settings
+                //
+
+                ExpansionTile(
+                  title: Text('Expand Page:', style: Sv4rs.settingslabelStyle,),
+                  collapsedBackgroundColor: Cv4rs.themeColor4,
+                  backgroundColor: Cv4rs.themeColor4,
+                  childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
+                  onExpansionChanged: (bool expanded) {  
+                    if (Sv4rs.speakInterfaceButtonsOnSelect) {
+                        V4rs.speakOnSelect(
+                          'Expand page settings', 
+                          V4rs.selectedLanguage.value, 
+                          widget.synth,
+                          widget.speakSelectSherpaOnnxSynth,
+                          widget.initForSS,
+                          widget.playerForSS,
+                        );
+                      }},
+                  children: [
+                    ExpansionTile(
+                      title: Text('Page Colors:', style: Sv4rs.settingslabelStyle),
+                      collapsedBackgroundColor: Cv4rs.themeColor4,
+                      backgroundColor: Cv4rs.themeColor4,
+                      childrenPadding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(20)),
+                      children: [
+                        //theme color 1
+                        ExpansionTile(
+                          title: Row(
+                            children: [
+                              Text('Color 1:', style: Sv4rs.settingslabelStyle,),
+                              const Spacer(),
+                              CircleAvatar(
+                                backgroundColor: Cv4rs.themeColor3,
+                                radius: 20,
+                                child: Icon(Icons.circle, color: Cv4rs.expandColor1, size: 40, shadows: [
+                                  Shadow(
+                                    color: Cv4rs.themeColor4,
+                                    blurRadius: 4,
+                                  ),
+                                ],),
+                              ),
+                            ]
+                          ),
+                          children: [
+                            //hexcode input
+                            Padding(
+                              padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(40), vertical: V4rs.paddingValue(20)),
+                              child: HexCodeInput(
+                                startValue: Cv4rs.expandColor1.toHexString(),
+                                textStyle: Sv4rs.settingslabelStyle,
+                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
+                                onColorChanged: (color) {
+                                  setState(() {
+                                      Cv4rs.expandColor1 = color;
+                                      Cv4rs.saveexpandcolorone(color);
+                                  });
+                                },
+                              ),
+                            ),
+                            //color picker
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                V4rs.paddingValue(40), 0, 
+                                V4rs.paddingValue(10), V4rs.paddingValue(10)),
+                              child: ColorPicker(
+                                pickerColor: Cv4rs.expandColor1, 
+                                enableAlpha: false,
+                                displayThumbColor: false,
+                                labelTypes: ColorLabelType.values,
+                                onColorChanged:  (Color color) {
+                                    setState(() {
+                                      Cv4rs. expandColor1 = color;
+                                      Cv4rs.saveexpandcolorone(color);
+                                  });
+                                },
+                              ),
+                          ),
+                          ],
+                        ),
+                        //theme color 2
+                        ExpansionTile(
+                          title: Row(
+                            children: [
+                              Text('Color 2:', style: Sv4rs.settingslabelStyle,),
+                              const Spacer(),
+                              CircleAvatar(
+                                backgroundColor: Cv4rs.themeColor3,
+                                radius: 20,
+                                child: Icon(Icons.circle, color: Cv4rs.expandColor2, size: 40, shadows: [
+                                  Shadow(
+                                    color: Cv4rs.themeColor4,
+                                    blurRadius: 4,
+                                  ),
+                                ],),
+                              ),
+                            ]
+                          ),
+                          children: [
+                            //hexcode input
+                            Padding(
+                              padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(40), vertical: V4rs.paddingValue(20)),
+                              child: HexCodeInput(
+                                startValue: Cv4rs.expandColor2.toHexString(),
+                                textStyle: Sv4rs.settingslabelStyle,
+                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
+                                onColorChanged: (color) {
+                                  setState(() {
+                                      Cv4rs.expandColor2 = color;
+                                      Cv4rs.saveexpandcolortwo(color);
+                                  });
+                                },
+                              ),
+                            ),
+                            //color picker
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(V4rs.paddingValue(40), 
+                              0, V4rs.paddingValue(10), 
+                              V4rs.paddingValue(10)
+                              ),
+                              child: ColorPicker(
+                                pickerColor: Cv4rs.expandColor2, 
+                                enableAlpha: false,
+                                displayThumbColor: false,
+                                labelTypes: ColorLabelType.values,
+                                onColorChanged:  (Color color) {
+                                    setState(() {
+                                      Cv4rs.expandColor2 = color;
+                                      Cv4rs.saveexpandcolortwo(color);
+                                  });
+                                },
+                              ),
+                          ),
+                          ],
+                        ),
+                        //theme color 3
+                        ExpansionTile(
+                          title: Row(
+                            children: [
+                              Text('Color 3:', style: Sv4rs.settingslabelStyle,),
+                              const Spacer(),
+                              CircleAvatar(
+                                backgroundColor: Cv4rs.themeColor3,
+                                radius: 20,
+                                child: Icon(Icons.circle, color: Cv4rs.expandColor3, size: 40, shadows: [
+                                  Shadow(
+                                    color: Cv4rs.themeColor4,
+                                    blurRadius: 6,
+                                  ),
+                                  Shadow(
+                                    color: Cv4rs.themeColor4,
+                                    blurRadius: 6,
+                                  ),
+                                  Shadow(
+                                    color: Cv4rs.themeColor4,
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                                ),
+                              ),
+                            ]
+                          ),
+                          children: [
+                            //hexcode input
+                            Padding(
+                              padding: EdgeInsetsGeometry.symmetric(
+                                horizontal: V4rs.paddingValue(40), 
+                                vertical: V4rs.paddingValue(20)),
+                              child: HexCodeInput(
+                                startValue: Cv4rs.expandColor3.toHexString(),
+                                textStyle: Sv4rs.settingslabelStyle,
+                                hintTextStyle: TextStyle(color: Cv4rs.expandColor3, fontSize: 16),
+                                onColorChanged: (color) {
+                                  setState(() {
+                                      Cv4rs.expandColor3 = color;
+                                      Cv4rs.saveexpandcolorthree(color);
+                                  });
+                                },
+                              ),
+                            ),
+                            //color picker
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                V4rs.paddingValue(40), 
+                                0, V4rs.paddingValue(10), 
+                                V4rs.paddingValue(10)
+                              ),
+                              child: ColorPicker(
+                                pickerColor: Cv4rs.expandColor3, 
+                                enableAlpha: false,
+                                displayThumbColor: false,
+                                labelTypes: ColorLabelType.values,
+                                onColorChanged:  (Color color) {
+                                    setState(() {
+                                      Cv4rs.expandColor3 = color;
+                                      Cv4rs.saveexpandcolorthree(color);
+                                  });
+                                },
+                              ),
+                          ),
+                          ],
+                        ),
+                        //theme color 4
+                        ExpansionTile(
+                          title: Row(
+                            children: [
+                              Text('Color 4:', style: Sv4rs.settingslabelStyle,),
+                              const Spacer(),
+                              CircleAvatar(
+                                backgroundColor: Cv4rs.themeColor3,
+                                radius: 20,
+                                child: Icon(Icons.circle, color: Cv4rs.expandColor4, size: 40, shadows: [
+                                  Shadow(
+                                    color: Cv4rs.themeColor4,
+                                    blurRadius: 4,
+                                  ),
+                                ],),
+                              ),
+                            ]
+                          ),
+                          children: [
+                            //hexcode input
+                            Padding(
+                              padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(40), vertical: V4rs.paddingValue(20)),
+                              child: HexCodeInput(
+                                startValue: Cv4rs.expandColor4.toHexString(),
+                                textStyle: Sv4rs.settingslabelStyle,
+                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
+                                onColorChanged: (color) {
+                                  setState(() {
+                                      Cv4rs.expandColor4 = color;
+                                      Cv4rs.saveexpandcolorfour(color);
+                                  });
+                                },
+                              ),
+                            ),
+                            //color picker
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(V4rs.paddingValue(40), 0, V4rs.paddingValue(10), V4rs.paddingValue(10)),
+                              child: ColorPicker(
+                                pickerColor: Cv4rs.expandColor4, 
+                                enableAlpha: false,
+                                displayThumbColor: false,
+                                labelTypes: ColorLabelType.values,
+                                onColorChanged:  (Color color) {
+                                    setState(() {
+                                      Cv4rs.expandColor4 = color;
+                                      Cv4rs.saveexpandcolorfour(color);
+                                  });
+                                },
+                              ),
+                          ),
+                          ],
+                        ),
+                        //interface icon color
+                        ExpansionTile(
+                          title: Row(
+                            children: [
+                              Text('Icon Color:', style: Sv4rs.settingslabelStyle,),
+                              const Spacer(),
+                              CircleAvatar(
+                                backgroundColor: Cv4rs.themeColor3,
+                                radius: 20,
+                                child: Icon(Icons.circle, color: Cv4rs.expandIconColor, size: 40, shadows: [
+                                  Shadow(
+                                    color: Cv4rs.expandColor4,
+                                    blurRadius: 4,
+                                  ),
+                                ],),
+                              ),
+                            ]
+                          ),
+                          children: [
+                            //hexcode input
+                            Padding(
+                              padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(40), vertical: V4rs.paddingValue(20)),
+                              child: HexCodeInput(
+                                startValue: Cv4rs.expandIconColor.toHexString(),
+                                textStyle: Sv4rs.settingslabelStyle,
+                                hintTextStyle: TextStyle(color: Cv4rs.themeColor3, fontSize: 16),
+                                onColorChanged: (color) {
+                                  setState(() {
+                                      Cv4rs.expandIconColor = color;
+                                      Cv4rs.saveexpandiconcolor(color);
+                                  });
+                                },
+                              ),
+                            ),
+                            //color picker
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(V4rs.paddingValue(40), 0, V4rs.paddingValue(10), V4rs.paddingValue(10)),
+                              child: ColorPicker(
+                                pickerColor: Cv4rs.expandIconColor, 
+                                enableAlpha: false,
+                                displayThumbColor: false,
+                                labelTypes: ColorLabelType.values,
+                                onColorChanged:  (Color color) {
+                                    setState(() {
+                                      Cv4rs.expandIconColor = color;
+                                      Cv4rs.saveexpandiconcolor(color);
+                                  });
+                                },
+                              ),
+                          ),
+                          ],
+                        ),
+                        ]),
+                    FontPicker1(
+                      useUnderline: false,
+                      onUnderlineChanged: (value) async {},
+                      size: Fv4rs.expandedFontSize, 
+                      weight: Fv4rs.expandedFontWeight, 
+                      italics: Fv4rs.expandedFontItalics, 
+                      font: Fv4rs.expandedFont, 
+                      label: 'Font Settings:', 
+                      color: Fv4rs.expandedFontColor,
+                      sizeMin: 10,
+                      sizeMax: 300, 
+                      onSizeChanged: (value) async {
+                                setState(() {
+                                   Fv4rs.expandedFontSize = value;
+                                   Fv4rs.saveExpandedFontSize(value);
+                                });
+                              }, 
+                      onWeightChanged: (value) async {
+                                setState(() {
+                                   Fv4rs.expandedFontWeight = value;
+                                   Fv4rs.saveExpandedFontWeight(value);
+                                });
+                              }, 
+                      onItalicsChanged: (value) async {
+                                setState(() {
+                                   Fv4rs.expandedFontItalics = value;
+                                   Fv4rs.saveExpandedFontItalics(value);
+                                });
+                              }, 
+                      onFontChanged: (value) async {
+                                setState(() {
+                                   Fv4rs.expandedFont = value;
+                                   Fv4rs.saveExpandedFont(value);
+                                });
+                              }, 
+                      onColorChanged: (value) async {
+                                setState(() {
+                                   Fv4rs.expandedFontColor = value.toColor() ?? Fv4rs.expandedFontColor;
+                                   Fv4rs.saveExpandedFontColor(value.toColor() ?? Fv4rs.expandedFontColor);
+                                });
+                              }, 
+                      tts: widget.synth,
+                      speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
+                      initForSS: widget.initForSS,
+                      playerForSS: widget.playerForSS,
+                      )
+                  ],
+                    ),
+
                 //
                 //boardset settings
                 //
