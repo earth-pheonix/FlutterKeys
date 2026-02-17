@@ -1,0 +1,28 @@
+Label Info
+
+in
+	image noun
+
+in2-i
+	intangible nouns
+
+in2-t
+	tangible nouns
+
+_____
+
+in1-[word]
+	[word] is on page 1
+	(1 layer)
+
+in1-[name]2-[word]
+	 [word] is in folder [name]
+	(2 layers)
+
+in1-[name]2-[title]3-[word]
+	 [word] is in a folder [title]; folder [title] is in folder [name]
+	(3 layers)
+
+in1-[name]2-[title]3-[folder]4-[word]
+	 [word] is in a folder [folder]; [folder] is in folder [title]; [title] is in folder [name]
+	(4 layers)

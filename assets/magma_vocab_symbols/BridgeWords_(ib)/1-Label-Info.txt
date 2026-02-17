@@ -1,0 +1,28 @@
+Label Info
+
+ib
+	image bridge words
+
+ib2-p
+	prepositions
+
+ib2-c
+	conjunctions
+
+_____
+
+ib1-[word]
+	[word] is on page 1
+	(1 layer)
+
+ib1-[name]2-[word]
+	 [word] is in folder [name]
+	(2 layers)
+
+ib1-[name]2-[title]3-[word]
+	 [word] is in a folder [title]; folder [title] is in folder [name]
+	(3 layers)
+
+ib1-[name]2-[title]3-[folder]4-[word]
+	 [word] is in a folder [folder]; [folder] is in folder [title]; [title] is in folder [name]
+	(4 layers)

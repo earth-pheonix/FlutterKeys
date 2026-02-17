@@ -11,6 +11,7 @@ import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/bookmark_voice.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutterkeysaac/Models/manifest_model.dart';
+import 'package:flutterkeysaac/Variables/assorted_ui/ui_pops.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 import 'dart:io'; //platform
 
@@ -200,7 +201,7 @@ class VoicePicker extends StatefulWidget {
 }
 
 class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
-
+  bool isLoading = true;
   double pitchValue = 1.0;
   double rateValue = 0.5;
   double lengthScale = 1.0;
@@ -210,18 +211,27 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    Vv4rs.setupIsDownloadingListener();
     wavSamplePlayer = AudioPlayer();
-    for (var language in Sv4rs.myLanguages) {
-      Vv4rs.setupSystemVoicePicker(language, 'default');
-      Vv4rs.setupSherpaOnnxVoicePicker(language);
-    }
+    _loadAllData();
   }
 
   @override
   void dispose() {
     wavSamplePlayer.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadAllData() async {
+    for (var language in Sv4rs.myLanguages) {
+      Vv4rs.setupSystemVoicePicker(language, 'default');
+      await Vv4rs.setupSherpaOnnxVoicePicker(language);
+    }
+
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Widget engineDropdown(){
@@ -304,248 +314,265 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
       ]
     );
   }
-
   Widget sherpaOnnxVoiceDropdown(bool forSS, String language, var dropdownValue) {
-    
-    int findSampleSpeakerDropdownCount() {
-        if (Vv4rs.sampleSherpaOnnx == null){
-          return Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerCount ?? 1;
-        } else {
-          return Vv4rs.sampleSherpaOnnx?.speakerCount ?? 1;
-        }
-      }
-
-    int speakerDropdownCount = findSampleSpeakerDropdownCount();
-
-    //select sample voice as voice
-    Future<void> selectSampleVoice(bool forSS){
-      if(forSS){
+    // 1. Helper for selecting voice logic
+    Future<void> selectVoice(bool forSS, ManifestModel voice, int speaker) {
+      if (forSS) {
         return Vv4rs.setSSlanguageVoiceSherpaOnnx(
-          language, 
-          Vv4rs.sampleSherpaOnnx?.id, 
-          Vv4rs.sampleSherpaOnnx?.engine, 
-          Vv4rs.sampleSherpaOnnx?.tokenPath, 
-          Vv4rs.sampleSherpaOnnx?.modelPath,
-          Vv4rs.sampleSherpaOnnx?.speakerCount,
-          Vv4rs.sampleSpeaker,
-          Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lengthScale, 
-          Vv4rs.sampleSherpaOnnx?.speakers,
-          Vv4rs.sampleSherpaOnnx?.lexicon,
-          Vv4rs.sampleSherpaOnnx?.ruleFars,
-          Vv4rs.sampleSherpaOnnx?.ruleFsts,
-          Vv4rs.sampleSherpaOnnx?.voicesBin,
-          Vv4rs.sampleSherpaOnnx?.eSpeakPath,
+          language, voice.id, voice.engine, voice.tokenPath, voice.modelPath,
+          voice.speakerCount, speaker, Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lengthScale,
+          voice.speakers, voice.lexicon, voice.ruleFars, voice.ruleFsts, voice.voicesBin, voice.eSpeakPath,
         );
-        } else {
+      } else {
         return Vv4rs.setlanguageVoiceSherpaOnnx(
-          language, 
-          Vv4rs.sampleSherpaOnnx?.id, 
-          Vv4rs.sampleSherpaOnnx?.engine, 
-          Vv4rs.sampleSherpaOnnx?.tokenPath, 
-          Vv4rs.sampleSherpaOnnx?.modelPath,
-          Vv4rs.sampleSherpaOnnx?.speakerCount,
-          Vv4rs.sampleSpeaker,
-          Vv4rs.sherpaOnnxLanguageVoice[language]?.lengthScale, 
-          Vv4rs.sampleSherpaOnnx?.speakers,
-          Vv4rs.sampleSherpaOnnx?.lexicon,
-          Vv4rs.sampleSherpaOnnx?.ruleFars,
-          Vv4rs.sampleSherpaOnnx?.ruleFsts,
-          Vv4rs.sampleSherpaOnnx?.voicesBin,
-          Vv4rs.sampleSherpaOnnx?.eSpeakPath,
+          language, voice.id, voice.engine, voice.tokenPath, voice.modelPath,
+          voice.speakerCount, speaker, Vv4rs.sherpaOnnxLanguageVoice[language]?.lengthScale,
+          voice.speakers, voice.lexicon, voice.ruleFars, voice.ruleFsts, voice.voicesBin, voice.eSpeakPath,
         );
       }
     }
-    
-    return Padding(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(20)), 
-      child: Column(children: [
-        Row(children: [
-          Text('Voice', style: Sv4rs.settingslabelStyle),
-          Spacer(),
-          //
-          //Pick Voice to sample
-          //
-          Expanded(
-            flex: V4rs.xSmallModeWidth ? 2 : 1,
-            child: 
-            DropdownButton<ManifestModel?>(
-              isExpanded: true,
-              value: dropdownValue,
-              onChanged: (value) async {
-                setState(() {
-                  if (value != null) {
-                    Vv4rs.sampleSpeaker = 0;
-                    Vv4rs.sampleSherpaOnnx = value;
-                    findSampleSpeakerDropdownCount();
-                  }
-                }
-                );
-              },
-              items: [
-                DropdownMenuItem<ManifestModel?>(
-                  value: null,
-                  child:Text('none', style: Sv4rs.settingslabelStyle),
+
+    final List<ManifestModel> voices = Vv4rs.perLangSherpaOnnxVoices[language] ?? [];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ...voices.map((voice) {
+          // Determine current speaker ID safely
+          var speaker = (forSS)
+              ? (Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerID ?? 0)
+              : (Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerID ?? 0);
+
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: V4rs.paddingValue(5)),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: widget.totalWidth * 0.4,
+                  child: Text(
+                    Vv4rs.cleanSherpaOnnxVoiceLabel(voice),
+                    style: Sv4rs.settingslabelStyle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
 
-                ...Vv4rs.perLangSherpaOnnxVoices[language]!.map((voice) {
-                  return DropdownMenuItem<ManifestModel>(
-                    value: voice,
-                    child: Text(
-                      Vv4rs.cleanSherpaOnnxVoiceLabel(voice), 
-                      style: Sv4rs.settingslabelStyle,
-                      maxLines: 3,
+                Spacer(),
+
+                // Speaker Dropdown (only if multi-speaker)
+                if (voice.speakerCount != null && voice.speakerCount! > 1)
+                  DropdownButton<int>(
+                    value: (speaker < voice.speakerCount!) ? speaker : 0,
+                    items: List.generate(
+                      voice.speakerCount!,
+                      (index) => DropdownMenuItem<int>(
+                        value: index,
+                        child: Text(
+                          Vv4rs.cleanSherpaOnnxSpeakerLabel(voice, index),
+                          style: Sv4rs.settingslabelStyle,
+                        ),
+                      ),
                     ),
-                  );
-                }),
+                    onChanged: (int? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          if (forSS) {
+                            Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerID = newValue;
+                          } else {
+                            Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerID = newValue;
+                          }
+                        });
+                      }
+                    },
+                  ),
+
+                // Play Sample Button
+                if (voice.userVoice == false)
+                SizedBox(width: 50, height: 50, child: 
+                ButtonStyle1(
+                  imagePath: 'assets/interface_icons/interface_icons/iPlay.png',
+                  onPressed: () async {
+                    try {
+                      if (voice.speakers != null && voice.speakerCount != null && voice.speakerCount! > 1) {
+                        final selectedSpeaker = voice.speakers!.firstWhere(
+                          (item) => item["idSpeaker"] == speaker,
+                          orElse: () => null,
+                        );
+                        final samplePath = selectedSpeaker?["sample_path"] as String?;
+                        if (samplePath != null) await wavSamplePlayer.play(AssetSource(samplePath));
+                      } else if (voice.samplePath != null) {
+                        await wavSamplePlayer.play(AssetSource(voice.samplePath!));
+                      }
+                    } catch (e) {
+                      print("Error playing sample: $e");
+                    }
+                  },
+                ),
+                ),
+
+                // Download/Selection logic
+                ValueListenableBuilder(
+                    valueListenable: Vv4rs.isDownloading,
+                    builder: (context, String isDownloading, _) {
+                return ValueListenableBuilder<String>(
+                  valueListenable: Vv4rs.downloadMessage,
+                  builder: (context, message, _) => isDownloading == voice.id
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: SizedBox(width: 150, child: 
+                          Text(message, style: Fv4rs.interfacelabelStyle),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                );
+                }
+                ),
+                if (voice.userVoice == false)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
+                  child: ValueListenableBuilder(
+                    valueListenable: Vv4rs.isDownloading,
+                    builder: (context, String isDownloading, _) {
+                      if (isDownloading == voice.id) {
+                        return const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        );
+                      }
+                      return SizedBox(
+                        height: 40,
+                        width: widget.totalWidth * 0.1,
+                        child: ButtonStyle1(
+                          glow: (forSS)
+                              ? (Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id == voice.id)
+                              : (Vv4rs.sherpaOnnxLanguageVoice[language]?.id == voice.id),
+                          imagePath: 'assets/interface_icons/interface_icons/iCheck.png',
+                          onPressed: () async {
+                            if (!Vv4rs.downloadedSherpaOnnxLanguageVoice.contains(voice)) {
+                              await Vv4rs.downloadSherpaOnnxVoice(voice);
+                            }
+                            await selectVoice(forSS, voice, speaker);
+                            setState(() {
+                              if (forSS) {
+                                Vv4rs.myEngineForSSVoiceLang[language] = 'sherpa-onnx';
+                                Vv4rs.saveMyEngineForSSVoiceLang(language, null, 'sherpa-onnx');
+                              } else {
+                                Vv4rs.myEngineForVoiceLang[language] = 'sherpa-onnx';
+                                Vv4rs.saveMyEngineForVoiceLang(language, true, 'sherpa-onnx');
+                              }
+                            });
+                            widget.reloadSherpaOnnx(forSS);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                if (voice.userVoice == true)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
+                  child: SizedBox(
+                  height: 40,
+                  width: widget.totalWidth * 0.1,
+                  child: ButtonStyle1(
+                  glow: (forSS)
+                      ? (Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id == voice.id)
+                      : (Vv4rs.sherpaOnnxLanguageVoice[language]?.id == voice.id),
+                  imagePath: 'assets/interface_icons/interface_icons/iCheck.png',
+                  onPressed: () async {
+                    await selectVoice(forSS, voice, speaker);
+                    setState(() {
+                      if (forSS) {
+                        Vv4rs.myEngineForSSVoiceLang[language] = 'sherpa-onnx';
+                        Vv4rs.saveMyEngineForSSVoiceLang(language, null, 'sherpa-onnx');
+                      } else {
+                        Vv4rs.myEngineForVoiceLang[language] = 'sherpa-onnx';
+                        Vv4rs.saveMyEngineForVoiceLang(language, true, 'sherpa-onnx');
+                      }
+                    });
+                    widget.reloadSherpaOnnx(forSS);
+                  },
+                ),
+              ),
+                ),
+                
+                // Delete Button (only if downloaded)
+                if (voice.userVoice == false)
+                if (Vv4rs.downloadedSherpaOnnxLanguageIds.contains(voice.id))
+                  SizedBox(height: 50, width: 50, child: 
+                  ButtonStyle1(
+                    imagePath: 'assets/interface_icons/interface_icons/iClose.png',
+                    onPressed: () async { 
+                      if ((Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id != voice.id) 
+                        && (Vv4rs.sherpaOnnxLanguageVoice[language]?.id != voice.id)
+                      ){
+                        await Vv4rs.deleteSherpaOnnxVoice(voice);
+                        setState(() {
+                          //redundant action to trigger set state at the right time
+                          Vv4rs.downloadMessage.value = '';
+                        });
+                    } else{
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: (Vv4rs.sherpaOnnxLanguageVoice[language]?.id == voice.id)
+                            ? Text('Select a different voice before deleting')
+                            : Text ('Select a different speak on select voice before deleting'),
+                          duration: Duration(milliseconds: 1500),
+                        ),
+                      );
+                    }
+                    }
+                  ),
+                  ),
+                if (voice.userVoice == true)
+                SizedBox(height: 50, width: 50, child: 
+                ButtonStyle1(
+                  imagePath: 'assets/interface_icons/interface_icons/iClose.png',
+                  onPressed: () async { 
+                      if ((Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id != voice.id) 
+                        && (Vv4rs.sherpaOnnxLanguageVoice[language]?.id != voice.id)
+                      ){
+                        await Vv4rs.deleteImportedSherpaOnnxVoice(voice);
+                        isLoading = true;
+                        await Vv4rs.setupSherpaOnnxVoicePicker(language);
+                        setState(() {
+                          isLoading = false;
+                        });
+                    } else{
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: (Vv4rs.sherpaOnnxLanguageVoice[language]?.id == voice.id)
+                            ? Text('Select a different voice before deleting')
+                            : Text ('Select a different speak on select voice before deleting'),
+                          duration: Duration(milliseconds: 1500),
+                        ),
+                      );
+                    }
+                    }
+                ),
+                ),
               ],
             ),
-          ),
-        //
-        //Pick Speaker (if more than one) to sample
-        //
+          );
+        }),
         
-
-          if (speakerDropdownCount > 1)
-          Expanded(
-            flex: 1,
-            child: 
-          Padding(padding: EdgeInsetsGeometry.fromLTRB(V4rs.paddingValue(20),0,0,0), child:
-            DropdownButton<int>(
-              isExpanded: true,
-              value: Vv4rs.sampleSpeaker, 
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() {
-                    Vv4rs.sampleSpeaker = value;
-                  });
-                }
-              },
-              items: List.generate(
-                speakerDropdownCount,
-                (index) {
-                  final speaker = (forSS) 
-                    ? (Vv4rs.sampleSherpaOnnx != null)
-                        ? Vv4rs.sampleSherpaOnnx!.speakers![index]
-                        : (Vv4rs.sherpaOnnxLanguageVoice[language]?.speakers?[index] ?? 0)
-                    : (Vv4rs.sampleSherpaOnnx != null)
-                        ? Vv4rs.sampleSherpaOnnx!.speakers![index]
-                        : (Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakers?[index] ?? 0);
-
-                  return DropdownMenuItem<int>(
-                    value: speaker["idSpeaker"], 
-                    child: Text(
-                      "${speaker["name"]} (${speaker["idSpeaker"]})",
-                      style: Sv4rs.settingslabelStyle,
-                    ),
-                  );
-                },
-              ),
-            ) )
+        // Import Button
+        SizedBox(height: 60, child:
+        Padding(
+          padding: EdgeInsets.only(top: V4rs.paddingValue(10)),
+          child: ButtonStyle2(
+            label: 'Import Voice',
+            imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png',
+            onPressed: () {
+              setState(() {
+                importSherpaOnnx(context, _loadAllData);
+              });
+            },
           ),
-        ],
         ),
-        Row( 
-          children: [
-          Spacer(),
-
-          //
-          //downloading info
-          //
-          ValueListenableBuilder(
-            valueListenable: Vv4rs.downloadMessage, 
-            builder: (context, message, _) {
-              return Text(
-                message, 
-                style: Fv4rs.interfacelabelStyle,
-              );
-            }
-          ),
-
-          //
-          //Sample
-          //
-          Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child:
-          SizedBox(height: 40, width: widget.totalWidth * 0.1,
-            child: ButtonStyle1(
-              imagePath: 'assets/interface_icons/interface_icons/iPlay.png',
-              onPressed: () async {
-                if (Vv4rs.sampleSherpaOnnx != null){
-                  if (Vv4rs.sampleSherpaOnnx!.speakerCount != null && Vv4rs.sampleSherpaOnnx!.speakerCount! > 1){
-                    //find the speaker
-                    final selectedSpeaker = Vv4rs.sampleSherpaOnnx!.speakers!
-                      .firstWhere((speaker) => speaker["idSpeaker"] == Vv4rs.sampleSpeaker);
-
-                    final samplePath = selectedSpeaker["sample_path"] as String?;
-
-                    //play sample 
-                    if (samplePath != null) {
-                      await wavSamplePlayer.play(AssetSource(samplePath));
-                    }
-                  } else if (Vv4rs.sampleSherpaOnnx!.samplePath != null){
-                    //play sample from single speaker voice
-                      await wavSamplePlayer.play(AssetSource(Vv4rs.sampleSherpaOnnx!.samplePath ?? ''));
-                  }
-                }
-              },
-            ),
-          ),
-          ),
-
-          //
-          //Select
-          //
-          Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), child:
-            ValueListenableBuilder(
-              valueListenable: Vv4rs.isDownloading, 
-              builder: (context, isDownloading, _) {
-                return Stack( 
-                  children: [
-                    (!isDownloading) 
-                    ? SizedBox(height: 40, width: widget.totalWidth * 0.1,
-                        child: ButtonStyle1(
-                        imagePath: 'assets/interface_icons/interface_icons/iCheck.png',
-                        onPressed: () async {
-                          if (Vv4rs.sampleSherpaOnnx != null) {
-                            if (!Vv4rs.downloadedSherpaOnnxLanguageVoice.contains(Vv4rs.sampleSherpaOnnx)){
-                              await Vv4rs.downloadSherpaOnnxVoice(Vv4rs.sampleSherpaOnnx!);
-                            } 
-                            selectSampleVoice(forSS); //for ss is built into this func
-                            if (forSS){
-                              setState(() { 
-                                Vv4rs.myEngineForSSVoiceLang[language] = Vv4rs.sherpaOnnxSSLanguageVoice[language]!.engine;
-                                Vv4rs.saveMyEngineForSSVoiceLang(language, null, Vv4rs.myEngineForSSVoiceLang[language]);
-                              });
-                            } else {
-                              setState(() { 
-                                Vv4rs.myEngineForVoiceLang[language] = Vv4rs.sherpaOnnxLanguageVoice[language]!.engine;
-                                Vv4rs.saveMyEngineForVoiceLang(language, true, 'sherpa-onnx');
-                              });
-                            }
-                            widget.reloadSherpaOnnx(forSS);
-                            if (forSS == false && Sv4rs.useDifferentVoiceforSS){
-                              selectSampleVoice(true);
-                              setState(() { 
-                                Vv4rs.myEngineForSSVoiceLang[language] = Vv4rs.sherpaOnnxSSLanguageVoice[language]!.engine;
-                              });
-                              widget.reloadSherpaOnnx(true);
-                            }
-                          }
-                        },
-                      )
-                      )
-                    : Center(child:
-                        CircularProgressIndicator(),
-                      ),
-                  ],
-                );
-              }
-            ),
-          ),
-         ],
-        )
-      
-      ]
-      ),
+        ),
+      ],
     );
   }
 
@@ -1090,26 +1117,18 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
           }  else {
           ManifestModel? findDropdownValue() {
             ManifestModel? value;
-            if (Vv4rs.sampleSherpaOnnx == null){
+            if (Vv4rs.perLangSherpaOnnxVoices[language] != null){
               for (final voice in Vv4rs.perLangSherpaOnnxVoices[language]!){
                 if (voice.id == Vv4rs.sherpaOnnxLanguageVoice[language]?.id){
                   return value = voice;
                 } else {
                   value = null;
                 }
-              } 
-            } else {
-              if (Vv4rs.perLangSherpaOnnxVoices[language] != null){
-              for (final voice in Vv4rs.perLangSherpaOnnxVoices[language]!){
-                if (voice.id == Vv4rs.sampleSherpaOnnx!.id){
-                  return value = voice;
-                } else {
-                  value = null;
-                }
-              } 
               }
+              return value;
+            } else {
+              return null;
             }
-            return value;
           }
 
           var dropdownValue = (Sv4rs.pickFromEngine == "system") 
@@ -1133,7 +1152,11 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                 //
                   //voice
                     if (Sv4rs.pickFromEngine == 'sherpa-onnx')
+                     Padding(
+                      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(20)), 
+                      child:
                       sherpaOnnxVoiceDropdown(false, language, dropdownValue),
+                     ),
                   
                     //rate
                     if (Sv4rs.pickFromEngine == 'sherpa-onnx')
@@ -1247,23 +1270,13 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
           
           ManifestModel? findDropdownValue() {
             ManifestModel? value;
-            if (Vv4rs.sampleSherpaOnnx == null){
               for (final voice in Vv4rs.perLangSherpaOnnxVoices[language]!){
                 if (voice.id == Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id){
                   return value = voice;
                 } else {
                   value = null;
                 }
-              } 
-            } else {
-              for (final voice in Vv4rs.perLangSherpaOnnxVoices[language]!){
-                if (voice.id == Vv4rs.sampleSherpaOnnx!.id){
-                  return value = voice;
-                } else {
-                  value = null;
-                }
-              } 
-            }
+              }
             return value;
           }
 
@@ -1289,8 +1302,11 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
               //
               //sherpa-onnx
               //
-              if (Sv4rs.pickFromEngine == 'sherpa-onnx')
+              if (Sv4rs.pickFromEngine == 'sherpa-onnx') Padding(
+                      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(20)), 
+                      child:
               sherpaOnnxVoiceDropdown(true, language, dropdownValue),
+              ),
               
 
               //
@@ -1316,7 +1332,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
               //testVoice button
               //
 
-              testVoiceButton(true, language),
+                testVoiceButton(true, language),
 
 
               //bookmarked voices

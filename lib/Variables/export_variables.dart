@@ -310,30 +310,15 @@ static List<int> _prepareAndEncodeArchive(List<ArchiveFile> files) {
   static Future<File> createBoardsetExport() async {
     loading.value = true;
 
-    final archive = Archive();
-
     // get file name
     final fileLabel = p.basename(fileToExport!.path);
-    
-    // 1. Add JSON to root of ZIP
-    archive.addFile(
-      ArchiveFile(
-        fileLabel,
-        await fileToExport!.length(),
-        await fileToExport!.readAsBytes(),
-      ),
-    );
 
     // Make the path
     final tempDir = await getTemporaryDirectory();
     final output = p.join(tempDir.path, fileLabel);
 
-    //Encode zip
-    final bytes = await compute(_prepareAndEncodeArchive, archive.files);
-
-    // Write ZIP
-    final file = File(output);
-    await file.writeAsBytes(bytes);
+    // Write file
+    final file = await fileToExport!.copy(output);
 
     // Return ZIP
     loading.value = false;

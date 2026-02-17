@@ -1,0 +1,31 @@
+Label Info
+
+ia
+	image adverb
+
+ia2-t
+	time, place, conjunctive 
+
+ia2-m
+	manner
+
+ia2-d
+	degree and frequency  
+
+_____
+
+ia1-[word]
+	[word] is on page 1
+	(1 layer)
+
+ia1-[name]2-[word]
+	 [word] is in folder [name]
+	(2 layers)
+
+ia1-[name]2-[title]3-[word]
+	 [word] is in a folder [title]; folder [title] is in folder [name]
+	(3 layers)
+
+ia1-[name]2-[title]3-[folder]4-[word]
+	 [word] is in a folder [folder]; [folder] is in folder [title]; [title] is in folder [name]
+	(4 layers)

@@ -1,0 +1,34 @@
+Label Info
+
+iadj
+	image adjective
+
+iadj2-p
+	adj with positive connotation
+
+iadj3-pa
+	abstract positive connotation
+
+iadj2-n
+	negative connotation
+
+iadj2-nue
+	neutral connotation 
+
+_____
+
+iadj1-[word]
+	[word] is on page 1
+	(1 layer)
+
+iadj1-[name]2-[word]
+	 [word] is in folder [name]
+	(2 layers)
+
+iadj1-[name]2-[title]3-[word]
+	 [word] is in a folder [title]; folder [title] is in folder [name]
+	(3 layers)
+
+iadj1-[name]2-[title]3-[folder]4-[word]
+	 [word] is in a folder [folder]; [folder] is in folder [title]; [title] is in folder [name]
+	(4 layers)

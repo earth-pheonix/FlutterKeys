@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterkeysaac/Screens/home.dart';
 import 'package:flutterkeysaac/Variables/settings/boardset_settings_variables.dart';
 import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/history.dart';
@@ -6,21 +7,24 @@ import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
 import 'package:flutterkeysaac/Screens/message_row.dart';
 import 'package:flutterkeysaac/Variables/system_tts/tts_interface.dart';
 import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
-import 'package:flutterkeysaac/Variables/assorted_ui/ui_pops.dart';
 import 'package:flutterkeysaac/Models/json_model_boards.dart';
 import 'package:flutterkeysaac/Models/json_model_grammer.dart';
 import 'package:flutterkeysaac/Variables/editing/save_indicator.dart';
 import 'package:flutterkeysaac/Variables/export_variables.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_variables.dart';
+import 'package:flutterkeysaac/Screens/settings.dart';
 import 'package:flutterkeysaac/Screens/expand_page.dart';
+import 'package:flutterkeysaac/Screens/onboarding.dart'; 
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
+import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 
-class Home extends StatefulWidget {
+
+class Screens extends StatefulWidget {
   final TTSInterface synth;
   final int? highlightStart; 
   final int? highlightLength;
@@ -33,7 +37,7 @@ class Home extends StatefulWidget {
   final Future<void> Function() initForSS;
   final AudioPlayer playerForSS;
 
-  const Home({
+  const Screens({
     super.key,
     required this.synth,
     this.highlightStart,
@@ -48,16 +52,16 @@ class Home extends StatefulWidget {
   });
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Screens> createState() => _ScreensState();
 }
 
-class _HomeState extends State<Home> with WidgetsBindingObserver {
+class _ScreensState extends State<Screens> with WidgetsBindingObserver {
   final GlobalKey _printKey = GlobalKey();
 
   Future<void> _waitForBoundaryReady(RenderRepaintBoundary boundary) async {
   int retries = 0;
 
-  // Wait for up to 10 frames (~300ms)
+  // Wait up to 10 frames (~300ms)
   while (boundary.debugNeedsPaint && retries < 10) {
     await Future.delayed(const Duration(milliseconds: 30));
     await WidgetsBinding.instance.endOfFrame;
@@ -174,23 +178,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     
     double availableFlex = safeScreenHeight - boardHeight;
     if (availableFlex < 0) availableFlex = 0;
-
-    final double flexForMW = V4rs.xSmallMode ? 12 : 10;
-    final double flexNav = V4rs.xSmallMode ? 6 : 8;
-    final double flexGrammer = 4;
-    final double totalFlex = flexGrammer + flexNav + flexForMW;
-
-    final double mwHeight = availableFlex * (flexForMW / totalFlex);
-    final double navHeight = (Bv4rs.showNavRow == 3) ? 0 : availableFlex * (flexNav / totalFlex);
-    final double grammerHeight = (Bv4rs.showGrammerRow == 3) ? 0 : availableFlex * (flexGrammer / totalFlex);
-    final double boardFlex = ((Bv4rs.showGrammerRow == 3) 
-      ? availableFlex * (flexGrammer / totalFlex) 
-      : 0) 
-      + ((Bv4rs.showNavRow == 3) 
-      ? availableFlex * (flexNav / totalFlex) 
-      : 0);
-
-    final double totalBoardHeight = boardHeight + boardFlex;
  
     return FutureBuilder<Root>(
       future: rootFuture,
@@ -211,8 +198,28 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         return AnimatedBuilder(
             animation: Listenable.merge([
               V4rs.showExpandPage,
+              V4rs.showSettings,
+              Ev4rs.showEditor,
+              V4rs.doOnboarding,
             ]), 
             builder: (context, _) {
+        //=====: Onboarding
+          if (V4rs.doOnboarding.value) {
+              return Onboarding();
+          } else
+        //=====: Settings
+          if (V4rs.showSettings.value){
+            return Settings(
+              root: _root!,
+              boards: _root!.boards,
+              synth: widget.synth,
+              captureAllForPrint: captureAllForPrint,
+              speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
+              initForSS: widget.initForSS,
+              playerForSS: widget.playerForSS,
+              reloadSherpaOnnx: widget.reloadSherpaOnnx,
+            );
+          } else
         //=====: Expand Page
           if (V4rs.showExpandPage.value){
            return ExpandPage(
@@ -220,167 +227,20 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               initForSS: widget.initForSS,
               playerForSS: widget.playerForSS,
             );
-          } else
+          } else         
+        //=====: Editor
+          
         //=====: Home
           {
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: SafeArea(
-              bottom: false,
-              child: GestureDetector( 
-                  behavior: HitTestBehavior.translucent,
-                  onVerticalDragEnd: (details) {
-                    if (details.primaryVelocity != null && details.primaryVelocity! > 0) {
-                      showOptionsPopupForSpeakOnSelect(
-                        widget.reloadSherpaOnnx,
-                        context,
-                      );
-                    }
-                  },
-                  child: 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Message row
-                  SizedBox(
-                    height: mwHeight,
-                    child: Container(
-                      color: Cv4rs.themeColor2,
-                      child: MessageRow(
-                        root: _root!,
-                        synth: widget.synth,
-                        highlightStart: widget.highlightStart,
-                        highlightLength: widget.highlightLength,
-                        sherpaOnnxSynth: widget.sherpaOnnxSynth,
-                        init: widget.init,
-                        player: widget.openTTSPlayer,
-                        speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth,
-                        initForSS: widget.initForSS,
-                        playerForSS: widget.playerForSS,
-                      ),
-                    ),
-                  ),
-
-                  // Navigation row
-                  SizedBox(
-                    height: navHeight,
-                    child: Container(
-                      color: Cv4rs.themeColor3,
-                      child: (Bv4rs.showNavRow == 2) 
-                      ? SizedBox.expand() 
-                      : Row(
-                        children: [
-                          for (var navObj in _root!.navRow)
-                            Flexible(
-                              child: navObj.buildWidget(
-                                  widget.synth,
-                                  _toggleStorage,
-                                  _openBoard,
-                                  _root!.boards,
-                                  _findBoardById,
-                                  navObj,
-                                  widget.speakSelectSherpaOnnxSynth,
-                                  widget.initForSS,
-                                  widget.playerForSS,
-                                ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // Grammar row
-                  SizedBox(
-                    height: grammerHeight,
-                    child: Container(
-                      color: Cv4rs.themeColor4,
-                      child: (Bv4rs.showGrammerRow == 2) 
-                      ? SizedBox.expand() 
-                      : IndexedStack(
-                        index: _currentBoardIndex,
-                        children: [
-                        for (var board in _root!.boards)
-                            Builder(
-                              builder: (context) {
-                                GrammerObjects? row;
-                                  try {
-                                    row = _root!.grammerRow.firstWhere(
-                                      (row) => row.id == board.useGrammerRow,
-                                    );
-                                  } catch (_) {
-                                    row = null;
-                                  }
-
-                                if (row == null) {
-                                  return const SizedBox.shrink(); // nothing if missing
-                                }
-
-                                return row.buildWidget(
-                                  widget.synth,
-                                  _openBoard,
-                                  _root!.boards,
-                                  _findBoardById,
-                                  widget.speakSelectSherpaOnnxSynth,
-                                  widget.initForSS,
-                                  widget.playerForSS,
-                                );
-                              },
-                            ),
-                        ],
-                      )
-                    ),
-                  ), 
-
-                  // Board row
-                  ValueListenableBuilder(
-                    valueListenable: HistoryV4rs.openHistory, 
-                    builder: (context, open, _){
-                      return SizedBox(
-                      height: totalBoardHeight,
-                      child: Container(
-                        color: Cv4rs.themeColor4,
-                        child: 
-                          IndexedStack(
-                            index: _currentBoardIndex,
-                            children: [
-                              for (var board in _root!.boards)
-                              (HistoryV4rs.openHistory.value)
-                                ? HistoryPage.buildHistoryWidget(
-                                    _root!,
-                                    setState,
-                                    board,
-                                    widget.synth,
-                                    () => _goBackBoard(board),
-                                    _openBoard,
-                                    _openBoardWithReturn,
-                                    _root!.boards,
-                                    _findBoardById,
-                                    widget.speakSelectSherpaOnnxSynth,
-                                    widget.initForSS,
-                                    widget.playerForSS,
-                                  )
-                                : board.buildWidget(
-                                    board,
-                                    widget.synth,
-                                    () => _goBackBoard(board),
-                                    _openBoard,
-                                    _openBoardWithReturn,
-                                    _root!.boards,
-                                    _findBoardById,
-                                    widget.speakSelectSherpaOnnxSynth,
-                                    widget.initForSS,
-                                    widget.playerForSS,
-                                  ),
-                            ],
-                          ),
-                        
-                      ),
-                      );
-                    })
-                  ],
-              ),
-              ),
-            ),
+          return Home(
+            synth: widget.synth, 
+            sherpaOnnxSynth: widget.sherpaOnnxSynth, 
+            init: widget.init, 
+            openTTSPlayer: widget.openTTSPlayer, 
+            speakSelectSherpaOnnxSynth: widget.speakSelectSherpaOnnxSynth, 
+            initForSS: widget.initForSS, 
+            playerForSS: widget.playerForSS, 
+            reloadSherpaOnnx: widget.reloadSherpaOnnx
             );
           }
         });

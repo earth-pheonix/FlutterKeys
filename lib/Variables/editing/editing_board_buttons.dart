@@ -1850,7 +1850,7 @@ import 'dart:async';
                     onPressed: (){setState(() {
                         widget.saveField(root, Ev4rs.selectedUUID, 'function', Ev4rs.grammerFunction.value);
                         Ev4rs.saveJson(root);
-                        });
+                      });
                     }, 
                     label: 'Save'
                   ),

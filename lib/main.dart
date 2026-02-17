@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterkeysaac/Screens/home.dart';
+import 'package:flutterkeysaac/Screens/screens.dart';
 import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:flutterkeysaac/Variables/variables.dart'; 
 import 'package:flutterkeysaac/Variables/system_tts/tts_interface.dart';
@@ -7,7 +7,6 @@ import 'package:flutterkeysaac/Variables/system_tts/tts_factory.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
 import 'dart:async';
-
 import 'package:flutterkeysaac/Screens/editor.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
@@ -54,14 +53,13 @@ class _MyApp extends State<MyApp> {
 
   Future<void> initSherpaOnnx() async {
     if (!sherpaOnnxInitialized) {
-    sherpa_onnx.initBindings();
 
-      for (final lang in Sv4rs.myLanguages){
+      for (final lang in Sv4rs.myLanguages) {
         if (Vv4rs.myEngineForVoiceLang[lang] == 'sherpa-onnx') {
-          sherpaOnnxSynth[lang]?.free();
-          sherpaOnnxSynth[lang] = await SherpaOnnxV4rs.loadSherpaOnnxEngine(lang);
+          await SherpaOnnxV4rs.loadSherpaOnnxEngine(lang);
         }
       }
+
       openTtsPlayerSherpaOnnx = AudioPlayer();
 
       setState(() {
@@ -72,15 +70,13 @@ class _MyApp extends State<MyApp> {
   
   Future<void> initSpeakSelectSherpaOnnx() async {
     if (!speakSelectSherpaOnnxInitialized) {
-      
-      sherpa_onnx.initBindings();
 
-      for (final lang in Sv4rs.myLanguages){
+      for (final lang in Sv4rs.myLanguages) {
         if (Vv4rs.myEngineForSSVoiceLang[lang] == 'sherpa-onnx') {
-          speakSelectSherpaOnnxSynth[lang]?.free();
-          speakSelectSherpaOnnxSynth[lang] = await SherpaOnnxV4rs.loadSherpaOnnxSSEngine(lang);
+          await SherpaOnnxV4rs.loadSherpaOnnxSSEngine(lang);
         }
       }
+
       openTtsPlayerSpeakSelectSherpaOnnx = AudioPlayer();
 
       setState(() {
@@ -90,29 +86,40 @@ class _MyApp extends State<MyApp> {
   }
 
   Future<void> reloadSherpaOnnx(bool forSS) async {
-    sherpa_onnx.initBindings();
 
-    if (forSS){
-      speakSelectSherpaOnnxInitialized = false;
-      for (final lang in Sv4rs.myLanguages){
-        speakSelectSherpaOnnxSynth[lang]?.free();
-        speakSelectSherpaOnnxSynth[lang] = await SherpaOnnxV4rs.loadSherpaOnnxSSEngine(lang);
-      }
-      openTtsPlayerSpeakSelectSherpaOnnx = AudioPlayer();
-      speakSelectSherpaOnnxInitialized = true;
-    } 
+  if (forSS) {
 
-    else {
-      sherpaOnnxInitialized = false;
-      for (final lang in Sv4rs.myLanguages){
-        sherpaOnnxSynth[lang]?.free();
-        sherpaOnnxSynth[lang] = await SherpaOnnxV4rs.loadSherpaOnnxEngine(lang);
+    speakSelectSherpaOnnxInitialized = false;
+
+    for (final lang in Sv4rs.myLanguages) {
+      if (Vv4rs.myEngineForSSVoiceLang[lang] == 'sherpa-onnx') {
+        await SherpaOnnxV4rs.loadSherpaOnnxSSEngine(lang);
       }
-      openTtsPlayerSherpaOnnx = AudioPlayer();
-      sherpaOnnxInitialized = true;
     }
-  }
 
+    await openTtsPlayerSpeakSelectSherpaOnnx.stop();
+    await openTtsPlayerSpeakSelectSherpaOnnx.dispose();
+    openTtsPlayerSpeakSelectSherpaOnnx = AudioPlayer();
+
+    speakSelectSherpaOnnxInitialized = true;
+
+  } else {
+
+    sherpaOnnxInitialized = false;
+
+    for (final lang in Sv4rs.myLanguages) {
+      if (Vv4rs.myEngineForVoiceLang[lang] == 'sherpa-onnx') {
+        await SherpaOnnxV4rs.loadSherpaOnnxEngine(lang);
+      }
+    }
+
+    await openTtsPlayerSherpaOnnx.stop();
+    await openTtsPlayerSherpaOnnx.dispose();
+    openTtsPlayerSherpaOnnx = AudioPlayer();
+
+    sherpaOnnxInitialized = true;
+  }
+}
 
   Future<void> initSynth() async {
     final s = await TTSFactory.getTTS(languageCode: V4rs.selectedLanguage.value);
@@ -173,7 +180,7 @@ class _MyApp extends State<MyApp> {
             ]), 
             builder: (context, _) {
               if (!Ev4rs.showEditor.value){
-             return Home(
+             return Screens(
                     synth: synth!,
                     highlightLength: _highlightLength,
                     highlightStart: _highlightStart,

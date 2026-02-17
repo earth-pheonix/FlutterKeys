@@ -1068,9 +1068,9 @@ class _RightOfMessageWindowState extends State<RightOfMessageWindow> {
                               ),
                             ),
                           );
-                        },
-                      ),
-        
+                        
+                  }
+                ),
               SizedBox(
                 height: totalHeight * 0.35,
                 width: totalWidth * 0.33,

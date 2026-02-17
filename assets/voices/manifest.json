@@ -1,20 +1,20 @@
 {
-  "version": "Dec-11-2025",
   "voices": [
     {
       "id": "vits-piper-en_US-hfc_male-medium",
+      "userVoice": false,
       "name": "hfc Male",
       "engine": "sherpa-onnx",
       "speaker_count": 1,
       "multilingual": false,
-      "language": "en-us",
+      "language": "en_us",
       "license": "CC BY-NC-SA 4.0",
       "sample_path": "voices/samples/vits-piper-en_US-hfc_male-medium-flutterkeys_sample.wav",
       "download_url": "https://archive.org/download/vits-piper-en_US-hfc_male-medium/vits-piper-en_US-hfc_male-medium.zip"
     },
-
     {
       "id": "kokoro-multi-lang-v1_0",
+      "userVoice": false,
       "name": "Kokoro ML 1_0",
       "engine": "sherpa-onnx",
       "speaker_count": 53,
@@ -254,7 +254,7 @@
         {
           "idSpeaker": 38,
           "name": "jf_gongitsune",
-          "sound": "JA-masc",
+          "sound": "JA-asc",
           "sample_path": "voices/samples/kokoro-multi-lang-v1_0-flutterkeys_samples/38-jf_gongitsune.wav"
         },
         {
@@ -346,6 +346,7 @@
 
     {
       "id": "matcha-icefall-zh-baker",
+      "userVoice": false,
       "name": "Matcha Icefall Baker",
       "engine": "sherpa-onnx",
       "speaker_count": 1,
@@ -358,6 +359,7 @@
 
     {
       "id": "vits-piper-en_US-amy-low",
+      "userVoice": false,
       "name": "Amy (low)",
       "engine": "sherpa-onnx",
       "speaker_count": 1,
@@ -370,7 +372,8 @@
 
     {
       "id": "vits-coqui-en-ljspeech",
-      "name": "Vits LjSpeech",
+      "userVoice": false,
+      "name": "coqui LjSpeech",
       "engine": "sherpa-onnx",
       "speaker_count": 1,
       "multilingual": false,
@@ -382,6 +385,7 @@
 
     {
       "id": "vits-piper-en_GB-semaine-medium",
+      "userVoice": false,
       "name": "Semaine",
       "engine": "sherpa-onnx",
       "speaker_count": 4,
@@ -419,6 +423,7 @@
 
     {
       "id": "vits-piper-en_US-bryce-medium",
+      "userVoice": false,
       "name": "Bryce",
       "engine": "sherpa-onnx",
       "speaker_count": 1,
@@ -431,6 +436,7 @@
 
     {
       "id": "vits-piper-en_US-ryan-low-int8",
+      "userVoice": false,
       "name": "Ryan (low)",
       "engine": "sherpa-onnx",
       "speaker_count": 1,
@@ -443,6 +449,7 @@
 
     {
       "id": "vits-coqui-en-vctk",
+      "userVoice": false,
       "name": "Coqui vctk",
       "engine": "sherpa-onnx",
       "speaker_count": 109,
@@ -451,7 +458,7 @@
       "license": "Apache 2.0",
       "download_url": "https://archive.org/download/vits-coqui-en-vctk/vits-coqui-en-vctk.zip",
       "speakers": [
-        { 
+        {
           "idSpeaker": 0,
           "name": "0",
           "sound": "GB-Fem",
@@ -478,7 +485,7 @@
         { 
           "idSpeaker": 4,
           "name": "4",
-          "sound": "GB-masc",
+          "sound": "GB-Masc",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/4.wav"
         },
         { 
@@ -526,7 +533,7 @@
         { 
           "idSpeaker": 12,
           "name": "12",
-          "sound": "GB-fem",
+          "sound": "GB-Fem",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/12.wav"
         },
         { 
@@ -556,49 +563,49 @@
         { 
           "idSpeaker": 17,
           "name": "17",
-          "sound": "GB-fem",
+          "sound": "GB-Fem",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/17.wav"
         },
         { 
           "idSpeaker": 18,
           "name": "18",
-          "sound": "GB-fem",
+          "sound": "GB-Fem",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/18.wav"
         },
         { 
           "idSpeaker": 19,
           "name": "19",
-          "sound": "GB-fem",
+          "sound": "GB-Fem",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/19.wav"
         },
         { 
           "idSpeaker": 20,
           "name": "20",
-          "sound": "GB-fem",
+          "sound": "GB-Fem",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/20.wav"
         },
         { 
           "idSpeaker": 21,
           "name": "21",
-          "sound": "GB-fem",
+          "sound": "GB-Fem",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/21.wav"
         },
         { 
           "idSpeaker": 22,
           "name": "22",
-          "sound": "GB-fem",
+          "sound": "GB-Fem",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/22.wav"
         },
         { 
           "idSpeaker": 23,
           "name": "23",
-          "sound": "GB-fem",
+          "sound": "GB-Fem",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/23.wav"
         },
         { 
           "idSpeaker": 24,
           "name": "24",
-          "sound": "GB-fem",
+          "sound": "GB-Fem",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/24.wav"
         },
         { 
@@ -616,7 +623,7 @@
         { 
           "idSpeaker": 27,
           "name": "27",
-          "sound": "GB-masc",
+          "sound": "GB-Masc",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/27.wav"
         },
         { 
@@ -634,7 +641,7 @@
         { 
           "idSpeaker": 30,
           "name": "30",
-          "sound": "GB-masc",
+          "sound": "GB-Masc",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/30.wav"
         },
         { 
@@ -1104,6 +1111,81 @@
           "name": "108",
           "sound": "",
           "sample_path": "voices/samples/vits-coqui-en-vctk-flutterkeys_samples/108.wav"
+        }
+      ]
+    }, 
+
+    {
+      "id": "vits-piper-en_GB-alba-medium",
+      "userVoice": false,
+      "name": "Alba (medium)",
+      "engine": "sherpa-onnx",
+      "speaker_count": 1,
+      "multilingual": false,
+      "language": "en_gb",
+      "license": "CC BY 4.0",
+      "sample_path": "voices/samples/vits-piper-en_GB-alba-medium-flutterkeys_sample.wav",
+      "download_url": "https://archive.org/download/vits-piper-en_GB-alba-medium/vits-piper-en_GB-alba-medium.zip"
+    }, 
+
+    {
+      "id": "kitten-mini-en-v0_1-fp16",
+      "userVoice": false,
+      "name": "Kitten Mini (v0_1-fp16)",
+      "engine": "sherpa-onnx",
+      "speaker_count": 8,
+      "multilingual": false,
+      "language": "en", 
+      "license": "Apache 2.0",
+      "download_url": "https://archive.org/download/kitten-mini-en-v0_1-fp16/kitten-mini-en-v0_1-fp16.zip",
+      "speakers": [
+        { 
+          "idSpeaker": 0,
+          "name": "expr-voice-2-m",
+          "sound": "US-Nue",
+          "sample_path": "voices/samples/kitten-mini-en-v0_1-fp16-flutterkeys_samples/0-am-expr-voice-2-m.wav"
+        },
+        {
+          "idSpeaker": 1,
+          "name": "expr-voice-2-f",
+          "sound": "US-Fem",
+          "sample_path": "voices/samples/kitten-mini-en-v0_1-fp16-flutterkeys_samples/1-af-expr-voice-2-f.wav"
+        },
+        {
+          "idSpeaker": 2,
+          "name": "expr-voice-3-m",
+          "sound": "US-Masc",
+          "sample_path": "voices/samples/kitten-mini-en-v0_1-fp16-flutterkeys_samples/2-am-expr-voice-3-m.wav"
+        },
+        {
+          "idSpeaker": 3,
+          "name": "expr-voice-3-f",
+          "sound": "GB-Fem",
+          "sample_path": "voices/samples/kitten-mini-en-v0_1-fp16-flutterkeys_samples/3-af-expr-voice-3-f.wav"
+        }, 
+        { 
+          "idSpeaker": 4,
+          "name": "expr-voice-4-m",
+          "sound": "US-Nue",
+          "sample_path": "voices/samples/kitten-mini-en-v0_1-fp16-flutterkeys_samples/4-am-expr-voice-4-m.wav"
+        },
+        {
+          "idSpeaker": 5,
+          "name": "expr-voice-4-f",
+          "sound": "US-Fem",
+          "sample_path": "voices/samples/kitten-mini-en-v0_1-fp16-flutterkeys_samples/5-af-expr-voice-4-f.wav"
+        },
+        {
+          "idSpeaker": 6,
+          "name": "expr-voice-5-m",
+          "sound": "US-Nue",
+          "sample_path": "voices/samples/kitten-mini-en-v0_1-fp16-flutterkeys_samples/6-am-expr-voice-5-m.wav"
+        },
+        {
+          "idSpeaker": 7,
+          "name": "expr-voice-5-f",
+          "sound": "GB-Fem",
+          "sample_path": "voices/samples/kitten-mini-en-v0_1-fp16-flutterkeys_samples/7-af-expr-voice-5-f.wav"
         }
       ]
     }

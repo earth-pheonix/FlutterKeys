@@ -190,6 +190,9 @@ class Gv4rs {
           || endsWith("s") || endsWith("x") 
           || endsWith("z") || endsWith("o")){
         return appendWord("es ");
+      //way -> ways
+      } else if (endsWith("way")) {
+        return appendWord("s ");
       //fairy -> fairies
       } else if (endsWith("y")) {
         return V4rs.message.value = "${deleteLastChar(oldText)}ies ";

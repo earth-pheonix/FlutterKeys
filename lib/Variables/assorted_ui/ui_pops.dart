@@ -15,6 +15,241 @@ import 'package:pdf/pdf.dart';
 import 'dart:typed_data';
 import 'dart:io'; //platform
 
+//import voice shortcut  
+Future<void> importSherpaOnnx(
+  BuildContext context,
+  Future<void> Function() loadAll,
+) async { 
+  await showDialog(
+  context: context,
+  builder: (context) {
+    String voiceLicense = '';
+    String voiceName = 'My Voice';
+    String voiceLanguage = V4rs.interfaceLanguage;
+    double count = 0;
+    int? speakerCount;
+    bool voiceIsMultilingual = false;
+    List<String> voiceLanguages = [];
+
+    return StatefulBuilder(
+      builder: (context, setState) { return
+         AlertDialog(
+    title: Text("Import Voice"),
+    content: ValueListenableBuilder(
+      valueListenable: Vv4rs.isDownloading,
+      builder: (context, String isDownloading, _) {
+    if (isDownloading.isNotEmpty) {
+          return Row(
+            children: [
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+            ValueListenableBuilder<String>(
+                valueListenable: Vv4rs.downloadMessage,
+                builder: (context, message, _) => message.isNotEmpty 
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: Text(message),
+                    )
+                  : const SizedBox.shrink(),
+              ),
+          ],);
+    } else { 
+    return 
+    SingleChildScrollView(child: 
+    Column(
+      children: [
+        Padding(
+          padding: EdgeInsetsGeometry.all(3), 
+          child: Text('Instructions:', style: TextStyle(fontWeight: FontWeight.bold),),
+        ),
+        Padding(
+          padding: EdgeInsetsGeometry.all(3), 
+          child: Text('Fill out the fields below then upload a .zip file with all the required files for the model.'),
+        ),
+      Padding(
+        padding: EdgeInsetsGeometry.all(3), 
+        child: Text('The file must start with the type of Sherpa-Onnx voice it is (vits, kokoro, kitten, matcha), and be seperated from the rest of the file name with a hyphen (-)'),
+      ),
+      Padding(
+        padding: EdgeInsetsGeometry.all(3), 
+        child: Text('Example: vits-piper-myVoice'),
+        ),
+      
+      Row(
+        children: [
+          Text('Voice name:'),
+          Spacer(),
+          SizedBox(width: 150, child: 
+            TextField(
+            style: Sv4rs.settingslabelStyle,
+            onChanged: (value){
+              setState((){
+                voiceName = value;
+              });
+            },
+            decoration: InputDecoration(
+            hintStyle: Sv4rs.settingslabelStyle,
+            hintText: 'n/a',
+            ),
+          ),
+      ),
+      ]
+      ),
+      Row(
+        children: [
+          Text('Multi-lingual:'),
+          Spacer(),
+          Switch(
+            value: voiceIsMultilingual,
+            onChanged: (value){
+              setState((){
+                voiceIsMultilingual = value;
+              });
+            },
+          )
+          ]
+        ),
+      if (!voiceIsMultilingual)
+      Row(
+        children: [
+          Text('Language:'),
+          Spacer(),
+          DropdownButton<String>(
+            value: voiceLanguage, 
+            hint: Text('voice language', style: Sv4rs.settingslabelStyle),
+            items: 
+              V4rs.allInterfaceLanguages.map((language) {
+                return DropdownMenuItem<String>(
+                  value: language,
+                  child: Text(language, style: Sv4rs.settingslabelStyle),
+                );
+              }).toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    voiceLanguage = value;
+                   });
+                 }
+               },
+            ),
+          ]
+        ),
+      if (voiceIsMultilingual)
+      ExpansionTile(
+        title: Text('Languages:'),
+        children: [
+          ...Sv4rs.allLanguages.map((item) {
+          final isSelected = voiceLanguages.contains(item);
+          return Column(
+            children: [
+              CheckboxListTile (
+                title: Text(item, style: Sv4rs.settingslabelStyle),
+                value: isSelected,
+                onChanged: (selected){
+                  setState(() {
+                    if (selected == true) {
+                      voiceLanguages.add(item);
+                    } else {
+                      if (voiceLanguages.length > 1) {
+                        voiceLanguages.remove(item);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('At least one language must be selected'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                      }
+                    }
+                  });
+                },
+              ),
+            ]
+          );
+          }),
+        ]
+      ),
+      Row(
+        children: [
+          Text('Speaker Count: $speakerCount'),
+          Spacer(flex: 1),
+          Expanded(
+            flex: 4,
+            child: 
+          Slider(
+            value: count, 
+            divisions: 999,
+            min: 1,
+            max: 1000,
+            onChanged: (value) {
+            setState((){
+              count = value;
+              speakerCount = value.toInt();
+            });
+          })
+          ),
+          ]
+        ),
+      Row(
+        children: [
+          Text('Voice Licence (if applicable):'),
+          Spacer(),
+          SizedBox(width: 150, child: 
+          TextField(
+            style: Sv4rs.settingslabelStyle,
+            onChanged: (value){
+              setState((){
+                voiceLicense = value;
+              });
+            },
+            decoration: InputDecoration(
+            hintStyle: Sv4rs.settingslabelStyle,
+            hintText: 'n/a',
+            ),
+          )
+          )
+        ]
+      )
+      ]
+      ),
+    );
+    }
+      }
+    ),
+    actions: [
+      TextButton(
+        onPressed: (){
+          Navigator.of(context).pop();
+        }, 
+        child: Text('Cancel')
+      ),
+      TextButton(
+        onPressed: (){
+          print('uploading file');
+          Vv4rs.importSherpaOnnxVoice(
+            voiceLicense, 
+            voiceName, 
+            voiceIsMultilingual, 
+            voiceLanguage, 
+            voiceLanguages, 
+            speakerCount,
+            context,
+            loadAll,
+          );
+        }, 
+        child: Text('Upload'))
+    ],
+    );
+    }
+  );
+  }
+);
+}
+
+
 //speak on select shortcut 
 Future<void> showOptionsPopupForSpeakOnSelect(
   Future<void> Function(bool) reloadSherpaOnnx, 

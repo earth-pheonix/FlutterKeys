@@ -8,6 +8,7 @@ class ManifestModel{
   final String? license;
   final String? downloadURL;
   final String? samplePath; 
+  final bool? userVoice;
 
   //for multilingual
   final List<String>? languageList;
@@ -34,6 +35,7 @@ class ManifestModel{
     this.name,
     this.engine,
     this.speakerCount,
+    this.userVoice,
     this.multilingual,
     this.license,
     this.downloadURL,
@@ -58,6 +60,7 @@ class ManifestModel{
         name: json["name"],
         engine: json["engine"],
         speakerCount: json["speaker_count"],
+        userVoice: json["userVoice"],
         multilingual: json["multilingual"],
         license: json["license"],
         downloadURL: json["download_url"],

@@ -82,6 +82,7 @@ class V4rs {
   static double? wordsPerMinute; 
   static Duration? pauseMoment;
   static String? currentSpeakingFile;
+  static bool isVoiceLoaded = false; 
 
   static bool changedMWfromButton = false;
 
@@ -89,7 +90,6 @@ class V4rs {
 
   static ValueNotifier<bool> wasPaused = ValueNotifier(false);
 
- 
   static ValueNotifier<bool> theIsSpeaking = ValueNotifier(false);
 
   static bool clearAfterSpeak = true;
@@ -425,10 +425,7 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
       //
       else {
         print('message window speak: engine is sherpa');
-        if (sherpaOnnxSynth[lang] != null){
-          print('message window speak: sherpa synth is not null');
-          await SherpaOnnxV4rs.speak(false, lang, segmentText, sherpaOnnxSynth, player);
-        }
+        await SherpaOnnxV4rs.speak(false, lang, segmentText, player);
       }
 
       //move offset to next segment
@@ -539,9 +536,7 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
           V4rs.theIsSpeaking.value = false;
         }
     } else {
-      if (speakSelectSherpaOnnxSynth[lang] != null) {
-        await SherpaOnnxV4rs.speak(true, lang, text, speakSelectSherpaOnnxSynth, playerForSS);
-      }
+      await SherpaOnnxV4rs.speak(true, lang, text, playerForSS);
     }
   }
  } 
@@ -784,7 +779,7 @@ static Future<File> resolveImageFile(String relativePath) async {
    //await prefs.clear();
 
     //reset Json on load
-    //deleteLocalCopy(); 
+    deleteLocalCopy(); 
     deleteLocalCopytemplates();
 
     await Fv4rs.loadSavedFontValues(); 
