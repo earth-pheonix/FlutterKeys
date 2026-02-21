@@ -69,7 +69,6 @@ class SherpaOnnxV4rs {
     late final sherpa_onnx.OfflineTtsKittenModelConfig kitten;
 
     if (isKokoro) {
-      print('isKokoro');
       kokoro = sherpa_onnx.OfflineTtsKokoroModelConfig(
         model: modelOnnx,
         voices: voicesBin,
@@ -81,7 +80,6 @@ class SherpaOnnxV4rs {
       matcha = sherpa_onnx.OfflineTtsMatchaModelConfig(); //unused
       vits = sherpa_onnx.OfflineTtsVitsModelConfig(); // unused
     } else if (isKitten) {
-      print('isKitten');
       kokoro = sherpa_onnx.OfflineTtsKokoroModelConfig(); //unused
       kitten = sherpa_onnx.OfflineTtsKittenModelConfig(
         model: modelOnnx,
@@ -92,7 +90,6 @@ class SherpaOnnxV4rs {
       matcha = sherpa_onnx.OfflineTtsMatchaModelConfig(); //unused
       vits = sherpa_onnx.OfflineTtsVitsModelConfig(); // unused
     } else if (isMultiMatcha){
-      print('isMultiMatcha');
       kokoro = sherpa_onnx.OfflineTtsKokoroModelConfig(); // unused
       kitten = sherpa_onnx.OfflineTtsKittenModelConfig(); //unused
       matcha = sherpa_onnx.OfflineTtsMatchaModelConfig(
@@ -104,7 +101,6 @@ class SherpaOnnxV4rs {
       );
       vits = sherpa_onnx.OfflineTtsVitsModelConfig(); // unused
     } else if (isMatcha){
-      print('isMatcha');
       kokoro = sherpa_onnx.OfflineTtsKokoroModelConfig(); //unused
       kitten = sherpa_onnx.OfflineTtsKittenModelConfig(); //unused
       matcha = sherpa_onnx.OfflineTtsMatchaModelConfig(
@@ -207,7 +203,7 @@ class SherpaOnnxV4rs {
     }
   }
 
-  static void ttsIsolateEntry(SendPort mainSendPort) async {
+  static void ttsIsolateEntry(SendPort mainSendPort,) async {
     final port = ReceivePort();
     mainSendPort.send(port.sendPort);
 
@@ -238,7 +234,6 @@ class SherpaOnnxV4rs {
 
             reply.send(true);
           } catch (e) {
-            print("LOAD ERROR: $e");
             message['replyPort']?.send(false);
           }
         }
@@ -250,12 +245,9 @@ class SherpaOnnxV4rs {
           final speed = message['speed'];
           final reply = message['replyPort'] as SendPort;
 
-          print("SYNTH REQUEST FOR: $lang");
-          print("Available models: ${models.keys}");
 
           final model = models[lang];
           if (model == null) {
-            print("MODEL NOT FOUND FOR $lang");
             reply.send(null);
             continue;
           }
@@ -271,6 +263,36 @@ class SherpaOnnxV4rs {
             'sampleRate': audio.sampleRate,
           });
         }
+
+        if (type == 'validate') {
+          final reply = message['replyPort'] as SendPort;
+          try {
+            final voiceId = message['voiceId'];
+            final lang = message['lang'];
+            final basePath = message['basePath'];
+
+            // Attempt to create the engine. 
+            // If paths are wrong or files are corrupt, this throws.
+            final testTts = await createOfflineTtsInIsolate(voiceId, lang, basePath);
+
+            final int count = testTts.numSpeakers;
+            Map<int, String> speakerTable = {};
+
+            for (int i = 0; i < (count > 0 ? count : 1); i++) {
+              speakerTable[i] = "Speaker $i"; 
+            }
+
+            // If we got here, it's valid. Free it immediately to save memory.
+            testTts.free(); 
+            reply.send({
+              'success': true, 
+              'speakerCount': count,
+              'speakerTable': speakerTable, 
+            });
+          } catch (e) {
+            reply.send({'success': false, 'error': e.toString()});
+          }
+        }
       }
     }
   }
@@ -281,11 +303,9 @@ class SherpaOnnxV4rs {
   }
 
   static Future<void> start() async {
-    print("Starting isolate...");
     if (_isStarted != null){
       return _isStarted;
     }
-    print("isolate start didnt return early");
     final completer = Completer<void>();
     _isStarted = completer.future;
 
@@ -295,7 +315,6 @@ class SherpaOnnxV4rs {
     );
 
     _ttsSendPort = await _receivePort.first as SendPort;
-    print("Isolate ready");
     completer.complete();
   }
 
@@ -313,7 +332,6 @@ class SherpaOnnxV4rs {
     String text,
     AudioPlayer player,
   ) async {
-    print("starting speak");
     if ((forSS && isVoiceSSLoading) || (!forSS && isVoiceLoading)){
       return;
     }
@@ -328,9 +346,6 @@ class SherpaOnnxV4rs {
   
     final responsePort = ReceivePort();
 
-    print("Got result from isolate");
-    print("Got result could be null");
-
     _ttsSendPort!.send({
       'type': 'synthesize',
       'lang': lang,
@@ -344,13 +359,9 @@ class SherpaOnnxV4rs {
     responsePort.close();
 
     if (result == null) return;
-    print("Got result is not null");
 
     final samples = result['samples'];
     final sampleRate = result['sampleRate'];
-
-    print("Sample rate: $sampleRate");
-    print("Samples length: ${samples?.length}");
 
     final suffix = '-sid-${speakerID ?? 0}-speed-${(rate ?? 1.0).toStringAsPrecision(2)}';
     final filename = await generateWaveFilename(suffix);
@@ -421,4 +432,40 @@ class SherpaOnnxV4rs {
     }
   }
 
+ static Future<bool> isValidModel(String voiceId, String lang) async {
+    await start(); 
+
+    final base = await getModelBasePath(voiceId);
+    final responsePort = ReceivePort();
+
+    try {
+      _ttsSendPort!.send({
+        'type': 'validate',
+        'lang': lang,
+        'voiceId': voiceId,
+        'basePath': base,
+        'replyPort': responsePort.sendPort,
+      });
+
+      final result = await responsePort.first.timeout(
+        const Duration(seconds: 10),
+        onTimeout: () => {'success': false, 'error': 'Timeout'},
+      );
+
+      if (result['success'] == true) {
+        Vv4rs.downloadMessage.value = ("Voice is valid.");
+        Vv4rs.importingSpeakerCount = result['speakerCount'] ?? 1;
+        Vv4rs.importingSpeakers = result['speakerTable'] ?? {};
+        return true;
+      } else {
+        Vv4rs.downloadMessage.value = "Error: voice validation failed: ${result['error']}";
+        return false;
+      }
+    } catch (e) {
+      Vv4rs.downloadMessage.value = "Error: Not Valid Model: $e";
+      return false;
+    } finally {
+      responsePort.close();
+    }
+  }
 }

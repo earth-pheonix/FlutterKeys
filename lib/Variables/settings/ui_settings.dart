@@ -347,21 +347,24 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
             padding: EdgeInsets.symmetric(vertical: V4rs.paddingValue(5)),
             child: Row(
               children: [
-                SizedBox(
-                  width: widget.totalWidth * 0.4,
+                Expanded(
+                  flex: 3,
                   child: Text(
                     Vv4rs.cleanSherpaOnnxVoiceLabel(voice),
                     style: Sv4rs.settingslabelStyle,
-                    maxLines: 2,
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
 
-                Spacer(),
+                Spacer(flex: 1,),
 
                 // Speaker Dropdown (only if multi-speaker)
                 if (voice.speakerCount != null && voice.speakerCount! > 1)
-                  DropdownButton<int>(
+                Expanded(
+                  flex: 2,
+                  child: DropdownButton<int>(
+                    isExpanded: true,
                     value: (speaker < voice.speakerCount!) ? speaker : 0,
                     items: List.generate(
                       voice.speakerCount!,
@@ -370,6 +373,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                         child: Text(
                           Vv4rs.cleanSherpaOnnxSpeakerLabel(voice, index),
                           style: Sv4rs.settingslabelStyle,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
@@ -385,14 +389,13 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                       }
                     },
                   ),
-
+                ),
                 // Play Sample Button
                 if (voice.userVoice == false)
-                SizedBox(width: 50, height: 50, child: 
+                SizedBox(width: V4rs.xSmallMode ? 40 : 50, height:V4rs.xSmallMode ? 40 : 50, child: 
                 ButtonStyle1(
                   imagePath: 'assets/interface_icons/interface_icons/iPlay.png',
                   onPressed: () async {
-                    try {
                       if (voice.speakers != null && voice.speakerCount != null && voice.speakerCount! > 1) {
                         final selectedSpeaker = voice.speakers!.firstWhere(
                           (item) => item["idSpeaker"] == speaker,
@@ -403,9 +406,6 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                       } else if (voice.samplePath != null) {
                         await wavSamplePlayer.play(AssetSource(voice.samplePath!));
                       }
-                    } catch (e) {
-                      print("Error playing sample: $e");
-                    }
                   },
                 ),
                 ),
@@ -442,7 +442,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                       }
                       return SizedBox(
                         height: 40,
-                        width: widget.totalWidth * 0.1,
+                        width: V4rs.xSmallMode ? 55 : 75,
                         child: ButtonStyle1(
                           glow: (forSS)
                               ? (Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id == voice.id)
@@ -474,7 +474,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                   padding: EdgeInsets.symmetric(horizontal: V4rs.paddingValue(5)),
                   child: SizedBox(
                   height: 40,
-                  width: widget.totalWidth * 0.1,
+                  width: V4rs.xSmallMode ? 55 : 75,
                   child: ButtonStyle1(
                   glow: (forSS)
                       ? (Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id == voice.id)
@@ -500,36 +500,40 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                 // Delete Button (only if downloaded)
                 if (voice.userVoice == false)
                 if (Vv4rs.downloadedSherpaOnnxLanguageIds.contains(voice.id))
-                  SizedBox(height: 50, width: 50, child: 
-                  ButtonStyle1(
-                    imagePath: 'assets/interface_icons/interface_icons/iClose.png',
-                    onPressed: () async { 
-                      if ((Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id != voice.id) 
-                        && (Vv4rs.sherpaOnnxLanguageVoice[language]?.id != voice.id)
-                      ){
-                        await Vv4rs.deleteSherpaOnnxVoice(voice);
-                        setState(() {
-                          //redundant action to trigger set state at the right time
-                          Vv4rs.downloadMessage.value = '';
-                        });
-                    } else{
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: (Vv4rs.sherpaOnnxLanguageVoice[language]?.id == voice.id)
-                            ? Text('Select a different voice before deleting')
-                            : Text ('Select a different speak on select voice before deleting'),
-                          duration: Duration(milliseconds: 1500),
-                        ),
-                      );
-                    }
-                    }
-                  ),
+                  SizedBox(
+                    width: V4rs.xSmallMode ? 40 : 50, 
+                    height: V4rs.xSmallMode ? 40 : 50, 
+                    child: ButtonStyle1(
+                      imagePath: 'assets/interface_icons/interface_icons/iClose.png',
+                      onPressed: () async { 
+                        if ((Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id != voice.id) 
+                          && (Vv4rs.sherpaOnnxLanguageVoice[language]?.id != voice.id)
+                        ){
+                          await Vv4rs.deleteSherpaOnnxVoice(voice);
+                          setState(() {
+                            //redundant action to trigger set state at the right time
+                            Vv4rs.downloadMessage.value = '';
+                          });
+                      } else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: (Vv4rs.sherpaOnnxLanguageVoice[language]?.id == voice.id)
+                              ? Text('Select a different voice before deleting')
+                              : Text ('Select a different speak on select voice before deleting'),
+                            duration: Duration(milliseconds: 1500),
+                          ),
+                        );
+                      }
+                      }
+                    ),
                   ),
                 if (voice.userVoice == true)
-                SizedBox(height: 50, width: 50, child: 
-                ButtonStyle1(
-                  imagePath: 'assets/interface_icons/interface_icons/iClose.png',
-                  onPressed: () async { 
+                SizedBox(
+                  width: V4rs.xSmallMode ? 40 : 50, 
+                  height: V4rs.xSmallMode ? 40 : 50, 
+                  child: ButtonStyle1(
+                    imagePath: 'assets/interface_icons/interface_icons/iClose.png',
+                    onPressed: () async { 
                       if ((Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id != voice.id) 
                         && (Vv4rs.sherpaOnnxLanguageVoice[language]?.id != voice.id)
                       ){
@@ -558,12 +562,14 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
         }),
         
         // Import Button
-        SizedBox(height: 60, child:
+        SizedBox(
+          width: double.infinity,
+          height: 60, child:
         Padding(
           padding: EdgeInsets.only(top: V4rs.paddingValue(10)),
-          child: ButtonStyle2(
-            label: 'Import Voice',
-            imagePath: 'assets/interface_icons/interface_icons/iPlaceholder.png',
+          child:TextButton(
+            style: TextButton.styleFrom(backgroundColor: Cv4rs.themeColor3),
+            child: Text('Import Voice', style: Sv4rs.settingslabelStyle,),
             onPressed: () {
               setState(() {
                 importSherpaOnnx(context, _loadAllData);
@@ -1029,7 +1035,6 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                               BVv4rs.bookmarkedVoices[language]?[i].eSpeakPath,
                             );
                             widget.reloadSherpaOnnx(forSS);
-                            print('done'); //done
                           }
                         }
                       });

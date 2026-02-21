@@ -4986,7 +4986,6 @@ import 'dart:async';
                           ],
                           onChanged: (value) {
                             if (value != null) {
-                              print('value is not null');
                               Ev4rs.link.value = value;
                               Ev4rs.linkLabel.value = mapOfBoards.entries.firstWhere((element) => element.value == value).key;
                             }

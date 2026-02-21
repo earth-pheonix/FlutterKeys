@@ -386,7 +386,6 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
       //System Engine
       //
       if (Vv4rs.myEngineForVoiceLang[lang] == "system") {
-        print('message window speak: engine is system');
         //set voice properties
         final voiceID = Vv4rs.getSystemValue(langName, 'voice');
         final rate = Vv4rs.getSystemValue(langName, 'rate');
@@ -424,7 +423,6 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
       //Sherpa Onnx Engine
       //
       else {
-        print('message window speak: engine is sherpa');
         await SherpaOnnxV4rs.speak(false, lang, segmentText, player);
       }
 
@@ -744,7 +742,6 @@ static Future<void> deleteLocalCopy() async {
     saveMyBoardsets(myBoardsets);
     
     await loadRootData();
-    print('current file $currentFile');
     ExV4rs.fileToExport = currentFile;
   } 
 }
@@ -770,7 +767,6 @@ static Future<File> resolveImageFile(String relativePath) async {
   static bool variablesReady = false;
 
   static Future<void> loadSavedValues() async {
-    print('loading saved values');
     variablesReady = false;
     final prefs = await SharedPreferences.getInstance();
     // how to clear a value from shared prefs:  
@@ -840,7 +836,6 @@ static Future<File> resolveImageFile(String relativePath) async {
     Sv4rs.pickFromEngine = prefs.getString(Sv4rs.pickFromEngine_) ?? 'sherpa-onnx';
     
     variablesReady = true;
-    print('saved values loaded');
   }
 
 }

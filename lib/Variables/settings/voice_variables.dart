@@ -13,8 +13,12 @@ import 'package:flutterkeysaac/Variables/settings/bookmark_voice.dart';
 import 'package:archive/archive_io.dart'; // zip handling 
 import 'package:path/path.dart' as p;
 import 'package:file_picker/file_picker.dart';
+import 'package:flutterkeysaac/Variables/sherpa_onnx_tts.dart';
  
 class Vv4rs{
+
+  static int importingSpeakerCount = 1;
+  static Map<int, String> importingSpeakers = {};
 
   static Map<String, String?> myEngineForSSVoiceLang = {};
   static Map<String, String?> myEngineForVoiceLang = {};
@@ -260,14 +264,10 @@ class Vv4rs{
 
   //returns list of sherpa-onnxin input lang
   static Future<List<ManifestModel>> filterSherpaOnnxLang(String lang) async {
-    print('filterSherpaOnnxLang: start');
     final selectedLang = V4rs.getLangCode(lang);
-    print('filterSherpaOnnxLang: selectedLang- $selectedLang');
 
     List<ManifestModel> allVoices = [];
-    print('filterSherpaOnnxLang: all voices');
       for (ManifestModel voice in openVoices){
-        print('filterSherpaOnnxLang: in for loop- voice- ${voice.id}');
         final voiceLanguage = (voice.language != null) 
           ? voice.language!.substring(0, 2)
           : '';
@@ -284,7 +284,6 @@ class Vv4rs{
       }
     if (importedSherpaOnnxLanguageVoice.isNotEmpty){
       for (ManifestModel voice in importedSherpaOnnxLanguageVoice){
-        print('filterSherpaOnnxLang: in loop for imported- voice- ${voice.id}');
         final voiceLanguage = (voice.language != null) 
           ? voice.language!.substring(0, 2)
           : '';
@@ -294,19 +293,11 @@ class Vv4rs{
               voiceLanguages.add(item.toLowerCase().substring(0, 2));
             }
           }
-        print('filter sherpa-onnx: selected language: $selectedLang');
-        print('filter sherpa-onnx: voice language: $voiceLanguage');
-        print('filter sherpa-onnx: voice languages: $voiceLanguages');
         if (voice.engine == "sherpa-onnx" && (voiceLanguage.toLowerCase() == selectedLang || voiceLanguages.contains(selectedLang))) {
           allVoices.add(voice);
         }
       }
     }
-    print('filterSherpaOnnxLang: all voices:');
-    for (final voice in allVoices){
-      print(voice.id);
-    }
-      print('filterSherpaOnnxLang: returning');
     return allFilteredSherpaOnnx = allVoices;
   }
 
@@ -316,8 +307,16 @@ class Vv4rs{
       (voice.language != null)
       ? voice.language
       : voice.languageList.toString();
+    final framework =
+      (voice.id != null)
+      ? (voice.id)!.split('-').first
+      : '???';
+    final afterFramework =
+      (voice.id != null)
+      ? (voice.id)!.split('-')[1]
+      : '???';
     final license = voice.license;
-    return '$name ($locale) ($license)';
+    return '$name ($locale) (${(framework.toLowerCase() == 'vits') ? afterFramework : framework}) ($license)';
   }
 
   static String cleanSherpaOnnxSpeakerLabel(ManifestModel voice, int speaker) {
@@ -328,7 +327,7 @@ class Vv4rs{
 
       if (s['idSpeaker'] == speaker) {
         final name = s['name'] as String;
-        final sound = s['sound'] as String;
+        final sound = (s['sound'] != null) ? s['sound'] as String : '';
         return '$name ($sound)';
       }
     }
@@ -337,9 +336,7 @@ class Vv4rs{
 
   static Future<List<ManifestModel>> setupSherpaOnnxVoicePicker(String language) async {
     //set the language of voices to look for 
-    print('setupSherpaOnnxVoicePicker: starting');
     final voices = await filterSherpaOnnxLang(language);
-    print('setupSherpaOnnxVoicePicker: set voices');
 
     //setup dropdowns
     return perLangSherpaOnnxVoices[language] = voices;
@@ -646,6 +643,8 @@ class Vv4rs{
       String? language,
       bool? multilingual,
       List<String>? langauges,
+      int? speakerCount,
+      List<dynamic>? speakers,
       String? license,
       String? onnxPath,
       String? voicesBin,
@@ -672,6 +671,12 @@ class Vv4rs{
       }
       if (license != null && license.isNotEmpty){
         await prefs.setString('sherpa_onnx-download-license-$voiceID', license);
+      }
+      if (speakerCount != null){
+        await prefs.setInt('sherpa_onnx-download-speakerCount-$voiceID', speakerCount);
+      }
+      if (speakers != null && speakers.isNotEmpty){
+        await prefs.setString('sherpa_onnx-download-speakers-$voiceID', jsonEncode(speakers));
       }
 
 
@@ -826,6 +831,7 @@ static Future<ManifestModel?> downloadSherpaOnnxVoice(ManifestModel voice) async
     
     if (voice.downloadURL == null) {
       downloadMessage.value = 'download URL empty- download failed';
+      
       return null;
     }
 
@@ -1124,10 +1130,9 @@ static Future<ManifestModel?> downloadSherpaOnnxVoice(ManifestModel voice) async
 
 static Future<ManifestModel?> importSherpaOnnxVoice(
   String? licence, String? name, bool? multiLingual, 
-  String? langauge, List<String>? languages, int? speakerCount,
+  String? langauge, List<String>? languages,
   context, Future<void> Function() loadAll,
 ) async {
-  print('function is running');
   //pick the voice zip file
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
@@ -1137,32 +1142,60 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
   //saftey
   if (result == null) {
     downloadMessage.value = 'Nothing to import';
-    await Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pop();
+    await Future.delayed(const Duration(seconds: 5), () {
+        isDownloading.value = '';
+        downloadMessage.value = '';
     });
-    print('error 1');
     return null;
   }
   
   File zipFile = File(result.files.single.path!);
   isDownloading.value = result.files.single.path!;
 
-  print('picked');
-
   try {
     String folderName = result.files.single.name.replaceAll('.zip', '');
+    if (importedSherpaOnnxLanguageIds.contains(folderName)){
+      downloadMessage.value = 'a file with this name was already imported- exiting';
+      await Future.delayed(const Duration(seconds: 5), () {
+        isDownloading.value = '';
+        downloadMessage.value = '';
+      });
+      return null;
+    }
     downloadMessage.value = 'Import starting...';
     final voice = ManifestModel(
       id: folderName,
       name: name ?? folderName,
       engine: 'sherpa-onnx',
-      speakerCount: speakerCount ?? 0,
       multilingual: multiLingual ?? false,
       language: langauge,
       languageList: languages,
       userVoice: true,
       license: licence ?? '???',
     );
+    final langToTest = 
+        (voice.language != null && voice.language!.isNotEmpty) 
+        ? voice.language
+        : voice.languageList?.first ?? "";
+
+    if (langToTest == null || langToTest.isEmpty) {
+      downloadMessage.value = 'Error: language check failed';
+      await Future.delayed(const Duration(seconds: 5), () {
+        isDownloading.value = '';
+        downloadMessage.value = '';
+      });
+      return null;
+    }
+
+    if (voice.id == null || voice.id!.isEmpty) {
+      downloadMessage.value = 'Error: file name check failed';
+      await Future.delayed(const Duration(seconds: 5), () {
+        isDownloading.value = '';
+        downloadMessage.value = '';
+      });
+      return null;
+    }
+
     final dir = await getApplicationDocumentsDirectory();
     final savePath = "${dir.path}/sherpaOnnx_models";
     final voiceFolder = "$savePath/$folderName"; //model dir
@@ -1173,14 +1206,12 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
     final listOfFst = [];
     final listOfFar = [];
     final listOfLexicon = [];
-    print('set');
 
     await Directory(savePath).create(recursive: true);
     await Directory(voiceFolder).create(recursive: true);
     
     downloadMessage.value = 'Opening Zip...';
     
-    print('unzipping');
     // Unzip
     final inputStream = InputFileStream(zipFile.path);
     final archive = ZipDecoder().decodeBuffer(inputStream);
@@ -1405,7 +1436,6 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
     }
 
     downloadMessage.value = 'All files downloaded... getting values';
-    print('downloaded');
 
     await zipFile.delete();
 
@@ -1417,29 +1447,60 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
     voice.tokenPath = tokenPath;
     voice.eSpeakPath = eSpeakNgFolder;
 
-    importedSherpaOnnxLanguageVoice.add(voice);
+      downloadMessage.value = 'Verifying Voice (this may take 5 minutes)';
+      
+      bool working = await SherpaOnnxV4rs.isValidModel(voice.id!, langToTest);
+      if (!working) {
+        downloadMessage.value = 'Verification failed';
+        await Future.delayed(const Duration(seconds: 5), () {
+        isDownloading.value = '';
+        downloadMessage.value = '';
+      });
+        return null;
+      }
 
-    if (voice.id != null) {
+      final finalVoice = ManifestModel(
+        id: voice.id,
+        name: voice.name,
+        engine: 'sherpa-onnx',
+        multilingual: voice.multilingual,
+        language: voice.language,
+        languageList: voice.languageList,
+        userVoice: true,
+        license: voice.license,
+        speakerCount: importingSpeakerCount,
+        speakers: importingSpeakers.entries.map(
+          (entry) => {
+            "idSpeaker": entry.key,
+            "name": entry.value,
+          }
+        ).toList(),
+      );
+
+      importedSherpaOnnxLanguageVoice.add(finalVoice);
+
+      
       //add id to list of imported
-      importedSherpaOnnxLanguageIds.add(voice.id!);
+      importedSherpaOnnxLanguageIds.add(finalVoice.id!);
       saveimportedSherpaOnnxLanguageVoices();
 
       saveImportedSherpaOnnxValue(
-        voice.id!,
-        voice.name,
-        voice.language,
-        voice.multilingual,
-        voice.languageList,
-        voice.license,
-        voice.modelPath,
-        voice.voicesBin,
-        voice.ruleFsts,
-        voice.ruleFars,
-        voice.lexicon,
-        voice.tokenPath,
-        voice.eSpeakPath,
+        finalVoice.id!,
+        finalVoice.name,
+        finalVoice.language,
+        finalVoice.multilingual,
+        finalVoice.languageList,
+        finalVoice.speakerCount,
+        finalVoice.speakers,
+        finalVoice.license,
+        finalVoice.modelPath,
+        finalVoice.voicesBin,
+        finalVoice.ruleFsts,
+        finalVoice.ruleFars,
+        finalVoice.lexicon,
+        finalVoice.tokenPath,
+        finalVoice.eSpeakPath,
       );
-    }
 
     if (langauge != null && langauge.isNotEmpty){
       setupSherpaOnnxVoicePicker(langauge);
@@ -1451,18 +1512,16 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
     }
     downloadMessage.value = 'Loading Voice';
     loadAll();
-    print('done returning');
     downloadMessage.value = 'Done';
     await Future.delayed(const Duration(seconds: 3), () {
         isDownloading.value = '';
         downloadMessage.value = '';
         Navigator.of(context).pop();
       });
-    return voice;
+    return finalVoice;
 
   } catch (e) {
     downloadMessage.value = 'Download failed: $e';
-    print('Download failed: $e');
     await Future.delayed(const Duration(seconds: 5), () {
         isDownloading.value = '';
         downloadMessage.value = '';
@@ -1471,6 +1530,7 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
     return null;
   }
 }
+
 
 static Future<void> removeDownloadedSherpaOnnxValue(String voiceID) async {
   final prefs = await SharedPreferences.getInstance();
@@ -1642,6 +1702,8 @@ static Future<bool> deleteImportedSherpaOnnxVoice(ManifestModel voice) async {
       final importedIds = prefs.getStringList('_importedSherpaOnnxLanguageVoice') ?? [];
       importedSherpaOnnxLanguageIds = importedIds;
       for (final item in importedIds){
+        String? rawSpeakers = prefs.getString('sherpa_onnx-download-speakers-$item');
+
         final voice = ManifestModel(
           id: prefs.getString('sherpa_onnx-imported-voiceID-$item'),
           name: prefs.getString('sherpa_onnx-download-name-$item'),
@@ -1651,6 +1713,8 @@ static Future<bool> deleteImportedSherpaOnnxVoice(ManifestModel voice) async {
           languageList: prefs.getStringList('sherpa_onnx-download-langauges-$item'),
           userVoice: true,
           license: prefs.getString('sherpa_onnx-download-license-$item') ?? '???',
+          speakerCount: prefs.getInt('sherpa_onnx-download-speakerCount-$item') ?? 1,
+          speakers: (rawSpeakers != null) ? jsonDecode(rawSpeakers) : []
         );
         importedSherpaOnnxLanguageVoice.add(voice);
       }

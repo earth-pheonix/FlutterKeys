@@ -73,8 +73,6 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
  @override
   Widget build(BuildContext context) {
     ExV4rs.fileToExport = V4rs.currentFile;
-    print('current file = ${V4rs.currentFile}');
-    print('fileToExport = ${ExV4rs.fileToExport}');
 
     return FutureBuilder<Root>(
       future: rootFuture,

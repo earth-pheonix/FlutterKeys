@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutterkeysaac/Variables/colors/color_variables.dart';
 import 'package:flutterkeysaac/Variables/assorted_ui/ui_shortcuts.dart';
 import 'package:flutterkeysaac/Variables/editing/save_indicator.dart';
@@ -9,10 +10,10 @@ import 'package:flutterkeysaac/Variables/settings/speak_on_select.dart';
 import 'package:flutterkeysaac/Variables/export_variables.dart';
 import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/settings/boardset_settings_variables.dart';
+import 'package:flutterkeysaac/Variables/fonts/font_variables.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
-import 'dart:typed_data';
 import 'dart:io'; //platform
 
 //import voice shortcut  
@@ -25,16 +26,15 @@ Future<void> importSherpaOnnx(
   builder: (context) {
     String voiceLicense = '';
     String voiceName = 'My Voice';
-    String voiceLanguage = V4rs.interfaceLanguage;
-    double count = 0;
-    int? speakerCount;
+    String voiceLanguage = V4rs.langNameToCode[V4rs.interfaceLanguage] ?? 'en';
     bool voiceIsMultilingual = false;
     List<String> voiceLanguages = [];
 
     return StatefulBuilder(
       builder: (context, setState) { return
          AlertDialog(
-    title: Text("Import Voice"),
+          backgroundColor: Cv4rs.themeColor4,
+    title: Text("Import Voice", style: Sv4rs.settingslabelStyle.copyWith(fontSize: (Fv4rs.interfaceFontSize + 5))),
     content: ValueListenableBuilder(
       valueListenable: Vv4rs.isDownloading,
       builder: (context, String isDownloading, _) {
@@ -51,7 +51,9 @@ Future<void> importSherpaOnnx(
                 builder: (context, message, _) => message.isNotEmpty 
                   ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Text(message),
+                      child: Expanded(child: 
+                        Text(message, style: Sv4rs.settingslabelStyle, softWrap: true,),
+                      ),
                     )
                   : const SizedBox.shrink(),
               ),
@@ -62,40 +64,81 @@ Future<void> importSherpaOnnx(
     Column(
       children: [
         Padding(
-          padding: EdgeInsetsGeometry.all(3), 
-          child: Text('Instructions:', style: TextStyle(fontWeight: FontWeight.bold),),
+          padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+          child: Text(
+            'Instructions:', 
+            style: Sv4rs.settingslabelStyle.copyWith(fontWeight: FontWeight.bold)),
         ),
         Padding(
-          padding: EdgeInsetsGeometry.all(3), 
-          child: Text('Fill out the fields below then upload a .zip file with all the required files for the model.'),
+          padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+          child: Text(
+            textAlign: TextAlign.center,
+            'Fill out the fields below then upload a .zip file with all the required files for the model.',
+            style: Sv4rs.settingslabelStyle,
+          ),
         ),
       Padding(
-        padding: EdgeInsetsGeometry.all(3), 
-        child: Text('The file must start with the type of Sherpa-Onnx voice it is (vits, kokoro, kitten, matcha), and be seperated from the rest of the file name with a hyphen (-)'),
+        padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+        child: Text(
+          textAlign: TextAlign.center,
+          'The file must start with the type of Sherpa-Onnx voice it is (vits, kokoro, kitten, matcha), and be seperated from the rest of the file name with a hyphen (-)',
+          style: Sv4rs.settingslabelStyle
+        ),
       ),
       Padding(
-        padding: EdgeInsetsGeometry.all(3), 
-        child: Text('Example: vits-piper-myVoice'),
+        padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+        child: Text(
+          textAlign: TextAlign.center,
+          "If it is vits, specify the model it was trained with after its type. Seperate it from it's type and the rest of the file name with a hyphen (-)",
+          style: Sv4rs.settingslabelStyle
         ),
-      
+      ),
+      Padding(
+        padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
+        child: Column(children:[
+          
+          Text(
+            textAlign: TextAlign.center,
+            'Examples:',
+            style: Sv4rs.settingslabelStyle
+          ),
+          Text(
+            textAlign: TextAlign.center,
+            'kitten-myVoice',
+            style: Sv4rs.settingslabelStyle
+          ),
+          Text(
+            textAlign: TextAlign.center,
+            'vits-piper-myVoice',
+            style: Sv4rs.settingslabelStyle
+          ),
+          Text(
+            textAlign: TextAlign.center,
+            'vits-coqui-myVoice',
+            style: Sv4rs.settingslabelStyle
+          ),
+         ]
+        )
+      ),
       Row(
         children: [
-          Text('Voice name:'),
-          Spacer(),
-          SizedBox(width: 150, child: 
-            TextField(
-            style: Sv4rs.settingslabelStyle,
-            onChanged: (value){
-              setState((){
-                voiceName = value;
-              });
-            },
-            decoration: InputDecoration(
-            hintStyle: Sv4rs.settingslabelStyle,
-            hintText: 'n/a',
+          Expanded(child: 
+            Text(
+              'Voice name:',
+              style: Sv4rs.settingslabelStyle
             ),
           ),
-      ),
+          Spacer(),
+          Expanded(child: 
+            TextField(
+              style: Sv4rs.settingslabelStyle,
+              onChanged: (value){
+                setState((){
+                  voiceName = value;
+                });
+              },
+            ),
+          ),
       ]
       ),
       Row(
@@ -121,7 +164,7 @@ Future<void> importSherpaOnnx(
             value: voiceLanguage, 
             hint: Text('voice language', style: Sv4rs.settingslabelStyle),
             items: 
-              V4rs.allInterfaceLanguages.map((language) {
+              Sv4rs.allLanguages.map((language) {
                 return DropdownMenuItem<String>(
                   value: language,
                   child: Text(language, style: Sv4rs.settingslabelStyle),
@@ -129,9 +172,12 @@ Future<void> importSherpaOnnx(
               }).toList(),
               onChanged: (value) {
                 if (value != null) {
-                  setState(() {
-                    voiceLanguage = value;
-                   });
+                  String? itemCode = V4rs.langNameToCode[value];
+                  if (itemCode != null){
+                    setState(() {
+                      voiceLanguage = value;
+                    });
+                  }
                  }
                },
             ),
@@ -151,10 +197,16 @@ Future<void> importSherpaOnnx(
                 onChanged: (selected){
                   setState(() {
                     if (selected == true) {
-                      voiceLanguages.add(item);
+                      String? itemCode = V4rs.langNameToCode[item];
+                      if (itemCode != null){
+                        voiceLanguages.add(itemCode);
+                      }
                     } else {
                       if (voiceLanguages.length > 1) {
-                        voiceLanguages.remove(item);
+                        String? itemCode = V4rs.langNameToCode[item];
+                        if (itemCode != null){
+                          voiceLanguages.remove(itemCode);
+                        }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -174,28 +226,7 @@ Future<void> importSherpaOnnx(
       ),
       Row(
         children: [
-          Text('Speaker Count: $speakerCount'),
-          Spacer(flex: 1),
-          Expanded(
-            flex: 4,
-            child: 
-          Slider(
-            value: count, 
-            divisions: 999,
-            min: 1,
-            max: 1000,
-            onChanged: (value) {
-            setState((){
-              count = value;
-              speakerCount = value.toInt();
-            });
-          })
-          ),
-          ]
-        ),
-      Row(
-        children: [
-          Text('Voice Licence (if applicable):'),
+          Text('Voice Licence:'),
           Spacer(),
           SizedBox(width: 150, child: 
           TextField(
@@ -205,14 +236,11 @@ Future<void> importSherpaOnnx(
                 voiceLicense = value;
               });
             },
-            decoration: InputDecoration(
-            hintStyle: Sv4rs.settingslabelStyle,
-            hintText: 'n/a',
-            ),
           )
           )
         ]
-      )
+      ),
+      SizedBox(height: 300),
       ]
       ),
     );
@@ -224,23 +252,23 @@ Future<void> importSherpaOnnx(
         onPressed: (){
           Navigator.of(context).pop();
         }, 
-        child: Text('Cancel')
+        child: Text('Cancel', style: Sv4rs.settingslabelStyle)
       ),
       TextButton(
+        style: TextButton.styleFrom(backgroundColor: Cv4rs.themeColor3),
+        child: Text('Upload', style: Sv4rs.settingslabelStyle),
         onPressed: (){
-          print('uploading file');
           Vv4rs.importSherpaOnnxVoice(
             voiceLicense, 
             voiceName, 
             voiceIsMultilingual, 
             voiceLanguage, 
             voiceLanguages, 
-            speakerCount,
             context,
             loadAll,
           );
         }, 
-        child: Text('Upload'))
+      )
     ],
     );
     }
@@ -256,7 +284,6 @@ Future<void> showOptionsPopupForSpeakOnSelect(
   BuildContext context
 ) async {
   if ( Vv4rs.perLangSherpaOnnxVoices[V4rs.selectedLanguage.value] == null){
-    print('findSherpaVoiceName: is null');
     Vv4rs.setupSherpaOnnxVoicePicker(V4rs.selectedLanguage.value);
   }
 

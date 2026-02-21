@@ -1046,21 +1046,15 @@ import 'package:flutterkeysaac/Variables/assorted_ui/ui_boards.dart';
                 case 1:
                   final board = findBoardById(linkTo, boards);
                   if (board != null) {
-                      if (obj.returnAfterSelect == true) {
-                        //openBoardWithReturn(board);
-                      } else {
+                      
                         openBoard(board);
-                      }
                   }
                   break;
                 case 2:
                   final board = findBoardById(linkTo, boards);
                   if (board != null) {
-                      if (obj.returnAfterSelect == true) {
-                      //  openBoardWithReturn(board);
-                      } else {
+                      
                         openBoard(board);
-                      }
                   }
                   await V4rs.speakOnSelect(
                     obj.label ?? '', 
@@ -1074,11 +1068,8 @@ import 'package:flutterkeysaac/Variables/assorted_ui/ui_boards.dart';
                 case 3:
                   final board = findBoardById(linkTo, boards);
                   if (board != null) {
-                      if (obj.returnAfterSelect == true) {
-                      // openBoardWithReturn(board);
-                      } else {
+                      
                         openBoard(board);
-                      }
                   }
                   await V4rs.speakOnSelect(
                     obj.alternateLabel ?? '', 
