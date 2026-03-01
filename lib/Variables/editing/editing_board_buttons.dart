@@ -4076,9 +4076,8 @@ import 'dart:async';
                               TextField(
                                 controller: labelController,
                                 style: Ev4rs.labelStyle,
-                                onChanged: (value){setState(() {
+                                onChanged: (value){
                                   Ev4rs.label.value = value;
-                                  });
                                 },
                                 decoration: InputDecoration(
                                 hintStyle: Ev4rs.hintLabelStyle,
@@ -4108,9 +4107,8 @@ import 'dart:async';
                               TextField(
                                 controller: alternateController,
                                 style: Ev4rs.labelStyle,
-                                onChanged: (value){setState(() {
+                                onChanged: (value){
                                   Ev4rs.alternateLabel.value = value;
-                                });
                                 },
                                 decoration: InputDecoration(
                                 hintStyle: Ev4rs.hintLabelStyle,

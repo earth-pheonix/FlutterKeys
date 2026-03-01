@@ -306,9 +306,15 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
 
           //board editor
           if (Ev4rs.boardEditor.value == true){
+            if (Ev4rs.grammerRowEditor.value == true){
+              editor = SingleChildScrollView( 
+              child: GrammerRowEditor(saveField: saveGrammerField, openBoard: _openBoard, root: _root!, goBack: _goBackBoard,)
+            );
+            } else {
             editor = SingleChildScrollView( 
               child: BoardEditor(saveField: saveField, openBoard: _openBoard, root: _root!, goBack: _goBackBoard,)
             );
+            }
           }
 
           //edit a button
@@ -393,7 +399,7 @@ class _Editor extends State<Editor> with WidgetsBindingObserver {
                                     Ev4rs.editAGrammerButton, Ev4rs.grammerSelectedUUIDs, Ev4rs.grammerSelectedButton, 
 
                                     Ev4rs.selectedUUIDs, Ev4rs.selectedButton, Ev4rs.subFolderSelectedButton, 
-                                    Ev4rs.invertSelections, null, null
+                                    Ev4rs.invertSelections, Ev4rs.grammerRowEditor, null
                                   ), 
                                   builder: (context, values, _) {
                                     return buildEditor();

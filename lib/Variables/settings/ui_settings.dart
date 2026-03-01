@@ -205,6 +205,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
   double pitchValue = 1.0;
   double rateValue = 0.5;
   double lengthScale = 1.0;
+  double volumeBoost = 1.0;
   int deleteValue = 0;
   late AudioPlayer wavSamplePlayer;
 
@@ -321,13 +322,15 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
         return Vv4rs.setSSlanguageVoiceSherpaOnnx(
           language, voice.id, voice.engine, voice.tokenPath, voice.modelPath,
           voice.speakerCount, speaker, Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lengthScale,
-          voice.speakers, voice.lexicon, voice.ruleFars, voice.ruleFsts, voice.voicesBin, voice.eSpeakPath,
+          Vv4rs.sherpaOnnxSSLanguageVoice[language]?.volumeBoost, voice.speakers,
+          voice.lexicon, voice.ruleFars, voice.ruleFsts, voice.voicesBin, voice.eSpeakPath,
         );
       } else {
         return Vv4rs.setlanguageVoiceSherpaOnnx(
           language, voice.id, voice.engine, voice.tokenPath, voice.modelPath,
           voice.speakerCount, speaker, Vv4rs.sherpaOnnxLanguageVoice[language]?.lengthScale,
-          voice.speakers, voice.lexicon, voice.ruleFars, voice.ruleFsts, voice.voicesBin, voice.eSpeakPath,
+          Vv4rs.sherpaOnnxLanguageVoice[language]?.volumeBoost, voice.speakers,
+          voice.lexicon, voice.ruleFars, voice.ruleFsts, voice.voicesBin, voice.eSpeakPath,
         );
       }
     }
@@ -734,6 +737,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerCount, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerID, 
                       rateValue,
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.volumeBoost, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakers, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lexicon, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.farFiles, 
@@ -750,6 +754,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                       Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerCount, 
                       Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerID, 
                       rateValue,
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.volumeBoost, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakers, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lexicon, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.farFiles, 
@@ -761,6 +766,80 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
             },
           ),
           ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget sherpaOnnxVolumeBoostSlider(bool forSS, String language){
+   return Padding(
+      padding: EdgeInsets.fromLTRB(V4rs.paddingValue(20), 0, 0, V4rs.paddingValue(15)),
+      child: Row(
+        children: [
+          Text(
+            (forSS)
+              ? 'Volume Boost: ${Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', true)}'
+              : 'Volume Boost: ${Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', false)}',
+            style: Sv4rs.settingslabelStyle,
+          ),
+
+          Expanded(
+            child: Slider(
+            value: (forSS)
+              ? Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', true)
+              : Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', false),
+            min: 1.0,
+            max: 3.0,
+            divisions: 30,
+            activeColor: Cv4rs.themeColor1,
+            inactiveColor: Cv4rs.themeColor3,
+            thumbColor: Cv4rs.themeColor1,
+            label: (forSS)
+              ? 'Volume Boost: ${Vv4rs.getSystemSSValue(language, 'volumeBoost')}'
+              : 'Volume Boost: ${Vv4rs.getSystemValue(language, 'volumeBoost')}',
+            onChanged: (value) async {
+                volumeBoost = double.parse(value.toStringAsFixed(2));
+                setState((){
+                  (forSS)
+                  ? Vv4rs.setSSlanguageVoiceSherpaOnnx(
+                      language, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id,
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.engine, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.tokenPath, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.modelVoice, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerCount, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerID, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lengthScale,
+                      volumeBoost,
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakers, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lexicon, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.farFiles, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.fstFiles, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.voicesBin,
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.eSpeakPath,
+                    )
+                  : Vv4rs.setlanguageVoiceSherpaOnnx(
+                      language, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.id,
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.engine, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.tokenPath, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.modelVoice, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerCount, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerID, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.lengthScale,
+                      volumeBoost,
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.speakers, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.lexicon, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.farFiles, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.fstFiles, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.voicesBin,
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.eSpeakPath,
+                    );
+                });
+            },
+          ),
+          
           ),
         ],
       ),
@@ -998,6 +1077,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                               BVv4rs.bookmarkedVoices[language]?[i].speakerCount,
                               BVv4rs.bookmarkedVoices[language]?[i].speakerID,
                               BVv4rs.bookmarkedVoices[language]?[i].lengthScale, 
+                              BVv4rs.bookmarkedVoices[language]?[i].volumeBoost, 
                               BVv4rs.bookmarkedVoices[language]?[i].speakers,
                               BVv4rs.bookmarkedVoices[language]?[i].lexicon,
                               BVv4rs.bookmarkedVoices[language]?[i].farFiles,
@@ -1027,6 +1107,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                               BVv4rs.bookmarkedVoices[language]?[i].speakerCount,
                               BVv4rs.bookmarkedVoices[language]?[i].speakerID,
                               BVv4rs.bookmarkedVoices[language]?[i].lengthScale ?? 1.0, 
+                              BVv4rs.bookmarkedVoices[language]?[i].volumeBoost ?? 1.0,
                               BVv4rs.bookmarkedVoices[language]?[i].speakers,
                               BVv4rs.bookmarkedVoices[language]?[i].lexicon,
                               BVv4rs.bookmarkedVoices[language]?[i].farFiles,
@@ -1166,6 +1247,8 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                     //rate
                     if (Sv4rs.pickFromEngine == 'sherpa-onnx')
                       sherpaOnnxRateSlider(false, language),
+                    if (Sv4rs.pickFromEngine == 'sherpa-onnx')
+                      sherpaOnnxVolumeBoostSlider(false, language),
                     
 
                 //
@@ -1237,6 +1320,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
                             Vv4rs.sherpaOnnxLanguageVoice[lang]?.speakerCount,
                             Vv4rs.sherpaOnnxLanguageVoice[lang]?.speakerID,
                             Vv4rs.sherpaOnnxLanguageVoice[lang]?.lengthScale, 
+                            Vv4rs.sherpaOnnxLanguageVoice[lang]?.volumeBoost, 
                             Vv4rs.sherpaOnnxLanguageVoice[lang]?.speakers,
                             Vv4rs.sherpaOnnxLanguageVoice[lang]?.lexicon,
                             Vv4rs.sherpaOnnxLanguageVoice[lang]?.farFiles,

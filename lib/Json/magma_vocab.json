@@ -192,9 +192,7 @@
                     "id": "7a3d679a-7eda-11f0-895d-325096b39f47",
                     "type": "pinned",
                     "label": "Pinned",
-                    "linkToLabel": null,
-                    "linkToUUID": null,
-                     "returnAfterSelect": 1,
+                    "returnAfterSelect": 1,
                     "showOr": 1,
 
                     "matchFormat": true,
@@ -283,9 +281,7 @@
                     "id": "7aaf8af8-7dde-4ac1-b4e6-5f411e4ea031",
                     "type": "history",
                     "label": "History",
-                    "linkToLabel": null,
-                    "linkToUUID": null,
-                     "returnAfterSelect": 1,
+                    "returnAfterSelect": 1,
                     "showOr": 1,
 
                     "matchFormat": true,
@@ -10422,7 +10418,7 @@
                     "audioClip": null,
                     "linkToLabel": null,
                     "linkToUUID": null,
-                     "returnAfterSelect": 1,
+                    "returnAfterSelect": 1,
                     "function": null,
                     "show": true,
 
@@ -15387,7 +15383,7 @@
                   {
                     "id": "234e596a-a5ee-4db3-bed6-64dafcf8105f",
                     "type": 1,
-                    "label":  null,
+                    "label":  "up",
                     "message":  null,
                     "audioClip": null,
                     "linkToLabel": null,

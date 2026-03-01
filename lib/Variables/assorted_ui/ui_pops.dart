@@ -8,11 +8,13 @@ import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/bookmark_voice.dart';
 import 'package:flutterkeysaac/Variables/settings/speak_on_select.dart';
 import 'package:flutterkeysaac/Variables/export_variables.dart';
+import 'package:flutterkeysaac/Variables/editing/editor_variables.dart';
 import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/settings/boardset_settings_variables.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_variables.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:io'; //platform
 
@@ -50,14 +52,16 @@ Future<void> importSherpaOnnx(
                 valueListenable: Vv4rs.downloadMessage,
                 builder: (context, message, _) => message.isNotEmpty 
                   ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Expanded(child: 
+                      padding: EdgeInsets.symmetric(horizontal: 4.0),
+                      child: SizedBox(width: 700,
+                        child: 
                         Text(message, style: Sv4rs.settingslabelStyle, softWrap: true,),
                       ),
                     )
                   : const SizedBox.shrink(),
               ),
-          ],);
+          ],
+         );
     } else { 
     return 
     SingleChildScrollView(child: 
@@ -96,7 +100,6 @@ Future<void> importSherpaOnnx(
       Padding(
         padding: EdgeInsetsGeometry.all(V4rs.paddingValue(10)), 
         child: Column(children:[
-          
           Text(
             textAlign: TextAlign.center,
             'Examples:',
@@ -166,7 +169,7 @@ Future<void> importSherpaOnnx(
             items: 
               Sv4rs.allLanguages.map((language) {
                 return DropdownMenuItem<String>(
-                  value: language,
+                  value: V4rs.langNameToCode[language],
                   child: Text(language, style: Sv4rs.settingslabelStyle),
                 );
               }).toList(),
@@ -276,7 +279,6 @@ Future<void> importSherpaOnnx(
   }
 );
 }
-
 
 //speak on select shortcut 
 Future<void> showOptionsPopupForSpeakOnSelect(
@@ -477,6 +479,7 @@ Future<void> showOptionsPopupForSpeakOnSelect(
                               BVv4rs.bookmarkedVoices[language]?[i].speakerCount,
                               BVv4rs.bookmarkedVoices[language]?[i].speakerID,
                               BVv4rs.bookmarkedVoices[language]?[i].lengthScale, 
+                              BVv4rs.bookmarkedVoices[language]?[i].volumeBoost, 
                               BVv4rs.bookmarkedVoices[language]?[i].speakers,
                               BVv4rs.bookmarkedVoices[language]?[i].lexicon,
                               BVv4rs.bookmarkedVoices[language]?[i].farFiles,
@@ -506,6 +509,7 @@ Future<void> showOptionsPopupForSpeakOnSelect(
                               BVv4rs.bookmarkedVoices[language]?[i].speakerCount,
                               BVv4rs.bookmarkedVoices[language]?[i].speakerID,
                               BVv4rs.bookmarkedVoices[language]?[i].lengthScale ?? 1.0, 
+                              BVv4rs.bookmarkedVoices[language]?[i].volumeBoost ?? 1.0, 
                               BVv4rs.bookmarkedVoices[language]?[i].speakers,
                               BVv4rs.bookmarkedVoices[language]?[i].lexicon,
                               BVv4rs.bookmarkedVoices[language]?[i].farFiles,
@@ -697,6 +701,7 @@ Future<void> showOptionsPopupForSpeakOnSelect(
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerCount, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerID, 
                       rateValue,
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.volumeBoost,
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakers, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lexicon, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.farFiles, 
@@ -713,6 +718,7 @@ Future<void> showOptionsPopupForSpeakOnSelect(
                       Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerCount, 
                       Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerID, 
                       rateValue,
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.volumeBoost,
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakers, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lexicon, 
                       Vv4rs.sherpaOnnxSSLanguageVoice[language]?.farFiles, 
@@ -729,6 +735,82 @@ Future<void> showOptionsPopupForSpeakOnSelect(
       ),
     );
   }
+
+  double volumeBoost = 1.0;
+  Widget sherpaOnnxVolumeBoostSlider(bool forSS, String language, void Function(void Function()) setState){
+   return Padding(
+      padding: EdgeInsets.fromLTRB(V4rs.paddingValue(20), 0, 0, V4rs.paddingValue(15)),
+      child: Row(
+        children: [
+          Text(
+            (forSS)
+              ? 'Volume Boost: ${Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', true)}'
+              : 'Volume Boost: ${Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', false)}',
+            style: Sv4rs.settingslabelStyle,
+          ),
+
+          Expanded(
+            child: Slider(
+            value: (forSS)
+              ? Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', true)
+              : Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', false),
+            min: 1.0,
+            max: 3.0,
+            divisions: 30,
+            activeColor: Cv4rs.themeColor1,
+            inactiveColor: Cv4rs.themeColor3,
+            thumbColor: Cv4rs.themeColor1,
+            label: (forSS)
+              ? 'Volume Boost: ${Vv4rs.getSystemSSValue(language, 'volumeBoost')}'
+              : 'Volume Boost: ${Vv4rs.getSystemValue(language, 'volumeBoost')}',
+            onChanged: (value) async {
+                volumeBoost = double.parse(value.toStringAsFixed(2));
+                setState((){
+                  (forSS)
+                  ? Vv4rs.setSSlanguageVoiceSherpaOnnx(
+                      language, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.id,
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.engine, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.tokenPath, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.modelVoice, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerCount, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakerID, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lengthScale,
+                      volumeBoost,
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.speakers, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lexicon, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.farFiles, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.fstFiles, 
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.voicesBin,
+                      Vv4rs.sherpaOnnxSSLanguageVoice[language]?.eSpeakPath,
+                    )
+                  : Vv4rs.setlanguageVoiceSherpaOnnx(
+                      language, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.id,
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.engine, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.tokenPath, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.modelVoice, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerCount, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.speakerID, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.lengthScale,
+                      volumeBoost,
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.speakers, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.lexicon, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.farFiles, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.fstFiles, 
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.voicesBin,
+                      Vv4rs.sherpaOnnxLanguageVoice[language]?.eSpeakPath,
+                    );
+                });
+            },
+          ),
+          
+          ),
+        ],
+      ),
+    );
+  }
+
 
 
   await showDialog(
@@ -775,6 +857,8 @@ Future<void> showOptionsPopupForSpeakOnSelect(
                 bookmarkedVoicesRow(V4rs.selectedLanguage.value, false, reloadSherpaOnnx),
                 if (Vv4rs.myEngineForVoiceLang[V4rs.selectedLanguage.value] == 'sherpa-onnx')
                   sherpaOnnxRateSlider(false, V4rs.selectedLanguage.value, setState),
+                if (Vv4rs.myEngineForVoiceLang[V4rs.selectedLanguage.value] == 'sherpa-onnx')
+                  sherpaOnnxVolumeBoostSlider(false, V4rs.selectedLanguage.value, setState),
 
                 if (Vv4rs.myEngineForVoiceLang[V4rs.selectedLanguage.value] == 'system')
                   systemRateSlider(false, V4rs.selectedLanguage.value, setState),
@@ -793,6 +877,177 @@ Future<void> showOptionsPopupForSpeakOnSelect(
             ),
           ),
         ),
+          ),
+      );
+      },
+      );
+    },
+  );
+}
+
+//pinned page set
+Future<void> changePinnedPage(
+  BuildContext context,
+  Root root
+) async {
+
+  var allBoards = Ev4rs.getBoards(root.boards);
+
+  final mapOfBoards = {
+    for (var board in allBoards) 
+      if (board.title != null) 
+        board.title!: board.id,
+  };
+
+  String linkUUID = V4rs.pinnedPageLinkedUUID;
+  String linkLabel = V4rs.pinnedPageLabel;
+
+  print(V4rs.pinnedPageLinkedUUID);
+  print(V4rs.pinnedPageLabel);
+
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+
+          var widgets = [
+            Column(children: [
+              Padding (
+                padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.editorPaddingValue(15),0,0),
+                child: Text(
+                  'Link To...', 
+                  style: Sv4rs.settingslabelStyle,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsGeometry.fromLTRB(
+                  V4rs.editorPaddingValue(10), 
+                  V4rs.editorPaddingValue(5), 
+                  V4rs.editorPaddingValue(10),
+                  V4rs.editorPaddingValue(15),
+                ), 
+                child: DropdownButton<String>(
+                  hint: Text(
+                    'link to...', 
+                    style: Sv4rs.settingslabelStyle,
+                  ),
+                  value: linkUUID,
+                  items: [
+                    DropdownMenuItem<String>(
+                      value: '',
+                      child: 
+                      Text('none', style: Sv4rs.settingslabelStyle),
+                    ),
+                  ...mapOfBoards.entries.map((entry) {
+                    return DropdownMenuItem<String>(
+                      value: entry.value,
+                      child: Text(
+                        entry.key, 
+                        style: Sv4rs.settingslabelStyle,
+                      ),
+                    );
+                  })
+                  ],
+                  onChanged: (value) { setState(() {
+                    if (value != null) {
+                      linkUUID = value;
+                      linkLabel = mapOfBoards.entries.firstWhere((element) => element.value == value).key;
+                    }
+                    });
+                  },
+                ),
+              ),
+             ],
+            ),
+            //save 
+            Padding(
+              padding: EdgeInsetsGeometry.fromLTRB(
+                V4rs.paddingValue(10),
+                V4rs.paddingValue(3),
+                V4rs.paddingValue(10),
+                V4rs.paddingValue(10),
+              ),
+              child: 
+            SizedBox(
+              width: 150,
+              height: 60,
+              child: ButtonStyle2(
+                imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                onPressed: (){
+                  setState(() {
+                    V4rs.pinnedPageLabel = linkLabel;
+                    V4rs.pinnedPageLinkedUUID = linkUUID;
+                    V4rs.savePinnedPageInfo();
+                    Navigator.pop(context);
+                  },
+                );
+                },
+                label: 'Save'
+              ),
+            ),
+            ),
+          ];   
+
+        return Dialog(
+          alignment: Alignment.topCenter,
+          child: Container(
+            width: V4rs.xSmallModeWidth ? 300 : 1000,
+            decoration: BoxDecoration(
+              color: Cv4rs.themeColor4,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: EdgeInsetsGeometry.all(V4rs.paddingValue(5)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                
+                //dropdown, save
+                if (!V4rs.xSmallModeWidth)
+                Row(
+                  children: [
+                    Spacer(),
+                    ...widgets,
+                    Spacer(),
+                    SizedBox(
+                      width: !V4rs.xSmallMode ? 90 : 50, 
+                      height: !V4rs.xSmallMode ? 40 : 30, 
+                      child: ButtonStyle1(
+                        padding: !V4rs.xSmallMode ? 5 : 15,
+                        imagePath: 'assets/interface_icons/interface_icons/iClose.png',
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }
+                      ),
+                    ),
+                  ]
+                ),
+
+                if (V4rs.xSmallModeWidth)
+                Row(children: [
+                  Spacer(),
+                  Column(children: widgets),
+                  Spacer(),
+                  SizedBox(
+                      width: !V4rs.xSmallMode ? 90 : 50, 
+                      height: !V4rs.xSmallMode ? 40 : 30, 
+                      child: ButtonStyle1(
+                        padding: !V4rs.xSmallMode ? 5 : 15,
+                        imagePath: 'assets/interface_icons/interface_icons/iClose.png',
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }
+                      ),
+                    ),
+                ],
+              )
+                
+
+          ],
+          ),
+          ),
           ),
       );
       },

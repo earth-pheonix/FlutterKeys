@@ -354,6 +354,7 @@ class Vv4rs{
       int? speakerCount,
       int? speakerID,
       double? lengthScale,
+      double? volumeBoost,
       List<dynamic>? speakers,
       String? lexicon,
       String? farFiles,
@@ -370,6 +371,7 @@ class Vv4rs{
           speakerCount: speakerCount,
           speakerID: speakerID,
           lengthScale: lengthScale,
+          volumeBoost: volumeBoost,
           speakers: speakers,
           lexicon: lexicon,
           farFiles: farFiles,
@@ -392,6 +394,7 @@ class Vv4rs{
       await saveSherpaOnnxValue(sslangVoice, "speakerID", speakerID, true);
 
       await saveSherpaOnnxValue(sslangVoice, "lengthScale", lengthScale, true);
+      await saveSherpaOnnxValue(sslangVoice, "volumeBoost", volumeBoost, true);
       await saveSherpaOnnxValue(sslangVoice, "speakers", speakers, true);
       await saveSherpaOnnxValue(sslangVoice, "lexicon", lexicon, true);
 
@@ -456,6 +459,14 @@ class Vv4rs{
         }
         else {
           return sherpaOnnxLanguageVoice[langVoice]?.lengthScale ?? 1.0;
+        }
+      } 
+      else if (value == 'volumeBoost'){
+        if (forSS){
+          return sherpaOnnxSSLanguageVoice[langVoice]?.volumeBoost ?? 1.0;
+        }
+        else {
+          return sherpaOnnxLanguageVoice[langVoice]?.volumeBoost ?? 1.0;
         }
       } 
       else if (value == 'speakers'){
@@ -554,6 +565,16 @@ class Vv4rs{
         } else {
           if (saving != null) {
             return prefs.setDouble('sherpa_onnx-tts-lengthScale-$language', saving ?? 1.0);
+          }
+        }
+      }
+      else if (value == 'volumeBoost'){
+        if (forSS){
+          
+          return prefs.setDouble('sherpa_onnx-tts-forSS-volumeBoost-$language', saving ?? 0.0);
+        } else {
+          if (saving != null) {
+            return prefs.setDouble('sherpa_onnx-tts-volumeBoost-$language', saving ?? 0.0);
           }
         }
       }
@@ -715,6 +736,7 @@ class Vv4rs{
       int? speakerCount,
       int? speakerID,
       double? lengthScale,
+      double? volumeBoost,
       List<dynamic>? speakers,
       String? lexicon,
       String? farFiles,
@@ -731,6 +753,7 @@ class Vv4rs{
           engine: engine,
           speakerID: speakerID,
           lengthScale: lengthScale,
+          volumeBoost: volumeBoost,
           speakers: speakers,
           lexicon: lexicon,
           farFiles: farFiles,
@@ -748,6 +771,7 @@ class Vv4rs{
       await saveSherpaOnnxValue(langVoice, "engine", 'sherpa-onnx', false);
       await saveSherpaOnnxValue(langVoice, "speakerID", speakerID, false);
       await saveSherpaOnnxValue(langVoice, "lengthScale", lengthScale, false);
+      await saveSherpaOnnxValue(langVoice, "volumeBoost", volumeBoost, false);
       await saveSherpaOnnxValue(langVoice, "lexicon", lexicon, false);
       await saveSherpaOnnxValue(langVoice, "farFiles", farFiles, false);
       await saveSherpaOnnxValue(langVoice, "fstFiles", fstFiles, false);
@@ -1747,7 +1771,7 @@ static Future<bool> deleteImportedSherpaOnnxVoice(ManifestModel voice) async {
       Vv4rs.sherpaOnnxLanguageVoice[lang]?.engine = prefs.getString('sherpa_onnx-tts-engine-$lang');
       Vv4rs.sherpaOnnxLanguageVoice[lang]?.speakerID = prefs.getInt('sherpa_onnx-tts-speakerID-$lang');
       Vv4rs.sherpaOnnxLanguageVoice[lang]?.lengthScale = prefs.getDouble('sherpa_onnx-tts-lengthScale-$lang');
-      Vv4rs.sherpaOnnxLanguageVoice[lang]?.lengthScale = prefs.getDouble('sherpa_onnx-tts-lengthScale-$lang');
+      Vv4rs.sherpaOnnxLanguageVoice[lang]?.volumeBoost = prefs.getDouble('sherpa_onnx-tts-volumeBoost-$lang');
       Vv4rs.sherpaOnnxLanguageVoice[lang]?.lexicon = prefs.getString('sherpa_onnx-tts-lexicon-$lang');
       Vv4rs.sherpaOnnxLanguageVoice[lang]?.farFiles = prefs.getString('sherpa_onnx-tts-farFiles-$lang');
       Vv4rs.sherpaOnnxLanguageVoice[lang]?.fstFiles = prefs.getString('sherpa_onnx-tts-fstFiles-$lang');
@@ -1760,6 +1784,7 @@ static Future<bool> deleteImportedSherpaOnnxVoice(ManifestModel voice) async {
       Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.engine = prefs.getString('sherpa_onnx-tts-forSS-engine-$lang');
       Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.speakerID = prefs.getInt('sherpa_onnx-tts-forSS-speakerID-$lang');
       Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.lengthScale = prefs.getDouble('sherpa_onnx-tts-forSS-lengthScale-$lang');
+      Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.volumeBoost = prefs.getDouble('sherpa_onnx-tts-forSS-volumeBoost-$lang');
       Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.lexicon = prefs.getString('sherpa_onnx-tts-forSS-lexicon-$lang');
       Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.farFiles = prefs.getString('sherpa_onnx-tts-forSS-farFiles-$lang');
       Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.fstFiles = prefs.getString('sherpa_onnx-tts-forSS-fstFiles-$lang');
@@ -1798,6 +1823,7 @@ class SherpaOnnxVoice{
   String? lexicon; //collectuon of fars file paths seperated by ,
   String? tokenPath; //token path
   double? lengthScale; //rate
+  double? volumeBoost;
   int? speakerID; //speaker int
   List<dynamic>? speakers;
   String? eSpeakPath;
@@ -1814,6 +1840,7 @@ class SherpaOnnxVoice{
     this.tokenPath,
     this.modelVoice,
     this.lengthScale,
+    this.volumeBoost,
     this.speakerID,
     this.speakers,
     this.eSpeakPath

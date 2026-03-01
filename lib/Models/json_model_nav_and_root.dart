@@ -309,6 +309,7 @@ extension NavRowDisplay on NavObjects {
     final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth,
     final Future<void> Function() initForSS,
     final AudioPlayer playerForSS,
+    final Root root,
   ) {
 
     final perRow = buttonsPerRow ?? content.length;
@@ -345,7 +346,7 @@ extension NavRowDisplay on NavObjects {
                     child: item.buildWidget(
                       synth, toggleStorage, openBoard, 
                       boards, findBoardById, item, 
-                      speakSelectSherpaOnnxSynth, initForSS, playerForSS,
+                      speakSelectSherpaOnnxSynth, initForSS, playerForSS, root,
                     ))),
                 for (var i = 0; i < (perRow / 2 ).ceil() - (row.length / 2).ceil(); i++)
                  Expanded(child: Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(3)), child: SizedBox())),  // empty slot
@@ -373,7 +374,7 @@ extension NavRowDisplay on NavObjects {
                       child: btn.buildWidget(
                         synth, toggleStorage, openBoard, 
                         boards, findBoardById, btn,
-                        speakSelectSherpaOnnxSynth, initForSS, playerForSS,
+                        speakSelectSherpaOnnxSynth, initForSS, playerForSS, root,
                       ),
                     ),
                   ),
@@ -388,7 +389,7 @@ extension NavRowDisplay on NavObjects {
                           Expanded(child: chest.buildWidget(
                             synth, toggleStorage, openBoard, 
                             boards, findBoardById, chest,
-                            speakSelectSherpaOnnxSynth, initForSS, playerForSS,
+                            speakSelectSherpaOnnxSynth, initForSS, playerForSS, root,
                           )),
                       ],
                     ),
@@ -403,7 +404,7 @@ extension NavRowDisplay on NavObjects {
                       child: btn.buildWidget(
                         synth, toggleStorage, openBoard, 
                         boards, findBoardById, btn,
-                        speakSelectSherpaOnnxSynth, initForSS, playerForSS,
+                        speakSelectSherpaOnnxSynth, initForSS, playerForSS, root,
                       ),
                     ),
                   ),
@@ -428,7 +429,7 @@ extension NavRowDisplay on NavObjects {
                     child: item.buildWidget(
                       synth, toggleStorage, openBoard, 
                       boards, findBoardById, item,
-                      speakSelectSherpaOnnxSynth, initForSS, playerForSS,
+                      speakSelectSherpaOnnxSynth, initForSS, playerForSS, root
                     ))),
                 for (var i = 0; i < (perRow / 2).floor() - (row.length / 2).floor(); i++)
                   Expanded(child: Padding(padding: EdgeInsetsGeometry.all(V4rs.paddingValue(3)), child: SizedBox())),  // empty slot
@@ -594,20 +595,21 @@ extension NavRowDisplay on NavObjects {
     void Function(BoardObjects) openBoard, 
     List<BoardObjects> boards, 
     BoardObjects? Function(String uuid, List<BoardObjects> boards) findBoardById, 
-    NavObjects? obj,
+    NavObjects obj,
     final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth,
     final Future<void> Function() initForSS,
     final AudioPlayer playerForSS,
+    final Root root,
   ) {
     switch(type) {
       case 'row': 
         return _buildRow(
           synth, toggleStorage, openBoard, 
-          boards, findBoardById, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
+          boards, findBoardById, speakSelectSherpaOnnxSynth, initForSS, playerForSS, root);
       case 'navButton':
         return _buildNavButton(synth, openBoard, boards, findBoardById, obj, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
       case "history" || "pinned":
-        return _buildSpecialNavButton(synth, obj, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
+        return _buildSpecialNavButton(synth, obj, speakSelectSherpaOnnxSynth, initForSS, playerForSS, root, openBoard, boards, findBoardById);
       case "storage":
         return _buildStorageChest(synth, toggleStorage);
       default:
@@ -634,7 +636,7 @@ extension NavRowDisplay on NavObjects {
       case 'navButton':
         return _buildEditableNavButton(root, synth, obj, openBoard, boards, findBoardById, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
       case "history" || "pinned":
-        return _buildSpecialNavButton(synth, obj, speakSelectSherpaOnnxSynth, initForSS, playerForSS,);
+        return _buildSpecialNavButton(synth, obj, speakSelectSherpaOnnxSynth, initForSS, playerForSS, root, openBoard, boards, findBoardById);
       case "storage":
         return _buildStorageChest(synth, toggleStorage);
       default:
@@ -703,46 +705,35 @@ extension NavRowDisplay on NavObjects {
   }
   
   Widget _buildSpecialNavButton(
-    TTSInterface synth, NavObjects? me,
+    TTSInterface synth, NavObjects obj,
     final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth,
     final Future<void> Function() initForSS,
     final AudioPlayer playerForSS,
-    ) {
-    return (Bv4rs.showCenterButtons != 2) ? SpecialNavButtonStyle(
-      me: me,
-      onPressed: () {}, 
-      tts: synth,
-      label: label ?? '',
-      showOr: showOr ?? 1,
-      matchFormat: matchFormat ?? true,
-      format: format ?? 1,
-      matchPOS: matchPOS ?? true,
-      pos: pos ?? 'Extra 1',
-      backgroundColor: backgroundColor ?? Colors.deepPurple,
-      matchBorder: matchBorder ?? true,
-      borderWeight: borderWeight ?? 3.5,
-      borderColor: borderColor ?? Colors.amber,
-      matchFont: matchFont ?? true,
-      fontFamily: fontFamily ?? '',
-      fontSize: fontSize ?? 14,
-      fontWeight: fontWeight ?? 400,
-      fontItalics: fontItalics ?? false,
-      fontUnderline: fontUnderline ?? false,
-      fontColor: fontColor ?? Colors.black,
-      symbol: symbol ?? 'assets/interface_icons/interface_icons/iPlaceholder.png',
-      padding: padding ?? V4rs.paddingValue(5),
-      matchOverlayColor: matchOverlayColor ?? true,
-      overlayColor: overlayColor ?? Colors.black,
-      symbolSaturation: symbolSaturation ?? 0.5,
-      symbolContrast: symbolContrast ?? 0.5,
-      invertSymbolColors: invertSymbol ?? false,
-      matchSpeakOS: matchSpeakOS ?? false,
-      speakOS: speakOS ?? 1,
-      alternateLabel: alternateLabel ?? '',
-      speakSelectSherpaOnnxSynth: speakSelectSherpaOnnxSynth,
-      initForSS: initForSS,
-      playerForSS: playerForSS,
+    final Root root,
+    void Function(BoardObjects) openBoard, 
+    List<BoardObjects> boards, 
+    BoardObjects? Function(String uuid, List<BoardObjects> boards) findBoardById, 
+  ) {
+    return (Bv4rs.showCenterButtons != 2) 
+    ? (obj.type == "history") 
+      ? HistoryButton(
+        obj: obj, 
+        tts: synth, 
+        speakSelectSherpaOnnxSynth: speakSelectSherpaOnnxSynth, 
+        initForSS: initForSS, 
+        playerForSS: playerForSS
       )
+      : BuildPinnedButton(
+        obj: obj, 
+        tts: synth, 
+        speakSelectSherpaOnnxSynth: speakSelectSherpaOnnxSynth, 
+        initForSS: initForSS, 
+        playerForSS: playerForSS,
+        root: root,
+        openBoard: openBoard,
+        boards: boards,
+        findBoardById: findBoardById,
+      ) 
     : SizedBox.shrink();
   }
   

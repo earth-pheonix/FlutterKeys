@@ -10,7 +10,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 
 class GrammerObjects {
-  final String id;
+  String id;
   String? type;
   String? title;
   final List<GrammerObjects> content;
@@ -319,6 +319,10 @@ extension BoardsDisplay on GrammerObjects {
 
 }
 
+
+extension GrammerObjectsClone on GrammerObjects {
+  GrammerObjects clone() => GrammerObjects.fromJson(toJson());
+}
 
 
 

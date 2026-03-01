@@ -265,10 +265,11 @@ class MessageHistoryPage {
       child: HistoryButtonStyle(
         image: 'assets/interface_icons/interface_icons/iPlaceholder.png',
         contents: 'Tap History', 
+        isForOpenTrackTaps: true,
         onPressed: (){
-          HistoryV4rs.openTapHistory.value = true;
-          if (HistoryV4rs.openTapHistory.value){
+          if (HistoryV4rs.trackTaps){
             HistoryV4rs.getTapHistoryPages();
+            HistoryV4rs.openTapHistory.value = true;
           }
         }, 
         isSubFolder: true
@@ -336,7 +337,11 @@ class MessageHistoryPage {
     );
   }
   
-  static Widget buildHistoryButton(int flex, int index, bool alternate){
+  static Widget buildHistoryButton(
+    int flex,  //size
+    int index,  //what the label hould be
+    bool alternate //creates alternating color variation 
+  ){
     return ValueListenableBuilder(
       valueListenable: HistoryV4rs.selectedMessageHistoryPage, 
       builder: (context, selected, _){
@@ -623,9 +628,11 @@ class TapHistoryPage {
       ? HistoryV4rs.tapHistoryPages.value[HistoryV4rs.selectedTapHistoryPage.value]
       : null;
 
-    String? thePath = ((thePage != null) ? index < thePage.length : false)
-      ? SeV4rs.getPath(SeV4rs.findPath(root, thePage.entries.elementAt(index).key))
-      : null;
+    String? thePath = ((thePage != null) 
+      ? index < thePage.length 
+      : false)
+        ? SeV4rs.getPath(SeV4rs.findPath(root, thePage.entries.elementAt(index).key))
+        : null;
     BoardObjects? theObj = ((thePage != null) ? index < thePage.length: false)
       ? Ev4rs.findBoardById(boards, thePage.entries.elementAt(index).key)
       : null;
@@ -849,6 +856,7 @@ class HistoryButtonStyle extends StatelessWidget{
       final bool column;
       final bool leading;
       final bool alternate;
+      final bool isForOpenTrackTaps;
       
       const HistoryButtonStyle({
         super.key, 
@@ -861,6 +869,7 @@ class HistoryButtonStyle extends StatelessWidget{
         this.column = false,
         this.leading = false,
         this.alternate = false,
+        this.isForOpenTrackTaps = false,
       });
 
       @override
@@ -889,9 +898,10 @@ class HistoryButtonStyle extends StatelessWidget{
         Text theLabel = 
         Text(contents, 
           style: matchStyle,
-          maxLines: 4,
+          maxLines: 3,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.start,
+          softWrap: true,
         );
       
       //image
@@ -963,13 +973,14 @@ class HistoryButtonStyle extends StatelessWidget{
         Widget case4Contents = 
         Row(
           mainAxisAlignment: (leading) ? MainAxisAlignment.start : MainAxisAlignment.center,
-          children: [
+          children: [ Expanded(child: 
           Padding(
             padding: EdgeInsets.symmetric(
               horizontal: V4rs.paddingValue(10), 
               vertical: V4rs.paddingValue(5)
             ), 
             child: theLabel
+          ),
           ),
         ]
         );
@@ -1050,7 +1061,7 @@ class HistoryButtonStyle extends StatelessWidget{
         }
 
         return Visibility(
-          visible: (contents != ''), 
+          visible: (isForOpenTrackTaps) ? HistoryV4rs.trackTaps : (contents != ''), 
           maintainSize: true, 
           maintainAnimation: true,
           maintainState: true,
@@ -1405,23 +1416,24 @@ class HistoryV4rs {
     print('getMessageHistoryPages: hello');
 
     messageHistoryPages.value  = [];
+    final List<String> invertedHistory = messageHistory.reversed.toList();
     
-    for (int i=0; i < messageHistory.length; i += 12){
-      int lastItem = (i + 12 < messageHistory.length) ? i + 12 : messageHistory.length;
-      (i + 12 < messageHistory.length) ? i + 12 : messageHistory.length;
-      List<String> page = messageHistory.sublist(i, lastItem);
+    for (int i=0; i < invertedHistory.length; i += 12){
+      int lastItem = (i + 12 < invertedHistory.length) ? i + 12 : invertedHistory.length;
+      (i + 12 < invertedHistory.length) ? i + 12 : invertedHistory.length;
+      List<String> page = invertedHistory.sublist(i, lastItem);
 
       while (page.length < 12) { //while = keep going while condition is true
         page.add('');
       }
       messageHistoryPages.value .add(page);
     }
-    if (messageHistory.isEmpty){
+    if (invertedHistory.isEmpty){
       List<String> page = [];
       while (page.length < 12) {
         page.add('');
       }
-      messageHistoryPages.value .add(page);
+      messageHistoryPages.value.add(page);
     }
     return messageHistoryPages.value ;
   }
@@ -1492,16 +1504,25 @@ class HistoryV4rs {
 
   static ValueNotifier<List<Map<String, int>>> tapHistoryPages  = ValueNotifier([]);
   static List<Map<String, int>> getTapHistoryPages(){
+    print('get tap history pages: hello');
     tapHistoryPages.value  = [];
+
+    List<MapEntry<String, int>> sortedEntries = tapHistory.entries.toList();
+    sortedEntries.sort((a, b) => b.value.compareTo(a.value));
     
-    for (int i=0; i < tapHistory.length; i += 12){
-      int lastItem = (i + 12 < tapHistory.length) ? i + 12 : tapHistory.length;
+    for (int i=0; i < sortedEntries.length; i += 12){
+      int lastItem = (i + 12 < sortedEntries.length) ? i + 12 : tapHistory.length;
       
-      final values = tapHistory.entries.toList().sublist(i, lastItem);
+      final values = sortedEntries.sublist(i, lastItem);
       Map<String, int> page = Map.fromEntries(values);
 
       tapHistoryPages.value.add(page);
     }
+
+    if (tapHistory.isEmpty) {
+      tapHistoryPages.value = [{}];
+    }
+
     return tapHistoryPages.value;
   }
 

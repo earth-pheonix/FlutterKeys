@@ -48,6 +48,7 @@ dependencies:
   printing: ^5.12.0
   pdf: ^3.10.7
   http: ^1.2.0
+  wav: ^1.5.0
   tts_highlighter: 
     path: ./tts_highlighter
 

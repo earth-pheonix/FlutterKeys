@@ -46,6 +46,8 @@ class Ev4rs {
 
     static ValueNotifier<bool> showAddBoard = ValueNotifier<bool>(false); //create board
 
+    static ValueNotifier<bool> showAddGrammer = ValueNotifier<bool>(false); //create board
+
     //sync label and message 
     static ValueNotifier<bool> matchLabel = ValueNotifier<bool>(true);
 
@@ -125,14 +127,14 @@ class Ev4rs {
         selectedButton.value = obj;
         selectedUUID = obj.id; 
 
-        if (obj.type == 3 || obj.type == 2 && tapAndSwap == false){
-          var linkedBoard = findBoardById(root.boards, obj.linkToUUID ?? '');
-          var linkedGrammer = linkedBoard != null 
-              ? findGrammerById(root.grammerRow, linkedBoard.useGrammerRow ?? '') 
+        if (tapAndSwap == false){
+          var parentBoard = findBoardFromChild(root.boards, selectedUUID);
+          var linkedGrammer = parentBoard != null 
+              ? findGrammerById(root.grammerRow, parentBoard.useGrammerRow ?? '') 
               : null;
 
           if (Ev4rs.boardEditor.value){
-            boardSelecting(linkedBoard, linkedGrammer, root.grammerRow);
+            boardSelecting(parentBoard, linkedGrammer, root.grammerRow);
           }
         }
     }
@@ -293,9 +295,8 @@ class Ev4rs {
         grammerSelectedUUID = obj.id; 
 
         var linkedBoard = findBoardById(root.boards, obj.openUUID ?? '');
-        var linkedGrammer = linkedBoard != null 
-            ? findGrammerById(root.grammerRow, linkedBoard.useGrammerRow ?? '') 
-            : null;
+        var linkedGrammer = findGrammerById(root.grammerRow, grammerSelectedUUID);
+        
 
         if (Ev4rs.boardEditor.value) {
           editAButton.value = false;
@@ -303,8 +304,11 @@ class Ev4rs {
           editASubFolder.value = false;
           editANavButton.value = false;
           if (Ev4rs.grammerRowEditor.value){
-            Ev4rs.selectedGrammerRow.value = linkedGrammer;
-            Ev4rs.selectedGrammerRowUUID = linkedGrammer?.id ?? '';
+            if (linkedGrammer != null){
+              var linkedGrammerRow = findGrammerRowByChild(root.grammerRow, linkedGrammer);
+              Ev4rs.selectedGrammerRow.value = linkedGrammerRow;
+              Ev4rs.selectedGrammerRowUUID = linkedGrammerRow?.id ?? '';
+            }
           } else {
           Ev4rs.selectedBoard.value = linkedBoard;
           Ev4rs.selectedBoardUUID.value = linkedBoard?.id ?? '';
@@ -393,6 +397,10 @@ class Ev4rs {
         var linkedGrammer = findGrammerById(root.grammerRow, linkedBoard.useGrammerRow ?? '');
 
         if (Ev4rs.boardEditor.value){
+          if (Ev4rs.grammerRowEditor.value){
+            Ev4rs.selectedGrammerRow.value = linkedGrammer;
+            Ev4rs.selectedGrammerRowUUID = linkedGrammer?.id ?? '';
+          }
           boardSelecting(linkedBoard, linkedGrammer, root.grammerRow);
         }
       }
@@ -1725,6 +1733,33 @@ class Ev4rs {
       }
       return null;
     }
+
+    static BoardObjects? findBoardFromChild(List<BoardObjects> boards, String childUuid){
+      var child = findBoardById(boards, childUuid);
+      if(child == null) {return null;}
+
+      for (final board in boards){
+        for (final obj in board.content) {
+          if (obj.id == child.id){
+            return board;
+          }
+        }
+      }
+      return null;
+    }
+
+
+    //find object via uuid
+    static GrammerObjects? findGrammerRowByChild(List<GrammerObjects> row, GrammerObjects child){
+    for (final item in row){
+      for (final obj in item.content) {
+        if (obj.id == child.id){
+          return item;
+        }
+      }
+    }
+    return null;
+  }
     //find obj via linked 
      static BoardObjects? findBoardByLinked(List<BoardObjects> boards, String uuid) {
       for (final board in boards) {
@@ -2215,6 +2250,13 @@ class Ev4rs {
               break;
             case 'note':
               row.note = newValue as String?;
+              break;
+
+            //
+            //grammer row
+            //
+            case 'title':
+              row.title = newValue as String?;
               break;
 
             
@@ -2889,6 +2931,19 @@ class Ev4rs {
           final boardIndex = root.boards.indexWhere((b) => b.id == uuid);
           if (boardIndex == -1) return false;
           root.boards.removeAt(boardIndex);
+          reloadJson.value = !reloadJson.value;
+          Future.delayed(const Duration(milliseconds: 500), () {
+            isSaving.value = false;
+          });
+          return true;
+        }
+
+      //delete a grammer row
+        static bool deleteGrammerRow(Root root, String uuid) {
+          isSaving.value = true;
+          final rowIndex = root.grammerRow.indexWhere((b) => b.id == uuid);
+          if (rowIndex == -1) return false;
+          root.grammerRow.removeAt(rowIndex);
           reloadJson.value = !reloadJson.value;
           Future.delayed(const Duration(milliseconds: 500), () {
             isSaving.value = false;

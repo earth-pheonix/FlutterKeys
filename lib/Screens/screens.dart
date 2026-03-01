@@ -228,8 +228,6 @@ class _ScreensState extends State<Screens> with WidgetsBindingObserver {
               playerForSS: widget.playerForSS,
             );
           } else         
-        //=====: Editor
-          
         //=====: Home
           {
           return Home(
@@ -442,6 +440,7 @@ class _ScreensState extends State<Screens> with WidgetsBindingObserver {
                                     widget.speakSelectSherpaOnnxSynth,
                                   widget.initForSS,
                                   widget.playerForSS,
+                                  _root!
                                   ),
                               ),
                           ],

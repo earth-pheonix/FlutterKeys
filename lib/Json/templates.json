@@ -1,6 +1,399 @@
 {
      "navRow": [],
-     "grammerRow": [],
+     "grammerRow": [
+      {
+           "id": "dc16dabc-9ed4-11f0-bc33-325095b38e47",
+           "type": "row",
+           "title": "Blank Grammer Row",
+           "content": [
+              {
+                 "id": "f01d2285-dbac-33df-bc2c-d5e755103f7f",
+                 "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+               {
+                 "id": "01c1e21f-be1b-3848-8e07-c1d0896ccaae",
+                 "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+               {
+                 "id": "45ecd353-948e-4fb5-bdce-fb65ab87b618",
+                 "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+               {
+                "id": "09bae48f-52e2-4364-bc4a-a187607a1c63",
+                "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+               {
+                 "id": "da421cab-441b-4d58-82d2-a95a9786fb5b",
+                 "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+               {
+                 "id": "e8961840-8a8c-4418-b5dd-dffa40b12832",
+                 "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+               {
+                 "id": "f01d3275-dbbc-43df-bc2c-d4e855123f7f",
+                 "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+              {
+                 "id": "e01d3285-dcac-42df-bc2c-d4e855102f7f",
+                 "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+              {
+                 "id": "ec2d3285-dbac-43df-bc2c-d4e687103f7f",
+                 "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+               {
+                 "id": "6237f2f4-aca4-447f-8870-7421abe1bd58",
+                 "type": "placeholder",
+                "language": "n/a",
+                "label": null,
+                "function": "placeholder",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": null,
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+
+                 "note": null
+              },
+               {
+                 "id": "5b3f99b5-63dd-41b5-84db-c4a46f6f9fb2",
+                 "type": "folder",
+                 "language": "en",
+                 "label": "all",
+                 "openUUID": "e79e54ed-8738-423b-8802-182f746f8c1c",
+
+                 "matchFormat": true,
+                 "format": null,
+                 "backgroundColor": null,
+
+                 "matchFont": true,
+                 "fontFamily": null,
+                 "fontSize": null,
+                 "fontWeight": null,
+                 "fontItalics": null,
+                 "fontUnderline": null,
+                 "fontColor": null,
+
+                 "symbol": "assets/magma_vocab_symbols/grammer_buttons/iAllGrammer.png",
+                 "padding": null,
+                 "matchOverlayColor": true,
+                 "overlayColor": null,
+                 "matchSymbolSaturation": true,
+                 "symbolSaturation": null,
+                 "matchSymbolContrast": true,
+                 "symbolContrast": null,
+                 "matchInvertSymbol": true,
+                 "invertSymbol": null,
+
+                 "matchSpeakOS": true,
+                 "speakOS": null,
+                 
+                 "note": null
+              }
+           ]
+       }
+     ],
 
      "boards": [
        {

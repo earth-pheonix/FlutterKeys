@@ -236,6 +236,22 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
 }
 
 //
+//Pinned Page
+//
+
+  static String pinnedPageLinkedUUID = '';
+  static String pinnedPageLabel = '';
+  static final String _pinnedPageLinkedUUID = "pinnedPageLinkedUUID";
+  static final String _pinnedPageLabel = "pinnedPageLabel";
+
+  static Future<void> savePinnedPageInfo() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_pinnedPageLinkedUUID, pinnedPageLinkedUUID);
+    await prefs.setString(_pinnedPageLabel, pinnedPageLabel);
+  } 
+
+
+//
 //sub folders
 //
   static bool primaryUseSubFolders = true;
@@ -798,6 +814,11 @@ static Future<File> resolveImageFile(String relativePath) async {
       final dir = await getApplicationDocumentsDirectory();
       currentFile = File('${dir.path}/$filename');
     }
+
+    //load pinned page info
+    pinnedPageLinkedUUID = prefs.getString(_pinnedPageLinkedUUID) ?? '';
+    pinnedPageLabel = prefs.getString(_pinnedPageLabel) ?? '';
+
 
     //all the other variables to load
     

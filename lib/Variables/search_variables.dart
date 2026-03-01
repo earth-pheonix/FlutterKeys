@@ -207,6 +207,7 @@ class SeV4rs{
   static String getPath(Map<String, String> map){
     String path = '';
     
+    if (map.isEmpty) return path;
 
     path = map.entries.last.value;
 

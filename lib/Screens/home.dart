@@ -230,7 +230,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               child: GestureDetector( 
                   behavior: HitTestBehavior.translucent,
                   onVerticalDragEnd: (details) {
-                    if (details.primaryVelocity != null && details.primaryVelocity! > 0) {
+                    if (details.primaryVelocity != null && details.primaryVelocity! < -300) {
                       showOptionsPopupForSpeakOnSelect(
                         widget.reloadSherpaOnnx,
                         context,
@@ -282,6 +282,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                   widget.speakSelectSherpaOnnxSynth,
                                   widget.initForSS,
                                   widget.playerForSS,
+                                  _root!,
                                 ),
                             ),
                         ],
@@ -582,6 +583,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                     widget.speakSelectSherpaOnnxSynth,
                                   widget.initForSS,
                                   widget.playerForSS,
+                                  _root!
                                   ),
                               ),
                           ],

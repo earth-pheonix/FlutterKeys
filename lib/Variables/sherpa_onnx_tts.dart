@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import "dart:io";
 import 'dart:isolate';
+import 'package:wav/wav.dart';
 
 //supports vits, kokoro, matcha, kitten
 
@@ -326,6 +327,33 @@ class SherpaOnnxV4rs {
     return p.join(directory.path, filename);
   }
 
+  static Future<String> boostWavVolume(String inputPath, double gain) async {
+    try {
+      // 1. Load the wav file
+      final wav = await Wav.readFile(inputPath);
+
+      // 2. Apply gain to every sample in every channel
+      for (var channel in wav.channels) {
+        for (var i = 0; i < channel.length; i++) {
+          // Multiply the sample by our gain
+          double boosted = channel[i] * gain;
+          
+          // Clamp the value between -1.0 and 1.0 to prevent digital "wrapping"
+          // (This is our basic safety limiter)
+          channel[i] = boosted.clamp(-1.0, 1.0);
+        }
+      }
+
+      // 3. Save to a new path
+      final outputPath = inputPath.replaceAll('.wav', '_boosted.wav');
+      await wav.writeFile(outputPath);
+      
+      return outputPath;
+    } catch (e) {
+      return inputPath; // Fallback to original if something fails
+    }
+  }
+
   static Future<void> speak(
     bool forSS,
     String lang, 
@@ -343,6 +371,9 @@ class SherpaOnnxV4rs {
     final rate = (forSS) 
       ? Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.lengthScale
       : Vv4rs.sherpaOnnxLanguageVoice[lang]?.lengthScale;
+    final volumeBoost = (forSS)
+      ? Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.volumeBoost
+      : Vv4rs.sherpaOnnxLanguageVoice[lang]?.volumeBoost;
   
     final responsePort = ReceivePort();
 
@@ -374,7 +405,7 @@ class SherpaOnnxV4rs {
 
     if (wav) {
       //set file
-      V4rs.currentSpeakingFile = filename;
+      V4rs.currentSpeakingFile = await boostWavVolume(filename, volumeBoost ?? 1.0);
 
       //set wpm for highlighting
       double time = samples.length / sampleRate; //in seconds
