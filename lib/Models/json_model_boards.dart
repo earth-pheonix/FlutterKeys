@@ -23,6 +23,7 @@ class BoardObjects {
   List<BoardObjects> content;
 
   int? type; //1= button, 2= pocket folder, 3= folder, 4= typing key, 5 = sound tile, 6 grammer
+  double? volAmount; 
   String? function;
   String? label;
   String? alternateLabel;
@@ -67,6 +68,7 @@ class BoardObjects {
 
   BoardObjects({
     required this.id,
+    this.volAmount,
     this.function,
     this.useGrammerRow,
     this.useSubFolders,
@@ -120,6 +122,7 @@ class BoardObjects {
     return BoardObjects(
       id: json['id'] as String,
       function: json['function'] as String?,
+      volAmount: (json['volAmount'] as num?)?.toDouble(),
       useGrammerRow: json['useGrammerRow'] as String?,
       useSubFolders: json['useSubFolders'] as int?,
       type1: json['type1'] as String?,
@@ -190,6 +193,7 @@ class BoardObjects {
       'id': id,
       'useGrammerRow': useGrammerRow,
       'function': function,
+      'volAmount': volAmount,
       'useSubFolders': useSubFolders,
       'type1': type1,
       'title': title,
@@ -470,7 +474,7 @@ extension BoardsDisplay on BoardObjects {
     final Future<void> Function() initForSS,
     final AudioPlayer playerForSS,
     ) {
-      switch (obj.type) { // type = 1, 2, 3, 4, 5, 6
+      switch (obj.type) { // type = 1, 2, 3, 4, 5, 6, 7 || 8, 
         case 1: 
           return ValueListenableBuilder(valueListenable: V4rs.searchPathUUIDS, builder: (context, search, _) { //button
             return BuildButton(
@@ -526,7 +530,7 @@ extension BoardsDisplay on BoardObjects {
               initForSS: initForSS,
               playerForSS: playerForSS,
             );});
-        case 6:
+        case 6: //grammer button
           return ValueListenableBuilder(valueListenable: V4rs.searchPathUUIDS, builder: (context, search, _) { 
             return BuildButtonGrammer(
               obj: obj, 
@@ -535,6 +539,16 @@ extension BoardsDisplay on BoardObjects {
               initForSS: initForSS,
               playerForSS: playerForSS,
             );});
+        case 7 || 8:
+          return ValueListenableBuilder(valueListenable: V4rs.searchPathUUIDS, builder: (context, search, _) { 
+            return BuildVolumeButton(
+              obj: obj, 
+              synth: synth,
+              speakSelectSherpaOnnxSynth: speakSelectSherpaOnnxSynth,
+              initForSS: initForSS,
+              playerForSS: playerForSS,
+            );});
+
         default:
           return const SizedBox.shrink(); // fallback
       }
@@ -820,7 +834,7 @@ extension BoardsDisplay on BoardObjects {
             initForSS: initForSS,
             playerForSS: playerForSS,
           );
-        case 6:
+        case 6: //grammer button
            child = BuildEditableButtonGrammer(
             obj: obj, 
             synth: synth, 
@@ -829,6 +843,15 @@ extension BoardsDisplay on BoardObjects {
             initForSS: initForSS,
             playerForSS: playerForSS,
             );
+        case 7 || 8: 
+          child = BuildEditableVolumeButton(
+            obj: obj, 
+            synth: synth, 
+            root: root,
+            speakSelectSherpaOnnxSynth: speakSelectSherpaOnnxSynth,
+            initForSS: initForSS,
+            playerForSS: playerForSS,
+          );
         default:
            child = const SizedBox.shrink(); // fallback
       }

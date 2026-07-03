@@ -1358,7 +1358,7 @@ import 'dart:async';
                     }
                   ),
                   
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -1490,7 +1490,7 @@ import 'dart:async';
                     }
                   ),
                   
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -1563,7 +1563,7 @@ import 'dart:async';
                           }
                       ),
                       ),
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -1627,7 +1627,7 @@ import 'dart:async';
                         ),
                       ),
             
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -1698,7 +1698,7 @@ import 'dart:async';
                           },
                         ),
                       ),
-                      //save 
+                      //save  (update board value)
                       ButtonStyle2(
                         imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                         onPressed: (){setState(() {
@@ -1844,7 +1844,7 @@ import 'dart:async';
                           },
                         ),
                     ),
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -1898,6 +1898,71 @@ import 'dart:async';
               ),
               ),
 
+            //if volume 
+            if (Ev4rs.buttonType.value == 8 || Ev4rs.buttonType.value == 7)
+            Padding(
+              padding: EdgeInsetsGeometry.all(V4rs.editorPaddingValue(10)),
+              child: 
+                Container(
+                  decoration: BoxDecoration(
+                    color: Cv4rs.themeColor4,
+                    borderRadius: BorderRadius.circular(10)
+                    ),
+                    child:  ValueListenableBuilder<String>(
+                    valueListenable: Ev4rs.grammerFunction, 
+                    builder: (context, grammerFunction, _) {
+                      return
+                    Column(children: [
+                      Padding (
+                        padding: EdgeInsetsGeometry.fromLTRB(0,V4rs.editorPaddingValue(15),0,0),
+                        child: Text(
+                          'Increase/ decrease by:', 
+                          style: Sv4rs.settingslabelStyle,
+                          ),
+                      ),
+                    Padding(
+                      padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.editorPaddingValue(10)), 
+                      child:
+                      DropdownButton<double>(
+                          isExpanded: true,
+                          hint: Text(
+                            'volume amount', 
+                            style: Sv4rs.settingslabelStyle,
+                          ),
+                          value: Ev4rs.volAmount.value,
+                          items: Ev4rs.volAmountOption.entries.map((entry) {
+                            return DropdownMenuItem<double>(
+                              value: entry.value,
+                              child: Text(
+                                '${entry.key}', 
+                                style: Sv4rs.settingslabelStyle,
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (value) { setState(() {
+                            if (value != null) {
+                              Ev4rs.volAmount.value = value;
+                            }
+                            });
+                          },
+                        ),
+                    ),
+                  //save  (update board value) (update board value)
+                  ButtonStyle2(
+                    imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
+                    onPressed: (){setState(() {
+                        widget.saveField(root, Ev4rs.selectedUUID, 'volAmount', Ev4rs.volAmount.value);
+                        Ev4rs.saveJson(root);
+                      });
+                    }, 
+                    label: 'Save'
+                  ),
+                    ]);
+                  }),
+          
+            ),
+            ),
+            
             //notes
             Padding(padding: EdgeInsetsGeometry.all(V4rs.editorPaddingValue(10)),
             child:
@@ -3070,7 +3135,7 @@ import 'dart:async';
                     }
                   ),
                   
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -3219,7 +3284,7 @@ import 'dart:async';
                     }
                   ),
                   
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -3295,7 +3360,7 @@ import 'dart:async';
                           }
                       ),
                       ),
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -3359,7 +3424,7 @@ import 'dart:async';
                         ),
                       ),
             
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -3431,7 +3496,7 @@ import 'dart:async';
                           },
                         ),
                     ),
-                      //save 
+                      //save  (update board value)
                       ButtonStyle2(
                         imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                         onPressed: (){setState(() {
@@ -3579,7 +3644,7 @@ import 'dart:async';
                           },
                         ),
                     ),
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -4635,7 +4700,7 @@ import 'dart:async';
                     }
                   ),
                   
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -4779,7 +4844,7 @@ import 'dart:async';
                     }
                   ),
                   
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -4853,7 +4918,7 @@ import 'dart:async';
                         }
                       ),
                       ),
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -4922,7 +4987,7 @@ import 'dart:async';
                         ),
                       ),
             
-                  //save 
+                  //save  (update board value)
                   ButtonStyle2(
                     imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                     onPressed: (){setState(() {
@@ -4990,7 +5055,7 @@ import 'dart:async';
                           },
                         ),
                       ),
-                      //save 
+                      //save  (update board value)
                       ButtonStyle2(
                         imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                         onPressed: (){ setState(() {
@@ -6200,7 +6265,7 @@ import 'dart:async';
                           }
                         ),
                         
-                        //save 
+                        //save  (update board value)
                         ButtonStyle2(
                           imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                           onPressed: (){setState(() {
@@ -6351,7 +6416,7 @@ import 'dart:async';
                           }
                         ),
                         
-                        //save 
+                        //save  (update board value)
                         ButtonStyle2(
                           imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                           onPressed: (){setState(() {
@@ -6425,7 +6490,7 @@ import 'dart:async';
                                 }
                             ),
                             ),
-                        //save 
+                        //save  (update board value)
                         ButtonStyle2(
                           imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                           onPressed: (){setState(() {
@@ -6498,7 +6563,7 @@ import 'dart:async';
                               ),
                             ),
                   
-                        //save 
+                        //save  (update board value)
                         ButtonStyle2(
                           imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                           onPressed: (){setState(() {
@@ -6569,7 +6634,7 @@ import 'dart:async';
                                   });
                                 },
                               ),
-                            //save 
+                            //save  (update board value)
                             ButtonStyle2(
                               imagePath: 'assets/interface_icons/interface_icons/iCheck.png', 
                               onPressed: (){setState(() {

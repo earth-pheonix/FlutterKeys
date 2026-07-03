@@ -87,6 +87,11 @@ class V4rs {
   static bool changedMWfromButton = false;
 
   static  ValueNotifier<String> message = ValueNotifier("");
+  static  ValueNotifier<int> messageWordCount = ValueNotifier(0);
+
+  static  ValueNotifier<List<String>> messageSymbols = ValueNotifier([]);  
+  static  ValueNotifier<List<String>> messageWords = ValueNotifier([]);
+  static  ValueNotifier<bool> editView = ValueNotifier(false);
 
   static ValueNotifier<bool> wasPaused = ValueNotifier(false);
 
@@ -98,6 +103,14 @@ class V4rs {
   static Future<void> saveClearAfterSpeak (bool clearAfterSpeak) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_clearAfterSpeak, clearAfterSpeak);
+  } 
+
+  static bool showSymbolsInMW = true;
+  static final String _showSymbolsInMW = "_showSymbolsInMW";
+
+  static Future<void> saveshowSymbolsInMW (bool showSymbolsInMW) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_showSymbolsInMW, showSymbolsInMW);
   } 
 
   static bool showLanguageSelectorSlider = true;
@@ -605,7 +618,10 @@ static Map<String, int> buttonTypeMap = {
   'audio tile' : 4,
   'typing key': 5,
   'grammar button': 6,
+  'volume down' : 7,
+  'Volume up': 8,
 };
+
 static String typeToLabel(int type) {
   const labels = {
     1: 'button',
@@ -791,8 +807,8 @@ static Future<File> resolveImageFile(String relativePath) async {
    //await prefs.clear();
 
     //reset Json on load
-    deleteLocalCopy(); 
-    deleteLocalCopytemplates();
+    //deleteLocalCopy(); 
+    //deleteLocalCopytemplates();
 
     await Fv4rs.loadSavedFontValues(); 
     await Cv4rs.loadSavedColorValues();
@@ -821,7 +837,9 @@ static Future<File> resolveImageFile(String relativePath) async {
 
 
     //all the other variables to load
-    
+    clearAfterSpeak = prefs.getBool(_clearAfterSpeak) ?? true;
+    showSymbolsInMW = prefs.getBool(_showSymbolsInMW) ?? false;
+
     showScrollButtons = prefs.getBool(_showScrollButtons) ?? true;
     showLanguageSelectorSlider = prefs.getBool(_showLanguageSelectorSlider) ?? true;
 

@@ -2,6 +2,38 @@
 import 'package:flutterkeysaac/Variables/variables.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_variables.dart';
 
+// -------- HOW TO ADD A FONT: --------
+// 0. Import & add to pubspec.yaml
+
+// #1. add font name to its section 
+  // arabicFonts 
+  // cyrillicFonts
+  // cyrillicRoundedFonts 
+  // devanagariFonts
+  // greekFonts 
+  // simplifiedHanFonts
+  // traditionalHanFonts
+  // hongKongHanziFonts
+  // hebrewFonts
+  // japaneseFonts
+  // koreanFonts
+  // thaiFonts
+  // latinOpenDyslexicFonts
+  // latinSansSerifFonts
+  // latinRoundedFonts
+  // latinSerifFonts 
+  // latinMonoFonts 
+  // latinHandwritFonts 
+  // latinStylizedFonts
+
+// #2. add font writing system acronyms
+  // fontLanguages
+
+// #3. link font name and pubspec yaml name
+  //fontToFamily
+
+// Done!
+
 class Fontsy {
 
     static var fonts = getFontsForWritSystem(writingSystemNumber);
@@ -199,6 +231,7 @@ class Fontsy {
     ];
 
     static List <String> latinStylizedFonts = [
+    'Gallaudet',
     'ZCOOL XiaoWei',
     'Manufacturing Consent',
     'Metal Mania',
@@ -207,6 +240,7 @@ class Fontsy {
 
     //get supported writing systems 
     static Map<String, String> fontLanguages = {
+      'Gallaudet' : 'LA',
       'Open Dyslexic' : 'LA',
       'Open Dyslexic Alta' : 'LA',
       'Open Dyslexic Mono' : 'LA',
@@ -254,6 +288,7 @@ class Fontsy {
 
     //convert from display name to pubspec yaml name
     static Map<String, String> fontToFamily = {
+      'Gallaudet' : 'gallaudet',
       'Open Dyslexic' : 'openDyslexic',
       'Open Dyslexic Alta' : 'openDyslexicAlta',
       'Open Dyslexic Mono' : 'openDyslexicMono',

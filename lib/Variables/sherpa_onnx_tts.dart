@@ -327,32 +327,43 @@ class SherpaOnnxV4rs {
     return p.join(directory.path, filename);
   }
 
-  static Future<String> boostWavVolume(String inputPath, double gain) async {
-    try {
-      // 1. Load the wav file
-      final wav = await Wav.readFile(inputPath);
+static Future<String> boostWavVolume(String inputPath, double gain) async {
+  try {
+    final wav = await Wav.readFile(inputPath);
 
-      // 2. Apply gain to every sample in every channel
-      for (var channel in wav.channels) {
-        for (var i = 0; i < channel.length; i++) {
-          // Multiply the sample by our gain
-          double boosted = channel[i] * gain;
-          
-          // Clamp the value between -1.0 and 1.0 to prevent digital "wrapping"
-          // (This is our basic safety limiter)
-          channel[i] = boosted.clamp(-1.0, 1.0);
-        }
+    // 1. Find peak sample (absolute max)
+    double peak = 0.0;
+    for (var channel in wav.channels) {
+      for (var sample in channel) {
+        final absSample = sample.abs();
+        if (absSample > peak) peak = absSample;
       }
-
-      // 3. Save to a new path
-      final outputPath = inputPath.replaceAll('.wav', '_boosted.wav');
-      await wav.writeFile(outputPath);
-      
-      return outputPath;
-    } catch (e) {
-      return inputPath; // Fallback to original if something fails
     }
+
+    // 2. Adjust gain to avoid clipping
+    double safeGain = gain;
+    if (peak > 0) {
+      final maxAllowedGain = 1.0 / peak;
+      if (gain > maxAllowedGain) {
+        safeGain = maxAllowedGain;
+      }
+    }
+
+    // 3. Apply gain
+    for (var channel in wav.channels) {
+      for (var i = 0; i < channel.length; i++) {
+        channel[i] *= safeGain;
+      }
+    }
+
+    final outputPath = inputPath.replaceAll('.wav', '_boosted.wav');
+    await wav.writeFile(outputPath);
+
+    return outputPath;
+  } catch (e) {
+    return inputPath;
   }
+}
 
   static Future<void> speak(
     bool forSS,
@@ -449,8 +460,21 @@ class SherpaOnnxV4rs {
   ) async {
       if (V4rs.pauseMoment != null){
       await player.setSource(DeviceFileSource(V4rs.currentSpeakingFile!));
+
+      //set listener for completer
+      final completer = Completer<void>();
+      player.onPlayerComplete.listen((event) {
+        if (!completer.isCompleted) completer.complete();
+      });
+
+      //speak
       await player.seek(V4rs.pauseMoment!);
+      V4rs.theIsSpeaking.value = true;
       await player.resume();
+
+      //done
+      await completer.future; 
+      V4rs.theIsSpeaking.value = false;
     }
   }
 

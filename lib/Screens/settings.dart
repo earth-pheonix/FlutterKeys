@@ -577,6 +577,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                                    Fv4rs.saveInterfaceFontSize(value);
                                 });
                               }, 
+                  onHeightChanged: (value) {}, 
                   onWeightChanged: (value) async {
                                 setState(() {
                                    Fv4rs.interfaceFontWeight = value;
@@ -803,6 +804,22 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                           setState(() {
                             V4rs.clearAfterSpeak = value;
                             V4rs.saveClearAfterSpeak(value);
+                          });
+                        }),
+                      ]
+                    ),
+                    ),
+                    Padding(padding: EdgeInsetsGeometry.symmetric(
+                      horizontal: V4rs.paddingValue(15)), child: 
+                    Row(
+                      children: [
+                        Text('Show Symbols:', style: Sv4rs.settingslabelStyle),
+                        Spacer(),
+                        Switch(value: V4rs.showSymbolsInMW, onChanged: (value) {
+                          setState(() {
+                            V4rs.message.value = ""; //make sure is empty since symbol map will be
+                            V4rs.showSymbolsInMW = value;
+                            V4rs.saveshowSymbolsInMW(value);
                           });
                         }),
                       ]
@@ -1125,9 +1142,11 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
 
                     //mw Font Settings
                     FontPicker1(
+                      changeLineHeight: true,
                       useUnderline: false,
                       onUnderlineChanged: (value) async {},
                       size: Fv4rs.mwFontSize, 
+                      height: Fv4rs.mwFontHeight,
                       weight: Fv4rs.mwFontWeight, 
                       italics: Fv4rs.mwFontItalics, 
                       font: Fv4rs.mwFont, 
@@ -1139,6 +1158,12 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                                    Fv4rs.savemwFontSize(value);
                                 });
                               }, 
+                      onHeightChanged: (value) async {
+                        setState(() {
+                              Fv4rs.mwFontHeight = value;
+                              Fv4rs.savemwFontHeight(value);
+                          });
+                        }, 
                       onWeightChanged: (value) async {
                                 setState(() {
                                    Fv4rs.mwFontWeight = value;
@@ -1482,9 +1507,11 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         ),
                         ]),
                     FontPicker1(
+                      changeLineHeight: true,
                       useUnderline: false,
                       onUnderlineChanged: (value) async {},
                       size: Fv4rs.expandedFontSize, 
+                      height: Fv4rs.expandedFontHeight,
                       weight: Fv4rs.expandedFontWeight, 
                       italics: Fv4rs.expandedFontItalics, 
                       font: Fv4rs.expandedFont, 
@@ -1496,6 +1523,12 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                                 setState(() {
                                    Fv4rs.expandedFontSize = value;
                                    Fv4rs.saveExpandedFontSize(value);
+                                });
+                              }, 
+                      onHeightChanged: (value) async {
+                                setState(() {
+                                   Fv4rs.expandedFontHeight = value;
+                                   Fv4rs.saveExpandedFontHeight(value);
                                 });
                               }, 
                       onWeightChanged: (value) async {
@@ -2251,6 +2284,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         font: Fv4rs.navRowFont, 
                         label: 'Font Settings:', 
                         color: Fv4rs.navRowFontColor, 
+                        onHeightChanged: (value) {}, 
                         onSizeChanged: (value) {
                           setState(() {
                             Fv4rs.navRowFontSize = value;
@@ -2426,6 +2460,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                           font: Fv4rs.grammerFont, 
                           label: 'Grammer Row Font Picker', 
                           color: Fv4rs.grammerFontColor, 
+                          onHeightChanged: (value) {}, 
                           onSizeChanged: (value) {
                             setState(() {
                               Fv4rs.grammerFontSize = value;
@@ -2610,6 +2645,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         font: Fv4rs.subFolderFont, 
                         label: 'Sub-Folder Font:', 
                         color: Fv4rs.subFolderFontColor, 
+                        onHeightChanged: (value) {}, 
                         onSizeChanged: (value) {
                           setState(() {
                             Fv4rs.subFolderFontSize = value;
@@ -2789,6 +2825,7 @@ class _Settings extends State<Settings> with WidgetsBindingObserver {
                         font: Fv4rs.buttonFont, 
                         label: 'Button Font:', 
                         color: Fv4rs.buttonFontColor, 
+                        onHeightChanged: (value) {}, 
                         onSizeChanged: (value) {
                           setState(() {
                             Fv4rs.buttonFontSize = value;

@@ -90,6 +90,7 @@ class Fv4rs {
     TextStyle(
       color: expandedFontColor,
       fontSize: expandedFontSize,
+      height: expandedFontHeight,
       fontFamily: Fontsy.fontToFamily[expandedFont], 
       fontWeight: FontWeight.values[((expandedFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: expandedFontItalics ? FontStyle.italic : FontStyle.normal,
@@ -113,6 +114,15 @@ class Fv4rs {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setDouble(_expandedFontSize, expandedFontSize);
     } 
+
+    static double expandedFontHeight = 1.5;
+    static final String _expandedFontHeight = "expandedFontHeight";
+
+    static Future<void> saveExpandedFontHeight  (double expandedFontHeight) async {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setDouble(_expandedFontHeight, expandedFontHeight);
+    } 
+
     //weight
     static int expandedFontWeight = 400;
     static final String _expandedFontWeight = "expandedFontweight";
@@ -152,7 +162,7 @@ class Fv4rs {
       fontFamily: Fontsy.fontToFamily[mwFont], 
       fontWeight: FontWeight.values[((mwFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: mwFontItalics ? FontStyle.italic : FontStyle.normal,
-      height: 1.5,
+      height: mwFontHeight,
       fontFamilyFallback: [Fontsy.fontToFamily[fallbackFont1] ?? '', Fontsy.fontToFamily[fallbackFont2] ?? '']
     );
 
@@ -164,7 +174,7 @@ class Fv4rs {
       fontFamily: Fontsy.fontToFamily[mwFont], 
       fontWeight: FontWeight.values[((mwFontWeight ~/ 100) - 1 ).clamp(0, 8)],
       fontStyle: mwFontItalics ? FontStyle.italic : FontStyle.normal,
-      height: 1.5,
+      height: mwFontHeight,
       fontFamilyFallback: [fallbackFont1, fallbackFont2]
     );
 
@@ -185,6 +195,15 @@ class Fv4rs {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setDouble(_mwFontSize, mwFontSize);
     } 
+
+    static double mwFontHeight = 1.5;
+    static final String _mwFontHeight = "mwFontHeight";
+
+    static Future<void> savemwFontHeight(double mwFontHeight) async {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setDouble(_mwFontHeight, mwFontHeight);
+    } 
+
     //weight
     static int mwFontWeight = 400;
     static final String _mwFontWeight = "mwFontweight";
@@ -597,12 +616,14 @@ class Fv4rs {
 
     expandedFont = prefs.getString(_expandedFont) ?? 'Default';
     expandedFontSize = prefs.getDouble(_expandedFontSize) ?? expandedFontSize;
+    expandedFontHeight = prefs.getDouble(_expandedFontHeight) ?? expandedFontHeight;
     expandedFontWeight = prefs.getInt(_expandedFontWeight) ?? expandedFontWeight;
     expandedFontItalics = prefs.getBool(_expandedFontItalics) ?? expandedFontItalics;
     expandedFontColor = Color(prefs.getInt(_expandedFontColor) ?? 0xFF000000);
 
     mwFont = prefs.getString(_mwFont) ?? 'Default';
     mwFontSize = prefs.getDouble(_mwFontSize) ?? mwFontSize;
+    mwFontHeight = prefs.getDouble(_mwFontHeight) ?? mwFontHeight;
     mwFontWeight = prefs.getInt(_mwFontWeight) ?? mwFontWeight;
     mwFontItalics = prefs.getBool(_mwFontItalics) ?? mwFontItalics;
     mwFontColor = Color(prefs.getInt(_mwFontColor) ?? 0xFF000000);

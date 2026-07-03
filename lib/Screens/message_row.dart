@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutterkeysaac/Variables/system_tts/tts_interface.dart';
 import 'package:flutterkeysaac/Variables/fonts/font_variables.dart';
 import 'package:flutterkeysaac/Variables/settings/settings_variables.dart';
+import 'package:flutterkeysaac/Variables/settings/voice_variables.dart';
 import 'package:flutterkeysaac/Variables/search_variables.dart';
 import 'package:flutterkeysaac/Models/json_model_nav_and_root.dart';
 import 'package:flutterkeysaac/Variables/assorted_ui/ui_boards.dart';
@@ -16,6 +17,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 import 'package:flutterkeysaac/Variables/highlight_message_window.dart';
 import 'package:flutterkeysaac/Variables/history.dart';
+import 'package:flutterkeysaac/Variables/sherpa_onnx_tts.dart';
 
 class MessageRow extends StatefulWidget {
   final TTSInterface synth;
@@ -443,6 +445,8 @@ class _MessageWindowState extends State<MessageWindow> {
       // Listen for clear requests
       _clearListener = () {
         if (V4rs.message.value == "") {
+          V4rs.messageSymbols.value = [];
+          V4rs.messageWords.value = [];
           widget.controller.clear();
           V4rs.wasPaused.value = false;
           if (mounted) setState(() {}); // reset notifier
@@ -519,14 +523,25 @@ class _MessageWindowState extends State<MessageWindow> {
     );
   }
 
-  void _scrollToBottom() {
-  _scrollController.animateTo(
-    _scrollController.position.maxScrollExtent,
-    duration: Duration(milliseconds: 300), 
-    curve: Curves.easeOut,
-  );
-}
+void _scrollToBottom() {
+  // 1. Wait for new rendering
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (!_scrollController.hasClients) return;
 
+    // 2. Get scroll amount
+    double targetOffset = _scrollController.position.maxScrollExtent - (Fv4rs.mwFontSize * 2);
+
+    // 3. Clamp
+    double safeOffset = targetOffset.clamp(0.0, _scrollController.position.maxScrollExtent);
+
+    // 4. Scroll
+    _scrollController.animateTo(
+      safeOffset,
+      duration: const Duration(milliseconds: 300), 
+      curve: Curves.easeOut,
+    );
+  });
+}
 
 //UI starts
   @override
@@ -571,7 +586,7 @@ class _MessageWindowState extends State<MessageWindow> {
                         scrollController: _scrollController,
                         ),
                       )
-                      );
+                    );
                     },
                       ),
                     
@@ -1009,20 +1024,26 @@ class _RightOfMessageWindowState extends State<RightOfMessageWindow> {
                               imagePath: 'assets/interface_icons/interface_icons/iPause.png',
                               onPressed: () 
                                 async {
-                                  if (Sv4rs.speakInterfaceButtonsOnSelect) {
-                                    await widget.synth.stop();
-                                    V4rs.speakOnSelect(
-                                      'pause', 
-                                      V4rs.selectedLanguage.value, 
-                                      widget.synth,
-                                      widget.speakSelectSherpaOnnxSynth,
-                                      widget.initForSS,
-                                      widget.playerForSS,
-                                    );
-                                    } else {
-                                      await widget.synth.pause();
-                                      V4rs.wasPaused.value = true;
-                                    }
+                                  if (Vv4rs.myEngineForVoiceLang[V4rs.selectedLanguage.value] == 'system'){
+                                    if (Sv4rs.speakInterfaceButtonsOnSelect) {
+                                      await widget.synth.stop();
+                                      V4rs.speakOnSelect(
+                                        'pause', 
+                                        V4rs.selectedLanguage.value, 
+                                        widget.synth,
+                                        widget.speakSelectSherpaOnnxSynth,
+                                        widget.initForSS,
+                                        widget.playerForSS,
+                                      );
+                                      } else {
+                                        await widget.synth.pause();
+                                        V4rs.wasPaused.value = true;
+                                      }
+                                  } else {
+                                    SherpaOnnxV4rs.pause(widget.player);
+                                    V4rs.wasPaused.value = true;
+                                  }
+                                  V4rs.theIsSpeaking.value = false;
                                 },
                               ),
                             ),
@@ -1037,6 +1058,17 @@ class _RightOfMessageWindowState extends State<RightOfMessageWindow> {
                               imagePath: 'assets/interface_icons/interface_icons/iPlay.png',
                               onPressed: () 
                                 async {
+                                  if (V4rs.wasPaused.value == true){
+                                    if (Vv4rs.myEngineForVoiceLang[V4rs.selectedLanguage.value] == "system") {
+                                      V4rs.wasPaused.value = false;
+                                      V4rs.theIsSpeaking.value = true;
+                                      await widget.synth.resume();
+                                      V4rs.theIsSpeaking.value = false;
+                                    } else {
+                                      V4rs.wasPaused.value = false;
+                                      SherpaOnnxV4rs.resume(widget.player);
+                                    }
+                                  } else {
                                   if (Sv4rs.speakInterfaceButtonsOnSelect) {
                                     await V4rs.speakOnSelect(
                                       'play', 
@@ -1063,6 +1095,7 @@ class _RightOfMessageWindowState extends State<RightOfMessageWindow> {
                                     widget.init,
                                     widget.player
                                     );
+                                  }
                                   }
                                 },
                               ),
@@ -1196,6 +1229,7 @@ class _RightOfMessageWindowState extends State<RightOfMessageWindow> {
                           HistoryV4rs.saveMessageHistory(HistoryV4rs.messageHistory);
                         }
                       widget.controller.clear();
+                  
                     },
                   ),
                 ),

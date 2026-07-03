@@ -8,6 +8,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:flutterkeysaac/Variables/settings/boardset_settings_variables.dart';
 import 'dart:math' as math;
 
 
@@ -485,6 +486,79 @@ class _MessageWindowTextFieldState extends State<MessageWindowTextField> {
     );
   }
 }
+
+
+class MessageWindowSymbolTextField extends StatefulWidget {
+  final TextEditingController controller;
+  final ScrollController scrollController;
+  
+
+  const MessageWindowSymbolTextField({super.key, required this.controller, required this.scrollController});
+
+  @override
+  State<MessageWindowSymbolTextField> createState() => MessageWindowSymbolTextFieldState();
+}
+  
+class MessageWindowSymbolTextFieldState extends State<MessageWindowSymbolTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) { 
+        var width = constraints.maxWidth;
+        int symbolsPerWidth = ((width / 50).clamp(1, width)).toInt();
+
+        return SizedBox.shrink(
+        child:  GridView.count(
+          controller: widget.scrollController,
+          crossAxisCount: symbolsPerWidth,
+          children: V4rs.messageWords.value.asMap().entries.map((entry) {
+            int index = entry.key;
+            String word = entry.value;
+
+            return Column(
+              mainAxisSize: MainAxisSize.min, 
+              children: [
+                ImageStyle1(
+                  image: LoadImage.fromSymbol(V4rs.messageSymbols.value[index]), 
+                  symbolSaturation: 1.0, 
+                  symbolContrast: 1.0, 
+                  invertSymbolColors: false, 
+                  matchOverlayColor: true, 
+                  overlayColor: Colors.white,
+                  defaultSymbolColorOverlay: Bv4rs.buttonSymbolColorOverlay, 
+                  matchSymbolContrast: true, 
+                  matchSymbolInvert: true, 
+                  matchSymbolSaturation: true, 
+                  defaultSymbolInvert: Bv4rs.buttonSymbolInvert, 
+                  defaultSymbolContrast: Bv4rs.buttonSymbolContrast, 
+                  defaultSymbolSaturation: Bv4rs.buttonSymbolSaturation
+                ),
+                
+                TextField(
+                  key: ValueKey('input_$index'), 
+                  controller: TextEditingController(text: word), 
+                  onChanged: (newValue) {
+                    if (newValue == "") {
+                      V4rs.messageWords.value.removeAt(index);
+                      V4rs.messageSymbols.value.removeAt(index);
+                    } else {
+                      V4rs.messageWords.value[index] = newValue;
+                    }
+                    // Update the final string
+                    V4rs.message.value = V4rs.messageWords.value.join(" ");
+                  },
+                ),
+              ],
+            );
+          }
+          ).toList(),
+        ),
+      );
+      }
+    );
+   }
+  }
+
 
 class ImageStyle1 extends StatelessWidget {
   final Widget image;

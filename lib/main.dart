@@ -33,8 +33,8 @@ class _MyApp extends State<MyApp> {
   bool speakSelectSherpaOnnxInitialized = false;
   bool sherpaOnnxInitialized = false;
 
-  Map<String, sherpa_onnx.OfflineTts?> sherpaOnnxSynth = {};
   Map<String, sherpa_onnx.OfflineTts?> speakSelectSherpaOnnxSynth = {};
+  Map<String, sherpa_onnx.OfflineTts?> sherpaOnnxSynth = {};
 
   late AudioPlayer openTtsPlayerSherpaOnnx;
   late AudioPlayer openTtsPlayerSpeakSelectSherpaOnnx;
@@ -47,8 +47,10 @@ class _MyApp extends State<MyApp> {
   void initState() {
     super.initState();
     initSynth();
-    initSherpaOnnx();
+    
+    //use this order- will introduce bugs if not
     initSpeakSelectSherpaOnnx();
+    initSherpaOnnx();
   }
 
   Future<void> initSherpaOnnx() async {

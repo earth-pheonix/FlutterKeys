@@ -16,7 +16,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutterkeysaac/Variables/sherpa_onnx_tts.dart';
  
 class Vv4rs{
-
+  static ValueNotifier<bool> blockback = ValueNotifier(false);
   static int importingSpeakerCount = 1;
   static Map<int, String> importingSpeakers = {};
 
@@ -744,6 +744,9 @@ class Vv4rs{
       String? voicesBin,
       String? eSpeakPath,
     ) async {
+      print('one');
+      blockback.value = true;
+      print('two: blocked');
       sherpaOnnxLanguageVoice[langVoice] 
         = SherpaOnnxVoice(
           id: id,
@@ -761,22 +764,62 @@ class Vv4rs{
           voicesBin: voicesBin,
           eSpeakPath: eSpeakPath,
         );
-      
+     
       myEngineForVoiceLang[langVoice] = engine;
+      print('three: done setting');
       await saveMyEngineForVoiceLang(langVoice, true, myEngineForVoiceLang[langVoice]!);
-
+       print('3.5: saveMyEngineForVoiceLang');
       await saveSherpaOnnxValue(langVoice, "id", id, false);
+       print('3.5: saveSherpaOnnxValue(langVoice, "id", id, false');
+
       await saveSherpaOnnxValue(langVoice, "tokenPath", tokenPath, false);
+      print('3.5: saveSherpaOnnxValue(langVoice, "tokenPath", tokenPath, false');
+
       await saveSherpaOnnxValue(langVoice, "modelPath", modelPath, false);
+      print('3.5: (langVoice, "modelPath", modelPath, false);');
+
       await saveSherpaOnnxValue(langVoice, "engine", 'sherpa-onnx', false);
+      print('3.5: (langVoice, "engine", "sherpa-onnx", false);');
+
       await saveSherpaOnnxValue(langVoice, "speakerID", speakerID, false);
+      print('3.5: (langVoice, "speakerID", speakerID, false);');
+
       await saveSherpaOnnxValue(langVoice, "lengthScale", lengthScale, false);
+      print('3.5: (langVoice, "lengthScale", lengthScale, false);');
+
       await saveSherpaOnnxValue(langVoice, "volumeBoost", volumeBoost, false);
+      print('3.5: (langVoice, "volumeBoost", volumeBoost, false);');
+
       await saveSherpaOnnxValue(langVoice, "lexicon", lexicon, false);
+      print('3.5: (langVoice, "lexicon", lexicon, false);');
+
       await saveSherpaOnnxValue(langVoice, "farFiles", farFiles, false);
+      print('3.5: (langVoice, "farFiles", farFiles, false);');
+
       await saveSherpaOnnxValue(langVoice, "fstFiles", fstFiles, false);
+      print('3.5: (langVoice, "fstFiles", fstFiles, false);');
+
       await saveSherpaOnnxValue(langVoice, "voicesBin", voicesBin, false);
+      print('3.5: (langVoice, "voicesBin", voicesBin, false);');
+
       await saveSherpaOnnxValue(langVoice, "eSpeakPath", eSpeakPath, false);
+       print('four: done saving');
+
+       final prefs = await SharedPreferences.getInstance();
+      print(prefs.getString('sherpa_onnx-tts-id-$langVoice'));
+      print (prefs.getString('sherpa_onnx-tts-tokenPath-$langVoice'));
+      print (prefs.getString('sherpa_onnx-tts-modelVoice-$langVoice'));
+      print (prefs.getString('sherpa_onnx-tts-engine-$langVoice'));
+      print (prefs.getInt('sherpa_onnx-tts-speakerID-$langVoice'));
+      print (prefs.getDouble('sherpa_onnx-tts-lengthScale-$langVoice'));
+      print (prefs.getDouble('sherpa_onnx-tts-volumeBoost-$langVoice'));
+      print (prefs.getString('sherpa_onnx-tts-lexicon-$langVoice'));
+      print (prefs.getString('sherpa_onnx-tts-farFiles-$langVoice'));
+      print (prefs.getString('sherpa_onnx-tts-fstFiles-$langVoice'));
+      print (prefs.getString('sherpa_onnx-tts-voicesBin-$langVoice'));
+      
+      blockback.value = false;
+       print('five: unblocked');
     }
     
 
@@ -1748,6 +1791,18 @@ static Future<bool> deleteImportedSherpaOnnxVoice(ManifestModel voice) async {
     //
 
     for (final lang in Sv4rs.myLanguages) {
+
+      print(prefs.getString('sherpa_onnx-tts-id-$lang'));
+      print (prefs.getString('sherpa_onnx-tts-tokenPath-$lang'));
+      print (prefs.getString('sherpa_onnx-tts-modelVoice-$lang'));
+      print (prefs.getString('sherpa_onnx-tts-engine-$lang'));
+      print (prefs.getInt('sherpa_onnx-tts-speakerID-$lang'));
+      print (prefs.getDouble('sherpa_onnx-tts-lengthScale-$lang'));
+      print (prefs.getDouble('sherpa_onnx-tts-volumeBoost-$lang'));
+      print (prefs.getString('sherpa_onnx-tts-lexicon-$lang'));
+      print (prefs.getString('sherpa_onnx-tts-farFiles-$lang'));
+      print (prefs.getString('sherpa_onnx-tts-fstFiles-$lang'));
+      print (prefs.getString('sherpa_onnx-tts-voicesBin-$lang'));
 
       Vv4rs.myEngineForSSVoiceLang[lang] = prefs.getString('myEngineForSSVoiceFor_$lang');
       Vv4rs.myEngineForVoiceLang[lang] = prefs.getString('myEngineForVoiceFor_$lang');

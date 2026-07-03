@@ -176,4 +176,100 @@ class HV4rs {
     );
   }
 
+static Widget highlightedSymbolTextWidget( 
+    BuildContext context, 
+    TextEditingController controller,
+    ScrollController scrollController,
+  ) {
+    //text and text styling
+    final defaultStyle = Theme.of(context).textTheme.bodyLarge ?? const TextStyle();
+    final text = controller.text;
+
+    //tells us where to keep in frame (scrolling to keep highlight visible)
+    final highlightKey = GlobalKey();
+
+    //keep track of highlight start, stream version, and the stream itself
+    return ValueListenableBuilder<int>(
+      valueListenable: HV4rs.highlightStart,
+      builder: (context, notifierStart, _) {
+
+    return ValueListenableBuilder<int>(
+      valueListenable: HV4rs.streamVersion,
+      builder: (context, _, _) {
+    
+    return StreamBuilder<Map<String, dynamic>?>(
+      stream: wordStream, 
+      builder: (context, highlightStream) {
+
+      //saftey
+      if (!enableHighlighting.value || !highlightStream.hasData) {
+        return Text(
+          controller.text,
+          style: defaultStyle,
+        );
+      } 
+
+      //highlight info
+      final data = highlightStream.data!;
+      final start = (data['start'] as int) + notifierStart;
+      final length = (data['length'] as int);
+
+      final safeStart = start.clamp(0, text.length);
+      final safeEnd = (safeStart + length).clamp(0, text.length);
+
+      //callback to keep highlight in frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (highlightKey.currentContext != null) {
+          Scrollable.ensureVisible(
+            highlightKey.currentContext!,
+            duration: Duration.zero, 
+            alignment: 0.5,         
+          );
+        }
+      });
+
+      //the display itself
+      return SingleChildScrollView(
+        controller: scrollController,
+        child: RichText(
+          textScaler: MediaQuery.of(context).textScaler,
+          text: TextSpan(
+            style: defaultStyle.merge(Fv4rs.mwLabelStyle),
+            children: [
+              //text before highlighted
+              TextSpan(
+                text: text.substring(0, safeStart),
+                style: Fv4rs.mwLabelStyle,
+              ),
+              //highlighted
+              TextSpan(
+                text: text.substring(safeStart, safeEnd),
+                style: Fv4rs.highlightTextStyle,
+              ),
+              // anchor for scrolling
+              WidgetSpan(
+                child: SizedBox(
+                  key: highlightKey,
+                  width: 0,
+                  height: 0,
+                ),
+              ),
+              //text after higghlighted segment
+              TextSpan(
+                text: text.substring(safeEnd),
+                style: Fv4rs.mwLabelStyle,
+              ),
+             ],
+          ),
+        ),
+      );
+     },
+    );
+     }
+    );
+     }
+    );
+  }
+
+
 }

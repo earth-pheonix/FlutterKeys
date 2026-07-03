@@ -539,7 +539,18 @@ class Ev4rs {
       static ValueNotifier<int> returnAfterSelect = ValueNotifier(1);
       static ValueNotifier<String> grammerFunction = ValueNotifier('placholder');
       static ValueNotifier<String> notes = ValueNotifier('');
+      static ValueNotifier<double> volAmount = ValueNotifier(0.05);
 
+      static Map<int, double> volAmountOption = {
+        5 : 0.05,
+        10 : 0.10,
+        20 : 0.20,
+        25 : 0.25,
+        50 : 0.50,
+        75 : 0.75,
+        100 : 1.00,
+      };
+      
       static var everyImage = <String>[];
       static var everyMp3 = <String>[];
 
@@ -592,6 +603,7 @@ class Ev4rs {
         // column 4
           pos.value = obj_.pos ?? 'Extra 2';
           grammerFunction.value = obj_.function ?? 'placholder';
+          volAmount.value = obj_.volAmount ?? 0.05;
           buttonType.value = obj_.type ?? 1;
           link.value = obj_.linkToUUID ?? '';
           linkLabel.value = obj_.linkToLabel ?? '';
@@ -1942,7 +1954,10 @@ class Ev4rs {
       return allGrammerRows;
     }
 
-    //update json append json edit json
+  //
+  //update json append json edit json
+  //
+
       //single
         static bool updateBoardField(Root root, String uuid, String fieldName, dynamic newValue) {
           final board = findBoardById(root.boards, uuid);
@@ -2101,6 +2116,9 @@ class Ev4rs {
               break;
             case 'function':
               board.function = newValue as String?;
+              break;
+            case 'volAmount':
+              board.volAmount = newValue as double?;
               break;
             case 'audioClip':
               board.audioClip = newValue as String?;

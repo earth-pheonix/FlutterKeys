@@ -780,6 +780,184 @@ import 'package:flutterkeysaac/Variables/assorted_ui/ui_boards.dart';
         }
       }
 
+
+    class BuildEditableVolumeButton extends StatefulWidget{
+        final Root root;
+        final BoardObjects obj;
+        final TTSInterface synth;
+        final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
+        final Future<void> Function() initForSS;
+        final AudioPlayer playerForSS;
+
+
+        const BuildEditableVolumeButton({
+          super.key, 
+          required this.obj, 
+          required this.synth,
+          required this.root,
+          required this.speakSelectSherpaOnnxSynth,
+          required this.initForSS,
+          required this.playerForSS,
+          });
+        
+        @override
+        State<BuildEditableVolumeButton> createState() => _BuildEditableVolumeButtonState();
+    }
+
+    class _BuildEditableVolumeButtonState extends State<BuildEditableVolumeButton> {
+        final Stopwatch _stopwatch = Stopwatch();
+        DateTime? _lastTapTime;
+        final Duration _doubleTapMaxDelay = Duration(milliseconds: (V4rs.doubleTapClickSpeed));
+        Timer? _singleTapTimer;
+
+        @override
+        Widget build(BuildContext context) {
+
+        final bool altAccessActive = MediaQuery.of(context).accessibleNavigation;
+        
+        final obj = widget.obj;
+        final synth = widget.synth;
+          
+          //tap action
+              Future<void> doTapAction(
+                BoardObjects obj,
+                TTSInterface synth,
+                ) async { 
+                  switch ((obj.matchSpeakOS ?? true) ? Bv4rs.folderSpeakOnSelect : obj.speakOS) {
+                  case 1:
+                  Ev4rs.selectingAction2(obj, widget.root);
+                    break;
+                  case 2:
+                  Ev4rs.selectingAction2(obj, widget.root);
+                    await V4rs.speakOnSelect(
+                      obj.label ?? '', 
+                      V4rs.selectedLanguage.value, 
+                      synth,
+                      widget.speakSelectSherpaOnnxSynth,
+                      widget.initForSS,
+                      widget.playerForSS,
+                    );
+                    break;
+                  case 3:
+                  Ev4rs.selectingAction2(obj, widget.root);
+                    await V4rs.speakOnSelect(
+                      obj.message ?? '', 
+                      V4rs.selectedLanguage.value, 
+                      synth,
+                      widget.speakSelectSherpaOnnxSynth,
+                      widget.initForSS,
+                      widget.playerForSS,
+                    );
+                    break;
+                }
+                }
+              Future<void> doSecondaryTap(
+                BoardObjects obj,
+                TTSInterface synth,
+                ) async {
+                  
+                }
+          
+          //
+          //button
+          //
+          return LayoutBuilder(builder: (context, constraints) {
+          double side = constraints.maxHeight * 0.3;
+          double top = constraints.maxWidth * 0.25;
+
+          return Stack(children: [ 
+          Positioned.fill(child: 
+          Opacity(
+            opacity: (obj.show ?? true) ? 1.0 : 0.4,  
+            child:
+          Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (_) => _stopwatch..reset()..start(),
+            onPointerUp: (_) async {
+              _stopwatch.stop();
+              final now = DateTime.now();
+
+            if (!V4rs.useLongTapOr) {
+
+                //===: USE LONG TAP :===///
+                if (!V4rs.useLongTapOr) {
+                  if (_stopwatch.elapsedMilliseconds < V4rs.longTapDuration) {
+                    await doTapAction(obj, synth);
+                    return;
+                  } else {
+                    await doSecondaryTap(obj, synth);
+                    return;
+                  }
+
+                //===: USE DOUBLE TAP  :===///
+              } else {
+                  if (_lastTapTime != null &&
+                      now.difference(_lastTapTime!) <= _doubleTapMaxDelay) {
+                    _singleTapTimer?.cancel();
+                    await doSecondaryTap(obj, synth);
+                    _lastTapTime = null;
+                    return;
+                  }
+                  _lastTapTime = now;
+                  _singleTapTimer?.cancel();
+                  _singleTapTimer = Timer(_doubleTapMaxDelay, () async {
+                    await doTapAction(obj, synth);
+                    _lastTapTime = null;
+                  });
+
+                  return;
+              }
+            }
+          },
+        child: BoardButtonStyle(
+          obj: obj,
+          editable: true,
+          onPressed: () async {
+            if (altAccessActive) {
+              await doTapAction(obj, synth);
+            }
+          }, 
+        ),
+        )),
+            ),
+            //
+            //CORNER TAB 
+            //
+            Positioned(
+                  top: 2,
+                  right: 2,
+                  child: SizedBox(width: top, height: side,
+                    child:
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),),
+                    onPressed: () async { if (altAccessActive) {
+                      await doSecondaryTap(obj, synth);
+                    } else { 
+                      //pretend you hit the button
+                      await doTapAction(obj, synth);
+                    }
+                    },
+                    child:  Opacity(
+                      opacity: (obj.show ?? true) ? 1.0 : 0.4,  
+                      child: ColorFiltered(
+                        colorFilter: ColorFilter.mode(Cv4rs.cornerTabColor, BlendMode.srcIn
+                        ), child:
+                      (obj.type == 7) 
+                        ? Image.asset('assets/interface_icons/interface_icons/iDownTriangle.png')
+                        : Image.asset('assets/interface_icons/interface_icons/iUpTriangle.png'),
+                      )
+                    )
+                    )
+                  ),
+            )
+            ]); 
+          });
+        }
+      }
+
     class BuildEditableButtonGrammer extends StatefulWidget{
       final BoardObjects obj;
         final TTSInterface synth;

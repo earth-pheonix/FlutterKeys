@@ -49,6 +49,8 @@ dependencies:
   pdf: ^3.10.7
   http: ^1.2.0
   wav: ^1.5.0
+  flutter_volume_controller: ^1.0.4
+
   tts_highlighter: 
     path: ./tts_highlighter
 
@@ -123,6 +125,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+      - family: gallaudet
+        fonts:
+        - asset: assets/fonts/assorted_fonts/GALLAUDET.ttf
       - family: gamjaFlower
         fonts:
         - asset: assets/fonts/assorted_fonts/Gamja_Flower/GamjaFlower-Regular.ttf

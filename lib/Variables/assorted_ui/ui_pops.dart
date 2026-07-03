@@ -755,8 +755,8 @@ Future<void> showOptionsPopupForSpeakOnSelect(
               ? Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', true)
               : Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', false),
             min: 1.0,
-            max: 3.0,
-            divisions: 30,
+            max: 10.0,
+            divisions: 18,
             activeColor: Cv4rs.themeColor1,
             inactiveColor: Cv4rs.themeColor3,
             thumbColor: Cv4rs.themeColor1,

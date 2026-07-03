@@ -13,6 +13,7 @@ import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 
 class FontPicker1 extends StatefulWidget {
   final double size;
+  final double height;
   final int weight;
   final bool italics; 
   final bool useUnderline;
@@ -20,7 +21,8 @@ class FontPicker1 extends StatefulWidget {
   final String font;
   final String label;
   final Color color;
-  final ValueChanged<double> onSizeChanged;
+  final ValueChanged<double> onSizeChanged;  
+  final ValueChanged<double> onHeightChanged;
   final ValueChanged<int> onWeightChanged;
   final ValueChanged<bool> onItalicsChanged;
   final ValueChanged<String> onFontChanged;
@@ -28,6 +30,7 @@ class FontPicker1 extends StatefulWidget {
   final ValueChanged<bool> onUnderlineChanged;
   final TTSInterface tts;
   final int sizeMin;
+  final bool changeLineHeight;
   final int sizeMax;
   final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
   final Future<void> Function() initForSS;
@@ -35,13 +38,16 @@ class FontPicker1 extends StatefulWidget {
 
   const FontPicker1({
     super.key,
+    this.changeLineHeight = false,
     required this.size,
+    this.height = 1.5,
     required this.weight,
     required this.italics,
     required this.font,
     required this.label,
     required this.color,
     required this.onSizeChanged,
+    required this.onHeightChanged,
     required this.onWeightChanged,
     required this.onItalicsChanged,
     required this.onFontChanged,
@@ -51,7 +57,7 @@ class FontPicker1 extends StatefulWidget {
     required this.onUnderlineChanged,
     required this.tts,
     this.sizeMin = 5,
-    this.sizeMax = 50,
+    this.sizeMax = 100,
     required this.speakSelectSherpaOnnxSynth,
     required this.initForSS,
     required this.playerForSS,
@@ -70,12 +76,14 @@ class _FontPickerState1 extends State<FontPicker1> {
   late String _font;
   late TTSInterface _tts;
   late Color _color;
+  late double _height;
 
 
   @override
   void initState() {
     super.initState();
     _size = widget.size;
+    _height = widget.height;
     _weight = widget.weight;
     _italics = widget.italics;
     _font = widget.font;
@@ -138,13 +146,38 @@ class _FontPickerState1 extends State<FontPicker1> {
                 value: _size,
                 min: widget.sizeMin.toDouble(),
                 max: widget.sizeMax.toDouble(),
-                divisions: 40,
+                divisions: 80,
                 activeColor: Cv4rs.themeColor1,
                 inactiveColor: Cv4rs.themeColor3,
                 thumbColor: Cv4rs.themeColor1,
                 onChanged: (val) {
                   setState(() => _size = val);
                   widget.onSizeChanged(val);
+                },
+              ),
+            ),
+          ],
+        ),
+        ),
+
+        if (widget.changeLineHeight)
+        // line height slider
+         Padding(padding: EdgeInsetsGeometry.symmetric(horizontal: V4rs.paddingValue(20)), child:
+        Row(
+          children: [
+            Text('Line Height:', style: Sv4rs.settingslabelStyle,),
+            Expanded(
+              child: Slider(
+                value: _height,
+                min: 0.5,
+                max: 3,
+                divisions: 25,
+                activeColor: Cv4rs.themeColor1,
+                inactiveColor: Cv4rs.themeColor3,
+                thumbColor: Cv4rs.themeColor1,
+                onChanged: (val) {
+                  setState(() => _height = val);
+                  widget.onHeightChanged(val);
                 },
               ),
             ),

@@ -40,84 +40,95 @@ class _TopRowForSettings extends State<TopRowForSettings> with WidgetsBindingObs
   @override
   Widget build(BuildContext context) {
     return //back & edit
-      Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              0, 
-              V4rs.paddingValue(10), 
-              V4rs.paddingValue(10), 
-              V4rs.paddingValue(20)),
-            child: SizedBox(
-              height: 50,
-              width: 75,
-              child: ButtonStyle1(
-                imagePath: 'assets/interface_icons/interface_icons/iBack.png',
-                onPressed: () {
-                    if (Sv4rs.speakInterfaceButtonsOnSelect) {
-                    V4rs.speakOnSelect(
-                      'back', 
-                      V4rs.selectedLanguage.value, 
-                      widget.synth,
-                      widget.speakSelectSherpaOnnxSynth,
-                      widget.initForSS,
-                      widget.playerForSS,
-                      );
-                    }
-                  V4rs.showSettings.value = false;
-                   },
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              V4rs.paddingValue(5), 
-              V4rs.paddingValue(10), 
-              V4rs.paddingValue(5), 
-              V4rs.paddingValue(20)),
-            child: SizedBox(
-              height: 50,
-              width: 60,
-              child: ButtonStyle1(
-                imagePath: 'assets/interface_icons/interface_icons/iEdit.png',
-                onPressed: () {
-                    if (Sv4rs.speakInterfaceButtonsOnSelect) {
-                    V4rs.speakOnSelect(
-                      'edit', 
-                      V4rs.selectedLanguage.value, 
-                      widget.synth, 
-                      widget.speakSelectSherpaOnnxSynth,
-                      widget.initForSS,
-                      widget.playerForSS,
-                      );
-                    }
-                    Ev4rs.updateJsonHistory(widget.root);
-                    
-                  V4rs.showSettings.value = false;
-                  Ev4rs.showEditor.value = true;
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              V4rs.paddingValue(5), 
-              V4rs.paddingValue(10), 
-              V4rs.paddingValue(5), 
-              V4rs.paddingValue(20)
-            ),
-            child: SizedBox(
-              height: 50,
-              width: 100,
-              child: ElevatedButton(onPressed: (){ setState(() {
-                  V4rs.deleteLocalCopy();
-              });
-              }, 
-              child: Text('Reset JSON'))
-            ),
-          ),
-        ],
-      );
+      ValueListenableBuilder(
+        valueListenable:  Vv4rs.blockback,
+        builder: (context, block, _) {
+          if (Vv4rs.blockback.value == true) {
+            return 
+            CircularProgressIndicator();
+          } else {
+            return 
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    0, 
+                    V4rs.paddingValue(10), 
+                    V4rs.paddingValue(10), 
+                    V4rs.paddingValue(20)),
+                  child: SizedBox(
+                    height: 50,
+                    width: 75,
+                    child: ButtonStyle1(
+                      imagePath: 'assets/interface_icons/interface_icons/iBack.png',
+                      onPressed: () {
+                          if (Sv4rs.speakInterfaceButtonsOnSelect) {
+                          V4rs.speakOnSelect(
+                            'back', 
+                            V4rs.selectedLanguage.value, 
+                            widget.synth,
+                            widget.speakSelectSherpaOnnxSynth,
+                            widget.initForSS,
+                            widget.playerForSS,
+                            );
+                          }
+                        V4rs.showSettings.value = false;
+                        },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    V4rs.paddingValue(5), 
+                    V4rs.paddingValue(10), 
+                    V4rs.paddingValue(5), 
+                    V4rs.paddingValue(20)),
+                  child: SizedBox(
+                    height: 50,
+                    width: 60,
+                    child: ButtonStyle1(
+                      imagePath: 'assets/interface_icons/interface_icons/iEdit.png',
+                      onPressed: () {
+                          if (Sv4rs.speakInterfaceButtonsOnSelect) {
+                          V4rs.speakOnSelect(
+                            'edit', 
+                            V4rs.selectedLanguage.value, 
+                            widget.synth, 
+                            widget.speakSelectSherpaOnnxSynth,
+                            widget.initForSS,
+                            widget.playerForSS,
+                            );
+                          }
+                          Ev4rs.updateJsonHistory(widget.root);
+                          
+                        V4rs.showSettings.value = false;
+                        Ev4rs.showEditor.value = true;
+                      },
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    V4rs.paddingValue(5), 
+                    V4rs.paddingValue(10), 
+                    V4rs.paddingValue(5), 
+                    V4rs.paddingValue(20)
+                  ),
+                  child: SizedBox(
+                    height: 50,
+                    width: 100,
+                    child: ElevatedButton(onPressed: (){ setState(() {
+                        V4rs.deleteLocalCopy();
+                    });
+                    }, 
+                    child: Text('Reset JSON'))
+                  ),
+                ),
+              ],
+            );
+          }
+        }
+    );
   }
 }
 
@@ -235,7 +246,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
     }
   }
 
-  Widget engineDropdown(){
+  Widget engineDropdown(String lang){
     return ListTile(
       title: Text('TTS Engine:', style: Sv4rs.settingslabelStyle),
       trailing: DropdownButton<String>(
@@ -245,6 +256,8 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
             if (value != null){
               Sv4rs.pickFromEngine = value;
               Sv4rs.savePickFromEngine(value);
+            } else if (Vv4rs.myEngineForVoiceLang[lang] != null) {
+              Sv4rs.pickFromEngine = Vv4rs.myEngineForVoiceLang[lang]!;
             }
           });
         },
@@ -317,16 +330,16 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
   }
   Widget sherpaOnnxVoiceDropdown(bool forSS, String language, var dropdownValue) {
     // 1. Helper for selecting voice logic
-    Future<void> selectVoice(bool forSS, ManifestModel voice, int speaker) {
+    Future<void> selectVoice(bool forSS, ManifestModel voice, int speaker) async {
       if (forSS) {
-        return Vv4rs.setSSlanguageVoiceSherpaOnnx(
+        return await Vv4rs.setSSlanguageVoiceSherpaOnnx(
           language, voice.id, voice.engine, voice.tokenPath, voice.modelPath,
           voice.speakerCount, speaker, Vv4rs.sherpaOnnxSSLanguageVoice[language]?.lengthScale,
           Vv4rs.sherpaOnnxSSLanguageVoice[language]?.volumeBoost, voice.speakers,
           voice.lexicon, voice.ruleFars, voice.ruleFsts, voice.voicesBin, voice.eSpeakPath,
         );
       } else {
-        return Vv4rs.setlanguageVoiceSherpaOnnx(
+        return await Vv4rs.setlanguageVoiceSherpaOnnx(
           language, voice.id, voice.engine, voice.tokenPath, voice.modelPath,
           voice.speakerCount, speaker, Vv4rs.sherpaOnnxLanguageVoice[language]?.lengthScale,
           Vv4rs.sherpaOnnxLanguageVoice[language]?.volumeBoost, voice.speakers,
@@ -790,8 +803,8 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
               ? Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', true)
               : Vv4rs.getSherpaOnnxValue(language, 'volumeBoost', false),
             min: 1.0,
-            max: 3.0,
-            divisions: 30,
+            max: 10.0,
+            divisions: 18,
             activeColor: Cv4rs.themeColor1,
             inactiveColor: Cv4rs.themeColor3,
             thumbColor: Cv4rs.themeColor1,
@@ -1231,7 +1244,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
               children: [
               
                 //engine picker
-                engineDropdown(),
+                engineDropdown(language),
 
                 //
                 //sherpa-onnx
@@ -1386,7 +1399,7 @@ class _VoicePicker extends State<VoicePicker> with WidgetsBindingObserver {
               
               
               //engine
-                engineDropdown(),
+                engineDropdown(language),
 
               //
               //sherpa-onnx

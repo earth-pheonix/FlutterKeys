@@ -18,11 +18,11 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:sherpa_onnx/sherpa_onnx.dart' as sherpa_onnx;
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 
 // 
 // buttons
 //
-
 
 class BoardButtonStyle extends StatelessWidget{
       final BoardObjects obj;
@@ -206,149 +206,200 @@ class BoardButtonStyle extends StatelessWidget{
               ),
             onPressed: onPressed,
             child: () {
-              switch((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
-                case 1: 
-                  if (!isSubFolder){
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: case1Contents,
-                    );
-                  } 
-                  else {
-                     if (V4rs.xSmallModeWidth && editable){
+              if (!isSubFolder){
+                switch((obj.matchFormat ?? true) ? Bv4rs.buttonFormat : obj.format) {
+                  case 1: 
                       return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Row(children: [
-                            case1Contents[0],
-                            Flexible(
-                              flex: 3,
-                              child: case1Contents[1],
-                            ),
-                           ],
-                          )
-                        ),
-                        Flexible(
-                          child: case1Contents[2],
-                        ),
-                      ],
-                    );
-                     } else {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        case1Contents[0],
-                        Flexible(
-                          child: case1Contents[1],
-                        ),
-
-                        if (editable)
-                        Expanded(
-                          child: case1Contents[2],
-                        ),
-                      ],
-                    );
-                     }
-                  }
-                case 2: 
-                  if (!isSubFolder){
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: case2Contents,
-                    );
-                  } 
-                  else {
-                     if (V4rs.xSmallModeWidth && editable){
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: case1Contents,
+                      );
+                    
+                  case 2: 
                       return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Row(children: [
-                            Flexible(
-                              child: case2Contents[0],
-                            ),
-                            case2Contents[1],
-                           ],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: case2Contents,
+                      );
+                    
+                  case 3: 
+                    if (editable && editSubFolderPress != null){
+                      if (V4rs.xSmallModeWidth){
+                        return Column(children: [
+                          Expanded(
+                            child: case3Contents,
+                          ),
+                          Expanded(
+                            child: subFolderEditButton()
                           )
-                        ),
-                        Flexible(
-                          child: case1Contents[2],
-                        ),
-                      ],
-                    );
-                     } else {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: case2Contents[0],
-                        ),
-                         case2Contents[1],
-
-                        if (editable)
-                        Expanded(
-                          child: case1Contents[2],
-                        ),
-                      ],
-                    );
-                     }
-                  }
-                case 3: 
-                   if (editable && editSubFolderPress != null){
-                    if (V4rs.xSmallModeWidth){
-                      return Column(children: [
-                        Expanded(
-                          child: case3Contents,
-                        ),
-                        Expanded(
-                          child: subFolderEditButton()
-                        )
-                      ]);
+                        ]);
+                      } else {
+                        return Row(children: [
+                          Expanded(
+                            child: case3Contents,
+                          ),
+                          Expanded(
+                            child: subFolderEditButton()
+                          )
+                        ]);
+                      }
                     } else {
-                      return Row(children: [
-                        Expanded(
-                          child: case3Contents,
-                        ),
-                        Expanded(
-                          child: subFolderEditButton()
-                        )
-                      ]);
+                      return case3Contents;
                     }
-                  } else {
-                    return case3Contents;
-                  }
-                case 4:
-                  if (editable && editSubFolderPress != null){
-                    if (V4rs.xSmallModeWidth){
-                       return Column(children: [
-                        Expanded(
-                          child: case4Contents,
-                        ),
-                        Expanded(
-                          child: subFolderEditButton()
-                        )
-                      ]);
+                  case 4:
+                    if (editable && editSubFolderPress != null){
+                      if (V4rs.xSmallModeWidth){
+                        return Column(children: [
+                          Expanded(
+                            child: case4Contents,
+                          ),
+                          Expanded(
+                            child: subFolderEditButton()
+                          )
+                        ]);
+                      } else {
+                        return Row(children: [
+                          Expanded(
+                            child: case4Contents,
+                          ),
+                          Expanded(
+                            child: subFolderEditButton()
+                          )
+                        ]);
+                      }
                     } else {
-                      return Row(children: [
-                        Expanded(
-                          child: case4Contents,
-                        ),
-                        Expanded(
-                          child: subFolderEditButton()
-                        )
-                      ]);
-                     }
-                  } else {
-                    return case4Contents;
-                  } 
-                }
+                      return case4Contents;
+                    } 
+                  }
+              } else {
+                switch((obj.matchFormat ?? true) ? Bv4rs.subFolderFormat : obj.format) {
+                  case 1: 
+                      if (V4rs.xSmallModeWidth && editable){
+                        return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Row(children: [
+                              case1Contents[0],
+                              Flexible(
+                                flex: 3,
+                                child: case1Contents[1],
+                              ),
+                            ],
+                            )
+                          ),
+                          Flexible(
+                            child: case1Contents[2],
+                          ),
+                        ],
+                      );
+                      } else {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          case1Contents[0],
+                          Flexible(
+                            child: case1Contents[1],
+                          ),
+
+                          if (editable)
+                          Expanded(
+                            child: case1Contents[2],
+                          ),
+                        ],
+                      );
+                      }
+                    
+                  case 2: 
+                      if (V4rs.xSmallModeWidth && editable){
+                        return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Row(children: [
+                              Flexible(
+                                child: case2Contents[0],
+                              ),
+                              case2Contents[1],
+                            ],
+                            )
+                          ),
+                          Flexible(
+                            child: case1Contents[2],
+                          ),
+                        ],
+                      );
+                      } else {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: case2Contents[0],
+                          ),
+                          case2Contents[1],
+
+                          if (editable)
+                          Expanded(
+                            child: case1Contents[2],
+                          ),
+                        ],
+                      );
+                      }
+                    
+                  case 3: 
+                    if (editable && editSubFolderPress != null){
+                      if (V4rs.xSmallModeWidth){
+                        return Column(children: [
+                          Expanded(
+                            child: case3Contents,
+                          ),
+                          Expanded(
+                            child: subFolderEditButton()
+                          )
+                        ]);
+                      } else {
+                        return Row(children: [
+                          Expanded(
+                            child: case3Contents,
+                          ),
+                          Expanded(
+                            child: subFolderEditButton()
+                          )
+                        ]);
+                      }
+                    } else {
+                      return case3Contents;
+                    }
+                  case 4:
+                    if (editable && editSubFolderPress != null){
+                      if (V4rs.xSmallModeWidth){
+                        return Column(children: [
+                          Expanded(
+                            child: case4Contents,
+                          ),
+                          Expanded(
+                            child: subFolderEditButton()
+                          )
+                        ]);
+                      } else {
+                        return Row(children: [
+                          Expanded(
+                            child: case4Contents,
+                          ),
+                          Expanded(
+                            child: subFolderEditButton()
+                          )
+                        ]);
+                      }
+                    } else {
+                      return case4Contents;
+                    } 
+                  }
+              }
             } (),
             );
             }
@@ -431,6 +482,12 @@ class _BuildPocketFolderState extends State<BuildPocketFolder> {
               setState(() {
                 V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
               });
+
+            if (V4rs.showSymbolsInMW && obj.message != null && obj.message!.isNotEmpty){
+              V4rs.messageSymbols.value.add(obj.symbol ?? 'assets/interface_icons/interface_icons/iPlaceholder.png');
+              V4rs.messageWords.value.add(obj.message!);
+            }
+
             switch ((obj.matchSpeakOS ?? true) ? Bv4rs.pocketFolderSpeakOnSelect : obj.speakOS) {
             case 1:
               V4rs.changedMWfromButton = true;
@@ -713,6 +770,12 @@ class _BuildTypingKeyState extends State<BuildTypingKey> {
               setState(() {
                 V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
               });
+            
+            if (V4rs.showSymbolsInMW && obj.message != null && obj.message!.isNotEmpty){
+              V4rs.messageSymbols.value.add(obj.symbol ?? 'assets/interface_icons/interface_icons/iPlaceholder.png');
+              V4rs.messageWords.value.add(obj.message!);
+            }
+
             switch ((obj.matchSpeakOS ?? true) ? Bv4rs.typingKeySpeakOnSelect : obj.speakOS) {
                   case 1:
                     V4rs.changedMWfromButton = true;
@@ -946,6 +1009,12 @@ class _BuildAudioTileState extends State<BuildAudioTile> {
               setState(() {
                 V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
               });
+
+            if (V4rs.showSymbolsInMW && obj.message != null && obj.message!.isNotEmpty){
+              V4rs.messageSymbols.value.add(obj.symbol ?? 'assets/interface_icons/interface_icons/iPlaceholder.png');
+              V4rs.messageWords.value.add(obj.message!);
+            }
+
             switch ((obj.matchSpeakOS ?? true) ? Bv4rs.typingKeySpeakOnSelect : obj.speakOS) {
                   case 1:
                     V4rs.changedMWfromButton = true;
@@ -1345,6 +1414,11 @@ class _BuildFolderState extends State<BuildFolder> {
         setState(() {
           V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
         });
+        if (V4rs.showSymbolsInMW && obj.message != null && obj.message!.isNotEmpty){
+              V4rs.messageSymbols.value.add(obj.symbol ?? 'assets/interface_icons/interface_icons/iPlaceholder.png');
+              V4rs.messageWords.value.add(obj.message!);
+            }
+
         switch ((obj.matchSpeakOS ?? true) ? Bv4rs.folderSpeakOnSelect : obj.speakOS) {
         case 1:
           V4rs.changedMWfromButton = true;
@@ -1509,6 +1583,11 @@ class BuildButton extends StatelessWidget{
         obj: obj,
         editable: false,
         onPressed: () async {
+          if (V4rs.showSymbolsInMW && obj.message != null && obj.message!.isNotEmpty){
+              V4rs.messageSymbols.value.add(obj.symbol ?? 'assets/interface_icons/interface_icons/iPlaceholder.png');
+              V4rs.messageWords.value.add(obj.message!);
+            }
+
           switch ((obj.matchSpeakOS ?? true) ? Bv4rs.buttonSpeakOnSelect : obj.speakOS) {
           case 1:
             V4rs.changedMWfromButton = true;
@@ -1626,9 +1705,6 @@ class BuildSubFolder extends StatelessWidget {
         );
       } 
 
-      //
-      //sub folders + more
-      //
       return BoardButtonStyle(
         isSubFolder: true,
         editable: false,
@@ -1689,6 +1765,266 @@ class BuildSubFolder extends StatelessWidget {
       );
     }
 }
+
+class BuildVolumeButton extends StatefulWidget{
+  final BoardObjects obj;
+  final TTSInterface synth;
+
+  final Map<String, sherpa_onnx.OfflineTts?>? speakSelectSherpaOnnxSynth;
+  final Future<void> Function() initForSS;
+  final AudioPlayer playerForSS;
+
+    const BuildVolumeButton({
+      super.key, 
+      required this.obj, 
+      required this.synth,
+
+        required this.speakSelectSherpaOnnxSynth,
+        required this.initForSS,
+        required this.playerForSS,
+      });
+    
+    @override
+    State<BuildVolumeButton> createState() => _BuildVolumeButtonState();
+}
+
+class _BuildVolumeButtonState extends State<BuildVolumeButton> {
+    final Stopwatch _stopwatch = Stopwatch();
+    DateTime? _lastTapTime;
+    final Duration _doubleTapMaxDelay = Duration(milliseconds: (V4rs.doubleTapClickSpeed));
+    Timer? _singleTapTimer;
+
+    @override
+    Widget build(BuildContext context) {
+
+    final bool altAccessActive = MediaQuery.of(context).accessibleNavigation;
+    
+    final obj = widget.obj;
+    final synth = widget.synth;
+
+    //tap action
+    Future<void> doTapAction(
+      BoardObjects obj,
+      TTSInterface synth,
+      ) async { 
+        //for button searches
+          setState(() {
+            V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+          });
+          
+        //Volume Adjust
+          double? currentVol = await FlutterVolumeController.getVolume();
+          print('volume: $currentVol');
+          switch(obj.type){
+            //volume down
+            case 7: 
+              if (currentVol != null) {
+                var newVol = currentVol - (obj.volAmount ?? 0.05);
+                if (newVol <= 0.00){
+                  await FlutterVolumeController.setVolume(0.00);
+                } else {
+                  await FlutterVolumeController.setVolume(currentVol - (obj.volAmount ?? 0.05));
+                }
+              }
+            //volume up
+            case 8: 
+              if (currentVol != null) {
+               var newVol = currentVol - (obj.volAmount ?? 0.05);
+                if (newVol >= 1.00){
+                  await FlutterVolumeController.setVolume(1.00);
+                } else {
+                  await FlutterVolumeController.setVolume(currentVol + (obj.volAmount ?? 0.05));
+                }
+              } 
+          }
+
+
+          double? newVol = await FlutterVolumeController.getVolume();
+          print('new Volume: $newVol');
+
+        //Speak on Select Action
+          switch ((obj.matchSpeakOS ?? true) ? Bv4rs.folderSpeakOnSelect : obj.speakOS) {
+          case 1:
+            break;
+          case 2:
+            await V4rs.speakOnSelect(
+              obj.label ?? '', 
+              V4rs.selectedLanguage.value, 
+              synth,
+              widget.speakSelectSherpaOnnxSynth,
+              widget.initForSS,
+              widget.playerForSS,
+            );
+            break;
+          case 3:
+            await V4rs.speakOnSelect(
+              obj.message ?? '', 
+              V4rs.selectedLanguage.value, 
+              synth,
+              widget.speakSelectSherpaOnnxSynth,
+              widget.initForSS,
+              widget.playerForSS,
+            );
+            break;
+          }
+    }
+
+    Future<void> doSecondaryTap(
+      BoardObjects obj,
+      TTSInterface synth,
+      ) async {
+        //search action
+        setState(() {
+          V4rs.updateSearchPath(V4rs.searchPathUUIDS.value, obj.id);
+        });
+        //Speak on select and adding message to window
+
+        if (V4rs.showSymbolsInMW && obj.message != null && obj.message!.isNotEmpty){
+              V4rs.messageSymbols.value.add(obj.symbol ?? 'assets/interface_icons/interface_icons/iPlaceholder.png');
+              V4rs.messageWords.value.add(obj.message!);
+            }
+            
+        switch ((obj.matchSpeakOS ?? true) ? Bv4rs.folderSpeakOnSelect : obj.speakOS) {
+        case 1:
+          V4rs.changedMWfromButton = true;
+          V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+          V4rs.changedMWfromButton = false;
+          break;
+        case 2:
+          V4rs.changedMWfromButton = true;
+          V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+          await V4rs.speakOnSelect(
+            obj.label ?? '', 
+            V4rs.selectedLanguage.value, 
+            synth,
+            widget.speakSelectSherpaOnnxSynth,
+            widget.initForSS,
+            widget.playerForSS,
+          );
+          V4rs.changedMWfromButton = false;
+          break;
+        case 3:
+          V4rs.changedMWfromButton = true;
+          V4rs.message.value = V4rs.message.value + (obj.message ?? '');
+          await V4rs.speakOnSelect(
+            obj.message ?? '', 
+            V4rs.selectedLanguage.value, 
+            synth,
+            widget.speakSelectSherpaOnnxSynth,
+            widget.initForSS,
+            widget.playerForSS,
+          );
+          V4rs.changedMWfromButton = false;
+          break;
+        }
+        HistoryV4rs.addTap(obj);
+      }
+
+    //
+    //button
+    //
+    return LayoutBuilder(
+      builder: (context, constraints) {
+      double side = constraints.maxHeight * 0.25;
+      double top = constraints.maxWidth * 0.2;
+
+      return Stack(children: [ 
+      Positioned.fill(child: 
+      Visibility(
+        visible: (obj.show ?? true), 
+        maintainSize: true, 
+        maintainAnimation: true,
+        maintainState: true, child:
+       Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) => _stopwatch..reset()..start(),
+        onPointerUp: (_) async {
+          _stopwatch.stop();
+          final now = DateTime.now();
+
+
+            //===: USE LONG TAP :===///
+            if (!V4rs.useLongTapOr) {
+              if (_stopwatch.elapsedMilliseconds < V4rs.longTapDuration) {
+                await doTapAction(obj, synth);
+                return;
+              } else {
+                await doSecondaryTap(obj, synth);
+                return;
+              }
+
+            //===: USE DOUBLE TAP  :===///
+          } else {
+              if (_lastTapTime != null &&
+                  now.difference(_lastTapTime!) <= _doubleTapMaxDelay) {
+                _singleTapTimer?.cancel();
+                await doSecondaryTap(obj, synth);
+                _lastTapTime = null;
+                return;
+              }
+              _lastTapTime = now;
+              _singleTapTimer?.cancel();
+              _singleTapTimer = Timer(_doubleTapMaxDelay, () async {
+                await doTapAction(obj, synth);
+                _lastTapTime = null;
+              });
+
+              return;
+        }
+      },
+    child: BoardButtonStyle(
+      obj: obj,
+      editable: false,
+      onPressed: () async {
+        if (altAccessActive) {
+          await doTapAction(obj, synth);
+          }
+        }, 
+      ),
+      )),
+        ),
+        //
+        //CORNER TAB 
+        //
+        Positioned(
+              top: 2,
+              right: 2,
+              child: SizedBox(width: top, height: side,
+                child:
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),),
+                onPressed: () async { if (altAccessActive) {
+                  await doSecondaryTap(obj, synth);
+                } else { 
+                  //pretend you hit the button
+                  await doTapAction(obj, synth);
+                }
+                },
+                child:  Visibility(
+                visible: (obj.show ?? true), 
+                maintainSize: true, 
+                maintainAnimation: true,
+                maintainState: true, 
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(Cv4rs.cornerTabColor, BlendMode.srcIn
+                    ), child:
+                    (obj.type == 7) 
+                    ? Image.asset('assets/interface_icons/interface_icons/iDownTriangle.png')
+                    : Image.asset('assets/interface_icons/interface_icons/iUpTriangle.png'),
+                  )
+                )
+                )
+              ),
+        )
+        ]); 
+      });
+    }
+  }
+
+
 
 //for print
 class PreveiwButton extends StatelessWidget{
