@@ -35,7 +35,7 @@ class _MyApp extends State<MyApp> {
 
   Map<String, sherpa_onnx.OfflineTts?> speakSelectSherpaOnnxSynth = {};
   Map<String, sherpa_onnx.OfflineTts?> sherpaOnnxSynth = {};
-
+  
   late AudioPlayer openTtsPlayerSherpaOnnx;
   late AudioPlayer openTtsPlayerSpeakSelectSherpaOnnx;
 

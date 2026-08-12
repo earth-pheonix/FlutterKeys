@@ -11,8 +11,12 @@ import "dart:io";
 import 'dart:isolate';
 import 'package:wav/wav.dart';
 
-//supports vits, kokoro, matcha, kitten
+//TODO: Protect imports so fp16 doesnt crash the app
+    //Users/runner/work/sherpa-onnx/sherpa-onnx/sherpa-onnx/c-api/c-api.cc:GetOfflineTtsConfig:1269 OfflineTtsConfig(model=OfflineTtsModelConfig(vits=OfflineTtsVitsModelConfig(model="/var/mobile/Containers/Data/Application/D9BC29CC-2E56-41F2-AB4C-CE9F22788981/Documents/sherpaOnnx_models/vits-piper-zh_CN-chaowen-medium-fp16/vits-piper-zh_CN-chaowen-medium-fp16.onnx", lexicon="/var/mobile/Containers/Data/Application/D9BC29CC-2E56-41F2-AB4C-CE9F22788981/Documents/sherpaOnnx_models/vits-piper-zh_CN-chaowen-medium-fp16/vits-piper-zh_CN-chaowen-medium-fp16/lexicon.txt", tokens="/var/mobile/Containers/Data/Application/D9BC29CC-2E56-41F2-AB4C-CE9F22788981/Documents/sherpaOnnx_models/vits-piper-zh_CN-chaowen-medium-fp16/tokens.txt", data_dir="", noise_scale=0.667, noise_scale_w=0.8, length_scale=1), matcha=OfflineTtsMatchaModelConfig(acoustic_model="", vocoder="", lexicon="", tokens="", data_dir="", noise_scale=0.667, length_scale=1), kokoro=OfflineTtsKokoroModelConfig(model="", voices="", tokens="", lexicon="", data_dir="", length_scale=1, lang=""), zipvoice=OfflineTtsZipvoiceModelConfig(tokens="", text_model="", flow_matching_model="", vocoder="", data_dir="", pinyin_dict="", feat_scale=0.1, t_shift=0.5, target_rms=0.1, guidance_scale=1), kitten=OfflineTtsKittenModelConfig(model="", voices="", tokens="", data_dir="", length_scale=1), num_threads=2, debug=True, provider="cpu"), rule_fsts="/var/mobile/Containers/Data/Application/D9BC29CC-2E56-41F2-AB4C-CE9F22788981/Documents/sherpaOnnx_models/vits-piper-zh_CN-chaowen-medium-fp16/vits-piper-zh_CN-chaowen-medium-fp16/date.fst,/var/mobile/Containers/Data/Application/D9BC29CC-2E56-41F2-AB4C-CE9F22788981/Documents/sherpaOnnx_models/vits-piper-zh_CN-chaowen-medium-fp16/vits-piper-zh_CN-chaowen-medium-fp16/phone.fst,/var/mobile/Containers/Data/Application/D9BC29CC-2E56-41F2-AB4C-CE9F22788981/Documents/sherpaOnnx_models/vits-piper-zh_CN-chaowen-medium-fp16/vits-piper-zh_CN-chaowen-medium-fp16/number.fst", rule_fars="", max_num_sentences=1, silence_scale=0.2)
+    //libc++abi: terminating due to uncaught exception of type Ort::Exception: Type Error: Type (tensor(float16)) of output arg (/enc_p/Cast_1_output_0) of node (/enc_p/Cast_1) does not match expected type (tensor(float)).
 
+
+//supports vits, kokoro, matcha, kitten
 class SherpaOnnxV4rs {
 
   static Isolate? ttsIsolate;
@@ -29,7 +33,7 @@ class SherpaOnnxV4rs {
     String lang,
     String base,
   ) async {
-
+    print('lang: $lang');
     final modelOnnx = p.join(base, "$voiceId.onnx");
     final voicesBin = p.join(base, "$voiceId-voices.bin");
     final tokens = p.join(base, "tokens.txt");
@@ -58,11 +62,11 @@ class SherpaOnnxV4rs {
     final hasVoicesBin = File(voicesBin).existsSync();
     final isKokoro = hasVoicesBin && voiceId.toLowerCase().startsWith('kokoro');
     final isKitten = hasVoicesBin && voiceId.toLowerCase().startsWith('kitten');
+    final isMatcha = voiceId.toLowerCase().startsWith('macha');
+    final isMultiMatcha = 
+        voiceId.toLowerCase().startsWith('macha') 
+        && Directory(vocodor).existsSync();
 
-    final espeakDir = Directory(p.join(base, "eSpeak-ng"));
-    final isEspeakEmpty = !espeakDir.existsSync() || espeakDir.listSync().isEmpty;
-    final isMatcha = isEspeakEmpty;
-    final isMultiMatcha = isEspeakEmpty && Directory(vocodor).existsSync();
 
     late final sherpa_onnx.OfflineTtsVitsModelConfig vits;
     late final sherpa_onnx.OfflineTtsKokoroModelConfig kokoro;
@@ -120,7 +124,9 @@ class SherpaOnnxV4rs {
         model: modelOnnx,
         tokens: tokens,
         lexicon: lexicons,
-        dataDir: espeak,
+        dataDir: (Directory(espeak).existsSync()) 
+          ? espeak 
+          : "",
       );
     }
 
@@ -134,14 +140,15 @@ class SherpaOnnxV4rs {
       provider: 'cpu', //what hardware backend to use
     );
 
+  
+    print("create tts in isolate: fsts: $ruleFsts");
     final config = sherpa_onnx.OfflineTtsConfig(
       model: modelConfig, //vits, kokoro, matcha
-      ruleFsts: 
-        (isMatcha || isMultiMatcha || (isKokoro && lang != '中文')) 
+      ruleFsts: (ruleFsts.isEmpty || (isKokoro && lang != '中文'))
         ? ''
         : ruleFsts, 
       ruleFars: 
-        (isMatcha || isMultiMatcha || (isKokoro && lang != '中文')) 
+        (ruleFars.isEmpty || (isKokoro && lang != '中文')) 
         ? ''
         : ruleFars,
       maxNumSenetences: 1, //sentance count for proccess per call
@@ -374,8 +381,18 @@ static Future<String> boostWavVolume(String inputPath, double gain) async {
     if ((forSS && isVoiceSSLoading) || (!forSS && isVoiceLoading)){
       return;
     }
+    try {
+      if (player.state == PlayerState.disposed) {
+        player = AudioPlayer();
+      }
+    } catch (_) {
+      player = AudioPlayer();
+    }
     await player.stop();
 
+    final voiceID = (forSS)
+      ? Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.modelVoice
+      : Vv4rs.sherpaOnnxLanguageVoice[lang]?.modelVoice;
     final speakerID = (forSS) 
       ? Vv4rs.sherpaOnnxSSLanguageVoice[lang]?.speakerID
       : Vv4rs.sherpaOnnxLanguageVoice[lang]?.speakerID;
@@ -392,6 +409,7 @@ static Future<String> boostWavVolume(String inputPath, double gain) async {
       'type': 'synthesize',
       'lang': lang,
       'text': text,
+      'voiceId': voiceID,
       'sid': speakerID ?? 0,
       'speed': rate ?? 1.0,
       'replyPort': responsePort.sendPort,
@@ -492,7 +510,8 @@ static Future<String> boostWavVolume(String inputPath, double gain) async {
 
     final base = await getModelBasePath(voiceId);
     final responsePort = ReceivePort();
-
+    print("is valid model? 1");
+    print("voice id: $voiceId");
     try {
       _ttsSendPort!.send({
         'type': 'validate',
@@ -501,11 +520,13 @@ static Future<String> boostWavVolume(String inputPath, double gain) async {
         'basePath': base,
         'replyPort': responsePort.sendPort,
       });
+      print("is valid model? 2");
 
       final result = await responsePort.first.timeout(
         const Duration(seconds: 10),
         onTimeout: () => {'success': false, 'error': 'Timeout'},
       );
+      print("is valid model? 3");
 
       if (result['success'] == true) {
         Vv4rs.downloadMessage.value = ("Voice is valid.");

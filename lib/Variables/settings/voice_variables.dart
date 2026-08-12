@@ -1200,12 +1200,13 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
   String? langauge, List<String>? languages,
   context, Future<void> Function() loadAll,
 ) async {
+  print("importSherpaOnnxVoice 1");
   //pick the voice zip file
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: ['zip'], 
   );
-
+  print("importSherpaOnnxVoice 2");
   //saftey
   if (result == null) {
     downloadMessage.value = 'Nothing to import';
@@ -1215,7 +1216,7 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
     });
     return null;
   }
-  
+  print("importSherpaOnnxVoice 3");
   File zipFile = File(result.files.single.path!);
   isDownloading.value = result.files.single.path!;
 
@@ -1262,7 +1263,7 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
       });
       return null;
     }
-
+    print("importSherpaOnnxVoice 4");
     final dir = await getApplicationDocumentsDirectory();
     final savePath = "${dir.path}/sherpaOnnx_models";
     final voiceFolder = "$savePath/$folderName"; //model dir
@@ -1278,7 +1279,7 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
     await Directory(voiceFolder).create(recursive: true);
     
     downloadMessage.value = 'Opening Zip...';
-    
+    print("importSherpaOnnxVoice 5");
     // Unzip
     final inputStream = InputFileStream(zipFile.path);
     final archive = ZipDecoder().decodeBuffer(inputStream);
@@ -1501,7 +1502,7 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
         await Directory(outPath).create(recursive: true);
       }
     }
-
+    print("importSherpaOnnxVoice 6");
     downloadMessage.value = 'All files downloaded... getting values';
 
     await zipFile.delete();
@@ -1513,12 +1514,12 @@ static Future<ManifestModel?> importSherpaOnnxVoice(
     voice.lexicon = listOfLexicon.join(", ");
     voice.tokenPath = tokenPath;
     voice.eSpeakPath = eSpeakNgFolder;
-
+    print("importSherpaOnnxVoice 7");
       downloadMessage.value = 'Verifying Voice (this may take 5 minutes)';
       
       bool working = await SherpaOnnxV4rs.isValidModel(voice.id!, langToTest);
       if (!working) {
-        downloadMessage.value = 'Verification failed';
+        print("importSherpaOnnxVoice 8");
         await Future.delayed(const Duration(seconds: 5), () {
         isDownloading.value = '';
         downloadMessage.value = '';
@@ -1791,7 +1792,6 @@ static Future<bool> deleteImportedSherpaOnnxVoice(ManifestModel voice) async {
     //
 
     for (final lang in Sv4rs.myLanguages) {
-
       print(prefs.getString('sherpa_onnx-tts-id-$lang'));
       print (prefs.getString('sherpa_onnx-tts-tokenPath-$lang'));
       print (prefs.getString('sherpa_onnx-tts-modelVoice-$lang'));

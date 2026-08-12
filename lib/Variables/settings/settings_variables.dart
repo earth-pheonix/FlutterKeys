@@ -32,7 +32,7 @@ class Sv4rs {
 
 // Language settings
   static List <String> allLanguages = ['English', '中文', 'Española', 'Français'];
-  static Set <String> myLanguages = {V4rs.interfaceLanguage};
+  static Set <String> myLanguages = {};
   
   static Future<void> setMyLanguages(Set<String> languages) async {
     myLanguages = languages;

@@ -175,12 +175,9 @@ Future<void> importSherpaOnnx(
               }).toList(),
               onChanged: (value) {
                 if (value != null) {
-                  String? itemCode = V4rs.langNameToCode[value];
-                  if (itemCode != null){
                     setState(() {
                       voiceLanguage = value;
                     });
-                  }
                  }
                },
             ),

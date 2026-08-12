@@ -381,12 +381,7 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
     }
 
     final segments = identifyLanguageSegments(text, deafultLang);
-    
-    for (final langKey in sherpaOnnxSynth!.keys) {
-      if (sherpaOnnxSynth[langKey] != null) {
-        await init();
-      }
-    }
+  
 
     //setup highlight offset
     HV4rs.resetHighlightStart();
@@ -452,11 +447,12 @@ static Future<void> saveMyBoardsets (List<File> myBoardsets) async {
       //Sherpa Onnx Engine
       //
       else {
+
         await SherpaOnnxV4rs.speak(false, lang, segmentText, player);
       }
 
       //move offset to next segment
-      cumulativeStart += segmentText.length;
+      cumulativeStart += segmentText.length; 
     }
 
     //cleanup
@@ -804,19 +800,11 @@ static Future<File> resolveImageFile(String relativePath) async {
     // how to clear a value from shared prefs:  
     //await prefs.remove('myBoardsets');
     //clear all values from prefs
-   //await prefs.clear();
+   await prefs.clear();
 
     //reset Json on load
     //deleteLocalCopy(); 
     //deleteLocalCopytemplates();
-
-    await Fv4rs.loadSavedFontValues(); 
-    await Cv4rs.loadSavedColorValues();
-    await Bv4rs.loadSavedBoardsetValues();
-    await ExV4rs.loadSavedExportValues();
-    await Vv4rs.loadSavedVoiceValues();
-    await BSSv4rs.loadSavedBookmarkedSSValues();
-    await HistoryV4rs.loadSavedHistoryValues();
 
     //load the boardsets
     final myBoardsetNames = prefs.getStringList(_myBoardsets);
@@ -875,6 +863,15 @@ static Future<File> resolveImageFile(String relativePath) async {
     Sv4rs.pickFromEngine = prefs.getString(Sv4rs.pickFromEngine_) ?? 'sherpa-onnx';
     
     variablesReady = true;
+
+    //make sure any required variables needed to set these properly are gotten before running here
+    await Fv4rs.loadSavedFontValues(); 
+    await Cv4rs.loadSavedColorValues();
+    await Bv4rs.loadSavedBoardsetValues();
+    await ExV4rs.loadSavedExportValues();
+    await Vv4rs.loadSavedVoiceValues();
+    await BSSv4rs.loadSavedBookmarkedSSValues();
+    await HistoryV4rs.loadSavedHistoryValues();
   }
 
 }
